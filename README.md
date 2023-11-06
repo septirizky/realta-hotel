@@ -1,0 +1,12 @@
+# Aplikasi Hotel Reservation System
+
+## By: Kelompok 1
+
+1. Rahmat Rafli
+2. Mangara Butarbutar
+3. Elvira Hafis
+4. Dhanny Yusuf
+5. Septi Rizky
+6. Pinondang Jondri Silalahi
+7. Sulthan Laksono Ramadhan
+8. Iqbal Wahyudi
