@@ -4,7 +4,7 @@
 
 1. Rahmat Rafli
 2. Mangara Butarbutar
-3. Elvira Hafis
+3. Elvira Hafis - Purchase
 4. Dhanny Yusuf
 5. Septi Rizky
 6. Pinondang Jondri Silalahi
