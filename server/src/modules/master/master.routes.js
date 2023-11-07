@@ -8,6 +8,7 @@ import {
 import {
   createRegionsValidation,
   getRegionIdValidation,
+  getRegionNameAlready,
   updateRegionValidation,
 } from "./master.validations.js";
 import { validatorsError } from "../../helper/validatorsError.js";
@@ -19,6 +20,7 @@ masterRouters.get("/regions", regionGetAll);
 masterRouters.post(
   "/regions",
   createRegionsValidation,
+  getRegionNameAlready,
   validatorsError,
   regionPost
 );

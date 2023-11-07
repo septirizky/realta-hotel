@@ -20,3 +20,16 @@ export const getRegionIdValidation = [
     }
   }),
 ];
+
+export const getRegionNameAlready = [
+  body("region_name").custom(async (value) => {
+    const region = await models.regions.findOne({
+      attributes: ["region_name"],
+      where: { region_name: value },
+    });
+
+    if (region) {
+      throw new Error("Nama Wilayah " + value + " sudah ada!");
+    }
+  }),
+];
