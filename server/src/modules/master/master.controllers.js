@@ -1,5 +1,6 @@
 import models from "../../model/init-models.js";
 
+// Regions
 export const regionGetAll = async (req, res) => {
   try {
     const result = await models.regions.findAll({
@@ -60,6 +61,82 @@ export const regionDelete = async (req, res) => {
     return res
       .status(200)
       .json({ data: result, message: "Berhasil menghapus data regions!" });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+// Country
+export const countryGetAll = async (req, res) => {
+  try {
+    const result = await models.country.findAll({
+      order: [["country_id", "ASC"]],
+      include: {
+        model: models.regions,
+        as: "country_region",
+        attributes: ["region_name"],
+        required: true,
+      },
+    });
+
+    return res
+      .status(200)
+      .json({ data: result, message: "Berhasil menampilkan data country!" });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const countryPost = async (req, res) => {
+  try {
+    const { country_name, country_region_id } = req.body;
+
+    const result = await models.country.create({
+      country_name: country_name,
+      country_region_id: country_region_id,
+    });
+
+    return res
+      .status(201)
+      .json({ data: result, message: "Berhasil menambahkan data country!" });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const countryUpdate = async (req, res) => {
+  try {
+    const { country_id } = req.params;
+    const { country_name, country_region_id } = req.body;
+
+    const result = await models.country.update(
+      {
+        country_name: country_name,
+        country_region_id: country_region_id,
+        updatedat: new Date(),
+      },
+      { where: { country_id: country_id }, returning: true }
+    );
+
+    return res
+      .status(200)
+      .json({ data: result, message: "Berhasil mengubah data country!" });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const countryDelete = async (req, res) => {
+  try {
+    const { country_id } = req.params;
+
+    const result = await models.country.destroy({
+      where: { country_id: country_id },
+    });
+
+    return res
+      .status(200)
+      .json({ data: result, message: "Berhasil menghapus data country!" });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }

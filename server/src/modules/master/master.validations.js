@@ -33,3 +33,38 @@ export const getRegionNameAlready = [
     }
   }),
 ];
+
+export const createCountryValidation = [
+  body("country_name").notEmpty().withMessage("Nama Negara Wajib diisi!"),
+  body("country_region_id").notEmpty().withMessage("Nama Wilayah Wajib diisi!"),
+];
+
+export const updateCountryValidation = [
+  body("country_name").notEmpty().withMessage("Nama Negara Wajib diisi!"),
+  body("country_region_id").notEmpty().withMessage("Nama Wilayah Wajib diisi!"),
+];
+
+export const getCountryIdValidation = [
+  param("country_id").custom(async (value) => {
+    const country = await models.country.findOne({
+      where: { country_id: value },
+    });
+
+    if (!country) {
+      throw new Error("Id Negara " + value + " tidak ada!");
+    }
+  }),
+];
+
+export const getCountryNameAlready = [
+  body("country_name").custom(async (value) => {
+    const countries = await models.country.findOne({
+      attributes: ["country_name"],
+      where: { country_name: value },
+    });
+
+    if (countries) {
+      throw new Error("Nama Negara " + value + " sudah ada!");
+    }
+  }),
+];
