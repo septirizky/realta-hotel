@@ -1,4 +1,4 @@
-import _sequelize from "sequelize";
+import _sequelize, { Sequelize } from "sequelize";
 const DataTypes = _sequelize.DataTypes;
 import _address from "./address.js";
 import _bank from "./bank.js";
@@ -52,7 +52,22 @@ import _vendor_product from "./vendor_product.js";
 import _work_order_detail from "./work_order_detail.js";
 import _work_orders from "./work_orders.js";
 
-export default function initModels(sequelize) {
+const sequelize = new Sequelize(
+  process.env.DB_NAME,
+  process.env.DB_USER,
+  process.env.DB_PASSWORD,
+  {
+    dialect: "postgres",
+    pool: {
+      max: 5,
+      min: 0,
+      acquire: 30000,
+      idle: 10000,
+    },
+  }
+);
+
+function initModels(sequelize) {
   const address = _address.init(sequelize, DataTypes);
   const bank = _bank.init(sequelize, DataTypes);
   const booking_order_detail = _booking_order_detail.init(sequelize, DataTypes);
@@ -620,3 +635,7 @@ export default function initModels(sequelize) {
     work_orders,
   };
 }
+
+const models = initModels(sequelize);
+export default models;
+export { sequelize };
