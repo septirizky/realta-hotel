@@ -24,7 +24,7 @@ export default class address extends Model {
       allowNull: false
     },
     addr_spatial_location: {
-      type: DataTypes.GEOGRAPHY('Geometry', 0),
+      type: DataTypes.STRING(225),
       allowNull: true
     },
     addr_prov_id: {
