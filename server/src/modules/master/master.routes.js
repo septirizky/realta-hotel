@@ -1,5 +1,9 @@
 import { Router } from "express";
 import {
+  addressDelete,
+  addressGetAll,
+  addressPost,
+  addressUpdate,
   countryDelete,
   countryGetAll,
   countryPost,
@@ -14,15 +18,18 @@ import {
   regionUpdate,
 } from "./master.controllers.js";
 import {
+  createAddressValidation,
   createCountryValidation,
   createProvinceValidation,
   createRegionsValidation,
+  getAddressIdValidation,
   getCountryIdValidation,
   getCountryNameAlready,
   getProvinceIdValidation,
   getProvinceNameAlready,
   getRegionIdValidation,
   getRegionNameAlready,
+  updateAddressValidation,
   updateCountryValidation,
   updateProvinceValidation,
   updateRegionValidation,
@@ -103,5 +110,28 @@ masterRouters.delete(
   getProvinceIdValidation,
   validatorsErrorNotFound,
   provinceDelete
+);
+
+// address
+masterRouters.get("/address", addressGetAll);
+masterRouters.post(
+  "/address",
+  createAddressValidation,
+  validatorsError,
+  addressPost
+);
+masterRouters.put(
+  "/address/:addr_id",
+  getAddressIdValidation,
+  updateAddressValidation,
+  validatorsErrorNotFound,
+  validatorsError,
+  addressUpdate
+);
+masterRouters.delete(
+  "/address/:addr_id",
+  getAddressIdValidation,
+  validatorsErrorNotFound,
+  addressDelete
 );
 export default masterRouters;

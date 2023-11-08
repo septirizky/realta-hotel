@@ -103,3 +103,27 @@ export const getProvinceNameAlready = [
     }
   }),
 ];
+
+export const createAddressValidation = [
+  body("addr_line_1").notEmpty().withMessage("Alamat 1 Wajib diisi!"),
+  body("addr_postal_code").notEmpty().withMessage("Kode Pos Wajib diisi!"),
+  body("addr_prov_id").notEmpty().withMessage("Nama Provinsi Wajib diisi!"),
+];
+
+export const updateAddressValidation = [
+  body("addr_line_1").notEmpty().withMessage("Alamat 1 Wajib diisi!"),
+  body("addr_postal_code").notEmpty().withMessage("Kode Pos Wajib diisi!"),
+  body("addr_prov_id").notEmpty().withMessage("Nama Provinsi Wajib diisi!"),
+];
+
+export const getAddressIdValidation = [
+  param("addr_id").custom(async (value) => {
+    const address = await models.address.findOne({
+      where: { addr_id: value },
+    });
+
+    if (!address) {
+      throw new Error("Id Alamat " + value + " tidak ada!");
+    }
+  }),
+];

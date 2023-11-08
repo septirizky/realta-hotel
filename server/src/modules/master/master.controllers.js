@@ -217,3 +217,97 @@ export const provinceDelete = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
+// Address
+export const addressGetAll = async (req, res) => {
+  try {
+    const result = await models.address.findAll({
+      order: [["addr_id", "ASC"]],
+      include: {
+        model: models.provinces,
+        as: "addr_prov",
+        attributes: ["prov_name"],
+        required: true,
+      },
+    });
+
+    return res
+      .status(200)
+      .json({ data: result, message: "Berhasil menampilkan data address!" });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const addressPost = async (req, res) => {
+  try {
+    const {
+      addr_line_1,
+      addr_line_2,
+      addr_postal_code,
+      addr_spatial_location,
+      addr_prov_id,
+    } = req.body;
+
+    const result = await models.address.create({
+      addr_line_1: addr_line_1,
+      addr_line_2: addr_line_2,
+      addr_postal_code: addr_postal_code,
+      addr_spatial_location: addr_spatial_location,
+      addr_prov_id: addr_prov_id,
+    });
+
+    return res
+      .status(201)
+      .json({ data: result, message: "Berhasil menambahkan data address!" });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const addressUpdate = async (req, res) => {
+  try {
+    const { addr_id } = req.params;
+    const {
+      addr_line_1,
+      addr_line_2,
+      addr_postal_code,
+      addr_spatial_location,
+      addr_prov_id,
+    } = req.body;
+
+    const result = await models.address.update(
+      {
+        addr_line_1: addr_line_1,
+        addr_line_2: addr_line_2,
+        addr_postal_code: addr_postal_code,
+        addr_spatial_location: addr_spatial_location,
+        addr_prov_id: addr_prov_id,
+        updatedat: new Date(),
+      },
+      { where: { addr_id: addr_id }, returning: true }
+    );
+
+    return res
+      .status(200)
+      .json({ data: result, message: "Berhasil mengubah data address!" });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const addressDelete = async (req, res) => {
+  try {
+    const { addr_id } = req.params;
+
+    const result = await models.address.destroy({
+      where: { addr_id: addr_id },
+    });
+
+    return res
+      .status(200)
+      .json({ data: result, message: "Berhasil menghapus data address!" });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
