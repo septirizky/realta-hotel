@@ -8,6 +8,11 @@ import {
   countryGetAll,
   countryPost,
   countryUpdate,
+  policyDelete,
+  policyDetailDescription,
+  policyGetAll,
+  policyPost,
+  policyUpdate,
   provinceDelete,
   provinceGetAll,
   provincePost,
@@ -20,17 +25,20 @@ import {
 import {
   createAddressValidation,
   createCountryValidation,
+  createPolicyValidation,
   createProvinceValidation,
   createRegionsValidation,
   getAddressIdValidation,
   getCountryIdValidation,
   getCountryNameAlready,
+  getPolicyIdValidation,
   getProvinceIdValidation,
   getProvinceNameAlready,
   getRegionIdValidation,
   getRegionNameAlready,
   updateAddressValidation,
   updateCountryValidation,
+  updatePolicyValidation,
   updateProvinceValidation,
   updateRegionValidation,
 } from "./master.validations.js";
@@ -133,5 +141,34 @@ masterRouters.delete(
   getAddressIdValidation,
   validatorsErrorNotFound,
   addressDelete
+);
+
+// policy
+masterRouters.get("/policy", policyGetAll);
+masterRouters.post(
+  "/policy",
+  createPolicyValidation,
+  validatorsError,
+  policyPost
+);
+masterRouters.put(
+  "/policy/:poli_id",
+  getPolicyIdValidation,
+  updatePolicyValidation,
+  validatorsErrorNotFound,
+  validatorsError,
+  policyUpdate
+);
+masterRouters.delete(
+  "/policy/:poli_id",
+  getPolicyIdValidation,
+  validatorsErrorNotFound,
+  policyDelete
+);
+masterRouters.get(
+  "/policy/:poli_id",
+  getPolicyIdValidation,
+  validatorsErrorNotFound,
+  policyDetailDescription
 );
 export default masterRouters;

@@ -127,3 +127,29 @@ export const getAddressIdValidation = [
     }
   }),
 ];
+
+export const createPolicyValidation = [
+  body("poli_name").notEmpty().withMessage("Nama Kebijakan Wajib diisi!"),
+  body("poli_description")
+    .notEmpty()
+    .withMessage("Deskripsi Kebijakan Wajib diisi!"),
+];
+
+export const updatePolicyValidation = [
+  body("poli_name").notEmpty().withMessage("Nama Kebijakan Wajib diisi!"),
+  body("poli_description")
+    .notEmpty()
+    .withMessage("Deskripsi Kebijakan Wajib diisi!"),
+];
+
+export const getPolicyIdValidation = [
+  param("poli_id").custom(async (value) => {
+    const policy = await models.policy.findOne({
+      where: { poli_id: value },
+    });
+
+    if (!policy) {
+      throw new Error("Id Policy " + value + " tidak ada!");
+    }
+  }),
+];

@@ -311,3 +311,88 @@ export const addressDelete = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
+// policy
+export const policyGetAll = async (req, res) => {
+  try {
+    const result = await models.policy.findAll({
+      order: [["poli_id", "ASC"]],
+    });
+
+    return res
+      .status(200)
+      .json({ data: result, message: "Berhasil menampilkan data policy!" });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const policyPost = async (req, res) => {
+  try {
+    const { poli_name, poli_description } = req.body;
+
+    const result = await models.policy.create({
+      poli_name: poli_name,
+      poli_description: poli_description,
+    });
+
+    return res
+      .status(201)
+      .json({ data: result, message: "Berhasil menambahkan data policy!" });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const policyUpdate = async (req, res) => {
+  try {
+    const { poli_id } = req.params;
+    const { poli_name, poli_description } = req.body;
+
+    const result = await models.policy.update(
+      {
+        poli_name: poli_name,
+        poli_description: poli_description,
+        updatedat: new Date(),
+      },
+      { where: { poli_id: poli_id }, returning: true }
+    );
+
+    return res
+      .status(200)
+      .json({ data: result, message: "Berhasil mengubah data policy!" });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const policyDelete = async (req, res) => {
+  try {
+    const { poli_id } = req.params;
+
+    const result = await models.policy.destroy({
+      where: { poli_id: poli_id },
+    });
+
+    return res
+      .status(200)
+      .json({ data: result, message: "Berhasil menghapus data policy!" });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const policyDetailDescription = async (req, res) => {
+  try {
+    const { poli_id } = req.params;
+    const result = await models.policy.findOne({
+      attributes: ["poli_description"],
+      where: { poli_id: poli_id },
+    });
+    return res
+      .status(200)
+      .json({ data: result, message: "Data berhasil policy detail!" });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
