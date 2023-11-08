@@ -1,4 +1,5 @@
-import _sequelize, { Sequelize } from "sequelize";
+import _sequelize from "sequelize";
+const DataTypes = _sequelize.DataTypes;
 import _address from "./address.js";
 import _bank from "./bank.js";
 import _booking_order_detail from "./booking_order_detail.js";
@@ -50,24 +51,8 @@ import _vendor from "./vendor.js";
 import _vendor_product from "./vendor_product.js";
 import _work_order_detail from "./work_order_detail.js";
 import _work_orders from "./work_orders.js";
-const DataTypes = _sequelize.DataTypes;
 
-const sequelize = new Sequelize(
-  process.env.DB_NAME,
-  process.env.DB_USER,
-  process.env.DB_PASS,
-  {
-    dialect: "postgres",
-    pool: {
-      max: 5,
-      min: 0,
-      acquire: 30000,
-      idle: 10000,
-    },
-  }
-);
-
-function initModels(sequelize) {
+export default function initModels(sequelize) {
   const address = _address.init(sequelize, DataTypes);
   const bank = _bank.init(sequelize, DataTypes);
   const booking_order_detail = _booking_order_detail.init(sequelize, DataTypes);
@@ -534,6 +519,14 @@ function initModels(sequelize) {
     as: "user_profiles",
     foreignKey: "uspra_addr_id",
   });
+  user_members.belongsTo(members, {
+    as: "usme_memb_name_members_member",
+    foreignKey: "usme_memb_name",
+  });
+  members.hasMany(user_members, {
+    as: "usme_memb_name_user_members",
+    foreignKey: "usme_memb_name",
+  });
   user_roles.belongsTo(roles, { as: "usro_role", foreignKey: "usro_role_id" });
   roles.hasMany(user_roles, { as: "user_roles", foreignKey: "usro_role_id" });
   user_bonus_points.belongsTo(users, {
@@ -543,6 +536,14 @@ function initModels(sequelize) {
   users.hasMany(user_bonus_points, {
     as: "user_bonus_points",
     foreignKey: "ubpo_user_id",
+  });
+  user_members.belongsTo(users, {
+    as: "usme_user_user",
+    foreignKey: "usme_user_id",
+  });
+  users.hasOne(user_members, {
+    as: "usme_user_user_member",
+    foreignKey: "usme_user_id",
   });
   user_password.belongsTo(users, {
     as: "uspa_user",
@@ -607,9 +608,11 @@ function initModels(sequelize) {
     user_bonus_points,
     user_breakfast,
     user_members,
+    user_members,
     user_password,
     user_profiles,
     user_roles,
+    users,
     users,
     vendor,
     vendor_product,
@@ -617,6 +620,3 @@ function initModels(sequelize) {
     work_orders,
   };
 }
-const model = initModels(sequelize);
-export default model;
-export { sequelize };
