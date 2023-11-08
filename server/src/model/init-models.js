@@ -55,7 +55,7 @@ import _work_orders from "./work_orders.js";
 const sequelize = new Sequelize(
   process.env.DB_NAME,
   process.env.DB_USER,
-  process.env.DB_PASSWORD,
+  process.env.DB_PASS,
   {
     dialect: "postgres",
     pool: {
