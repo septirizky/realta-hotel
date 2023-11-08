@@ -68,3 +68,38 @@ export const getCountryNameAlready = [
     }
   }),
 ];
+
+export const createProvinceValidation = [
+  body("prov_name").notEmpty().withMessage("Nama Provinsi Wajib diisi!"),
+  body("prov_country_id").notEmpty().withMessage("Nama Negara Wajib diisi!"),
+];
+
+export const updateProvinceValidation = [
+  body("prov_name").notEmpty().withMessage("Nama Provinsi Wajib diisi!"),
+  body("prov_country_id").notEmpty().withMessage("Nama Negara Wajib diisi!"),
+];
+
+export const getProvinceIdValidation = [
+  param("prov_id").custom(async (value) => {
+    const country = await models.provinces.findOne({
+      where: { prov_id: value },
+    });
+
+    if (!country) {
+      throw new Error("Id Provinsi " + value + " tidak ada!");
+    }
+  }),
+];
+
+export const getProvinceNameAlready = [
+  body("prov_name").custom(async (value) => {
+    const province = await models.provinces.findOne({
+      attributes: ["prov_name"],
+      where: { prov_name: value },
+    });
+
+    if (province) {
+      throw new Error("Nama Provinsi " + value + " sudah ada!");
+    }
+  }),
+];

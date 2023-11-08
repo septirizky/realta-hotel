@@ -141,3 +141,79 @@ export const countryDelete = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
+// Province
+export const provinceGetAll = async (req, res) => {
+  try {
+    const result = await models.provinces.findAll({
+      order: [["prov_id", "ASC"]],
+      include: {
+        model: models.country,
+        as: "prov_country",
+        attributes: ["country_name"],
+        required: true,
+      },
+    });
+
+    return res
+      .status(200)
+      .json({ data: result, message: "Berhasil menampilkan data province!" });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const provincePost = async (req, res) => {
+  try {
+    const { prov_name, prov_country_id } = req.body;
+
+    const result = await models.provinces.create({
+      prov_name: prov_name,
+      prov_country_id: prov_country_id,
+    });
+
+    return res
+      .status(201)
+      .json({ data: result, message: "Berhasil menambahkan data province!" });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const provinceUpdate = async (req, res) => {
+  try {
+    const { prov_id } = req.params;
+    const { prov_name, prov_country_id } = req.body;
+
+    const result = await models.provinces.update(
+      {
+        prov_name: prov_name,
+        prov_country_id: prov_country_id,
+        updatedat: new Date(),
+      },
+      { where: { prov_id: prov_id }, returning: true }
+    );
+
+    return res
+      .status(200)
+      .json({ data: result, message: "Berhasil mengubah data province!" });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const provinceDelete = async (req, res) => {
+  try {
+    const { prov_id } = req.params;
+
+    const result = await models.provinces.destroy({
+      where: { prov_id: prov_id },
+    });
+
+    return res
+      .status(200)
+      .json({ data: result, message: "Berhasil menghapus data province!" });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};

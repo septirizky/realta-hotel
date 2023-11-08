@@ -4,6 +4,10 @@ import {
   countryGetAll,
   countryPost,
   countryUpdate,
+  provinceDelete,
+  provinceGetAll,
+  provincePost,
+  provinceUpdate,
   regionDelete,
   regionGetAll,
   regionPost,
@@ -11,16 +15,20 @@ import {
 } from "./master.controllers.js";
 import {
   createCountryValidation,
+  createProvinceValidation,
   createRegionsValidation,
   getCountryIdValidation,
   getCountryNameAlready,
+  getProvinceIdValidation,
+  getProvinceNameAlready,
   getRegionIdValidation,
   getRegionNameAlready,
   updateCountryValidation,
+  updateProvinceValidation,
   updateRegionValidation,
 } from "./master.validations.js";
-import { validatorsError } from "../../helper/validatorsError.js";
-import { validatorsErrorNotFound } from "../../helper/validatorsErrorNotFound.js";
+import { validatorsError } from "./helper/validatorsError.js";
+import { validatorsErrorNotFound } from "./helper/validatorsErrorNotFound.js";
 
 const masterRouters = Router();
 
@@ -72,4 +80,28 @@ masterRouters.delete(
   countryDelete
 );
 
+// province
+masterRouters.get("/province", provinceGetAll);
+masterRouters.post(
+  "/province",
+  getProvinceNameAlready,
+  createProvinceValidation,
+  validatorsErrorNotFound,
+  validatorsError,
+  provincePost
+);
+masterRouters.put(
+  "/province/:prov_id",
+  getProvinceIdValidation,
+  updateProvinceValidation,
+  validatorsErrorNotFound,
+  validatorsError,
+  provinceUpdate
+);
+masterRouters.delete(
+  "/province/:prov_id",
+  getProvinceIdValidation,
+  validatorsErrorNotFound,
+  provinceDelete
+);
 export default masterRouters;
