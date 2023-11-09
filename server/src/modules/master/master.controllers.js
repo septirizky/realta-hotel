@@ -1,4 +1,6 @@
 import models from "../../model/init-models.js";
+import { dataHandling } from "./helper/dataHandling.js";
+import fs from "fs";
 
 // Regions
 export const regionGetAll = async (req, res) => {
@@ -392,6 +394,300 @@ export const policyDetailDescription = async (req, res) => {
     return res
       .status(200)
       .json({ data: result, message: "Data berhasil policy detail!" });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+// category group
+export const cagroGetAll = async (req, res) => {
+  try {
+    const result = await models.category_group.findAll({
+      attributes: [
+        "cagro_id",
+        "cagro_name",
+        "cagro_type",
+        "cagro_description",
+        "cagro_icon",
+        "cagro_icon_url",
+        "createdat",
+        "updatedat",
+      ],
+      order: [["cagro_id", "ASC"]],
+    });
+
+    return res.status(200).json({
+      data: result,
+      message: "Berhasil menampilkan data category group!",
+    });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const cagroPost = async (req, res) => {
+  try {
+    const { cagro_name, cagro_type, cagro_description } = req.body;
+
+    if (cagro_name === "" || cagro_name === undefined || cagro_name === null) {
+      return res
+        .status(400)
+        .json({ message: "Nama Kategori Group Wajib diisi!" });
+    }
+
+    const cagro = await models.category_group.findOne({
+      attributes: ["cagro_name"],
+      where: { cagro_name: cagro_name },
+    });
+
+    if (cagro) {
+      return res
+        .status(400)
+        .json({ message: "Nama Kategori " + cagro_name + " sudah ada!" });
+    }
+
+    if (cagro_type === "" || cagro_type === undefined || cagro_type === null) {
+      return res
+        .status(400)
+        .json({ message: "Tipe Kategori Group Wajib diisi!" });
+    }
+
+    if (
+      cagro_description === "" ||
+      cagro_description === undefined ||
+      cagro_description === null
+    ) {
+      return res
+        .status(400)
+        .json({ message: "Deskripsi Kategori Group Wajib diisi!" });
+    }
+
+    if (req.errorvalidatefile) {
+      return res.status(422).json({ message: req.errorvalidatefile });
+    } else {
+      if (req.file) {
+        const gambar = req.file.filename;
+        const url_gambar =
+          req.protocol +
+          "://" +
+          req.get("host") +
+          "/assets/category_group/" +
+          gambar;
+
+        const result = await models.category_group.create({
+          cagro_name: cagro_name,
+          cagro_type: cagro_type,
+          cagro_description: cagro_description,
+          cagro_icon: gambar,
+          cagro_icon_url: url_gambar,
+        });
+
+        return res
+          .status(201)
+          .send(dataHandling(result, "Berhasil menambahkan category group!"));
+      } else {
+        return res.status(400).json({ message: "Icon harus diisi!" });
+      }
+    }
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const cagroUpdate = async (req, res) => {
+  try {
+    const { cagro_name, cagro_type, cagro_description } = req.body;
+    const { cagro_id } = req.params;
+
+    const cek_cagro_id = await models.category_group.findOne({
+      attributes: ["cagro_id"],
+      where: { cagro_id: cagro_id },
+    });
+
+    if (!cek_cagro_id) {
+      return res
+        .status(404)
+        .json({ message: "Id Kategori Group " + cagro_id + " tidak ada!" });
+    }
+
+    if (cagro_name === "" || cagro_name === undefined || cagro_name === null) {
+      return res
+        .status(400)
+        .json({ message: "Nama Kategori Group Wajib diisi!" });
+    }
+
+    if (cagro_type === "" || cagro_type === undefined || cagro_type === null) {
+      return res
+        .status(400)
+        .json({ message: "Tipe Kategori Group Wajib diisi!" });
+    }
+
+    if (
+      cagro_description === "" ||
+      cagro_description === undefined ||
+      cagro_description === null
+    ) {
+      return res
+        .status(400)
+        .json({ message: "Deskripsi Kategori Group Wajib diisi!" });
+    }
+
+    const gambardatabase = await models.category_group.findOne({
+      attributes: ["cagro_icon"],
+      where: { cagro_id: cagro_id },
+    });
+
+    if (!gambardatabase) {
+      return res
+        .status(404)
+        .json({ message: "Icon Kategori Group ini tidak ada!" });
+    }
+
+    const oldImage =
+      req.protocol +
+      "://" +
+      req.get("host") +
+      "/assets/category_group/" +
+      gambardatabase.cagro_icon;
+
+    const oldImageName = oldImage.split("/").pop();
+
+    if (req.errorvalidatefile) {
+      return res.status(422).json({ message: req.errorvalidatefile });
+    } else {
+      if (req.file) {
+        fs.unlinkSync(`./src/assets/category_group/${oldImageName}`);
+
+        const gambar = req.file.filename;
+        const url_gambar =
+          req.protocol +
+          "://" +
+          req.get("host") +
+          "/assets/category_group/" +
+          gambar;
+
+        const result = await models.category_group.update(
+          {
+            cagro_name: cagro_name,
+            cagro_type: cagro_type,
+            cagro_description: cagro_description,
+            cagro_icon: gambar,
+            cagro_icon_url: url_gambar,
+            updatedat: new Date(),
+          },
+          { where: { cagro_id: cagro_id }, returning: true }
+        );
+
+        return res
+          .status(200)
+          .send(dataHandling(result, "Berhasil mengubah category group!"));
+      } else {
+        const gambar = oldImageName;
+        const url = oldImage;
+
+        const result = await models.category_group.update(
+          {
+            cagro_name: cagro_name,
+            cagro_type: cagro_type,
+            cagro_description: cagro_description,
+            cagro_icon: gambar,
+            cagro_icon_url: url,
+            updatedat: new Date(),
+          },
+          { where: { cagro_id: cagro_id }, returning: true }
+        );
+
+        return res
+          .status(200)
+          .send(dataHandling(result, "Berhasil mengubah category group!"));
+      }
+    }
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const cagroDelete = async (req, res) => {
+  try {
+    const { cagro_id } = req.params;
+
+    const cek_cagro_id = await models.category_group.findOne({
+      attributes: ["cagro_id"],
+      where: { cagro_id: cagro_id },
+    });
+
+    if (!cek_cagro_id) {
+      return res
+        .status(404)
+        .json({ message: "Id Kategori Group " + cagro_id + " tidak ada!" });
+    }
+
+    const gambardatabase = await models.category_group.findOne({
+      attributes: ["cagro_icon"],
+      where: { cagro_id: cagro_id },
+    });
+
+    if (!gambardatabase) {
+      return res
+        .status(404)
+        .json({ message: "Icon Kategori Group ini tidak ada!" });
+    }
+
+    const oldImage =
+      req.protocol +
+      "://" +
+      req.get("host") +
+      "/assets/category_group/" +
+      gambardatabase.cagro_icon;
+
+    const oldImageName = oldImage.split("/").pop();
+
+    fs.unlinkSync(`./src/assets/category_group/${oldImageName}`);
+
+    const result = await models.category_group.destroy({
+      where: { cagro_id: cagro_id },
+    });
+
+    return res.send(dataHandling(result, "Berhasil menghapus category group!"));
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const cagroDetail = async (req, res) => {
+  try {
+    const { cagro_id } = req.params;
+
+    const cek_cagro_id = await models.category_group.findOne({
+      attributes: ["cagro_id"],
+      where: { cagro_id: cagro_id },
+    });
+
+    if (!cek_cagro_id) {
+      return res
+        .status(404)
+        .json({ message: "Id Kategori Group " + cagro_id + " tidak ada!" });
+    }
+
+    const result = await models.category_group.findOne({
+      attributes: [
+        "cagro_id",
+        "cagro_name",
+        "cagro_type",
+        "cagro_description",
+        "cagro_icon",
+        "cagro_icon_url",
+        "createdat",
+        "updatedat",
+      ],
+      where: { cagro_id: cagro_id },
+      order: [["cagro_id", "ASC"]],
+    });
+
+    return res.status(200).json({
+      data: result,
+      message: "Berhasil menampilkan detail category group!",
+    });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }

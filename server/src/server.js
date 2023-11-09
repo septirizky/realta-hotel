@@ -10,6 +10,8 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use("/assets", express.static("src/assets"));
+
 app.use(router);
 
 app.listen(PORT, () => {

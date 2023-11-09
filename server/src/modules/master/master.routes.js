@@ -4,6 +4,11 @@ import {
   addressGetAll,
   addressPost,
   addressUpdate,
+  cagroDelete,
+  cagroDetail,
+  cagroGetAll,
+  cagroPost,
+  cagroUpdate,
   countryDelete,
   countryGetAll,
   countryPost,
@@ -44,6 +49,7 @@ import {
 } from "./master.validations.js";
 import { validatorsError } from "./helper/validatorsError.js";
 import { validatorsErrorNotFound } from "./helper/validatorsErrorNotFound.js";
+import uploadCategoryGroup from "./middleware/multerCategory.js";
 
 const masterRouters = Router();
 
@@ -171,4 +177,19 @@ masterRouters.get(
   validatorsErrorNotFound,
   policyDetailDescription
 );
+
+// category group
+masterRouters.get("/cagro", cagroGetAll);
+masterRouters.post(
+  "/cagro",
+  uploadCategoryGroup.single("cagro_icon"),
+  cagroPost
+);
+masterRouters.put(
+  "/cagro/:cagro_id",
+  uploadCategoryGroup.single("cagro_icon"),
+  cagroUpdate
+);
+masterRouters.delete("/cagro/:cagro_id", cagroDelete);
+masterRouters.get("/cagro/:cagro_id", cagroDetail);
 export default masterRouters;
