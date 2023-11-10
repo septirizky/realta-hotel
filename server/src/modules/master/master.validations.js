@@ -104,6 +104,41 @@ export const getProvinceNameAlready = [
   }),
 ];
 
+export const createCityValidation = [
+  body("city_name").notEmpty().withMessage("Nama Kota harus diisi!"),
+  body("city_province_id").notEmpty().withMessage("Nama Provinsi wajib diisi!"),
+];
+
+export const updateCityValidation = [
+  body("city_name").notEmpty().withMessage("Nama Kota harus diisi!"),
+  body("city_province_id").notEmpty().withMessage("Nama Provinsi wajib diisi!"),
+];
+
+export const getCityNameAlready = [
+  body("city_name").custom(async (value) => {
+    const city = await models.city.findOne({
+      attributes: ["city_name"],
+      where: { city_name: value },
+    });
+
+    if (city) {
+      throw new Error("Nama Kota " + value + " sudah ada!");
+    }
+  }),
+];
+
+export const getCityIdValidation = [
+  param("city_id").custom(async (value) => {
+    const city = await models.city.findOne({
+      where: { city_id: value },
+    });
+
+    if (!city) {
+      throw new Error("Id Kota " + value + " tidak ada!");
+    }
+  }),
+];
+
 export const createAddressValidation = [
   body("addr_line_1").notEmpty().withMessage("Alamat 1 Wajib diisi!"),
   body("addr_postal_code").notEmpty().withMessage("Kode Pos Wajib diisi!"),

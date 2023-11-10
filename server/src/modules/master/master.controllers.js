@@ -220,6 +220,82 @@ export const provinceDelete = async (req, res) => {
   }
 };
 
+// City
+export const cityGetAll = async (req, res) => {
+  try {
+    const result = await models.city.findAll({
+      order: [["city_id", "ASC"]],
+      include: {
+        model: models.provinces,
+        as: "city_province",
+        attributes: ["prov_name"],
+        required: true,
+      },
+    });
+
+    return res
+      .status(200)
+      .json({ data: result, message: "Berhasil menampilkan data city!" });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const cityPost = async (req, res) => {
+  try {
+    const { city_name, city_province_id } = req.body;
+
+    const result = await models.city.create({
+      city_name: city_name,
+      city_province_id: city_province_id,
+    });
+
+    return res
+      .status(201)
+      .json({ data: result, message: "Berhasil menambahkan data city!" });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const cityUpdate = async (req, res) => {
+  try {
+    const { city_id } = req.params;
+    const { city_name, city_province_id } = req.body;
+
+    const result = await models.city.update(
+      {
+        city_name: city_name,
+        city_province_id: city_province_id,
+        updatedat: new Date(),
+      },
+      { where: { city_id: city_id }, returning: true }
+    );
+
+    return res
+      .status(200)
+      .json({ data: result, message: "Berhasil mengubah data city!" });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const cityDelete = async (req, res) => {
+  try {
+    const { city_id } = req.params;
+
+    const result = await models.city.destroy({
+      where: { city_id: city_id },
+    });
+
+    return res
+      .status(200)
+      .json({ data: result, message: "Berhasil menghapus data city!" });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
 // Address
 export const addressGetAll = async (req, res) => {
   try {
@@ -697,7 +773,6 @@ export const cagroDetail = async (req, res) => {
 export const policagroGetAll = async (req, res) => {
   try {
     const result = await models.policy_category_group.findAll({
-      attributes: ["createdat", "updatedat"],
       include: [
         {
           model: models.policy,
@@ -712,6 +787,7 @@ export const policagroGetAll = async (req, res) => {
           attributes: ["cagro_name"],
         },
       ],
+      order: [["poca_cagro_id", "ASC"]],
     });
 
     return res.status(200).json({
@@ -749,6 +825,7 @@ export const policagroUpdate = async (req, res) => {
     const result = await models.policy_category_group.update(
       {
         poca_poli_id: poca_poli_id,
+        updatedat: new Date(),
       },
       { where: { poca_cagro_id: poca_cagro_id }, returning: true }
     );

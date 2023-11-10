@@ -9,6 +9,10 @@ import {
   cagroGetAll,
   cagroPost,
   cagroUpdate,
+  cityDelete,
+  cityGetAll,
+  cityPost,
+  cityUpdate,
   countryDelete,
   countryGetAll,
   countryPost,
@@ -34,12 +38,15 @@ import {
 import {
   cekIDPocaCategoryGroup,
   createAddressValidation,
+  createCityValidation,
   createCountryValidation,
   createPoliCagroValidation,
   createPolicyValidation,
   createProvinceValidation,
   createRegionsValidation,
   getAddressIdValidation,
+  getCityIdValidation,
+  getCityNameAlready,
   getCountryIdValidation,
   getCountryNameAlready,
   getPolicyIdValidation,
@@ -48,6 +55,7 @@ import {
   getRegionIdValidation,
   getRegionNameAlready,
   updateAddressValidation,
+  updateCityValidation,
   updateCountryValidation,
   updatePoliCagroValidation,
   updatePolicyValidation,
@@ -131,6 +139,30 @@ masterRouters.delete(
   getProvinceIdValidation,
   validatorsErrorNotFound,
   provinceDelete
+);
+
+// city
+masterRouters.get("/city", cityGetAll);
+masterRouters.post(
+  "/city",
+  getCityNameAlready,
+  createCityValidation,
+  validatorsError,
+  cityPost
+);
+masterRouters.put(
+  "/city/:city_id",
+  getCityIdValidation,
+  updateCityValidation,
+  validatorsErrorNotFound,
+  validatorsError,
+  cityUpdate
+);
+masterRouters.delete(
+  "/city/:city_id",
+  getCityIdValidation,
+  validatorsErrorNotFound,
+  cityDelete
 );
 
 // address
