@@ -42,6 +42,14 @@ export default class price_items extends Model {
       type: DataTypes.DATE,
       allowNull: true,
       defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
+    },
+    prit_icon: {
+      type: DataTypes.STRING(255),
+      allowNull: false
+    },
+    prit_icon_url: {
+      type: DataTypes.STRING(255),
+      allowNull: false
     }
   }, {
     sequelize,

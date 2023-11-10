@@ -13,6 +13,10 @@ import {
   countryGetAll,
   countryPost,
   countryUpdate,
+  policagroDelete,
+  policagroGetAll,
+  policagroPost,
+  policagroUpdate,
   policyDelete,
   policyDetailDescription,
   policyGetAll,
@@ -28,8 +32,10 @@ import {
   regionUpdate,
 } from "./master.controllers.js";
 import {
+  cekIDPocaCategoryGroup,
   createAddressValidation,
   createCountryValidation,
+  createPoliCagroValidation,
   createPolicyValidation,
   createProvinceValidation,
   createRegionsValidation,
@@ -43,6 +49,7 @@ import {
   getRegionNameAlready,
   updateAddressValidation,
   updateCountryValidation,
+  updatePoliCagroValidation,
   updatePolicyValidation,
   updateProvinceValidation,
   updateRegionValidation,
@@ -192,4 +199,27 @@ masterRouters.put(
 );
 masterRouters.delete("/cagro/:cagro_id", cagroDelete);
 masterRouters.get("/cagro/:cagro_id", cagroDetail);
+
+// policy category group
+masterRouters.get("/policagro", policagroGetAll);
+masterRouters.post(
+  "/policagro",
+  createPoliCagroValidation,
+  validatorsError,
+  policagroPost
+);
+masterRouters.put(
+  "/policagro/:poca_cagro_id",
+  cekIDPocaCategoryGroup,
+  updatePoliCagroValidation,
+  validatorsErrorNotFound,
+  validatorsError,
+  policagroUpdate
+);
+masterRouters.delete(
+  "/policagro/:poca_cagro_id",
+  cekIDPocaCategoryGroup,
+  validatorsErrorNotFound,
+  policagroDelete
+);
 export default masterRouters;

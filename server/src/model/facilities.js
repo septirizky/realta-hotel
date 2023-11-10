@@ -31,11 +31,11 @@ export default class facilities extends Model {
       allowNull: false
     },
     faci_startdate: {
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
       allowNull: false
     },
     faci_enddate: {
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
       allowNull: false
     },
     faci_low_price: {

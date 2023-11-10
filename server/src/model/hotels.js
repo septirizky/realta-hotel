@@ -38,6 +38,10 @@ export default class hotels extends Model {
         model: 'address',
         key: 'addr_id'
       }
+    },
+    hotel_status: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true
     }
   }, {
     sequelize,

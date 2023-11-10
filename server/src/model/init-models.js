@@ -6,6 +6,7 @@ import _booking_order_detail from "./booking_order_detail.js";
 import _booking_order_detail_extra from "./booking_order_detail_extra.js";
 import _booking_orders from "./booking_orders.js";
 import _category_group from "./category_group.js";
+import _city from "./city.js";
 import _country from "./country.js";
 import _department from "./department.js";
 import _employee from "./employee.js";
@@ -17,6 +18,8 @@ import _facility_price_history from "./facility_price_history.js";
 import _hotel_reviews from "./hotel_reviews.js";
 import _hotels from "./hotels.js";
 import _job_role from "./job_role.js";
+import _joinahotel from "./joinahotel.js";
+import _joinmenu from "./joinmenu.js";
 import _members from "./members.js";
 import _order_menu_detail from "./order_menu_detail.js";
 import _order_menus from "./order_menus.js";
@@ -77,6 +80,7 @@ function initModels(sequelize) {
   );
   const booking_orders = _booking_orders.init(sequelize, DataTypes);
   const category_group = _category_group.init(sequelize, DataTypes);
+  const city = _city.init(sequelize, DataTypes);
   const country = _country.init(sequelize, DataTypes);
   const department = _department.init(sequelize, DataTypes);
   const employee = _employee.init(sequelize, DataTypes);
@@ -91,6 +95,8 @@ function initModels(sequelize) {
   const hotel_reviews = _hotel_reviews.init(sequelize, DataTypes);
   const hotels = _hotels.init(sequelize, DataTypes);
   const job_role = _job_role.init(sequelize, DataTypes);
+  const joinahotel = _joinahotel.init(sequelize, DataTypes);
+  const joinmenu = _joinmenu.init(sequelize, DataTypes);
   const members = _members.init(sequelize, DataTypes);
   const order_menu_detail = _order_menu_detail.init(sequelize, DataTypes);
   const order_menus = _order_menus.init(sequelize, DataTypes);
@@ -357,6 +363,11 @@ function initModels(sequelize) {
   });
   address.belongsTo(provinces, { as: "addr_prov", foreignKey: "addr_prov_id" });
   provinces.hasMany(address, { as: "addresses", foreignKey: "addr_prov_id" });
+  city.belongsTo(provinces, {
+    as: "city_province",
+    foreignKey: "city_province_id",
+  });
+  provinces.hasMany(city, { as: "cities", foreignKey: "city_province_id" });
   country.belongsTo(regions, {
     as: "country_region",
     foreignKey: "country_region_id",
@@ -586,6 +597,7 @@ function initModels(sequelize) {
     booking_order_detail_extra,
     booking_orders,
     category_group,
+    city,
     country,
     department,
     employee,
@@ -597,6 +609,8 @@ function initModels(sequelize) {
     hotel_reviews,
     hotels,
     job_role,
+    joinahotel,
+    joinmenu,
     members,
     order_menu_detail,
     order_menus,
@@ -623,11 +637,9 @@ function initModels(sequelize) {
     user_bonus_points,
     user_breakfast,
     user_members,
-    user_members,
     user_password,
     user_profiles,
     user_roles,
-    users,
     users,
     vendor,
     vendor_product,

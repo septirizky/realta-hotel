@@ -692,3 +692,89 @@ export const cagroDetail = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
+// policy category group
+export const policagroGetAll = async (req, res) => {
+  try {
+    const result = await models.policy_category_group.findAll({
+      attributes: ["createdat", "updatedat"],
+      include: [
+        {
+          model: models.policy,
+          as: "poca_poli",
+          required: true,
+          attributes: ["poli_name"],
+        },
+        {
+          model: models.category_group,
+          as: "poca_cagro",
+          required: true,
+          attributes: ["cagro_name"],
+        },
+      ],
+    });
+
+    return res.status(200).json({
+      data: result,
+      message: "Berhasil menampilkan policy category group!",
+    });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const policagroPost = async (req, res) => {
+  try {
+    const { poca_poli_id, poca_cagro_id } = req.body;
+
+    const result = await models.policy_category_group.create({
+      poca_poli_id: poca_poli_id,
+      poca_cagro_id: poca_cagro_id,
+    });
+
+    return res.status(201).json({
+      data: result,
+      message: "Berhasil menambahkan policy category group!",
+    });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const policagroUpdate = async (req, res) => {
+  try {
+    const { poca_cagro_id } = req.params;
+    const { poca_poli_id } = req.body;
+
+    const result = await models.policy_category_group.update(
+      {
+        poca_poli_id: poca_poli_id,
+      },
+      { where: { poca_cagro_id: poca_cagro_id }, returning: true }
+    );
+
+    return res.status(200).json({
+      data: result,
+      message: "Berhasil mengubah policy category group!",
+    });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const policagroDelete = async (req, res) => {
+  try {
+    const { poca_cagro_id } = req.params;
+
+    const result = await models.policy_category_group.destroy({
+      where: { poca_cagro_id: poca_cagro_id },
+    });
+
+    return res.status(200).json({
+      data: result,
+      message: "Berhasil menghapus policy category group!",
+    });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};

@@ -153,3 +153,26 @@ export const getPolicyIdValidation = [
     }
   }),
 ];
+
+export const createPoliCagroValidation = [
+  body("poca_poli_id").notEmpty().withMessage("Nama Kebijakan Wajib diisi!"),
+  body("poca_cagro_id")
+    .notEmpty()
+    .withMessage("Nama Kategori Grup Wajib diisi!"),
+];
+
+export const updatePoliCagroValidation = [
+  body("poca_poli_id").notEmpty().withMessage("Nama Kebijakan Wajib diisi!"),
+];
+
+export const cekIDPocaCategoryGroup = [
+  param("poca_cagro_id").custom(async (value) => {
+    const policy_category_group = await models.policy_category_group.findOne({
+      where: { poca_cagro_id: value },
+    });
+
+    if (!policy_category_group) {
+      throw new Error("Id Kategori Grup " + value + " tidak ada!");
+    }
+  }),
+];
