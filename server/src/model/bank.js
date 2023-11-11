@@ -16,12 +16,12 @@ export default class bank extends Model {
     },
     bank_code: {
       type: DataTypes.STRING(10),
-      allowNull: true,
+      allowNull: false,
       unique: "bank_bank_code_key"
     },
     bank_name: {
       type: DataTypes.STRING(55),
-      allowNull: true,
+      allowNull: false,
       unique: "bank_bank_name_key"
     },
     bank_modified_date: {
