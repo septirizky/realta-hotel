@@ -17,6 +17,10 @@ import {
   countryGetAll,
   countryPost,
   countryUpdate,
+  memberDelete,
+  membersGetAll,
+  membersPost,
+  membersUpdate,
   policagroDelete,
   policagroGetAll,
   policagroPost,
@@ -26,6 +30,11 @@ import {
   policyGetAll,
   policyPost,
   policyUpdate,
+  priceitemDelete,
+  priceitemDetail,
+  priceitemGetAll,
+  priceitemPost,
+  priceitemUpdate,
   provinceDelete,
   provinceGetAll,
   provincePost,
@@ -34,37 +43,49 @@ import {
   regionGetAll,
   regionPost,
   regionUpdate,
+  servicetaskDelete,
+  servicetaskGetAll,
+  servicetaskPost,
+  servicetaskUpdate,
 } from "./master.controllers.js";
 import {
   cekIDPocaCategoryGroup,
   createAddressValidation,
   createCityValidation,
   createCountryValidation,
+  createMemberValidation,
   createPoliCagroValidation,
   createPolicyValidation,
   createProvinceValidation,
   createRegionsValidation,
+  createServiceTaskValidation,
   getAddressIdValidation,
   getCityIdValidation,
   getCityNameAlready,
   getCountryIdValidation,
   getCountryNameAlready,
+  getMemberNameValidation,
   getPolicyIdValidation,
   getProvinceIdValidation,
   getProvinceNameAlready,
   getRegionIdValidation,
   getRegionNameAlready,
+  getServiceTaskIdValidation,
+  getServiceTaskNameAlready,
   updateAddressValidation,
   updateCityValidation,
   updateCountryValidation,
+  updateMemberValidation,
   updatePoliCagroValidation,
   updatePolicyValidation,
   updateProvinceValidation,
   updateRegionValidation,
+  updateServiceTaskValidation,
 } from "./master.validations.js";
 import { validatorsError } from "./helper/validatorsError.js";
 import { validatorsErrorNotFound } from "./helper/validatorsErrorNotFound.js";
 import uploadCategoryGroup from "./middleware/multerCategory.js";
+import uploadItemPrice from "./middleware/multerItemPrice.js";
 
 const masterRouters = Router();
 
@@ -253,5 +274,67 @@ masterRouters.delete(
   cekIDPocaCategoryGroup,
   validatorsErrorNotFound,
   policagroDelete
+);
+
+// item price
+masterRouters.get("/itemprice", priceitemGetAll);
+masterRouters.get("/itemprice/:prit_id", priceitemDetail);
+masterRouters.post(
+  "/itemprice",
+  uploadItemPrice.single("prit_icon"),
+  priceitemPost
+);
+masterRouters.put(
+  "/itemprice/:prit_id",
+  uploadItemPrice.single("prit_icon"),
+  priceitemUpdate
+);
+masterRouters.delete("/itemprice/:prit_id", priceitemDelete);
+
+// Service Task
+masterRouters.get("/servicetask", servicetaskGetAll);
+masterRouters.post(
+  "/servicetask",
+  getServiceTaskNameAlready,
+  createServiceTaskValidation,
+  validatorsError,
+  servicetaskPost
+);
+masterRouters.put(
+  "/servicetask/:seta_id",
+  getServiceTaskIdValidation,
+  updateServiceTaskValidation,
+  validatorsErrorNotFound,
+  validatorsError,
+  servicetaskUpdate
+);
+masterRouters.delete(
+  "/servicetask/:seta_id",
+  getServiceTaskIdValidation,
+  validatorsErrorNotFound,
+  servicetaskDelete
+);
+
+// member
+masterRouters.get("/member", membersGetAll);
+masterRouters.post(
+  "/member",
+  createMemberValidation,
+  validatorsError,
+  membersPost
+);
+masterRouters.put(
+  "/member/:memb_name",
+  getMemberNameValidation,
+  updateMemberValidation,
+  validatorsErrorNotFound,
+  validatorsError,
+  membersUpdate
+);
+masterRouters.delete(
+  "/member/:memb_name",
+  getMemberNameValidation,
+  validatorsErrorNotFound,
+  memberDelete
 );
 export default masterRouters;

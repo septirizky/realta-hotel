@@ -1,3 +1,4 @@
+import { Op } from "sequelize";
 import models from "../../model/init-models.js";
 import { dataHandling } from "./helper/dataHandling.js";
 import fs from "fs";
@@ -850,6 +851,452 @@ export const policagroDelete = async (req, res) => {
     return res.status(200).json({
       data: result,
       message: "Berhasil menghapus policy category group!",
+    });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+// price item
+export const priceitemGetAll = async (req, res) => {
+  try {
+    const result = await models.price_items.findAll({
+      attributes: [
+        "prit_id",
+        "prit_name",
+        "prit_price",
+        "prit_description",
+        "prit_type",
+        "prit_icon",
+        "prit_icon_url",
+        "prit_modified_date",
+        "createdat",
+        "updatedat",
+      ],
+      order: [["prit_id", "ASC"]],
+      where: {
+        [Op.and]: [
+          req.body.prit_name != null
+            ? { prit_name: { [Op.iLike]: `%${req.body.prit_name}%` } }
+            : null,
+          req.body.prit_type != null
+            ? { prit_type: { [Op.iLike]: `%${req.body.prit_type}%` } }
+            : null,
+        ],
+      },
+    });
+
+    return res.status(200).json({
+      data: result,
+      message: "Berhasil menampilkan data price items!",
+    });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const priceitemDetail = async (req, res) => {
+  try {
+    const { prit_id } = req.params;
+
+    const cek_prit_id = await models.price_items.findOne({
+      attributes: ["prit_id"],
+      where: { prit_id: prit_id },
+    });
+
+    if (!cek_prit_id) {
+      return res
+        .status(404)
+        .json({ message: "Id Barang " + prit_id + " tidak ada!" });
+    }
+
+    const result = await models.price_items.findOne({
+      attributes: [
+        "prit_id",
+        "prit_name",
+        "prit_price",
+        "prit_description",
+        "prit_type",
+        "prit_icon",
+        "prit_icon_url",
+        "prit_modified_date",
+        "createdat",
+        "updatedat",
+      ],
+      where: { prit_id: prit_id },
+    });
+
+    return res.status(200).json({
+      data: result,
+      message: "Berhasil menampilkan detail Barang!",
+    });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const priceitemPost = async (req, res) => {
+  try {
+    const { prit_name, prit_price, prit_description, prit_type } = req.body;
+
+    if (prit_name === "" || prit_name === null || prit_name === undefined) {
+      return res.status(400).json({ message: "Nama Barang wajib diisi!" });
+    }
+
+    const name = await models.price_items.findOne({
+      attributes: ["prit_name"],
+      where: { prit_name: prit_name },
+    });
+
+    if (name) {
+      return res
+        .status(400)
+        .json({ message: "Nama Barang " + prit_name + " sudah ada!" });
+    }
+
+    if (prit_price === "" || prit_price === null || prit_price === undefined) {
+      return res.status(400).json({ message: "Harga Barang wajib diisi!" });
+    }
+
+    if (
+      prit_description === "" ||
+      prit_description === null ||
+      prit_description === undefined
+    ) {
+      return res.status(400).json({ message: "Deskripsi Barang wajib diisi!" });
+    }
+
+    if (prit_type === "" || prit_type === null || prit_type === undefined) {
+      return res.status(400).json({ message: "Tipe Barang wajib diisi!" });
+    }
+
+    if (req.errorvalidatefile) {
+      return res.status(422).json({ message: req.errorvalidatefile });
+    } else {
+      if (req.file) {
+        const gambar = req.file.filename;
+        const url_gambar =
+          req.protocol +
+          "://" +
+          req.get("host") +
+          "/assets/item_price/" +
+          gambar;
+
+        const result = await models.price_items.create({
+          prit_name: prit_name,
+          prit_price: prit_price,
+          prit_description: prit_description,
+          prit_type: prit_type,
+          prit_icon: gambar,
+          prit_icon_url: url_gambar,
+          prit_modified_date: new Date(),
+        });
+
+        return res
+          .status(201)
+          .send(dataHandling(result, "Berhasil menambahkan price items!"));
+      } else {
+        return res.status(400).json({ message: "Icon harus diisi!" });
+      }
+    }
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const priceitemUpdate = async (req, res) => {
+  try {
+    const { prit_name, prit_price, prit_description, prit_type } = req.body;
+    const { prit_id } = req.params;
+
+    const cek_prit_id = await models.price_items.findOne({
+      attributes: ["prit_id"],
+      where: { prit_id: prit_id },
+    });
+
+    if (!cek_prit_id) {
+      return res
+        .status(404)
+        .json({ message: "Id Barang " + prit_id + " tidak ada!" });
+    }
+
+    if (prit_name === "" || prit_name === null || prit_name === undefined) {
+      return res.status(400).json({ message: "Nama Barang wajib diisi!" });
+    }
+
+    if (prit_price === "" || prit_price === null || prit_price === undefined) {
+      return res.status(400).json({ message: "Harga Barang wajib diisi!" });
+    }
+
+    if (
+      prit_description === "" ||
+      prit_description === null ||
+      prit_description === undefined
+    ) {
+      return res.status(400).json({ message: "Deskripsi Barang wajib diisi!" });
+    }
+
+    if (prit_type === "" || prit_type === null || prit_type === undefined) {
+      return res.status(400).json({ message: "Tipe Barang wajib diisi!" });
+    }
+
+    const gambardatabase = await models.price_items.findOne({
+      attributes: ["prit_icon"],
+      where: { prit_id: prit_id },
+    });
+
+    if (!gambardatabase) {
+      return res.status(404).json({ message: "Icon Barang ini tidak ada!" });
+    }
+
+    const oldImage =
+      req.protocol +
+      "://" +
+      req.get("host") +
+      "/assets/item_price/" +
+      gambardatabase.prit_icon;
+
+    const oldImageName = oldImage.split("/").pop();
+
+    if (req.errorvalidatefile) {
+      return res.status(422).json({ message: req.errorvalidatefile });
+    } else {
+      if (req.file) {
+        fs.unlinkSync(`./src/assets/item_price/${oldImageName}`);
+
+        const gambar = req.file.filename;
+        const url_gambar =
+          req.protocol +
+          "://" +
+          req.get("host") +
+          "/assets/item_price/" +
+          gambar;
+
+        const result = await models.price_items.update(
+          {
+            prit_name: prit_name,
+            prit_price: prit_price,
+            prit_description: prit_description,
+            prit_type: prit_type,
+            prit_icon: gambar,
+            prit_icon_url: url_gambar,
+            prit_modified_date: new Date(),
+            updatedat: new Date(),
+          },
+          { where: { prit_id: prit_id }, returning: true }
+        );
+
+        return res
+          .status(200)
+          .send(dataHandling(result, "Berhasil mengubah price items!"));
+      } else {
+        const gambar = oldImageName;
+        const url = oldImage;
+
+        const result = await models.price_items.update(
+          {
+            prit_name: prit_name,
+            prit_price: prit_price,
+            prit_description: prit_description,
+            prit_type: prit_type,
+            prit_icon: gambar,
+            prit_icon_url: url,
+            prit_modified_date: new Date(),
+            updatedat: new Date(),
+          },
+          { where: { prit_id: prit_id }, returning: true }
+        );
+
+        return res
+          .status(200)
+          .send(dataHandling(result, "Berhasil mengubah price items!"));
+      }
+    }
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const priceitemDelete = async (req, res) => {
+  try {
+    const { prit_id } = req.params;
+
+    const cek_prit_id = await models.price_items.findOne({
+      attributes: ["prit_id"],
+      where: { prit_id: prit_id },
+    });
+
+    if (!cek_prit_id) {
+      return res
+        .status(404)
+        .json({ message: "Id Barang " + prit_id + " tidak ada!" });
+    }
+
+    const gambardatabase = await models.price_items.findOne({
+      attributes: ["prit_icon"],
+      where: { prit_id: prit_id },
+    });
+
+    if (!gambardatabase) {
+      return res.status(404).json({ message: "Icon Barang ini tidak ada!" });
+    }
+
+    const oldImage =
+      req.protocol +
+      "://" +
+      req.get("host") +
+      "/assets/item_price/" +
+      gambardatabase.prit_icon;
+
+    const oldImageName = oldImage.split("/").pop();
+
+    fs.unlinkSync(`./src/assets/item_price/${oldImageName}`);
+
+    const result = await models.price_items.destroy({
+      where: { prit_id: prit_id },
+    });
+
+    return res.send(dataHandling(result, "Berhasil menghapus price items!"));
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Service Task
+export const servicetaskGetAll = async (req, res) => {
+  try {
+    const result = await models.service_task.findAll({
+      order: [["seta_id", "ASC"]],
+    });
+
+    return res.status(200).json({
+      data: result,
+      message: "Berhasil menampilkan service task!",
+    });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const servicetaskPost = async (req, res) => {
+  try {
+    const { seta_name, seta_seq } = req.body;
+
+    const result = await models.service_task.create({
+      seta_name: seta_name,
+      seta_seq: seta_seq,
+    });
+
+    return res
+      .status(201)
+      .send(dataHandling(result, "Berhasil menambahkan service task!"));
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const servicetaskUpdate = async (req, res) => {
+  try {
+    const { seta_id } = req.params;
+    const { seta_name, seta_seq } = req.body;
+
+    const result = await models.service_task.update(
+      {
+        seta_name: seta_name,
+        seta_seq: seta_seq,
+      },
+      { where: { seta_id: seta_id }, returning: true }
+    );
+
+    return res
+      .status(200)
+      .send(dataHandling(result, "Berhasil mengubah service task!"));
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const servicetaskDelete = async (req, res) => {
+  try {
+    const { seta_id } = req.params;
+
+    const result = await models.service_task.destroy({
+      where: { seta_id: seta_id },
+    });
+
+    return res.status(200).json({
+      data: result,
+      message: "Berhasil menghapus service task!",
+    });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+// members
+export const membersGetAll = async (req, res) => {
+  try {
+    const result = await models.members.findAll({
+      order: [["memb_name", "ASC"]],
+    });
+
+    return res.status(200).json({
+      data: result,
+      message: "Berhasil menampilkan member!",
+    });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const membersPost = async (req, res) => {
+  try {
+    const { memb_name, memb_description } = req.body;
+
+    const result = await models.members.create({
+      memb_name: memb_name,
+      memb_description: memb_description,
+    });
+
+    return res
+      .status(201)
+      .send(dataHandling(result, "Berhasil menambahkan members!"));
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const membersUpdate = async (req, res) => {
+  try {
+    const { memb_name } = req.params;
+    const { memb_description } = req.body;
+
+    const result = await models.members.update(
+      {
+        memb_description: memb_description,
+      },
+      { where: { memb_name: memb_name }, returning: true }
+    );
+
+    return res
+      .status(200)
+      .send(dataHandling(result, "Berhasil mengubah members!"));
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const memberDelete = async (req, res) => {
+  try {
+    const { memb_name } = req.params;
+
+    const result = await models.members.destroy({
+      where: { memb_name: memb_name },
+    });
+
+    return res.status(200).json({
+      data: result,
+      message: "Berhasil menghapus member!",
     });
   } catch (error) {
     return res.status(500).json({ message: error.message });

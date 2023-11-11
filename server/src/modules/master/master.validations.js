@@ -211,3 +211,63 @@ export const cekIDPocaCategoryGroup = [
     }
   }),
 ];
+
+export const createServiceTaskValidation = [
+  body("seta_name").notEmpty().withMessage("Nama Tugas Jasa Wajib diisi!"),
+  body("seta_seq").notEmpty().withMessage("Urutan Tugas Jasa Wajib diisi!"),
+];
+
+export const updateServiceTaskValidation = [
+  body("seta_name").notEmpty().withMessage("Nama Tugas Jasa Wajib diisi!"),
+  body("seta_seq").notEmpty().withMessage("Urutan Tugas Jasa Wajib diisi!"),
+];
+
+export const getServiceTaskNameAlready = [
+  body("seta_name").custom(async (value) => {
+    const service_task = await models.service_task.findOne({
+      attributes: ["seta_name"],
+      where: { seta_name: value },
+    });
+
+    if (service_task) {
+      throw new Error("Nama Tugas Jasa " + value + " sudah ada!");
+    }
+  }),
+];
+
+export const getServiceTaskIdValidation = [
+  param("seta_id").custom(async (value) => {
+    const service_task = await models.service_task.findOne({
+      where: { seta_id: value },
+    });
+
+    if (!service_task) {
+      throw new Error("Id Tugas Jasa " + value + " tidak ada!");
+    }
+  }),
+];
+
+export const createMemberValidation = [
+  body("memb_name").notEmpty().withMessage("Nama Member Wajib diisi!"),
+  body("memb_description")
+    .notEmpty()
+    .withMessage("Deskripsi Member Wajib diisi!"),
+];
+
+export const updateMemberValidation = [
+  body("memb_description")
+    .notEmpty()
+    .withMessage("Deskripsi Member Wajib diisi!"),
+];
+
+export const getMemberNameValidation = [
+  param("memb_name").custom(async (value) => {
+    const members = await models.members.findOne({
+      where: { memb_name: value },
+    });
+
+    if (!members) {
+      throw new Error("Nama Member " + value + " tidak ada!");
+    }
+  }),
+];
