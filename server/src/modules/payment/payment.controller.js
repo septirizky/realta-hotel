@@ -213,7 +213,7 @@ export const deletePaymentGateaway = async (req, res) => {
 
 export const getUserAccount = async(req,res)=>{
     try {
-        const result = await models.user_accounts.findAll();
+        const result = await models.user_accounts.findAll({where: {usac_user_id: req.params.id}});
         
         return res.status(200).json({data:result,message:`Data Ditemukan `})
     } catch (error) {
@@ -225,6 +225,57 @@ export const createUserAccount = async (req,res)=>{
     try {
         const {account_number,desc,saldo} = req.body;
 
+    } catch (error) {
+        return res.status(404).json({message:error.message})
+    }
+}
+
+export const getUserAccountById = async(req, res) =>{
+    try {
+        const usac_entity_id = req.params.usac_entity_id
+        const result = await models.user_accounts.findOne({where: {usac_entity_id}})
+
+        return res.status(200).json({data:result,message:`Data Berhasil Ditemukan`})
+    } catch (error) {
+        return res.status(404).json({message:error.message})
+    }
+}
+
+// ========================== BackEnd Transaction =========================
+
+export const getTransaction = async(req,res)=>{
+    try {
+        const patr_user_id = req.params.patr_user_id
+        const result = await models.payment_transaction.findAll({where:{patr_user_id}})
+
+        return res.status(200).json({data:result, message:`Data Ditemukan`})
+    } catch (error) {
+        return res.status(404).json({message:error.message})
+    }
+}
+
+export const getTransactionPagination = async(req,res)=>{
+    try {
+        const {page_number} = req.query
+        const size = 5;
+
+        const result = await models.payment_transaction.findAll({
+            limit : size,
+            offset: page_number * size
+        })
+
+        return res.status(200).json({data:result})
+    } catch (error) {
+        return res.status(404).json({message:error.message})
+    }
+}
+
+export const getTransactionDetail = async(req,res)=>{
+    try {
+        const patr_id = req.params.patr_id
+        const result = await models.payment_transaction.findOne({where: {patr_id}})
+        
+        return res.status(200).json({data:result})
     } catch (error) {
         return res.status(404).json({message:error.message})
     }

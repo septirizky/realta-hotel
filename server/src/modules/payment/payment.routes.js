@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { addPaymentGateaway, createBank, deleteBank, deletePaymentGateaway, getAllBank, getBankId, getPaymentGateaway, getPaymentGateawayById, getUserAccount, payment, searchBank, searchPaymentGateaway, updateBank, updatePaymentGateaway } from "./payment.controller.js";
+import { addPaymentGateaway, createBank, deleteBank, deletePaymentGateaway, getAllBank, getBankId, getPaymentGateaway, getPaymentGateawayById, getTransaction, getTransactionDetail, getTransactionPagination, getUserAccount, getUserAccountById, payment, searchBank, searchPaymentGateaway, updateBank, updatePaymentGateaway } from "./payment.controller.js";
 
 
 const paymentRoutes = Router();
@@ -25,6 +25,16 @@ paymentRoutes.delete('/deletePaymentGateaway/:id',deletePaymentGateaway);
 
 //=================== User Account =============================
 
-paymentRoutes.get('/getUserAccount',getUserAccount);
+paymentRoutes.get('/getUserAccount/:id',getUserAccount);
+paymentRoutes.get('/getUserAccountById/:usac_entity_id',getUserAccountById);
+
+
+
+//=================== Payment Transcation =============================
+
+paymentRoutes.get('/getTransaction/:patr_user_id',getTransaction);
+paymentRoutes.get('/getTransactionPagination',getTransactionPagination);
+paymentRoutes.get('/getTransactionDetail/:patr_id',getTransactionDetail)
+
 
 export default paymentRoutes;
