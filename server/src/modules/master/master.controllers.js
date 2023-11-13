@@ -90,6 +90,27 @@ export const countryGetAll = async (req, res) => {
   }
 };
 
+export const countryGetByRegion = async (req, res) => {
+  try {
+    const result = await models.country.findAll({
+      order: [["country_id", "ASC"]],
+      include: {
+        model: models.regions,
+        as: "country_region",
+        attributes: ["region_name"],
+        required: true,
+      },
+      where: { country_region_id: req.params.region_id },
+    });
+
+    return res
+      .status(200)
+      .json({ data: result, message: "Berhasil menampilkan data country!" });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
 export const countryPost = async (req, res) => {
   try {
     const { country_name, country_region_id } = req.body;
@@ -166,6 +187,27 @@ export const provinceGetAll = async (req, res) => {
   }
 };
 
+export const provinceGetByCountry = async (req, res) => {
+  try {
+    const result = await models.provinces.findAll({
+      order: [["prov_id", "ASC"]],
+      include: {
+        model: models.country,
+        as: "prov_country",
+        attributes: ["country_name"],
+        required: true,
+      },
+      where: { prov_country_id: req.params.country_id },
+    });
+
+    return res
+      .status(200)
+      .json({ data: result, message: "Berhasil menampilkan data country!" });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
 export const provincePost = async (req, res) => {
   try {
     const { prov_name, prov_country_id } = req.body;
@@ -232,6 +274,27 @@ export const cityGetAll = async (req, res) => {
         attributes: ["prov_name"],
         required: true,
       },
+    });
+
+    return res
+      .status(200)
+      .json({ data: result, message: "Berhasil menampilkan data city!" });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const cityGetByProvince = async (req, res) => {
+  try {
+    const result = await models.city.findAll({
+      order: [["city_id", "ASC"]],
+      include: {
+        model: models.provinces,
+        as: "city_province",
+        attributes: ["prov_name"],
+        required: true,
+      },
+      where: { city_province_id: req.params.prov_id },
     });
 
     return res
@@ -504,7 +567,8 @@ export const cagroGetAll = async (req, res) => {
 
 export const cagroPost = async (req, res) => {
   try {
-    const { cagro_name, cagro_type, cagro_description } = req.body;
+    const { cagro_name, cagro_type, cagro_description, poca_poli_id } =
+      req.body;
 
     if (cagro_name === "" || cagro_name === undefined || cagro_name === null) {
       return res
@@ -551,17 +615,33 @@ export const cagroPost = async (req, res) => {
           "/assets/category_group/" +
           gambar;
 
-        const result = await models.category_group.create({
-          cagro_name: cagro_name,
-          cagro_type: cagro_type,
-          cagro_description: cagro_description,
-          cagro_icon: gambar,
-          cagro_icon_url: url_gambar,
+        const result1 = await models.category_group.create(
+          {
+            cagro_name: cagro_name,
+            cagro_type: cagro_type,
+            cagro_description: cagro_description,
+            cagro_icon: gambar,
+            cagro_icon_url: url_gambar,
+          },
+          { returning: true }
+        );
+
+        const result2 = await models.policy_category_group.create({
+          poca_poli_id: poca_poli_id,
+          poca_cagro_id: result1.dataValues.cagro_id,
         });
+
+        // console.log(result1);
+        // console.log(result1.dataValues.cagro_id);
 
         return res
           .status(201)
-          .send(dataHandling(result, "Berhasil menambahkan category group!"));
+          .send(
+            dataHandling(
+              [result1, result2],
+              "Berhasil menambahkan category group!"
+            )
+          );
       } else {
         return res.status(400).json({ message: "Icon harus diisi!" });
       }
@@ -573,7 +653,8 @@ export const cagroPost = async (req, res) => {
 
 export const cagroUpdate = async (req, res) => {
   try {
-    const { cagro_name, cagro_type, cagro_description } = req.body;
+    const { cagro_name, cagro_type, cagro_description, poca_poli_id } =
+      req.body;
     const { cagro_id } = req.params;
 
     const cek_cagro_id = await models.category_group.findOne({
@@ -643,7 +724,7 @@ export const cagroUpdate = async (req, res) => {
           "/assets/category_group/" +
           gambar;
 
-        const result = await models.category_group.update(
+        const result1 = await models.category_group.update(
           {
             cagro_name: cagro_name,
             cagro_type: cagro_type,
@@ -655,14 +736,27 @@ export const cagroUpdate = async (req, res) => {
           { where: { cagro_id: cagro_id }, returning: true }
         );
 
+        const result2 = await models.policy_category_group.update(
+          {
+            poca_poli_id: poca_poli_id,
+            poca_cagro_id: cagro_id,
+          },
+          { where: { poca_cagro_id: cagro_id }, returning: true }
+        );
+
         return res
           .status(200)
-          .send(dataHandling(result, "Berhasil mengubah category group!"));
+          .send(
+            dataHandling(
+              [result1, result2],
+              "Berhasil mengubah category group!"
+            )
+          );
       } else {
         const gambar = oldImageName;
         const url = oldImage;
 
-        const result = await models.category_group.update(
+        const result1 = await models.category_group.update(
           {
             cagro_name: cagro_name,
             cagro_type: cagro_type,
@@ -674,9 +768,22 @@ export const cagroUpdate = async (req, res) => {
           { where: { cagro_id: cagro_id }, returning: true }
         );
 
+        const result2 = await models.policy_category_group.update(
+          {
+            poca_poli_id: poca_poli_id,
+            poca_cagro_id: cagro_id,
+          },
+          { where: { poca_cagro_id: cagro_id }, returning: true }
+        );
+
         return res
           .status(200)
-          .send(dataHandling(result, "Berhasil mengubah category group!"));
+          .send(
+            dataHandling(
+              [result1, result2],
+              "Berhasil mengubah category group!"
+            )
+          );
       }
     }
   } catch (error) {
@@ -721,11 +828,15 @@ export const cagroDelete = async (req, res) => {
 
     fs.unlinkSync(`./src/assets/category_group/${oldImageName}`);
 
-    const result = await models.category_group.destroy({
+    const result1 = await models.category_group.destroy({
       where: { cagro_id: cagro_id },
     });
 
-    return res.send(dataHandling(result, "Berhasil menghapus category group!"));
+    const result2 = await models.policy_category_group.destroy({
+      where: { poca_cagro_id: cagro_id },
+    });
+
+    return res.send(dataHandling("", "Berhasil menghapus category group!"));
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

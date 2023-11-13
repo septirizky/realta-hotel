@@ -11,10 +11,12 @@ import {
   cagroUpdate,
   cityDelete,
   cityGetAll,
+  cityGetByProvince,
   cityPost,
   cityUpdate,
   countryDelete,
   countryGetAll,
+  countryGetByRegion,
   countryPost,
   countryUpdate,
   memberDelete,
@@ -37,6 +39,7 @@ import {
   priceitemUpdate,
   provinceDelete,
   provinceGetAll,
+  provinceGetByCountry,
   provincePost,
   provinceUpdate,
   regionDelete,
@@ -115,6 +118,7 @@ masterRouters.delete(
 
 // country
 masterRouters.get("/country", countryGetAll);
+masterRouters.get("/country/:region_id", countryGetByRegion);
 masterRouters.post(
   "/country",
   createCountryValidation,
@@ -139,6 +143,7 @@ masterRouters.delete(
 
 // province
 masterRouters.get("/province", provinceGetAll);
+masterRouters.get("/province/:country_id", provinceGetByCountry);
 masterRouters.post(
   "/province",
   getProvinceNameAlready,
@@ -164,6 +169,7 @@ masterRouters.delete(
 
 // city
 masterRouters.get("/city", cityGetAll);
+masterRouters.get("/city/:prov_id", cityGetByProvince);
 masterRouters.post(
   "/city",
   getCityNameAlready,
