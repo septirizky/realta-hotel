@@ -528,7 +528,7 @@ export const policyDetailDescription = async (req, res) => {
   try {
     const { poli_id } = req.params;
     const result = await models.policy.findOne({
-      attributes: ["poli_description"],
+      attributes: ["poli_name", "poli_description"],
       where: { poli_id: poli_id },
     });
     return res

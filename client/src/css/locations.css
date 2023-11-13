@@ -1,0 +1,35 @@
+.color-gray-thead {
+  background-color: gray;
+  color: white;
+}
+
+table {
+  border: 1px solid gray;
+}
+
+th {
+  text-align: center;
+  padding: 8px 0;
+}
+
+td {
+  text-align: center;
+  padding: 8px 0;
+}
+
+.align-border-right {
+  text-align: right;
+  padding-right: 10px;
+}
+
+.button-transparan {
+  color: white;
+  font-weight: bold;
+  background-color: transparent;
+  border: 0 solid transparent;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
