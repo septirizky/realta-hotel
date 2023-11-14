@@ -97,7 +97,7 @@ export const countryGetByRegion = async (req, res) => {
       include: {
         model: models.regions,
         as: "country_region",
-        attributes: ["region_name"],
+        attributes: ["region_code", "region_name"],
         required: true,
       },
       where: { country_region_id: req.params.region_id },
@@ -194,7 +194,7 @@ export const provinceGetByCountry = async (req, res) => {
       include: {
         model: models.country,
         as: "prov_country",
-        attributes: ["country_name"],
+        attributes: ["country_id", "country_name"],
         required: true,
       },
       where: { prov_country_id: req.params.country_id },
@@ -291,7 +291,7 @@ export const cityGetByProvince = async (req, res) => {
       include: {
         model: models.provinces,
         as: "city_province",
-        attributes: ["prov_name"],
+        attributes: ["prov_id", "prov_name"],
         required: true,
       },
       where: { city_province_id: req.params.prov_id },

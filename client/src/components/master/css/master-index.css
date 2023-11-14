@@ -1,0 +1,10 @@
+.master-page {
+  margin-left: 200px;
+  text-align: center;
+}
+
+@media screen and (max-width: 900px) {
+  .master-page {
+    margin-left: 0px;
+  }
+}
