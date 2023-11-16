@@ -11255,3 +11255,9 @@ body {
 .dropdown-toggle[aria-expanded=true]{
   color: #EBAB2D !important;
 }
+.yellow-button{
+  color: #EBAB2D !important;
+}
+.yellow-hover:hover{
+  color: #EBAB2D !important;
+}
