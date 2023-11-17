@@ -2,26 +2,28 @@
   margin: 0;
   padding: 0;
   width: 200px;
-  background-color: #f1f1f1;
+  background-color: #000000;
   position: fixed;
   height: 100%;
   overflow: auto;
 }
 
 .menus {
+  color: white;
   margin: 0;
   padding: 16px 8px;
 }
 
 .sidebar-master a {
+  color: yellow;
   display: block;
   padding: 16px;
   text-decoration: none;
 }
 
 .sidebar-master a.active {
-  background-color: blue;
-  color: white;
+  background-color: yellow;
+  color: rgb(131, 119, 119);
 }
 
 .content-master {
@@ -48,7 +50,7 @@
   }
 }
 
-@media screen and (max-width: 679px) {
+@media screen and (max-width: 815px) {
   .sidebar-master a {
     text-align: center;
     float: none;

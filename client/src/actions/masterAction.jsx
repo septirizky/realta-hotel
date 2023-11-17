@@ -6,6 +6,14 @@ export const GET_COUNTRY = "GET_COUNTRY";
 export const GET_PROVINCE = "GET_PROVINCE";
 export const GET_CITY = "GET_CITY";
 
+// add locations region
+export const POST_REGION = "POST_REGION";
+// update locations region
+export const UPDATE_REGION = "UPDATE_REGION";
+// delete locations region
+export const DELETE_REGION = "DELETE_REGION";
+
+// locations
 export const getRegions = () => {
   return async (dispatch) => {
     dispatch({
@@ -35,6 +43,125 @@ export const getRegions = () => {
       .catch((err) => {
         dispatch({
           type: GET_REGION,
+          payload: {
+            data: false,
+            loading: false,
+            errorMsg: err.response.data.message,
+          },
+        });
+      });
+  };
+};
+
+export const postRegions = (dataRegion) => {
+  return async (dispatch) => {
+    dispatch({
+      type: POST_REGION,
+      payload: {
+        data: false,
+        loading: true,
+        errorMsg: false,
+      },
+    });
+
+    await axios({
+      method: "POST",
+      url: "http://localhost:4000/regions",
+      timeout: 120000,
+      data: dataRegion,
+    })
+      .then((res) => {
+        dispatch({
+          type: POST_REGION,
+          payload: {
+            data: res.data,
+            loading: false,
+            errorMsg: false,
+          },
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: POST_REGION,
+          payload: {
+            data: false,
+            loading: false,
+            errorMsg: err.response.data.message,
+          },
+        });
+      });
+  };
+};
+
+export const updateRegions = (dataRegion, idRegion) => {
+  return async (dispatch) => {
+    dispatch({
+      type: UPDATE_REGION,
+      payload: {
+        data: false,
+        loading: true,
+        errorMsg: false,
+      },
+    });
+
+    await axios({
+      method: "PUT",
+      url: "http://localhost:4000/regions/" + idRegion,
+      data: dataRegion,
+      timeout: 120000,
+    })
+      .then((res) => {
+        dispatch({
+          type: UPDATE_REGION,
+          payload: {
+            data: res.data,
+            loading: false,
+            errorMsg: false,
+          },
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: UPDATE_REGION,
+          payload: {
+            data: false,
+            loading: false,
+            errorMsg: err.response.data.message,
+          },
+        });
+      });
+  };
+};
+
+export const deleteRegions = (idRegion) => {
+  return async (dispatch) => {
+    dispatch({
+      type: DELETE_REGION,
+      payload: {
+        data: false,
+        loading: true,
+        errorMsg: false,
+      },
+    });
+
+    await axios({
+      method: "DELETE",
+      url: "http://localhost:4000/regions/" + idRegion,
+      timeout: 120000,
+    })
+      .then((res) => {
+        dispatch({
+          type: DELETE_REGION,
+          payload: {
+            data: res.data,
+            loading: false,
+            errorMsg: false,
+          },
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: DELETE_REGION,
           payload: {
             data: false,
             loading: false,

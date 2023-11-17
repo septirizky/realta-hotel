@@ -1,17 +1,13 @@
 import { Link, NavLink, Outlet } from "react-router-dom";
+import { MdApartment } from "react-icons/md";
 
 export const TempNav = () => {
   return (
     <>
-      <nav className="navbar navbar-expand-sm navbar-dark bg-info sticky-top">
+      <nav className="navbar navbar-expand-sm navbar-dark bg-dark sticky-top">
         <div className="container-fluid">
           <Link className="navbar-brand" to="/">
-            <img
-              src="http://localhost:4000/assets/img/hotel.png"
-              alt="hotel"
-              width={50}
-              height={30}
-            />
+            <MdApartment className="text-warning fs-3 me-2" />
             <span className="fw-bold">Realta Hotel</span>
           </Link>
           <button
@@ -45,11 +41,6 @@ export const TempNav = () => {
                   <li>
                     <NavLink to="/" className="dropdown-item">
                       Home
-                    </NavLink>
-                  </li>
-                  <li>
-                    <NavLink to="/hr" className="dropdown-item">
-                      HR
                     </NavLink>
                   </li>
                   <li>

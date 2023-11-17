@@ -1,7 +1,12 @@
-import { GET_REGION } from "../actions/masterAction";
-import { GET_COUNTRY } from "../actions/masterAction";
-import { GET_PROVINCE } from "../actions/masterAction";
-import { GET_CITY } from "../actions/masterAction";
+import {
+  GET_REGION,
+  POST_REGION,
+  UPDATE_REGION,
+  DELETE_REGION,
+  GET_COUNTRY,
+  GET_PROVINCE,
+  GET_CITY,
+} from "../actions/masterAction";
 
 const initialState = {
   getRegionsResult: false,
@@ -16,6 +21,15 @@ const initialState = {
   getCityResult: false,
   getCityLoading: false,
   getCityError: false,
+  postRegionResult: false,
+  postRegionLoading: false,
+  postRegionError: false,
+  deleteRegionResult: false,
+  deleteRegionLoading: false,
+  deleteRegionError: false,
+  updateRegionResult: false,
+  updateRegionLoading: false,
+  updateRegionError: false,
 };
 const masterReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -25,6 +39,27 @@ const masterReducer = (state = initialState, action) => {
         getRegionsResult: action.payload.data,
         getRegionsLoading: action.payload.loading,
         getRegionsError: action.payload.errorMsg,
+      };
+    case POST_REGION:
+      return {
+        ...state,
+        postRegionResult: action.payload.data,
+        postRegionLoading: action.payload.loading,
+        postRegionError: action.payload.errorMsg,
+      };
+    case UPDATE_REGION:
+      return {
+        ...state,
+        updateRegionResult: action.payload.data,
+        updateRegionLoading: action.payload.loading,
+        updateRegionError: action.payload.errorMsg,
+      };
+    case DELETE_REGION:
+      return {
+        ...state,
+        deleteRegionResult: action.payload.data,
+        deleteRegionLoading: action.payload.loading,
+        deleteRegionError: action.payload.errorMsg,
       };
     case GET_COUNTRY:
       return {

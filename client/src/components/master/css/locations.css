@@ -29,6 +29,18 @@ td {
   border: 0 solid transparent;
 }
 
+.button-delete-transparan {
+  background-color: transparent;
+  border-color: transparent;
+  color: red;
+}
+
+.button-update-transparan {
+  background-color: transparent;
+  border-color: transparent;
+  color: rgb(134, 134, 24);
+}
+
 table {
   border-collapse: collapse;
   width: 100%;
@@ -36,4 +48,16 @@ table {
 
 .content-utama-master {
   margin-top: 57px;
+}
+
+@media screen and (max-width: 900px) {
+  .content-utama-master {
+    margin-top: 0px;
+  }
+}
+
+@media screen and (max-width: 575px) {
+  .content-utama-master {
+    margin-top: 0px;
+  }
 }
