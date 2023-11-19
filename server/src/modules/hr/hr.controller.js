@@ -9,11 +9,18 @@ import employee from "../../model/employee.js";
  * Department
  */
 export const getDepartment = async (req, res) => {
-    try {
-        const result = await models.department.findAll();
-        return res.status(200).json(result);
-    } catch (error) {
-        return res.status(500).json({message: error.message});
+    try { //order: [['id','DESC']], include: [Users]
+        const {dept_name} = req.body
+        const search = await models.department.findAll({
+            where: {
+                dept_name: {
+                    [Op.iLike]: `%${dept_name ? dept_name : ''}%`
+                }
+            }
+        })
+        res.status(200).json(search)
+    } catch (e) {
+        res.status(500).json(e.message)
     }
 };
 

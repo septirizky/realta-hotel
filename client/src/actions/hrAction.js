@@ -5,7 +5,7 @@ export const POST_DEPARTMENT = "POST_DEPARTMENT"
 export const DELETE_DEPARTMENT = "DELETE_DEPARTMENT"
 export const UPDATE_DEPARTMENT = "UPDATE_DEPARTMENT"
 
-export const GetDepartment = () => {
+export const GetDepartment = (data) => {
     return async (dispatch) => {
         dispatch({
             type: GET_DEPARTMENT,
@@ -16,8 +16,9 @@ export const GetDepartment = () => {
             }
         })
         await axios({
-            method: "GET",
+            method: "POST",
             url: "http://localhost:4000/hr/department",
+            data: data,
             timeout: 120000
         }).then((res) => {
             dispatch({
@@ -53,7 +54,7 @@ export const PostDepartment = (data) => {
         })
         await axios({
             method: "POST",
-            url: "http://localhost:4000/hr/department",
+            url: "http://localhost:4000/hr/department/create",
             data: data,
             timeout: 120000
         }).then((res) => {

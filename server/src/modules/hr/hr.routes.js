@@ -23,8 +23,8 @@ const upload = multer({storage})
 /*
  * Department
  */
-hrRouters.get('/department', getDepartment)
-hrRouters.post('/department', createDepartment)
+hrRouters.post('/department', getDepartment)
+hrRouters.post('/department/create', createDepartment)
 hrRouters.post('/department/search', searchDepartment)
 hrRouters.put('/department/:id', updateDepartment)
 hrRouters.delete('/department/:id', deleteDepartment)
