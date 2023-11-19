@@ -1,5 +1,6 @@
 import {Link, Outlet, useLocation} from "react-router-dom";
 import './css/styles.css'
+import './css/hrStyles.css'
 import {BsListCheck, BsPeople, BsPerson, BsPersonCircle} from "react-icons/bs";
 import {MdApartment} from "react-icons/md";
 import {RxHamburgerMenu} from "react-icons/rx";

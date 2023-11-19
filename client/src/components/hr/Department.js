@@ -1,51 +1,217 @@
+import {BiPlus} from "react-icons/bi";
+import {TiTimes} from "react-icons/ti";
+import {useEffect, useState} from "react";
+import {PiDotsThreeOutlineVerticalDuotone} from "react-icons/pi";
+import {FiEdit, FiTrash} from "react-icons/fi";
+import {useDispatch, useSelector} from "react-redux";
+import {DeleteDepartment, GetDepartment, PostDepartment, UpdateDepartment} from "../../actions/hrAction";
+import Swal from "sweetalert2";
+
 export const Department = () => {
+    const [formDept, setFormDept] = useState('')
+    const [formEditDept, setFormEditDept] = useState('')
+    const [isAddDept, setIsAddDept] = useState(false)
+    const [isDelDept, setIsDelDept] = useState(false)
+    const [isPutDept, setIsPutDept] = useState(false)
+    const dispatch = useDispatch()
+    const {
+        getDepartmentResult,
+        postDepartmentResult,
+        updateDepartmentResult,
+        deleteDepartmentResult,
+        getDepartmentLoading,
+        getDepartmentError
+    } = useSelector((state) => state.HrReducer)
+    const postDept = () => {
+        setIsAddDept(true)
+        dispatch(PostDepartment({dept_name: formDept}))
+    }
+    const updateDept = (id) => {
+        setIsPutDept(true)
+        dispatch(UpdateDepartment(id, {dept_name: formEditDept}))
+    }
+    const deleteDept = (id, event, name) => {
+        Swal.fire({
+            title: `Delete Department ${name}?`,
+            showCancelButton: true,
+            confirmButtonText: 'Sure',
+            confirmButtonColor: '#EBAB2D'
+        }).then((res) => {
+            if (res.isConfirmed) {
+                event.preventDefault()
+                setIsDelDept(true)
+                dispatch(DeleteDepartment(id))
+            }
+        })
+    }
+    useEffect(() => {
+        if (isAddDept) {
+            let timerInterval
+            Swal.fire({
+                title: 'Add Department success',
+                html: 'Auto Close',
+                timer: 1500,
+                showConfirmButton: false,
+                timerProgressBar: true,
+                willClose: () => {
+                    clearInterval(timerInterval)
+                }
+            })
+        } else if (isDelDept) {
+            let timerInterval
+            Swal.fire({
+                title: 'Delete Department success',
+                html: 'Auto Close',
+                timer: 1500,
+                showConfirmButton: false,
+                timerProgressBar: true,
+                willClose: () => {
+                    clearInterval(timerInterval)
+                }
+            })
+        } else if (isPutDept) {
+            let timerInterval
+            Swal.fire({
+                title: 'Update Department success',
+                html: 'Auto Close',
+                timer: 1500,
+                showConfirmButton: false,
+                timerProgressBar: true,
+                willClose: () => {
+                    clearInterval(timerInterval)
+                }
+            })
+        }
+        dispatch(GetDepartment())
+        setFormDept('')
+        setIsAddDept(false)
+        setIsDelDept(false)
+        setIsPutDept(false)
+    }, [postDepartmentResult, deleteDepartmentResult, updateDepartmentResult]);
     return (
         <div>
-            <h1>Department</h1>
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi ac est est. Duis id elit ante. Curabitur condimentum libero ut hendrerit semper. Duis laoreet, neque at elementum pulvinar, tortor sem cursus ligula, quis sollicitudin tellus lacus ut ligula. Sed sed ligula vestibulum massa egestas bibendum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam eu pellentesque risus.
+            <h1 className='mb-4'>Department</h1>
+            <nav className='bread-separator' aria-label="breadcrumb">
+                <ol className="breadcrumb">
+                    <li className="breadcrumb-item active" aria-current="page">Department</li>
+                </ol>
+            </nav>
+            <table className="table table-striped table-hover align-middle">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Department</th>
+                    <th scope="col" className='text-end'>
+                        <button type="button" className="btn custom-btn-yellow" data-bs-toggle="modal"
+                                data-bs-target="#addModal">
+                            <BiPlus size='26'/> Add Department
+                        </button>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                {
+                    getDepartmentResult ? (
+                        getDepartmentResult.map((value, index) => {
+                            return (
+                                <tr>
+                                    <th scope="row">{index + 1}</th>
+                                    <td>{value.dept_name}</td>
+                                    <td className='text-end pe-4'>
+                                        <div className="dropstart">
+                                            <button className='btn btn-light' data-bs-toggle="dropdown"
+                                                    aria-expanded="false">
+                                                <PiDotsThreeOutlineVerticalDuotone size='24'/>
+                                            </button>
+                                            <ul className="dropdown-menu">
+                                                <li><a className="dropdown-item custom-hover-yellow" href='#'
+                                                       onClick={() => setFormEditDept(value.dept_name)}
+                                                       data-bs-toggle="modal"
+                                                       data-bs-target={"#editModal" + value.dept_id}><FiEdit
+                                                    size='16'/> Edit</a></li>
+                                                <li><a className="dropdown-item custom-hover-yellow text-danger"
+                                                       onClick={(e) => deleteDept(value.dept_id, e, value.dept_name)}
+                                                       href='#'><FiTrash size='16'/> Delete</a></li>
+                                            </ul>
+                                        </div>
+                                        <div className="modal fade" id={"editModal" + value.dept_id} tabIndex="-1"
+                                             aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div className="modal-dialog">
+                                                <div className="modal-content">
+                                                    <form>
+                                                        <div className="modal-header">
+                                                            <h5 className="modal-title" id="exampleModalLabel">Add
+                                                                Department</h5>
+                                                            <TiTimes data-bs-dismiss="modal" aria-label="Close"
+                                                                     color='#EBAB2D' size={26}/>
+                                                        </div>
+                                                        <div className="modal-body">
+                                                            <div className="form-floating m-3">
+                                                                <input type="text"
+                                                                       onChange={(e) => setFormEditDept(e.target.value)}
+                                                                       value={formEditDept}
+                                                                       className="form-control text-dark" id="addDept"
+                                                                       placeholder="name@example.com" required/>
+                                                                <label htmlFor="addDept">Department</label>
+                                                            </div>
+                                                        </div>
+                                                        <div className="modal-footer">
+                                                            <button type="button" className="btn btn-dark"
+                                                                    data-bs-dismiss="modal">Close
+                                                            </button>
+                                                            <button type="button" className="btn custom-btn-yellow"
+                                                                    onClick={() => updateDept(value.dept_id)}
+                                                                    data-bs-dismiss="modal">Submit
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            )
+                        })
+                    ) : getDepartmentLoading ? (
+                        <tr>
+                            <td colSpan='3'>Loading...</td>
+                        </tr>
+                    ) : (
+                        <tr>
+                            <td colSpan='3'>{getDepartmentError}</td>
+                        </tr>
+                    )
+                }
 
-                Cras metus tellus, molestie in nisi ut, dignissim sagittis justo. Proin nec lacinia odio. Nulla consequat odio ac magna facilisis tincidunt. In et augue elementum, ullamcorper nulla a, cursus massa. Mauris placerat imperdiet nibh. Donec turpis dolor, pellentesque a augue et, condimentum lacinia nibh. Aenean eleifend porta commodo. Fusce nec est ut ex interdum ullamcorper eu a turpis. Duis porta et lectus et vehicula. Nunc risus felis, fringilla quis lectus at, imperdiet lobortis nibh. Fusce turpis felis, ullamcorper id dolor eget, egestas pharetra dolor. Integer nec ligula sed felis porttitor placerat sit amet ac purus. Integer consequat interdum lectus, vestibulum aliquam dolor congue vel. Suspendisse potenti. Morbi laoreet odio a metus imperdiet blandit.
-
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque malesuada mollis mauris in pretium. Aenean gravida malesuada consequat. Duis tincidunt ultricies ipsum id hendrerit. Vivamus ultricies sem eu purus placerat aliquam. Sed finibus odio et enim commodo vulputate. Donec urna turpis, aliquet vel est ac, pharetra rutrum purus. Sed id cursus mi, ut ornare quam. Curabitur efficitur sem a eros ornare, quis pharetra felis finibus. Maecenas venenatis orci at tortor gravida tempor. Pellentesque fringilla nunc eget enim vulputate, rutrum facilisis magna commodo. Pellentesque pellentesque quam quis mi consectetur, eu lobortis urna blandit.
-
-                Cras finibus nunc leo, sed accumsan metus viverra egestas. Donec id elementum eros. Proin vulputate, est ut pulvinar rhoncus, lacus felis placerat sapien, vitae dignissim tellus arcu sed neque. Sed in odio libero. Ut massa nunc, scelerisque et ligula vitae, bibendum accumsan tortor. Duis nibh velit, eleifend iaculis leo in, rutrum feugiat risus. Aenean dapibus urna ac massa tempus, vitae suscipit felis mattis. Suspendisse ultrices diam tempor, consequat elit ac, mollis diam.
-
-                Etiam eleifend purus eu velit consectetur, at vulputate ex facilisis. Curabitur viverra, velit ac gravida tincidunt, orci quam gravida ex, nec consequat eros nisi sed dui. Donec aliquam purus eget nisi varius, et mattis purus pellentesque. Donec libero lacus, aliquam eget magna eu, pharetra gravida nulla. Suspendisse facilisis ipsum vitae vulputate eleifend. Suspendisse scelerisque placerat augue eget vulputate. Aliquam erat volutpat. Ut vel nisi interdum, pulvinar purus non, ornare dui.
-            </p>
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi ac est est. Duis id elit ante. Curabitur condimentum libero ut hendrerit semper. Duis laoreet, neque at elementum pulvinar, tortor sem cursus ligula, quis sollicitudin tellus lacus ut ligula. Sed sed ligula vestibulum massa egestas bibendum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam eu pellentesque risus.
-
-                Cras metus tellus, molestie in nisi ut, dignissim sagittis justo. Proin nec lacinia odio. Nulla consequat odio ac magna facilisis tincidunt. In et augue elementum, ullamcorper nulla a, cursus massa. Mauris placerat imperdiet nibh. Donec turpis dolor, pellentesque a augue et, condimentum lacinia nibh. Aenean eleifend porta commodo. Fusce nec est ut ex interdum ullamcorper eu a turpis. Duis porta et lectus et vehicula. Nunc risus felis, fringilla quis lectus at, imperdiet lobortis nibh. Fusce turpis felis, ullamcorper id dolor eget, egestas pharetra dolor. Integer nec ligula sed felis porttitor placerat sit amet ac purus. Integer consequat interdum lectus, vestibulum aliquam dolor congue vel. Suspendisse potenti. Morbi laoreet odio a metus imperdiet blandit.
-
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque malesuada mollis mauris in pretium. Aenean gravida malesuada consequat. Duis tincidunt ultricies ipsum id hendrerit. Vivamus ultricies sem eu purus placerat aliquam. Sed finibus odio et enim commodo vulputate. Donec urna turpis, aliquet vel est ac, pharetra rutrum purus. Sed id cursus mi, ut ornare quam. Curabitur efficitur sem a eros ornare, quis pharetra felis finibus. Maecenas venenatis orci at tortor gravida tempor. Pellentesque fringilla nunc eget enim vulputate, rutrum facilisis magna commodo. Pellentesque pellentesque quam quis mi consectetur, eu lobortis urna blandit.
-
-                Cras finibus nunc leo, sed accumsan metus viverra egestas. Donec id elementum eros. Proin vulputate, est ut pulvinar rhoncus, lacus felis placerat sapien, vitae dignissim tellus arcu sed neque. Sed in odio libero. Ut massa nunc, scelerisque et ligula vitae, bibendum accumsan tortor. Duis nibh velit, eleifend iaculis leo in, rutrum feugiat risus. Aenean dapibus urna ac massa tempus, vitae suscipit felis mattis. Suspendisse ultrices diam tempor, consequat elit ac, mollis diam.
-
-                Etiam eleifend purus eu velit consectetur, at vulputate ex facilisis. Curabitur viverra, velit ac gravida tincidunt, orci quam gravida ex, nec consequat eros nisi sed dui. Donec aliquam purus eget nisi varius, et mattis purus pellentesque. Donec libero lacus, aliquam eget magna eu, pharetra gravida nulla. Suspendisse facilisis ipsum vitae vulputate eleifend. Suspendisse scelerisque placerat augue eget vulputate. Aliquam erat volutpat. Ut vel nisi interdum, pulvinar purus non, ornare dui.
-            </p>
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi ac est est. Duis id elit ante. Curabitur condimentum libero ut hendrerit semper. Duis laoreet, neque at elementum pulvinar, tortor sem cursus ligula, quis sollicitudin tellus lacus ut ligula. Sed sed ligula vestibulum massa egestas bibendum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam eu pellentesque risus.
-
-                Cras metus tellus, molestie in nisi ut, dignissim sagittis justo. Proin nec lacinia odio. Nulla consequat odio ac magna facilisis tincidunt. In et augue elementum, ullamcorper nulla a, cursus massa. Mauris placerat imperdiet nibh. Donec turpis dolor, pellentesque a augue et, condimentum lacinia nibh. Aenean eleifend porta commodo. Fusce nec est ut ex interdum ullamcorper eu a turpis. Duis porta et lectus et vehicula. Nunc risus felis, fringilla quis lectus at, imperdiet lobortis nibh. Fusce turpis felis, ullamcorper id dolor eget, egestas pharetra dolor. Integer nec ligula sed felis porttitor placerat sit amet ac purus. Integer consequat interdum lectus, vestibulum aliquam dolor congue vel. Suspendisse potenti. Morbi laoreet odio a metus imperdiet blandit.
-
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque malesuada mollis mauris in pretium. Aenean gravida malesuada consequat. Duis tincidunt ultricies ipsum id hendrerit. Vivamus ultricies sem eu purus placerat aliquam. Sed finibus odio et enim commodo vulputate. Donec urna turpis, aliquet vel est ac, pharetra rutrum purus. Sed id cursus mi, ut ornare quam. Curabitur efficitur sem a eros ornare, quis pharetra felis finibus. Maecenas venenatis orci at tortor gravida tempor. Pellentesque fringilla nunc eget enim vulputate, rutrum facilisis magna commodo. Pellentesque pellentesque quam quis mi consectetur, eu lobortis urna blandit.
-
-                Cras finibus nunc leo, sed accumsan metus viverra egestas. Donec id elementum eros. Proin vulputate, est ut pulvinar rhoncus, lacus felis placerat sapien, vitae dignissim tellus arcu sed neque. Sed in odio libero. Ut massa nunc, scelerisque et ligula vitae, bibendum accumsan tortor. Duis nibh velit, eleifend iaculis leo in, rutrum feugiat risus. Aenean dapibus urna ac massa tempus, vitae suscipit felis mattis. Suspendisse ultrices diam tempor, consequat elit ac, mollis diam.
-
-                Etiam eleifend purus eu velit consectetur, at vulputate ex facilisis. Curabitur viverra, velit ac gravida tincidunt, orci quam gravida ex, nec consequat eros nisi sed dui. Donec aliquam purus eget nisi varius, et mattis purus pellentesque. Donec libero lacus, aliquam eget magna eu, pharetra gravida nulla. Suspendisse facilisis ipsum vitae vulputate eleifend. Suspendisse scelerisque placerat augue eget vulputate. Aliquam erat volutpat. Ut vel nisi interdum, pulvinar purus non, ornare dui.
-            </p>
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi ac est est. Duis id elit ante. Curabitur condimentum libero ut hendrerit semper. Duis laoreet, neque at elementum pulvinar, tortor sem cursus ligula, quis sollicitudin tellus lacus ut ligula. Sed sed ligula vestibulum massa egestas bibendum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam eu pellentesque risus.
-
-                Cras metus tellus, molestie in nisi ut, dignissim sagittis justo. Proin nec lacinia odio. Nulla consequat odio ac magna facilisis tincidunt. In et augue elementum, ullamcorper nulla a, cursus massa. Mauris placerat imperdiet nibh. Donec turpis dolor, pellentesque a augue et, condimentum lacinia nibh. Aenean eleifend porta commodo. Fusce nec est ut ex interdum ullamcorper eu a turpis. Duis porta et lectus et vehicula. Nunc risus felis, fringilla quis lectus at, imperdiet lobortis nibh. Fusce turpis felis, ullamcorper id dolor eget, egestas pharetra dolor. Integer nec ligula sed felis porttitor placerat sit amet ac purus. Integer consequat interdum lectus, vestibulum aliquam dolor congue vel. Suspendisse potenti. Morbi laoreet odio a metus imperdiet blandit.
-
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque malesuada mollis mauris in pretium. Aenean gravida malesuada consequat. Duis tincidunt ultricies ipsum id hendrerit. Vivamus ultricies sem eu purus placerat aliquam. Sed finibus odio et enim commodo vulputate. Donec urna turpis, aliquet vel est ac, pharetra rutrum purus. Sed id cursus mi, ut ornare quam. Curabitur efficitur sem a eros ornare, quis pharetra felis finibus. Maecenas venenatis orci at tortor gravida tempor. Pellentesque fringilla nunc eget enim vulputate, rutrum facilisis magna commodo. Pellentesque pellentesque quam quis mi consectetur, eu lobortis urna blandit.
-
-                Cras finibus nunc leo, sed accumsan metus viverra egestas. Donec id elementum eros. Proin vulputate, est ut pulvinar rhoncus, lacus felis placerat sapien, vitae dignissim tellus arcu sed neque. Sed in odio libero. Ut massa nunc, scelerisque et ligula vitae, bibendum accumsan tortor. Duis nibh velit, eleifend iaculis leo in, rutrum feugiat risus. Aenean dapibus urna ac massa tempus, vitae suscipit felis mattis. Suspendisse ultrices diam tempor, consequat elit ac, mollis diam.
-
-                Etiam eleifend purus eu velit consectetur, at vulputate ex facilisis. Curabitur viverra, velit ac gravida tincidunt, orci quam gravida ex, nec consequat eros nisi sed dui. Donec aliquam purus eget nisi varius, et mattis purus pellentesque. Donec libero lacus, aliquam eget magna eu, pharetra gravida nulla. Suspendisse facilisis ipsum vitae vulputate eleifend. Suspendisse scelerisque placerat augue eget vulputate. Aliquam erat volutpat. Ut vel nisi interdum, pulvinar purus non, ornare dui.
-            </p>
+                </tbody>
+            </table>
+            <div className="modal fade" id="addModal" tabIndex="-1" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <form>
+                            <div className="modal-header">
+                                <h5 className="modal-title" id="exampleModalLabel">Add Department</h5>
+                                <TiTimes data-bs-dismiss="modal" aria-label="Close" color='#EBAB2D' size={26}/>
+                            </div>
+                            <div className="modal-body">
+                                <div className="form-floating m-3">
+                                    <input type="text" onChange={(e) => setFormDept(e.target.value)} value={formDept}
+                                           className="form-control text-dark" id="addDept"
+                                           placeholder="name@example.com" required/>
+                                    <label htmlFor="addDept">Department</label>
+                                </div>
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-dark" data-bs-dismiss="modal">Close</button>
+                                <button type="button" className="btn custom-btn-yellow" onClick={() => postDept()}
+                                        data-bs-dismiss="modal">Submit
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     )
 }

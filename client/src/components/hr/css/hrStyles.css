@@ -1,0 +1,30 @@
+.custom-hover-yellow:hover{
+    background-color: #EBAB2D !important;
+    color: white !important;
+}
+.custom-text-yellow{
+    color: #EBAB2D !important;
+}
+.custom-bg-dark{
+    background-color: #212529;
+    color: white;
+}
+.custom-btn-yellow{
+    background-color: #EBAB2D;
+    color: white;
+}
+.custom-btn-yellow:hover{
+    background-color: #d78f0e;
+    color: white;
+}
+.custom-bg-dark:hover{
+    background-color: #474f52;
+    color: white;
+}
+.modal-bg-dark{
+    background-color: #474f52;
+    color: white;
+}
+.bread-separator{
+    --bs-breadcrumb-divider: ">";
+}
