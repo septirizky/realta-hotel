@@ -1,6 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 import { FaPencilAlt, FaTimes } from "react-icons/fa";
+import AddCountry from "./modal/AddCountry";
+import { useForm } from "react-hook-form";
+import EditCountry from "./modal/EditCountry";
+import DeleteCountry from "./modal/deleteCountry";
 
 const GetAllCountryByRegion = (props) => {
   const {
@@ -9,6 +13,79 @@ const GetAllCountryByRegion = (props) => {
     getCountryError,
     getProvinceAllByCountryId,
   } = props;
+
+  const {
+    register,
+    resetField,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const [showModalAddCountry, setShowModalAddCountry] = useState(false);
+
+  const [showModalEditCountry, setShowModalEditCountry] = useState(false);
+
+  const [showModalDeleteCountry, setShowModalDeleteCountry] = useState(false);
+
+  const [msg, setMsg] = useState("");
+
+  const [regionName, setRegionName] = useState("");
+
+  const [regionId, setRegionId] = useState();
+
+  const [countryName, setCountryName] = useState("");
+
+  const [countryId, setCountryId] = useState();
+
+  const handleCloseAddCountry = () => {
+    setMsg("");
+    resetField("country_name");
+    setRegionName("");
+    setRegionId();
+    setShowModalAddCountry(false);
+  };
+
+  const handleCloseEditCountry = () => {
+    setMsg("");
+    resetField("country_name");
+    setCountryName("");
+    setCountryId("");
+    setRegionName("");
+    setRegionId("");
+    setShowModalEditCountry(false);
+  };
+
+  const handleCloseDeleteCountry = () => {
+    setCountryId("");
+    setCountryName("");
+    setShowModalDeleteCountry(false);
+  };
+
+  const handleShowAddCountry = (regionId, regionName) => {
+    setRegionId(regionId);
+    setRegionName(regionName);
+    setShowModalAddCountry(true);
+  };
+
+  const handleShowEditCountry = (
+    regionId,
+    regionName,
+    countryId,
+    countryName
+  ) => {
+    setRegionId(regionId);
+    setRegionName(regionName);
+    setCountryId(countryId);
+    setCountryName(countryName);
+    setShowModalEditCountry(true);
+  };
+
+  const handleShowDeleteCountry = (countryId, countryName) => {
+    setCountryId(countryId);
+    setCountryName(countryName);
+    setShowModalDeleteCountry(true);
+  };
+
   return (
     <>
       {getCountryResult ? (
@@ -26,8 +103,12 @@ const GetAllCountryByRegion = (props) => {
                   <button
                     type="button"
                     className="button-transparan"
-                    data-bs-toggle="modal"
-                    data-bs-target="#exampleModalAddCountry"
+                    onClick={() =>
+                      handleShowAddCountry(
+                        getCountryResult[0].country_region.region_code,
+                        getCountryResult[0].country_region.region_name
+                      )
+                    }
                   >
                     <AiOutlinePlus /> Add
                   </button>
@@ -55,96 +136,34 @@ const GetAllCountryByRegion = (props) => {
                     <td>{index + 1}</td>
                     <td>{country.country_name}</td>
                     <td className="align-border-right">
-                      <FaPencilAlt /> Edit <FaTimes /> Delete
+                      <button
+                        type="button"
+                        className="button-update-transparan"
+                        onClick={() =>
+                          handleShowEditCountry(
+                            country.country_region.region_code,
+                            country.country_region.region_name,
+                            country.country_id,
+                            country.country_name
+                          )
+                        }
+                      >
+                        <FaPencilAlt /> Edit
+                      </button>
+                      <button
+                        type="button"
+                        className="button-delete-transparan"
+                        onClick={() =>
+                          handleShowDeleteCountry(
+                            country.country_id,
+                            country.country_name
+                          )
+                        }
+                      >
+                        <FaTimes /> Delete
+                      </button>
                     </td>
                   </tr>
-
-                  {/* Modal Add Country */}
-                  <div
-                    className="modal fade"
-                    id="exampleModalAddCountry"
-                    tabIndex="-1"
-                    aria-labelledby="exampleModalAddCountryLabel"
-                    aria-hidden="true"
-                  >
-                    <div className="modal-dialog">
-                      <div className="modal-content">
-                        <div className="modal-header">
-                          <h1
-                            className="modal-title fs-5"
-                            id="exampleModalAddCountryLabel"
-                          >
-                            Add Country
-                          </h1>
-                          <button
-                            type="button"
-                            className="btn-close"
-                            data-bs-dismiss="modal"
-                            aria-label="Close"
-                          ></button>
-                        </div>
-                        <form>
-                          <div className="modal-body">
-                            <div className="row g-2 align-items-center">
-                              <div className="col-auto">
-                                <label
-                                  htmlFor={`country_region_name${country.country_region.region_name}`}
-                                  className="col-form-label"
-                                >
-                                  Region Name
-                                </label>
-                              </div>
-                              <div className="col-auto">
-                                <input
-                                  type="text"
-                                  id={`country_region_name${country.country_region.region_name}`}
-                                  className="form-control"
-                                  value={country.country_region.region_name}
-                                  readOnly
-                                />
-                                <input
-                                  type="hidden"
-                                  id={`country_region_id${country.country_region.region_code}`}
-                                  className="form-control"
-                                  value={country.country_region.region_code}
-                                />
-                              </div>
-                            </div>
-                            <div className="row g-2 align-items-center">
-                              <div className="col-auto">
-                                <label
-                                  htmlFor="country_name"
-                                  className="col-form-label"
-                                >
-                                  Country Name
-                                </label>
-                              </div>
-                              <div className="col-auto">
-                                <input
-                                  type="text"
-                                  id="country_name"
-                                  className="form-control"
-                                  autoComplete="off"
-                                />
-                              </div>
-                            </div>
-                          </div>
-                          <div className="modal-footer">
-                            <button
-                              type="button"
-                              className="btn btn-secondary"
-                              data-bs-dismiss="modal"
-                            >
-                              Cancel
-                            </button>
-                            <button type="button" className="btn btn-primary">
-                              Save
-                            </button>
-                          </div>
-                        </form>
-                      </div>
-                    </div>
-                  </div>
                 </tbody>
               ))
             ) : getCountryLoading ? (
@@ -171,6 +190,43 @@ const GetAllCountryByRegion = (props) => {
       ) : (
         ""
       )}
+
+      <AddCountry
+        showModalCountry={showModalAddCountry}
+        handleCloseAddCountry={handleCloseAddCountry}
+        msg={msg}
+        setMsg={setMsg}
+        register={register}
+        resetField={resetField}
+        handleSubmit={handleSubmit}
+        regionName={regionName}
+        regionId={regionId}
+        errors={errors}
+      />
+
+      <EditCountry
+        showModalCountry={showModalEditCountry}
+        handleCloseEditCountry={handleCloseEditCountry}
+        msg={msg}
+        setMsg={setMsg}
+        register={register}
+        resetField={resetField}
+        handleSubmit={handleSubmit}
+        countryName={countryName}
+        setCountryName={setCountryName}
+        countryId={countryId}
+        regionName={regionName}
+        regionId={regionId}
+        errors={errors}
+      />
+
+      <DeleteCountry
+        showModalCountry={showModalDeleteCountry}
+        handleCloseDeleteCountry={handleCloseDeleteCountry}
+        countryId={countryId}
+        countryName={countryName}
+        handleSubmit={handleSubmit}
+      />
     </>
   );
 };

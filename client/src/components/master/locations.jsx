@@ -33,7 +33,12 @@ const LocationsMaster = () => {
     postRegionResult,
     updateRegionResult,
     deleteRegionResult,
+    postCountryResult,
+    updateCountryResult,
+    deleteCountryResult,
   } = useSelector((state) => state.masterReducer);
+
+  const dispatch = useDispatch();
 
   const getCountryAllByRegionCode = (idRegion) => {
     dispatch(getCountry(idRegion));
@@ -47,11 +52,17 @@ const LocationsMaster = () => {
     dispatch(getCity(idProvince));
   };
 
-  const dispatch = useDispatch();
-
   useEffect(() => {
     dispatch(getRegions());
-  }, [dispatch, postRegionResult, updateRegionResult, deleteRegionResult]);
+  }, [
+    dispatch,
+    postRegionResult,
+    updateRegionResult,
+    deleteRegionResult,
+    postCountryResult,
+    updateCountryResult,
+    deleteCountryResult,
+  ]);
 
   return (
     <>

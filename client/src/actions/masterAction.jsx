@@ -13,6 +13,13 @@ export const UPDATE_REGION = "UPDATE_REGION";
 // delete locations region
 export const DELETE_REGION = "DELETE_REGION";
 
+// add locations country
+export const POST_COUNTRY = "POST_COUNTRY";
+// update locations country
+export const UPDATE_COUNTRY = "UPDATE_COUNTRY";
+// delete locations country
+export const DELETE_COUNTRY = "DELETE_COUNTRY";
+
 // locations
 export const getRegions = () => {
   return async (dispatch) => {
@@ -201,6 +208,125 @@ export const getCountry = (idRegion) => {
       .catch((err) => {
         dispatch({
           type: GET_COUNTRY,
+          payload: {
+            data: false,
+            loading: false,
+            errorMsg: err.response.data.message,
+          },
+        });
+      });
+  };
+};
+
+export const postCountry = (dataCountry) => {
+  return async (dispatch) => {
+    dispatch({
+      type: POST_COUNTRY,
+      payload: {
+        data: false,
+        loading: true,
+        errorMsg: false,
+      },
+    });
+
+    await axios({
+      method: "POST",
+      url: "http://localhost:4000/country",
+      timeout: 120000,
+      data: dataCountry,
+    })
+      .then((res) => {
+        dispatch({
+          type: POST_COUNTRY,
+          payload: {
+            data: res.data,
+            loading: false,
+            errorMsg: false,
+          },
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: POST_COUNTRY,
+          payload: {
+            data: false,
+            loading: false,
+            errorMsg: err.response.data.message,
+          },
+        });
+      });
+  };
+};
+
+export const updateCountry = (dataCountry, idCountry) => {
+  return async (dispatch) => {
+    dispatch({
+      type: UPDATE_COUNTRY,
+      payload: {
+        data: false,
+        loading: true,
+        errorMsg: false,
+      },
+    });
+
+    await axios({
+      method: "PUT",
+      url: "http://localhost:4000/country/" + idCountry,
+      data: dataCountry,
+      timeout: 120000,
+    })
+      .then((res) => {
+        dispatch({
+          type: UPDATE_COUNTRY,
+          payload: {
+            data: res.data,
+            loading: false,
+            errorMsg: false,
+          },
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: UPDATE_COUNTRY,
+          payload: {
+            data: false,
+            loading: false,
+            errorMsg: err.response.data.message,
+          },
+        });
+      });
+  };
+};
+
+export const deleteCountry = (idCountry) => {
+  return async (dispatch) => {
+    dispatch({
+      type: DELETE_COUNTRY,
+      payload: {
+        data: false,
+        loading: true,
+        errorMsg: false,
+      },
+    });
+
+    await axios({
+      method: "DELETE",
+      url: "http://localhost:4000/country/" + idCountry,
+      timeout: 120000,
+    })
+      .then((res) => {
+        dispatch({
+          type: DELETE_COUNTRY,
+          payload: {
+            data: res.data,
+            loading: false,
+            errorMsg: false,
+          },
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: DELETE_COUNTRY,
           payload: {
             data: false,
             loading: false,
