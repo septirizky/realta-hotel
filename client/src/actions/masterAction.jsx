@@ -20,6 +20,13 @@ export const UPDATE_COUNTRY = "UPDATE_COUNTRY";
 // delete locations country
 export const DELETE_COUNTRY = "DELETE_COUNTRY";
 
+// add locations province
+export const POST_PROVINCE = "POST_PROVINCE";
+// update locations province
+export const UPDATE_PROVINCE = "UPDATE_PROVINCE";
+// delete locations province
+export const DELETE_PROVINCE = "DELETE_PROVINCE";
+
 // locations
 export const getRegions = () => {
   return async (dispatch) => {
@@ -337,7 +344,7 @@ export const deleteCountry = (idCountry) => {
   };
 };
 
-export const getProvince = (idCountry) => {
+export const getProvince = (idProvince) => {
   return async (dispatch) => {
     dispatch({
       type: GET_PROVINCE,
@@ -350,7 +357,7 @@ export const getProvince = (idCountry) => {
 
     await axios({
       method: "GET",
-      url: "http://localhost:4000/province/" + idCountry,
+      url: "http://localhost:4000/province/" + idProvince,
       timeout: 120000,
     })
       .then((res) => {
@@ -366,6 +373,125 @@ export const getProvince = (idCountry) => {
       .catch((err) => {
         dispatch({
           type: GET_PROVINCE,
+          payload: {
+            data: false,
+            loading: false,
+            errorMsg: err.response.data.message,
+          },
+        });
+      });
+  };
+};
+
+export const postProvince = (dataProvince) => {
+  return async (dispatch) => {
+    dispatch({
+      type: POST_PROVINCE,
+      payload: {
+        data: false,
+        loading: true,
+        errorMsg: false,
+      },
+    });
+
+    await axios({
+      method: "POST",
+      url: "http://localhost:4000/province",
+      timeout: 120000,
+      data: dataProvince,
+    })
+      .then((res) => {
+        dispatch({
+          type: POST_PROVINCE,
+          payload: {
+            data: res.data,
+            loading: false,
+            errorMsg: false,
+          },
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: POST_PROVINCE,
+          payload: {
+            data: false,
+            loading: false,
+            errorMsg: err.response.data.message,
+          },
+        });
+      });
+  };
+};
+
+export const updateProvince = (dataProvince, idProvince) => {
+  return async (dispatch) => {
+    dispatch({
+      type: UPDATE_PROVINCE,
+      payload: {
+        data: false,
+        loading: true,
+        errorMsg: false,
+      },
+    });
+
+    await axios({
+      method: "PUT",
+      url: "http://localhost:4000/province/" + idProvince,
+      data: dataProvince,
+      timeout: 120000,
+    })
+      .then((res) => {
+        dispatch({
+          type: UPDATE_PROVINCE,
+          payload: {
+            data: res.data,
+            loading: false,
+            errorMsg: false,
+          },
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: UPDATE_COUNTRY,
+          payload: {
+            data: false,
+            loading: false,
+            errorMsg: err.response.data.message,
+          },
+        });
+      });
+  };
+};
+
+export const deleteProvince = (idProvince) => {
+  return async (dispatch) => {
+    dispatch({
+      type: DELETE_PROVINCE,
+      payload: {
+        data: false,
+        loading: true,
+        errorMsg: false,
+      },
+    });
+
+    await axios({
+      method: "DELETE",
+      url: "http://localhost:4000/province/" + idProvince,
+      timeout: 120000,
+    })
+      .then((res) => {
+        dispatch({
+          type: DELETE_PROVINCE,
+          payload: {
+            data: res.data,
+            loading: false,
+            errorMsg: false,
+          },
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: DELETE_PROVINCE,
           payload: {
             data: false,
             loading: false,

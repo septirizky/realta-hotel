@@ -1,6 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
 import { AiOutlinePlus } from "react-icons/ai";
 import { FaPencilAlt, FaTimes } from "react-icons/fa";
+import AddProvince from "./modal/AddProvince";
+import EditProvince from "./modal/EditProvince";
+import DeleteProv from "./modal/deleteProvince";
 
 const GetAllProvinceByCountry = (props) => {
   const {
@@ -9,6 +13,76 @@ const GetAllProvinceByCountry = (props) => {
     getProvinceError,
     getCityAllByProvinceId,
   } = props;
+
+  const {
+    register,
+    resetField,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const [showModalAddProvince, setShowModalAddProvince] = useState(false);
+
+  const [showModalEditProvince, setShowModalEditProvince] = useState(false);
+
+  const [showModalDeleteProvince, setShowModalDeleteProvince] = useState(false);
+
+  const [msg, setMsg] = useState(false);
+
+  const [countryName, setCountryName] = useState("");
+
+  const [countryId, setCountryId] = useState();
+
+  const [provinceName, setProvinceName] = useState("");
+
+  const [provinceId, setProvinceId] = useState();
+
+  const handleShowAddProvince = (countryId, countryName) => {
+    setCountryId(countryId);
+    setCountryName(countryName);
+    setShowModalAddProvince(true);
+  };
+
+  const handleCloseAddProvince = () => {
+    setMsg("");
+    resetField("prov_name");
+    setCountryName("");
+    setCountryId();
+    setShowModalAddProvince(false);
+  };
+
+  const handleShowEditProvince = (
+    countryId,
+    countryName,
+    provinceId,
+    provinceName
+  ) => {
+    setCountryId(countryId);
+    setCountryName(countryName);
+    setProvinceId(provinceId);
+    setProvinceName(provinceName);
+    setShowModalEditProvince(true);
+  };
+
+  const handleCloseEditProvince = () => {
+    setMsg("");
+    resetField("prov_name");
+    setCountryName("");
+    setCountryId();
+    setShowModalEditProvince(false);
+  };
+
+  const handleShowDeleteProvince = (provinceId, provinceName) => {
+    setProvinceId(provinceId);
+    setProvinceName(provinceName);
+    setShowModalDeleteProvince(true);
+  };
+
+  const handleCloseDeleteProvince = () => {
+    setProvinceId("");
+    setProvinceName("");
+    setShowModalDeleteProvince(false);
+  };
 
   return (
     <>
@@ -24,7 +98,16 @@ const GetAllProvinceByCountry = (props) => {
                 <th>#</th>
                 <th>Province Name</th>
                 <th className="align-border-right">
-                  <button type="button" className="button-transparan">
+                  <button
+                    type="button"
+                    className="button-transparan"
+                    onClick={() =>
+                      handleShowAddProvince(
+                        getProvinceResult[0].prov_country.country_id,
+                        getProvinceResult[0].prov_country.country_name
+                      )
+                    }
+                  >
                     <AiOutlinePlus /> Add
                   </button>
                 </th>
@@ -47,7 +130,32 @@ const GetAllProvinceByCountry = (props) => {
                     <td>{index + 1}</td>
                     <td>{province.prov_name}</td>
                     <td className="align-border-right">
-                      <FaPencilAlt /> Edit <FaTimes /> Delete
+                      <button
+                        type="button"
+                        className="button-update-transparan"
+                        onClick={() =>
+                          handleShowEditProvince(
+                            province.prov_country.country_id,
+                            province.prov_country.country_name,
+                            province.prov_id,
+                            province.prov_name
+                          )
+                        }
+                      >
+                        <FaPencilAlt /> Edit
+                      </button>
+                      <button
+                        type="button"
+                        className="button-delete-transparan"
+                        onClick={() =>
+                          handleShowDeleteProvince(
+                            province.prov_id,
+                            province.prov_name
+                          )
+                        }
+                      >
+                        <FaTimes /> Delete
+                      </button>
                     </td>
                   </tr>
                 </tbody>
@@ -76,6 +184,43 @@ const GetAllProvinceByCountry = (props) => {
       ) : (
         ""
       )}
+
+      <AddProvince
+        showModalProvince={showModalAddProvince}
+        handleCloseAddProvince={handleCloseAddProvince}
+        msg={msg}
+        setMsg={setMsg}
+        register={register}
+        resetField={resetField}
+        handleSubmit={handleSubmit}
+        countryId={countryId}
+        countryName={countryName}
+        errors={errors}
+      />
+
+      <EditProvince
+        showModalProvince={showModalEditProvince}
+        handleCloseEditProvince={handleCloseEditProvince}
+        msg={msg}
+        setMsg={setMsg}
+        register={register}
+        resetField={resetField}
+        handleSubmit={handleSubmit}
+        countryId={countryId}
+        countryName={countryName}
+        provinceId={provinceId}
+        provinceName={provinceName}
+        setProvinceName={setProvinceName}
+        errors={errors}
+      />
+
+      <DeleteProv
+        showModalProvince={showModalDeleteProvince}
+        handleCloseDeleteProvince={handleCloseDeleteProvince}
+        provinceId={provinceId}
+        provinceName={provinceName}
+        handleSubmit={handleSubmit}
+      />
     </>
   );
 };

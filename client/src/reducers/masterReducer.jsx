@@ -9,6 +9,9 @@ import {
   GET_PROVINCE,
   GET_CITY,
   DELETE_COUNTRY,
+  POST_PROVINCE,
+  UPDATE_PROVINCE,
+  DELETE_PROVINCE,
 } from "../actions/masterAction";
 
 const initialState = {
@@ -42,6 +45,15 @@ const initialState = {
   deleteCountryResult: false,
   deleteCountryLoading: false,
   deleteCountryError: false,
+  postProvResult: false,
+  postProvLoading: false,
+  postProvError: false,
+  updateProvResult: false,
+  updateProvLoading: false,
+  updateProvError: false,
+  deleteProvResult: false,
+  deleteProvLoading: false,
+  deleteProvError: false,
 };
 const masterReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -107,6 +119,27 @@ const masterReducer = (state = initialState, action) => {
         getProvinceResult: action.payload.data,
         getProvinveLoading: action.payload.loading,
         getProvinceError: action.payload.errorMsg,
+      };
+    case POST_PROVINCE:
+      return {
+        ...state,
+        postProvResult: action.payload.data,
+        postProvLoading: action.payload.loading,
+        postProvError: action.payload.errorMsg,
+      };
+    case UPDATE_PROVINCE:
+      return {
+        ...state,
+        updateProvResult: action.payload.data,
+        updateProvLoading: action.payload.loading,
+        updateProvError: action.payload.errorMsg,
+      };
+    case DELETE_PROVINCE:
+      return {
+        ...state,
+        deleteProvResult: action.payload.data,
+        deleteProvLoading: action.payload.loading,
+        deleteProvError: action.payload.errorMsg,
       };
     case GET_CITY:
       return {

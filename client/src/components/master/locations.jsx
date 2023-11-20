@@ -33,9 +33,6 @@ const LocationsMaster = () => {
     postRegionResult,
     updateRegionResult,
     deleteRegionResult,
-    postCountryResult,
-    updateCountryResult,
-    deleteCountryResult,
   } = useSelector((state) => state.masterReducer);
 
   const dispatch = useDispatch();
@@ -54,15 +51,7 @@ const LocationsMaster = () => {
 
   useEffect(() => {
     dispatch(getRegions());
-  }, [
-    dispatch,
-    postRegionResult,
-    updateRegionResult,
-    deleteRegionResult,
-    postCountryResult,
-    updateCountryResult,
-    deleteCountryResult,
-  ]);
+  }, [dispatch, postRegionResult, updateRegionResult, deleteRegionResult]);
 
   return (
     <>
