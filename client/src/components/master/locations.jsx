@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { FaHome } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import SidebarMaster from "./layout/sidebar/sidebarMaster";
@@ -33,11 +33,20 @@ const LocationsMaster = () => {
     postRegionResult,
     updateRegionResult,
     deleteRegionResult,
+    postCountryResult,
+    updateCountryResult,
+    deleteCountryResult,
   } = useSelector((state) => state.masterReducer);
 
   const dispatch = useDispatch();
 
-  const getCountryAllByRegionCode = (idRegion) => {
+  const [regionName, setRegionName] = useState("");
+
+  const [regionId, setRegionId] = useState();
+
+  const getCountryAllByRegionCode = (idRegion, regionName) => {
+    setRegionId(idRegion);
+    setRegionName(regionName);
     dispatch(getCountry(idRegion));
   };
 
@@ -80,9 +89,17 @@ const LocationsMaster = () => {
           />
 
           <GetAllCountryByRegion
+            regionId={regionId}
+            regionName={regionName}
+            setRegionName={setRegionName}
+            setRegionId={setRegionId}
+            getCountryAllByRegionCode={getCountryAllByRegionCode}
             getCountryResult={getCountryResult}
             getCountryLoading={getCountryLoading}
             getCountryError={getCountryError}
+            postCountryResult={postCountryResult}
+            updateCountryResult={updateCountryResult}
+            deleteCountryResult={deleteCountryResult}
             getProvinceAllByCountryId={getProvinceAllByCountryId}
           />
 

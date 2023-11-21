@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 import { FaPencilAlt, FaTimes } from "react-icons/fa";
 import AddCountry from "./modal/AddCountry";
@@ -12,6 +12,14 @@ const GetAllCountryByRegion = (props) => {
     getCountryLoading,
     getCountryError,
     getProvinceAllByCountryId,
+    regionName,
+    regionId,
+    setRegionName,
+    setRegionId,
+    getCountryAllByRegionCode,
+    postCountryResult,
+    updateCountryResult,
+    deleteCountryResult,
   } = props;
 
   const {
@@ -28,10 +36,6 @@ const GetAllCountryByRegion = (props) => {
   const [showModalDeleteCountry, setShowModalDeleteCountry] = useState(false);
 
   const [msg, setMsg] = useState("");
-
-  const [regionName, setRegionName] = useState("");
-
-  const [regionId, setRegionId] = useState();
 
   const [countryName, setCountryName] = useState("");
 
@@ -86,6 +90,13 @@ const GetAllCountryByRegion = (props) => {
     setShowModalDeleteCountry(true);
   };
 
+  useEffect(() => {
+    if (regionId !== undefined) {
+      getCountryAllByRegionCode(regionId, regionName);
+    }
+    // eslint-disable-next-line
+  }, [postCountryResult, updateCountryResult, deleteCountryResult]);
+
   return (
     <>
       {getCountryResult ? (
@@ -103,12 +114,7 @@ const GetAllCountryByRegion = (props) => {
                   <button
                     type="button"
                     className="button-transparan"
-                    onClick={() =>
-                      handleShowAddCountry(
-                        getCountryResult[0].country_region.region_code,
-                        getCountryResult[0].country_region.region_name
-                      )
-                    }
+                    onClick={() => handleShowAddCountry(regionId, regionName)}
                   >
                     <AiOutlinePlus /> Add
                   </button>

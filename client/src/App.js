@@ -7,6 +7,7 @@ import { TempNav } from "./components/master/layout/tempNav";
 import { Hr } from "./components/hr";
 import Master from "./components/master";
 import LocationsMaster from "./components/master/locations";
+import Policy from "./components/master/policy";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/hr" element={<Hr />} />
           <Route path="/master" element={<Master />} />
           <Route path="/master/locations" element={<LocationsMaster />} />
+          <Route path="/master/policy" element={<Policy />} />
         </Route>
       </Routes>
     </BrowserRouter>
