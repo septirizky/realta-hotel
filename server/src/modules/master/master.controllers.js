@@ -366,9 +366,9 @@ export const addressGetAll = async (req, res) => {
     const result = await models.address.findAll({
       order: [["addr_id", "ASC"]],
       include: {
-        model: models.provinces,
-        as: "addr_prov",
-        attributes: ["prov_name"],
+        model: models.city,
+        as: "addr_city",
+        attributes: ["city_id", "city_name"],
         required: true,
       },
     });
@@ -388,7 +388,7 @@ export const addressPost = async (req, res) => {
       addr_line_2,
       addr_postal_code,
       addr_spatial_location,
-      addr_prov_id,
+      addr_city_id,
     } = req.body;
 
     const result = await models.address.create({
@@ -396,7 +396,7 @@ export const addressPost = async (req, res) => {
       addr_line_2: addr_line_2,
       addr_postal_code: addr_postal_code,
       addr_spatial_location: addr_spatial_location,
-      addr_prov_id: addr_prov_id,
+      addr_city_id: addr_city_id,
     });
 
     return res
@@ -415,7 +415,7 @@ export const addressUpdate = async (req, res) => {
       addr_line_2,
       addr_postal_code,
       addr_spatial_location,
-      addr_prov_id,
+      addr_city_id,
     } = req.body;
 
     const result = await models.address.update(
@@ -424,7 +424,7 @@ export const addressUpdate = async (req, res) => {
         addr_line_2: addr_line_2,
         addr_postal_code: addr_postal_code,
         addr_spatial_location: addr_spatial_location,
-        addr_prov_id: addr_prov_id,
+        addr_city_id: addr_city_id,
         updatedat: new Date(),
       },
       { where: { addr_id: addr_id }, returning: true }

@@ -10,6 +10,7 @@ import _city from "./city.js";
 import _country from "./country.js";
 import _department from "./department.js";
 import _employee from "./employee.js";
+import _employee_department_history from "./employee_department_history.js";
 import _employee_pay_history from "./employee_pay_history.js";
 import _entity from "./entity.js";
 import _facilities from "./facilities.js";
@@ -84,6 +85,10 @@ function initModels(sequelize) {
   const country = _country.init(sequelize, DataTypes);
   const department = _department.init(sequelize, DataTypes);
   const employee = _employee.init(sequelize, DataTypes);
+  const employee_department_history = _employee_department_history.init(
+    sequelize,
+    DataTypes
+  );
   const employee_pay_history = _employee_pay_history.init(sequelize, DataTypes);
   const entity = _entity.init(sequelize, DataTypes);
   const facilities = _facilities.init(sequelize, DataTypes);
@@ -155,18 +160,6 @@ function initModels(sequelize) {
     through: policy_category_group,
     foreignKey: "poca_poli_id",
     otherKey: "poca_cagro_id",
-  });
-  members.belongsToMany(users, {
-    as: "usme_user_id_users",
-    through: user_members,
-    foreignKey: "usme_memb_name",
-    otherKey: "usme_user_id",
-  });
-  users.belongsToMany(members, {
-    as: "usme_memb_name_members",
-    through: user_members,
-    foreignKey: "usme_user_id",
-    otherKey: "usme_memb_name",
   });
   roles.belongsToMany(users, {
     as: "usro_user_id_users",
@@ -299,8 +292,24 @@ function initModels(sequelize) {
     as: "hotel_reviews",
     foreignKey: "hore_user_id",
   });
+  employee_department_history.belongsTo(department, {
+    as: "edhi_dept",
+    foreignKey: "edhi_dept_id",
+  });
+  department.hasMany(employee_department_history, {
+    as: "employee_department_histories",
+    foreignKey: "edhi_dept_id",
+  });
   employee.belongsTo(employee, { as: "emp_emp", foreignKey: "emp_emp_id" });
   employee.hasMany(employee, { as: "employees", foreignKey: "emp_emp_id" });
+  employee_pay_history.belongsTo(employee, {
+    as: "ephi_emp",
+    foreignKey: "ephi_emp_id",
+  });
+  employee.hasOne(employee_pay_history, {
+    as: "employee_pay_history",
+    foreignKey: "ephi_emp_id",
+  });
   work_order_detail.belongsTo(employee, {
     as: "wode_emp",
     foreignKey: "wode_emp_id",
@@ -327,6 +336,14 @@ function initModels(sequelize) {
     as: "work_order_details",
     foreignKey: "wode_seta_id",
   });
+  employee_department_history.belongsTo(shift, {
+    as: "edhi_shift",
+    foreignKey: "edhi_shift_id",
+  });
+  shift.hasMany(employee_department_history, {
+    as: "employee_department_histories",
+    foreignKey: "edhi_shift_id",
+  });
   work_orders.belongsTo(users, { as: "woro_user", foreignKey: "woro_user_id" });
   users.hasMany(work_orders, { as: "work_orders", foreignKey: "woro_user_id" });
   work_order_detail.belongsTo(work_orders, {
@@ -345,6 +362,8 @@ function initModels(sequelize) {
     as: "policy_category_groups",
     foreignKey: "poca_cagro_id",
   });
+  address.belongsTo(city, { as: "addr_city", foreignKey: "addr_city_id" });
+  city.hasMany(address, { as: "addresses", foreignKey: "addr_city_id" });
   provinces.belongsTo(country, {
     as: "prov_country",
     foreignKey: "prov_country_id",
@@ -361,8 +380,6 @@ function initModels(sequelize) {
     as: "policy_category_groups",
     foreignKey: "poca_poli_id",
   });
-  address.belongsTo(provinces, { as: "addr_prov", foreignKey: "addr_prov_id" });
-  provinces.hasMany(address, { as: "addresses", foreignKey: "addr_prov_id" });
   city.belongsTo(provinces, {
     as: "city_province",
     foreignKey: "city_province_id",
@@ -401,22 +418,6 @@ function initModels(sequelize) {
   users.hasMany(user_accounts, {
     as: "user_accounts",
     foreignKey: "usac_user_id",
-  });
-  user_members.belongsTo(members, {
-    as: "usme_memb_name_member",
-    foreignKey: "usme_memb_name",
-  });
-  members.hasMany(user_members, {
-    as: "user_members",
-    foreignKey: "usme_memb_name",
-  });
-  user_members.belongsTo(users, {
-    as: "usme_user",
-    foreignKey: "usme_user_id",
-  });
-  users.hasMany(user_members, {
-    as: "user_members",
-    foreignKey: "usme_user_id",
   });
   purchase_order_header.belongsTo(employee, {
     as: "pohe_emp",
@@ -546,11 +547,11 @@ function initModels(sequelize) {
     foreignKey: "uspra_addr_id",
   });
   user_members.belongsTo(members, {
-    as: "usme_memb_name_members_member",
+    as: "usme_memb_name_member",
     foreignKey: "usme_memb_name",
   });
   members.hasMany(user_members, {
-    as: "usme_memb_name_user_members",
+    as: "user_members",
     foreignKey: "usme_memb_name",
   });
   user_roles.belongsTo(roles, { as: "usro_role", foreignKey: "usro_role_id" });
@@ -564,13 +565,10 @@ function initModels(sequelize) {
     foreignKey: "ubpo_user_id",
   });
   user_members.belongsTo(users, {
-    as: "usme_user_user",
+    as: "usme_user",
     foreignKey: "usme_user_id",
   });
-  users.hasOne(user_members, {
-    as: "usme_user_user_member",
-    foreignKey: "usme_user_id",
-  });
+  users.hasOne(user_members, { as: "user_member", foreignKey: "usme_user_id" });
   user_password.belongsTo(users, {
     as: "uspa_user",
     foreignKey: "uspa_user_id",
@@ -601,6 +599,7 @@ function initModels(sequelize) {
     country,
     department,
     employee,
+    employee_department_history,
     employee_pay_history,
     entity,
     facilities,

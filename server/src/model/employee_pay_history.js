@@ -8,7 +8,11 @@ export default class employee_pay_history extends Model {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
-      primaryKey: true
+      primaryKey: true,
+      references: {
+        model: 'employee',
+        key: 'emp_id'
+      }
     },
     ephi_rate_exchange_date: {
       type: DataTypes.INTEGER,
@@ -35,6 +39,12 @@ export default class employee_pay_history extends Model {
       {
         name: "employee_pay_history_pkey",
         unique: true,
+        fields: [
+          { name: "ephi_emp_id" },
+        ]
+      },
+      {
+        name: "fki_employee_pay_history_ephi_emp_id_fkey",
         fields: [
           { name: "ephi_emp_id" },
         ]
