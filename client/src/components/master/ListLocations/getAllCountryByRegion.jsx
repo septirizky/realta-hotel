@@ -135,7 +135,10 @@ const GetAllCountryByRegion = (props) => {
                         id={`country_id${country.country_id}`}
                         value={country.country_id}
                         onChange={(e) =>
-                          getProvinceAllByCountryId(e.target.value)
+                          getProvinceAllByCountryId(
+                            e.target.value,
+                            country.country_name
+                          )
                         }
                       />
                     </td>

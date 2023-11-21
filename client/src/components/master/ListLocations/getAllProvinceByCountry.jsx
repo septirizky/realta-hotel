@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AiOutlinePlus } from "react-icons/ai";
 import { FaPencilAlt, FaTimes } from "react-icons/fa";
@@ -8,9 +8,17 @@ import DeleteProv from "./modal/deleteProvince";
 
 const GetAllProvinceByCountry = (props) => {
   const {
+    countryId,
+    countryName,
+    setCountryId,
+    setCountryName,
+    getProvinceAllByCountryId,
     getProvinceResult,
     getProvinceLoading,
     getProvinceError,
+    postProvResult,
+    updateProvResult,
+    deleteProvResult,
     getCityAllByProvinceId,
   } = props;
 
@@ -28,10 +36,6 @@ const GetAllProvinceByCountry = (props) => {
   const [showModalDeleteProvince, setShowModalDeleteProvince] = useState(false);
 
   const [msg, setMsg] = useState(false);
-
-  const [countryName, setCountryName] = useState("");
-
-  const [countryId, setCountryId] = useState();
 
   const [provinceName, setProvinceName] = useState("");
 
@@ -84,6 +88,13 @@ const GetAllProvinceByCountry = (props) => {
     setShowModalDeleteProvince(false);
   };
 
+  useEffect(() => {
+    if (countryId !== undefined) {
+      getProvinceAllByCountryId(countryId, countryName);
+    }
+    // eslint-disable-next-line
+  }, [postProvResult, updateProvResult, deleteProvResult]);
+
   return (
     <>
       {getProvinceResult ? (
@@ -102,10 +113,7 @@ const GetAllProvinceByCountry = (props) => {
                     type="button"
                     className="button-transparan"
                     onClick={() =>
-                      handleShowAddProvince(
-                        getProvinceResult[0].prov_country.country_id,
-                        getProvinceResult[0].prov_country.country_name
-                      )
+                      handleShowAddProvince(countryId, countryName)
                     }
                   >
                     <AiOutlinePlus /> Add

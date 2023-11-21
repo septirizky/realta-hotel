@@ -36,6 +36,9 @@ const LocationsMaster = () => {
     postCountryResult,
     updateCountryResult,
     deleteCountryResult,
+    postProvResult,
+    updateProvResult,
+    deleteProvResult,
   } = useSelector((state) => state.masterReducer);
 
   const dispatch = useDispatch();
@@ -44,13 +47,19 @@ const LocationsMaster = () => {
 
   const [regionId, setRegionId] = useState();
 
+  const [countryName, setCountryName] = useState("");
+
+  const [countryId, setCountryId] = useState();
+
   const getCountryAllByRegionCode = (idRegion, regionName) => {
     setRegionId(idRegion);
     setRegionName(regionName);
     dispatch(getCountry(idRegion));
   };
 
-  const getProvinceAllByCountryId = (idCountry) => {
+  const getProvinceAllByCountryId = (idCountry, countryName) => {
+    setCountryId(idCountry);
+    setCountryName(countryName);
     dispatch(getProvince(idCountry));
   };
 
@@ -104,9 +113,17 @@ const LocationsMaster = () => {
           />
 
           <GetAllProvinceByCountry
+            countryId={countryId}
+            countryName={countryName}
+            setCountryId={setCountryId}
+            setCountryName={setCountryName}
+            getProvinceAllByCountryId={getProvinceAllByCountryId}
             getProvinceResult={getProvinceResult}
             getProvinceLoading={getProvinceLoading}
             getProvinceError={getProvinceError}
+            postProvResult={postProvResult}
+            updateProvResult={updateProvResult}
+            deleteProvResult={deleteProvResult}
             getCityAllByProvinceId={getCityAllByProvinceId}
           />
 
