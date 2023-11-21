@@ -10,20 +10,37 @@ const getvendor = async (req, res) => {
   }
 };
 
+const getvendorbyId = async (req, res) => {
+  try {
+    console.log(req.params.id);
+    const result = await models.vendor.findOne({
+      where: { vendor_entity_id: req.params.id },
+    });
+    res.status(201).json({ data: result, message: "Berhasil!" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 const insertvendor = async (req, res) => {
   try {
     const {
-      vendor_entity_id,
       vendor_name,
-      vendor_active,
+      status,
       vendor_priority,
       vendro_weburl,
       vendor_register_date,
     } = req.body;
+    console.log(
+      vendor_name,
+      status,
+      vendor_priority,
+      vendro_weburl,
+      vendor_register_date
+    );
     const result = await models.vendor.create({
-      vendor_entity_id: vendor_entity_id,
       vendor_name: vendor_name,
-      vendor_active: vendor_active,
+      vendor_active: status,
       vendor_register_date: vendor_register_date,
       vendor_priority: vendor_priority,
       vendro_weburl: vendro_weburl,
@@ -62,7 +79,7 @@ const updatevendor = async (req, res) => {
         vendro_weburl: vendro_weburl,
         vendor_register_date: vendor_register_date,
       },
-      { where: { vendor_entity_id: req.params.id }, returning: true }
+      { where: { vendor_entity_id: req.body.id }, returning: true }
     );
     res.status(201).json({ data: result, message: "Update Success" });
   } catch (error) {
@@ -73,13 +90,14 @@ const updatevendor = async (req, res) => {
 //CRUD Vendor Product
 const getstokvendorproduct = async (req, res) => {
   try {
-    const query = `select purchase.stocks.stock_name,purchase.vendor_product.vepro_qty_stocked,
-                    purchase.vendor_product.vepro_qty_remaining,
+    const query = `select purchase.stocks.stock_name,purchase.vendor_product.vepro_qty_stocked,purchase.vendor.vendor_entity_id,
+                    purchase.vendor_product.vepro_qty_remaining,purchase.stocks.stock_id,
                     purchase.vendor_product.vepro_price from purchase.stocks join 
                     purchase.vendor_product on 
-                    purchase.vendor_product.vepro_stock_id=purchase.stocks.stock_id`;
+                    purchase.vendor_product.vepro_stock_id=purchase.stocks.stock_id join purchase.vendor on
+                    purchase.vendor.vendor_entity_id=purchase.vendor_product.vepro_vendor_id where purchase.vendor_product.vepro_vendor_id=${req.params.id}`;
     const result = await sequelize.query(query);
-    res.status(201).json({ data: result, message: "Success" });
+    res.status(201).json({ data: result[0], message: "Success" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -304,7 +322,9 @@ const listpurchasing = async (req, res) => {
     const query = `select * from purchase.stocks join purchase.stock_detail on
                     purchase.stock_detail.stod_stock_id=purchase.stocks.stock_id
                     join purchase.vendor_product on purchase.vendor_product.vepro_stock_id=purchase.stocks.stock_id
-                    join purchase.vendor on purchase.vendor.vendor_entity_id=purchase.vendor_product.vepro_vendor_id`;
+                    join purchase.vendor on purchase.vendor.vendor_entity_id=purchase.vendor_product.vepro_vendor_id
+                    join purchase.purchase_order_header on purchase.stock_detail.stod_pohe_id=purchase.purchase_order_header.pohe_id
+                    join purchase.purchase_order_detail on purchase.purchase_order_header.pohe_id=purchase.purchase_order_detail.pode_pohe_id`;
     const result = await sequelize.query(query);
     res.status(201).json({ data: result[0], message: "Success" });
   } catch (error) {
@@ -429,6 +449,7 @@ const updatepurchaseorderdetail = async (req, res) => {
 
 export default {
   getvendor,
+  getvendorbyId,
   insertvendor,
   deletevendor,
   updatevendor,

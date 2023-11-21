@@ -19,7 +19,8 @@ const upload = multer({ storage: storage });
 purchaseRouters.get("/vendor", purchase.getvendor);
 purchaseRouters.post("/insertvendor", purchase.insertvendor);
 purchaseRouters.delete("/deletevendor/:id", purchase.deletevendor);
-purchaseRouters.post("/updatevendor/:id", purchase.updatevendor);
+purchaseRouters.post("/updatevendor", purchase.updatevendor);
+purchaseRouters.get("/vendorbyId/:id", purchase.getvendorbyId);
 
 //Stock
 purchaseRouters.get("/liststocks", purchase.liststock);
@@ -41,7 +42,10 @@ purchaseRouters.get("/detailinfostock", purchase.detailinfostock);
 purchaseRouters.post("/updatestockdetail", purchase.updatestockdetail);
 
 //Vendor Product
-purchaseRouters.get("/liststockvendorproduct", purchase.getstokvendorproduct);
+purchaseRouters.get(
+  "/liststockvendorproduct/:id",
+  purchase.getstokvendorproduct
+);
 purchaseRouters.post(
   "/insertstockvendorproduct",
   purchase.insertstokvendorproduct
