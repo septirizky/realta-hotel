@@ -132,7 +132,12 @@ const GetAllProvinceByCountry = (props) => {
                         name="prov_id"
                         id={`prov_id${province.prov_id}`}
                         value={province.prov_id}
-                        onChange={(e) => getCityAllByProvinceId(e.target.value)}
+                        onChange={(e) =>
+                          getCityAllByProvinceId(
+                            e.target.value,
+                            province.prov_name
+                          )
+                        }
                       />
                     </td>
                     <td>{index + 1}</td>

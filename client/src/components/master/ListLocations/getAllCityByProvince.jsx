@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AiOutlinePlus } from "react-icons/ai";
 import { FaPencilAlt, FaTimes } from "react-icons/fa";
@@ -7,7 +7,19 @@ import EditCity from "./modal/EditCity";
 import DeleteCity from "./modal/deleteCity";
 
 const GetAllCityByProvince = (props) => {
-  const { getCityResult, getCityLoading, getCityError } = props;
+  const {
+    provinceId,
+    provinceName,
+    setProvinceId,
+    setProvinceName,
+    getCityAllByProvinceId,
+    getCityResult,
+    getCityLoading,
+    getCityError,
+    postCityResult,
+    updateCityResult,
+    deleteCityResult,
+  } = props;
 
   const {
     register,
@@ -23,10 +35,6 @@ const GetAllCityByProvince = (props) => {
   const [showModalDeleteCity, setShowModalDeleteCity] = useState(false);
 
   const [msg, setMsg] = useState(false);
-
-  const [provinceName, setProvinceName] = useState("");
-
-  const [provinceId, setProvinceId] = useState();
 
   const [cityName, setCityName] = useState("");
 
@@ -74,6 +82,13 @@ const GetAllCityByProvince = (props) => {
     setShowModalDeleteCity(false);
   };
 
+  useEffect(() => {
+    if (provinceId !== undefined) {
+      getCityAllByProvinceId(provinceId, provinceName);
+    }
+    // eslint-disable-next-line
+  }, [postCityResult, updateCityResult, deleteCityResult]);
+
   return (
     <>
       {getCityResult ? (
@@ -89,12 +104,7 @@ const GetAllCityByProvince = (props) => {
                   <button
                     type="button"
                     className="button-transparan"
-                    onClick={() =>
-                      handleShowAddCity(
-                        getCityResult[0].city_province.prov_id,
-                        getCityResult[0].city_province.prov_name
-                      )
-                    }
+                    onClick={() => handleShowAddCity(provinceId, provinceName)}
                   >
                     <AiOutlinePlus /> Add
                   </button>
