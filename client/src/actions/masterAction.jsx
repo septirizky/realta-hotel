@@ -27,6 +27,13 @@ export const UPDATE_PROVINCE = "UPDATE_PROVINCE";
 // delete locations province
 export const DELETE_PROVINCE = "DELETE_PROVINCE";
 
+// add locations city
+export const POST_CITY = "POST_CITY";
+// update locations city
+export const UPDATE_CITY = "UPDATE_CITY";
+// delete locations city
+export const DELETE_CITY = "DELETE_CITY";
+
 // locations
 export const getRegions = () => {
   return async (dispatch) => {
@@ -531,6 +538,125 @@ export const getCity = (idProvince) => {
       .catch((err) => {
         dispatch({
           type: GET_CITY,
+          payload: {
+            data: false,
+            loading: false,
+            errorMsg: err.response.data.message,
+          },
+        });
+      });
+  };
+};
+
+export const postCity = (dataCity) => {
+  return async (dispatch) => {
+    dispatch({
+      type: POST_CITY,
+      payload: {
+        data: false,
+        loading: true,
+        errorMsg: false,
+      },
+    });
+
+    await axios({
+      method: "POST",
+      url: "http://localhost:4000/city",
+      timeout: 120000,
+      data: dataCity,
+    })
+      .then((res) => {
+        dispatch({
+          type: POST_CITY,
+          payload: {
+            data: res.data,
+            loading: false,
+            errorMsg: false,
+          },
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: POST_CITY,
+          payload: {
+            data: false,
+            loading: false,
+            errorMsg: err.response.data.message,
+          },
+        });
+      });
+  };
+};
+
+export const updateCity = (dataCity, idCity) => {
+  return async (dispatch) => {
+    dispatch({
+      type: UPDATE_CITY,
+      payload: {
+        data: false,
+        loading: true,
+        errorMsg: false,
+      },
+    });
+
+    await axios({
+      method: "PUT",
+      url: "http://localhost:4000/city/" + idCity,
+      data: dataCity,
+      timeout: 120000,
+    })
+      .then((res) => {
+        dispatch({
+          type: UPDATE_CITY,
+          payload: {
+            data: res.data,
+            loading: false,
+            errorMsg: false,
+          },
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: UPDATE_CITY,
+          payload: {
+            data: false,
+            loading: false,
+            errorMsg: err.response.data.message,
+          },
+        });
+      });
+  };
+};
+
+export const deleteCity = (idCity) => {
+  return async (dispatch) => {
+    dispatch({
+      type: DELETE_CITY,
+      payload: {
+        data: false,
+        loading: true,
+        errorMsg: false,
+      },
+    });
+
+    await axios({
+      method: "DELETE",
+      url: "http://localhost:4000/city/" + idCity,
+      timeout: 120000,
+    })
+      .then((res) => {
+        dispatch({
+          type: DELETE_CITY,
+          payload: {
+            data: res.data,
+            loading: false,
+            errorMsg: false,
+          },
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: DELETE_CITY,
           payload: {
             data: false,
             loading: false,
