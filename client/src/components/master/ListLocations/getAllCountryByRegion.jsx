@@ -44,8 +44,6 @@ const GetAllCountryByRegion = (props) => {
   const handleCloseAddCountry = () => {
     setMsg("");
     resetField("country_name");
-    setRegionName("");
-    setRegionId();
     setShowModalAddCountry(false);
   };
 
@@ -54,8 +52,6 @@ const GetAllCountryByRegion = (props) => {
     resetField("country_name");
     setCountryName("");
     setCountryId("");
-    setRegionName("");
-    setRegionId("");
     setShowModalEditCountry(false);
   };
 

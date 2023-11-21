@@ -49,8 +49,6 @@ const GetAllCityByProvince = (props) => {
   const handleCloseAddCity = () => {
     setMsg("");
     resetField("city_name");
-    setProvinceId();
-    setProvinceName("");
     setShowModalAddCity(false);
   };
 
@@ -65,8 +63,6 @@ const GetAllCityByProvince = (props) => {
   const handleCloseEditCity = () => {
     setMsg("");
     resetField("city_name");
-    setProvinceName("");
-    setProvinceId();
     setShowModalEditCity(false);
   };
 

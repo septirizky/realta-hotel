@@ -50,8 +50,6 @@ const GetAllProvinceByCountry = (props) => {
   const handleCloseAddProvince = () => {
     setMsg("");
     resetField("prov_name");
-    setCountryName("");
-    setCountryId();
     setShowModalAddProvince(false);
   };
 
@@ -71,8 +69,6 @@ const GetAllProvinceByCountry = (props) => {
   const handleCloseEditProvince = () => {
     setMsg("");
     resetField("prov_name");
-    setCountryName("");
-    setCountryId();
     setShowModalEditProvince(false);
   };
 
