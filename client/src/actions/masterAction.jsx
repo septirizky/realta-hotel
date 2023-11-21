@@ -6,6 +6,9 @@ export const GET_COUNTRY = "GET_COUNTRY";
 export const GET_PROVINCE = "GET_PROVINCE";
 export const GET_CITY = "GET_CITY";
 
+// show policy
+export const GET_POLICY = "GET_POLICY";
+
 // add locations region
 export const POST_REGION = "POST_REGION";
 // update locations region
@@ -657,6 +660,46 @@ export const deleteCity = (idCity) => {
       .catch((err) => {
         dispatch({
           type: DELETE_CITY,
+          payload: {
+            data: false,
+            loading: false,
+            errorMsg: err.response.data.message,
+          },
+        });
+      });
+  };
+};
+
+// policy
+export const getPolicy = () => {
+  return async (dispatch) => {
+    dispatch({
+      type: GET_POLICY,
+      payload: {
+        data: false,
+        loading: true,
+        errorMsg: false,
+      },
+    });
+
+    await axios({
+      method: "GET",
+      url: "http://localhost:4000/policy",
+      timeout: 120000,
+    })
+      .then((res) => {
+        dispatch({
+          type: GET_POLICY,
+          payload: {
+            data: res.data.data,
+            loading: false,
+            errorMsg: false,
+          },
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: GET_POLICY,
           payload: {
             data: false,
             loading: false,
