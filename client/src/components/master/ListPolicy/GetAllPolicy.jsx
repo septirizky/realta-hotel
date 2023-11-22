@@ -6,6 +6,8 @@ import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 import DetailPolicy from "./modal/DetailPolicy";
 import { useForm } from "react-hook-form";
 import AddPolicy from "./modal/AddPolicy";
+import EditPolicy from "./modal/EditPolicy";
+import DeletePolicy from "./modal/DeletePolicy";
 
 const GetAllPolicy = (props) => {
   const { getPolicyResult, getPolicyLoading, getPolicyError } = props;
@@ -15,6 +17,10 @@ const GetAllPolicy = (props) => {
   const [showModalDetailPolicy, setShowModalDetailPolicy] = useState(false);
 
   const [showModalAddPolicy, setShowModalAddPolicy] = useState(false);
+
+  const [showModalEditPolicy, setShowModalEditPolicy] = useState(false);
+
+  const [showModalDeletePolicy, setShowModalDeletePolicy] = useState(false);
 
   const [policyId, setPolicyId] = useState();
 
@@ -30,6 +36,30 @@ const GetAllPolicy = (props) => {
     resetField("poli_name");
     resetField("poli_description");
     setShowModalAddPolicy(false);
+  };
+
+  const showEditPolicy = (policyName, policyDesc, policyId) => {
+    setPolicyId(policyId);
+    setPolicyName(policyName);
+    setPolicyDescription(policyDesc);
+    setShowModalEditPolicy(true);
+  };
+
+  const closeEditPolicy = () => {
+    resetField("poli_id");
+    resetField("poli_name");
+    resetField("poli_description");
+    setShowModalEditPolicy(false);
+  };
+
+  const showDeletePolicy = (policyName, policyId) => {
+    setPolicyName(policyName);
+    setPolicyId(policyId);
+    setShowModalDeletePolicy(true);
+  };
+
+  const closeDeletePolicy = () => {
+    setShowModalDeletePolicy(false);
   };
 
   const getShowDetailPolicy = (policyId, policyName, policyDescription) => {
@@ -93,7 +123,28 @@ const GetAllPolicy = (props) => {
                         <MdKeyboardDoubleArrowRight />
                       </button>
                     </span>
-                    <FaPencilAlt /> Edit <FaTimes /> Delete
+                    <button
+                      type="button"
+                      className="button-update-transparan"
+                      onClick={() =>
+                        showEditPolicy(
+                          policy.poli_name,
+                          policy.poli_description,
+                          policy.poli_id
+                        )
+                      }
+                    >
+                      <FaPencilAlt /> Edit
+                    </button>
+                    <button
+                      type="button"
+                      className="button-delete-transparan"
+                      onClick={() =>
+                        showDeletePolicy(policy.poli_name, policy.poli_id)
+                      }
+                    >
+                      <FaTimes /> Delete
+                    </button>
                   </td>
                 </tr>
               </tbody>
@@ -136,6 +187,27 @@ const GetAllPolicy = (props) => {
         handleCloseAddPolicy={closeAddPolicy}
         register={register}
         resetField={resetField}
+        handleSubmit={handleSubmit}
+      />
+
+      <EditPolicy
+        showModalPolicy={showModalEditPolicy}
+        handleCloseEditPolicy={closeEditPolicy}
+        register={register}
+        resetField={resetField}
+        handleSubmit={handleSubmit}
+        policyId={policyId}
+        policyName={policyName}
+        setPolicyName={setPolicyName}
+        policyDescription={policyDescription}
+        setPolicyDescription={setPolicyDescription}
+      />
+
+      <DeletePolicy
+        showModalPolicy={showModalDeletePolicy}
+        handleCloseDeletePolicy={closeDeletePolicy}
+        policyName={policyName}
+        policyId={policyId}
         handleSubmit={handleSubmit}
       />
     </>

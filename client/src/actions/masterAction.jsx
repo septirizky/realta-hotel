@@ -39,6 +39,10 @@ export const DELETE_CITY = "DELETE_CITY";
 
 // add policy
 export const POST_POLICY = "POST_POLICY";
+// edit policy
+export const UPDATE_POLICY = "UPDATE_POLICY";
+// delete policy
+export const DELETE_POLICY = "DELETE_POLICY";
 
 // locations
 export const getRegions = () => {
@@ -743,6 +747,85 @@ export const postPolicy = (dataPolicy) => {
       .catch((err) => {
         dispatch({
           type: POST_POLICY,
+          payload: {
+            data: false,
+            loading: false,
+            errorMsg: err.response.data.message,
+          },
+        });
+      });
+  };
+};
+
+export const updatePolicy = (dataPolicy, idPolicy) => {
+  return async (dispatch) => {
+    dispatch({
+      type: UPDATE_POLICY,
+      payload: {
+        data: false,
+        loading: true,
+        errorMsg: false,
+      },
+    });
+
+    await axios({
+      method: "PUT",
+      url: "http://localhost:4000/policy/" + idPolicy,
+      data: dataPolicy,
+      timeout: 120000,
+    })
+      .then((res) => {
+        dispatch({
+          type: UPDATE_POLICY,
+          payload: {
+            data: res.data,
+            loading: false,
+            errorMsg: false,
+          },
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: UPDATE_POLICY,
+          payload: {
+            data: false,
+            loading: false,
+            errorMsg: err.response.data.message,
+          },
+        });
+      });
+  };
+};
+
+export const deletePolicy = (idPolicy) => {
+  return async (dispatch) => {
+    dispatch({
+      type: DELETE_POLICY,
+      payload: {
+        data: false,
+        loading: true,
+        errorMsg: false,
+      },
+    });
+
+    await axios({
+      method: "DELETE",
+      url: "http://localhost:4000/policy/" + idPolicy,
+      timeout: 120000,
+    })
+      .then((res) => {
+        dispatch({
+          type: DELETE_POLICY,
+          payload: {
+            data: res.data,
+            loading: false,
+            errorMsg: false,
+          },
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: DELETE_POLICY,
           payload: {
             data: false,
             loading: false,

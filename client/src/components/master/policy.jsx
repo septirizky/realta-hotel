@@ -12,13 +12,15 @@ const Policy = () => {
     getPolicyLoading,
     getPolicyError,
     postPolicyResult,
+    updatePolicyResult,
+    deletePolicyResult,
   } = useSelector((state) => state.masterReducer);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getPolicy());
-  }, [dispatch, postPolicyResult]);
+  }, [dispatch, postPolicyResult, updatePolicyResult, deletePolicyResult]);
 
   return (
     <>

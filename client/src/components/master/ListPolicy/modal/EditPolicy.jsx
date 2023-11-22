@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { postPolicy } from "../../../../actions/masterAction";
+import { updatePolicy } from "../../../../actions/masterAction";
 import Swal from "sweetalert2";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
@@ -8,67 +8,77 @@ import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
-const AddPolicy = (props) => {
+const EditPolicy = (props) => {
   const {
     showModalPolicy,
-    handleCloseAddPolicy,
+    handleCloseEditPolicy,
     register,
     resetField,
     handleSubmit,
+    policyId,
+    policyName,
+    policyDescription,
+    setPolicyName,
+    setPolicyDescription,
   } = props;
 
-  const { postPolicyResult, postPolicyError } = useSelector(
+  const { updatePolicyResult, updatePolicyError } = useSelector(
     (state) => state.masterReducer
   );
 
   const dispatch = useDispatch();
 
-  const [isAddPolicy, setIsAddPolicy] = useState(false);
+  const [isUpdatePolicy, setIsUpdatePolicy] = useState(false);
 
-  const handleSavePolicy = (data) => {
+  const handleUpdatePolicy = (data) => {
     const dataJson = {
       poli_name: data.poli_name,
       poli_description: data.poli_description,
     };
-    setIsAddPolicy(true);
-    dispatch(postPolicy(dataJson));
+
+    setIsUpdatePolicy(true);
+    dispatch(updatePolicy(dataJson, policyId));
   };
 
   useEffect(() => {
-    if (postPolicyResult || postPolicyError) {
-      if (isAddPolicy) {
-        postPolicyResult
+    if (updatePolicyResult || updatePolicyError) {
+      if (isUpdatePolicy) {
+        updatePolicyResult
           ? Swal.fire({
               title: "Sukses",
               icon: "success",
-              text: postPolicyResult.message,
+              text: updatePolicyResult.message,
               confirmButtonText: "OK",
             }).then(() => {
+              resetField("poli_id");
               resetField("poli_name");
               resetField("poli_description");
-              handleCloseAddPolicy(false);
+              handleCloseEditPolicy(false);
             })
-          : Swal.fire("Gagal", postPolicyError, "error");
+          : Swal.fire("Gagal", updatePolicyError, "error");
       }
     }
     // eslint-disable-next-line
-  }, [postPolicyResult, postPolicyError]);
+  }, [updatePolicyResult, updatePolicyError]);
   return (
-    <Modal show={showModalPolicy} onHide={handleCloseAddPolicy}>
+    <Modal show={showModalPolicy} onHide={handleCloseEditPolicy}>
       <Modal.Header closeButton>
-        <Modal.Title>Add Policy</Modal.Title>
+        <Modal.Title>Edit Policy</Modal.Title>
       </Modal.Header>
-      <Form onSubmit={handleSubmit(handleSavePolicy)} className="px-2">
+      <Form onSubmit={handleSubmit(handleUpdatePolicy)}>
         <Modal.Body>
           <Form.Group as={Row} className="mb-3">
             <Form.Label column sm="4" htmlFor="formPolicyName">
               Policy Name
             </Form.Label>
             <Col sm="6">
+              <Form.Control type="hidden" value={policyId} />
               <Form.Control
                 type="text"
                 id="formPolicyName"
                 {...register("poli_name")}
+                value={policyName}
+                onChange={(e) => setPolicyName(e.target.value)}
               />
             </Col>
           </Form.Group>
@@ -79,14 +89,16 @@ const AddPolicy = (props) => {
             <Form.Control
               as="textarea"
               id="formPolicyDesc"
-              maxLength={255}
               {...register("poli_description")}
+              value={policyDescription}
+              onChange={(e) => setPolicyDescription(e.target.value)}
+              maxLength={255}
               rows={5}
             />
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseAddPolicy}>
+          <Button variant="secondary" onClick={handleCloseEditPolicy}>
             Cancel
           </Button>
           <Button variant="success" type="submit">
@@ -98,4 +110,4 @@ const AddPolicy = (props) => {
   );
 };
 
-export default AddPolicy;
+export default EditPolicy;
