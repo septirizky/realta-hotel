@@ -7,15 +7,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { getPolicy } from "../../actions/masterAction";
 
 const Policy = () => {
-  const { getPolicyResult, getPolicyLoading, getPolicyError } = useSelector(
-    (state) => state.masterReducer
-  );
+  const {
+    getPolicyResult,
+    getPolicyLoading,
+    getPolicyError,
+    postPolicyResult,
+  } = useSelector((state) => state.masterReducer);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getPolicy());
-  }, [dispatch]);
+  }, [dispatch, postPolicyResult]);
 
   return (
     <>

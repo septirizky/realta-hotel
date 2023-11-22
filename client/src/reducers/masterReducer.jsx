@@ -16,6 +16,7 @@ import {
   UPDATE_CITY,
   DELETE_CITY,
   GET_POLICY,
+  POST_POLICY,
 } from "../actions/masterAction";
 
 const initialState = {
@@ -70,6 +71,9 @@ const initialState = {
   getPolicyResult: false,
   getPolicyLoading: false,
   getPolicyError: false,
+  postPolicyResult: false,
+  postPolicyLoading: false,
+  postPolicyError: false,
 };
 const masterReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -191,6 +195,13 @@ const masterReducer = (state = initialState, action) => {
         getPolicyResult: action.payload.data,
         getPolicyLoading: action.payload.loading,
         getPolicyError: action.payload.errorMsg,
+      };
+    case POST_POLICY:
+      return {
+        ...state,
+        postPolicyResult: action.payload.data,
+        postPolicyLoading: action.payload.loading,
+        postPolicyError: action.payload.errorMsg,
       };
     default:
       return state;

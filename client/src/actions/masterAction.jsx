@@ -37,6 +37,9 @@ export const UPDATE_CITY = "UPDATE_CITY";
 // delete locations city
 export const DELETE_CITY = "DELETE_CITY";
 
+// add policy
+export const POST_POLICY = "POST_POLICY";
+
 // locations
 export const getRegions = () => {
   return async (dispatch) => {
@@ -700,6 +703,46 @@ export const getPolicy = () => {
       .catch((err) => {
         dispatch({
           type: GET_POLICY,
+          payload: {
+            data: false,
+            loading: false,
+            errorMsg: err.response.data.message,
+          },
+        });
+      });
+  };
+};
+
+export const postPolicy = (dataPolicy) => {
+  return async (dispatch) => {
+    dispatch({
+      type: POST_POLICY,
+      payload: {
+        data: false,
+        loading: true,
+        errorMsg: false,
+      },
+    });
+
+    await axios({
+      method: "POST",
+      url: "http://localhost:4000/policy",
+      timeout: 120000,
+      data: dataPolicy,
+    })
+      .then((res) => {
+        dispatch({
+          type: POST_POLICY,
+          payload: {
+            data: res.data,
+            loading: false,
+            errorMsg: false,
+          },
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: POST_POLICY,
           payload: {
             data: false,
             loading: false,

@@ -4,17 +4,33 @@ import { FaPencilAlt, FaTimes } from "react-icons/fa";
 import "../css/policy.css";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 import DetailPolicy from "./modal/DetailPolicy";
+import { useForm } from "react-hook-form";
+import AddPolicy from "./modal/AddPolicy";
 
 const GetAllPolicy = (props) => {
   const { getPolicyResult, getPolicyLoading, getPolicyError } = props;
 
+  const { register, resetField, handleSubmit } = useForm();
+
   const [showModalDetailPolicy, setShowModalDetailPolicy] = useState(false);
+
+  const [showModalAddPolicy, setShowModalAddPolicy] = useState(false);
 
   const [policyId, setPolicyId] = useState();
 
   const [policyName, setPolicyName] = useState("");
 
   const [policyDescription, setPolicyDescription] = useState("");
+
+  const showAddPolicy = () => {
+    setShowModalAddPolicy(true);
+  };
+
+  const closeAddPolicy = () => {
+    resetField("poli_name");
+    resetField("poli_description");
+    setShowModalAddPolicy(false);
+  };
 
   const getShowDetailPolicy = (policyId, policyName, policyDescription) => {
     setPolicyId(policyId);
@@ -37,7 +53,13 @@ const GetAllPolicy = (props) => {
             <th>#</th>
             <th className="text-center">Policy Name</th>
             <th className="align-border-right">
-              <AiOutlinePlus /> Add
+              <button
+                type="button"
+                className="button-transparan"
+                onClick={showAddPolicy}
+              >
+                <AiOutlinePlus /> Add
+              </button>
             </th>
           </tr>
         </thead>
@@ -107,6 +129,14 @@ const GetAllPolicy = (props) => {
         setPolicyId={setPolicyId}
         setPolicyName={setPolicyName}
         setPolicyDescription={setPolicyDescription}
+      />
+
+      <AddPolicy
+        showModalPolicy={showModalAddPolicy}
+        handleCloseAddPolicy={closeAddPolicy}
+        register={register}
+        resetField={resetField}
+        handleSubmit={handleSubmit}
       />
     </>
   );
