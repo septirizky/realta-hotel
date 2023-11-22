@@ -63,7 +63,7 @@ const EditSeta = (props) => {
   return (
     <Modal show={showModalSeta} onHide={handleCloseEditSeta}>
       <Modal.Header closeButton>
-        <Modal.Title>Add Service Task</Modal.Title>
+        <Modal.Title>Edit Service Task</Modal.Title>
       </Modal.Header>
       <Form onSubmit={handleSubmit(handleUpdateSeta)}>
         <Modal.Body>
