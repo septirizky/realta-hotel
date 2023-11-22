@@ -8,6 +8,7 @@ import { Hr } from "./components/hr";
 import Master from "./components/master";
 import LocationsMaster from "./components/master/locations";
 import Policy from "./components/master/policy";
+import ServiceTask from "./components/master/servicetask";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/master" element={<Master />} />
           <Route path="/master/locations" element={<LocationsMaster />} />
           <Route path="/master/policy" element={<Policy />} />
+          <Route path="/master/seta" element={<ServiceTask />} />
         </Route>
       </Routes>
     </BrowserRouter>

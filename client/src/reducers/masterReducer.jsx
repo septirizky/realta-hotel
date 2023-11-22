@@ -19,6 +19,10 @@ import {
   POST_POLICY,
   UPDATE_POLICY,
   DELETE_POLICY,
+  GET_SETA,
+  POST_SETA,
+  UPDATE_SETA,
+  DELETE_SETA,
 } from "../actions/masterAction";
 
 const initialState = {
@@ -82,6 +86,18 @@ const initialState = {
   deletePolicyResult: false,
   deletePolicyLoading: false,
   deletePolicyError: false,
+  getSetaResult: false,
+  getSetaLoading: false,
+  getSetaError: false,
+  postSetaResult: false,
+  postSetaLoading: false,
+  postSetaError: false,
+  updateSetaResult: false,
+  updateSetaLoading: false,
+  updateSetaError: false,
+  deleteSetaResult: false,
+  deleteSetaLoading: false,
+  deleteSetaError: false,
 };
 const masterReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -224,6 +240,34 @@ const masterReducer = (state = initialState, action) => {
         deletePolicyResult: action.payload.data,
         deletePolicyLoading: action.payload.loading,
         deletePolicyError: action.payload.errorMsg,
+      };
+    case GET_SETA:
+      return {
+        ...state,
+        getSetaResult: action.payload.data,
+        getSetaLoading: action.payload.loading,
+        getSetaError: action.payload.errorMsg,
+      };
+    case POST_SETA:
+      return {
+        ...state,
+        postSetaResult: action.payload.data,
+        postSetaLoading: action.payload.loading,
+        postSetaError: action.payload.errorMsg,
+      };
+    case UPDATE_SETA:
+      return {
+        ...state,
+        updateSetaResult: action.payload.data,
+        updateSetaLoading: action.payload.loading,
+        updateSetaError: action.payload.errorMsg,
+      };
+    case DELETE_SETA:
+      return {
+        ...state,
+        deleteSetaResult: action.payload.data,
+        deleteSetaLoading: action.payload.loading,
+        deleteSetaError: action.payload.errorMsg,
       };
     default:
       return state;

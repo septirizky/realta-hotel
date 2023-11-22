@@ -9,6 +9,9 @@ export const GET_CITY = "GET_CITY";
 // show policy
 export const GET_POLICY = "GET_POLICY";
 
+// show service task
+export const GET_SETA = "GET_SETA";
+
 // add locations region
 export const POST_REGION = "POST_REGION";
 // update locations region
@@ -43,6 +46,13 @@ export const POST_POLICY = "POST_POLICY";
 export const UPDATE_POLICY = "UPDATE_POLICY";
 // delete policy
 export const DELETE_POLICY = "DELETE_POLICY";
+
+// add service task
+export const POST_SETA = "POST_SETA";
+// edit service task
+export const UPDATE_SETA = "UPDATE_SETA";
+// delete service task
+export const DELETE_SETA = "DELETE_SETA";
 
 // locations
 export const getRegions = () => {
@@ -826,6 +836,165 @@ export const deletePolicy = (idPolicy) => {
       .catch((err) => {
         dispatch({
           type: DELETE_POLICY,
+          payload: {
+            data: false,
+            loading: false,
+            errorMsg: err.response.data.message,
+          },
+        });
+      });
+  };
+};
+
+// service task
+export const getSeta = () => {
+  return async (dispatch) => {
+    dispatch({
+      type: GET_SETA,
+      payload: {
+        data: false,
+        loading: true,
+        errorMsg: false,
+      },
+    });
+
+    await axios({
+      method: "GET",
+      url: "http://localhost:4000/servicetask",
+      timeout: 120000,
+    })
+      .then((res) => {
+        dispatch({
+          type: GET_SETA,
+          payload: {
+            data: res.data.data,
+            loading: false,
+            errorMsg: false,
+          },
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: GET_SETA,
+          payload: {
+            data: false,
+            loading: false,
+            errorMsg: err.response.data.message,
+          },
+        });
+      });
+  };
+};
+
+export const postSeta = (dataSeta) => {
+  return async (dispatch) => {
+    dispatch({
+      type: POST_SETA,
+      payload: {
+        data: false,
+        loading: true,
+        errorMsg: false,
+      },
+    });
+
+    await axios({
+      method: "POST",
+      url: "http://localhost:4000/servicetask",
+      timeout: 120000,
+      data: dataSeta,
+    })
+      .then((res) => {
+        dispatch({
+          type: POST_SETA,
+          payload: {
+            data: res.data,
+            loading: false,
+            errorMsg: false,
+          },
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: POST_SETA,
+          payload: {
+            data: false,
+            loading: false,
+            errorMsg: err.response.data.message,
+          },
+        });
+      });
+  };
+};
+
+export const updateSeta = (dataSeta, idSeta) => {
+  return async (dispatch) => {
+    dispatch({
+      type: UPDATE_SETA,
+      payload: {
+        data: false,
+        loading: true,
+        errorMsg: false,
+      },
+    });
+
+    await axios({
+      method: "PUT",
+      url: "http://localhost:4000/servicetask/" + idSeta,
+      data: dataSeta,
+      timeout: 120000,
+    })
+      .then((res) => {
+        dispatch({
+          type: UPDATE_SETA,
+          payload: {
+            data: res.data,
+            loading: false,
+            errorMsg: false,
+          },
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: UPDATE_SETA,
+          payload: {
+            data: false,
+            loading: false,
+            errorMsg: err.response.data.message,
+          },
+        });
+      });
+  };
+};
+
+export const deleteSeta = (idSeta) => {
+  return async (dispatch) => {
+    dispatch({
+      type: DELETE_SETA,
+      payload: {
+        data: false,
+        loading: true,
+        errorMsg: false,
+      },
+    });
+
+    await axios({
+      method: "DELETE",
+      url: "http://localhost:4000/servicetask/" + idSeta,
+      timeout: 120000,
+    })
+      .then((res) => {
+        dispatch({
+          type: DELETE_SETA,
+          payload: {
+            data: res.data,
+            loading: false,
+            errorMsg: false,
+          },
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: DELETE_SETA,
           payload: {
             data: false,
             loading: false,
