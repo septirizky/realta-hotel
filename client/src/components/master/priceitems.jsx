@@ -16,7 +16,6 @@ const PriceItems = () => {
   // eslint-disable-next-line
   const [cari, setCari] = useState([]);
   const [kueri1, setKueri1] = useState("");
-  const [kueri2, setKueri2] = useState("");
 
   const searchItemsPrice = () => {
     const res = dispatch(
@@ -35,7 +34,6 @@ const PriceItems = () => {
   const searchData = (e) => {
     e.preventDefault();
     setKeyItems(kueri1);
-    setKeyType(kueri2);
   };
 
   return (
@@ -63,8 +61,8 @@ const PriceItems = () => {
             getIPriceError={getIPriceError}
             kueri1={kueri1}
             setKueri1={setKueri1}
-            kueri2={kueri2}
-            setKueri2={setKueri2}
+            kueri2={keyType}
+            setKueri2={setKeyType}
             searchData={searchData}
           />
         </div>
