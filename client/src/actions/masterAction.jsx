@@ -12,6 +12,9 @@ export const GET_POLICY = "GET_POLICY";
 // show service task
 export const GET_SETA = "GET_SETA";
 
+// show item price
+export const GET_IPRICE = "GET_IPRICE";
+
 // add locations region
 export const POST_REGION = "POST_REGION";
 // update locations region
@@ -995,6 +998,47 @@ export const deleteSeta = (idSeta) => {
       .catch((err) => {
         dispatch({
           type: DELETE_SETA,
+          payload: {
+            data: false,
+            loading: false,
+            errorMsg: err.response.data.message,
+          },
+        });
+      });
+  };
+};
+
+// item price
+export const getItemPrice = (dataItem) => {
+  return async (dispatch) => {
+    dispatch({
+      type: GET_IPRICE,
+      payload: {
+        data: false,
+        loading: true,
+        errorMsg: false,
+      },
+    });
+
+    await axios({
+      method: "POST",
+      url: "http://localhost:4000/itempricesearch",
+      data: dataItem,
+      timeout: 120000,
+    })
+      .then((res) => {
+        dispatch({
+          type: GET_IPRICE,
+          payload: {
+            data: res.data.data,
+            loading: false,
+            errorMsg: false,
+          },
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: GET_IPRICE,
           payload: {
             data: false,
             loading: false,

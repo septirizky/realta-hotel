@@ -283,7 +283,7 @@ masterRouters.delete(
 );
 
 // item price
-masterRouters.get("/itemprice", priceitemGetAll);
+masterRouters.post("/itempricesearch", priceitemGetAll);
 masterRouters.get("/itemprice/:prit_id", priceitemDetail);
 masterRouters.post(
   "/itemprice",

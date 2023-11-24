@@ -23,6 +23,7 @@ import {
   POST_SETA,
   UPDATE_SETA,
   DELETE_SETA,
+  GET_IPRICE,
 } from "../actions/masterAction";
 
 const initialState = {
@@ -98,6 +99,9 @@ const initialState = {
   deleteSetaResult: false,
   deleteSetaLoading: false,
   deleteSetaError: false,
+  getIPriceResult: false,
+  getIPriceLoading: false,
+  getIPriceError: false,
 };
 const masterReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -268,6 +272,13 @@ const masterReducer = (state = initialState, action) => {
         deleteSetaResult: action.payload.data,
         deleteSetaLoading: action.payload.loading,
         deleteSetaError: action.payload.errorMsg,
+      };
+    case GET_IPRICE:
+      return {
+        ...state,
+        getIPriceResult: action.payload.data,
+        getIPriceLoading: action.payload.loading,
+        getIPriceError: action.payload.errorMsg,
       };
     default:
       return state;
