@@ -50,34 +50,42 @@ const GetAllPriceItems = (props) => {
           </tr>
         </thead>
         {getIPriceResult && getIPriceResult ? (
-          getIPriceResult.map((iprice, index) => {
-            return (
-              <tbody key={iprice.prit_id}>
-                <tr>
-                  <td>
-                    <img
-                      src={iprice.prit_icon_url}
-                      alt={iprice.prit_icon}
-                      width={30}
-                      height={30}
-                    />
-                  </td>
-                  <td>{index + 1}</td>
-                  <td className="text-start">{iprice.prit_name}</td>
-                  <td className="text-end">
-                    {formatRupiah(iprice.prit_price)}
-                  </td>
-                  <td className="text-end">
-                    <MdKeyboardDoubleArrowRight />
-                  </td>
-                  <td>{iprice.prit_type}</td>
-                  <td className="align-border-right">
-                    <FaPencilAlt /> Edit <FaTimes /> Delete
-                  </td>
-                </tr>
-              </tbody>
-            );
-          })
+          getIPriceResult.length === 0 ? (
+            <tbody>
+              <tr>
+                <td colSpan={7}>Data Price Items is Not Found!</td>
+              </tr>
+            </tbody>
+          ) : (
+            getIPriceResult.map((iprice, index) => {
+              return (
+                <tbody key={iprice.prit_id}>
+                  <tr>
+                    <td>
+                      <img
+                        src={iprice.prit_icon_url}
+                        alt={iprice.prit_icon}
+                        width={30}
+                        height={30}
+                      />
+                    </td>
+                    <td>{index + 1}</td>
+                    <td className="text-start">{iprice.prit_name}</td>
+                    <td className="text-end">
+                      {formatRupiah(iprice.prit_price)}
+                    </td>
+                    <td className="text-end">
+                      <MdKeyboardDoubleArrowRight />
+                    </td>
+                    <td>{iprice.prit_type}</td>
+                    <td className="align-border-right">
+                      <FaPencilAlt /> Edit <FaTimes /> Delete
+                    </td>
+                  </tr>
+                </tbody>
+              );
+            })
+          )
         ) : getIPriceLoading ? (
           <tbody>
             <tr>
