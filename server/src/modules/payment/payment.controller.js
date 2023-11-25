@@ -1,5 +1,9 @@
 import { Op } from "sequelize"
 import models from "../../model/init-models.js"
+import user_accounts from "../../model/user_accounts.js"
+import bank from "../../model/bank.js"
+import payment_gateway from "../../model/payment_gateway.js"
+import entity from "../../model/entity.js"
 // import bank from "../../model/bank.js"
 
 
@@ -56,7 +60,9 @@ export const searchBank = async (req,res)=>{
         const bank_name = req.body.bank_name;
         const result = await models.bank.findAll({where: {
             bank_name : {[Op.like]: `${bank_name}%`}
-        }})
+        },order: [
+            ['bank_entity_id', 'ASC'],
+        ]})
         return !result[0]
         ?res.status(404).json({message:`Bank Dengan Nama ${req.body.bank_name} tidak ditemukan`})
         :res.status(200).json({data:result})
@@ -179,7 +185,10 @@ export const searchPaymentGateaway = async (req, res) => {
         const paga_code = req.body.paga_code;
 
         const result = await models.payment_gateway.findAll({
-            where:{paga_code : {[Op.like]: `%${paga_code}%`}}
+            where:{paga_code : {[Op.like]: `%${paga_code}%`}},
+            order: [
+                ['paga_entity_id', 'ASC'],
+            ]
         })
         return !result[0]
         ?res.status(404).json({message:`Data Dengan Code ${paga_code} Tidak Ditemukan`})
@@ -213,8 +222,29 @@ export const deletePaymentGateaway = async (req, res) => {
 
 export const getUserAccount = async(req,res)=>{
     try {
-        const result = await models.user_accounts.findAll({where: {usac_user_id: req.params.id}});
-        
+        const data1 = await models.user_accounts.findAll({
+            attributes: ['usac_user_id','usac_entity_id', 'usac_account_number','usac_saldo','usac_type','usac_expmonth','usac_expyear'],
+            include : [{
+                model:entity, as:'usac_entity',attributes: ['entity_id'],required:true,
+                include: [{
+                    model:bank, as:'bank', attributes:['bank_code'],required: true,
+                }],
+                
+            }],
+        })
+
+        const data2 = await models.user_accounts.findAll({
+            attributes: ['usac_user_id','usac_entity_id', 'usac_account_number','usac_saldo','usac_type','usac_expmonth','usac_expyear'],
+            include : [{
+                model:entity, as:'usac_entity',attributes: ['entity_id'],required:true,
+                include: [{
+                    model:payment_gateway, as:'payment_gateway', attributes:['paga_code'],required: true,
+                }],
+                
+            }],
+        });
+
+        const result = data1.concat(data2);
         return res.status(200).json({data:result,message:`Data Ditemukan `})
     } catch (error) {
         return res.status(404).json({message:error.message})
@@ -223,7 +253,18 @@ export const getUserAccount = async(req,res)=>{
 
 export const createUserAccount = async (req,res)=>{
     try {
-        const {account_number,desc,saldo} = req.body;
+        const {entity_id,user_id,account_number,saldo,type,expmonth,expyear} = req.body;
+
+        const result = await user_accounts.create({
+            usac_entity_id:entity_id,
+            usac_user_id : user_id,
+            usac_account_number : account_number,
+            usac_saldo : saldo,
+            usac_type: type,
+            usac_expmonth: expmonth,
+            usac_expyear: expyear,
+        })
+        return res.status(200).json({message:'Data Berhasil Ditambah', data:result});
 
     } catch (error) {
         return res.status(404).json({message:error.message})
@@ -232,8 +273,31 @@ export const createUserAccount = async (req,res)=>{
 
 export const getUserAccountById = async(req, res) =>{
     try {
-        const usac_entity_id = req.params.usac_entity_id
-        const result = await models.user_accounts.findOne({where: {usac_entity_id}})
+        const usac_user_id = req.params.usac_user_id
+        const data1 = await models.user_accounts.findAll({
+            where: {usac_user_id},
+            attributes: ['usac_user_id','usac_entity_id', 'usac_account_number','usac_saldo','usac_type','usac_expmonth','usac_expyear'],
+            include : [{
+                model:entity, as:'usac_entity',attributes: ['entity_id'],required:true,
+                include: [{
+                    model:bank, as:'bank', attributes:['bank_name'],required: true,
+                }], 
+            }],
+            
+        })
+
+        const data2 = await models.user_accounts.findAll({
+            where: {usac_user_id},
+            attributes: ['usac_user_id','usac_entity_id', 'usac_account_number','usac_saldo','usac_type','usac_expmonth','usac_expyear'],
+            include : [{
+                model:entity, as:'usac_entity',attributes: ['entity_id'],required:true,
+                include: [{
+                    model:payment_gateway, as:'payment_gateway', attributes:['paga_name'],required: true,
+                }], 
+            }],
+        })
+
+        const result = data1.concat(data2);
 
         return res.status(200).json({data:result,message:`Data Berhasil Ditemukan`})
     } catch (error) {

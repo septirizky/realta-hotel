@@ -66,7 +66,7 @@ const Payment = () => {
                                 Payment Gateaway
                             </Link>
                             <Link to='/payment/accounts'
-                                  className={`nav-link `}>
+                                  className={`nav-link ${pathname.pathname === '/payment/accounts' ? "active" : ""}`}>
                                 <div className="sb-nav-link-icon"><BsPerson size='26'/></div>
                                 Accounts
                             </Link>

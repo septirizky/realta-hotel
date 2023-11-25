@@ -7,7 +7,8 @@ import {TempNav} from "./components/tempNav";
 import {Hr} from "./components/hr";
 import Payment from "./components/payment/index";
 import Bank from "./components/payment/bank/bank";
-import PaymentGateaway from "./components/payment/paymentGateaway";
+import PaymentGateaway from "./components/payment/paymentGateaway/paymentGateaway";
+import Accounts from "./components/payment/accounts/accounts";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
                   <Route path="/payment" element={<Payment/>}>
                         <Route index element={<Bank/>}/>
                         <Route path="/payment/paymentgateaway"index element={<PaymentGateaway/>}/>
+                        <Route path="/payment/accounts"index element={<Accounts/>}/>
                   </Route>
               </Route>
           </Routes>

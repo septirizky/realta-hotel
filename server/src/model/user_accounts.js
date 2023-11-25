@@ -10,17 +10,13 @@ export default class user_accounts extends Model {
       allowNull: false,
       primaryKey: true,
       references: {
-        model: 'bank',
-        key: 'bank_entity_id'
+        model: 'entity',
+        key: 'entity_id'
       }
     },
     usac_user_id: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'users',
-        key: 'user_id'
-      }
+      allowNull: false
     },
     usac_account_number: {
       type: DataTypes.STRING(25),

@@ -1,4 +1,11 @@
-import { ADD_BANK, GET_BANK } from "../actions/paymentAction"
+import { ADD_BANK, 
+    UPDATE_BANK, 
+    GET_BANK, 
+    GET_PAYMENTGATEAWAY, 
+    ADD_PAYMENTGATEAWAY, 
+    UPDATE_PAYMENTGATEAWAY, 
+    GET_USER_ACCOUNT
+} from "../actions/paymentAction"
 
 const initialState = {
     getBankResult: false,
@@ -8,6 +15,26 @@ const initialState = {
     addBankResult: false,
     addBankLoading: false,
     addBankError: false,
+
+    updateBankResult:false,
+    updateBankLoading:false,
+    updateBankError:false,
+
+    getPaymentGateawayResult : false,
+    getPaymentGateawayLoading:false,
+    getPaymentGateawayError:false,
+
+    addPagaResult :false,
+    addPagaLoading:false,
+    addPagaError:false,
+
+    updatePaymentGateawayResult:false,
+    updatePaymentGateawayLoading:false,
+    updatePaymentGateawayError:false,
+
+    getUserAccountResult:false,
+    getUserAccountLoading:false,
+    getUserAccountError:false,
 }
 
 export const paymentReducers = (state = initialState, action)=>{
@@ -30,6 +57,52 @@ export const paymentReducers = (state = initialState, action)=>{
                 addBankError: action.payload.errorMessage
             }
         }
+
+        case UPDATE_BANK:{
+            return{
+                ...state,
+                updateBankResult : action.payload.data,
+                updateBankLoading : action.payload.loading,
+                updateBankError : action.payload.errorMessage,
+            }
+        }
+
+        case GET_PAYMENTGATEAWAY:{
+            return{
+                ...state,
+                getPaymentGateawayResult:action.payload.data,
+                getPaymentGateawayLoading:action.payload.loading,
+                getPaymentGateawayError: action.payload.errorMessage
+            }
+        }
+        
+        case ADD_PAYMENTGATEAWAY:{
+            return{
+                ...state,
+                addPagaResult:action.payload.data,
+                addPagaLoading: action.payload.loading,
+                addPagaError: action.payload.errorMessage
+            }
+        }
+        
+        case UPDATE_PAYMENTGATEAWAY:{
+            return{
+                ...state,
+                updatePaymentGateawayResult:action.payload.data,
+                updatePaymentGateawayLoading:action.payload.loading,
+                updatePaymentGateawayError:action.payload.errorMessage
+            }
+        }
+
+        case GET_USER_ACCOUNT:{
+            return{
+                ...state,
+                getUserAccountResult:action.payload.data,
+                getUserAccountLoading:action.payload.loading,
+                getUserAccountError:action.payload.errorMessage
+            }
+        }
+
         default: 
             return state
     }

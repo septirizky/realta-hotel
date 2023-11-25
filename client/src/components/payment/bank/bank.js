@@ -1,67 +1,74 @@
-import React, { useEffect, useState, useRef} from 'react';
+import React, { useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import { AddBank, getBank } from '../../../actions/paymentAction';
-
+import { getBank } from '../../../actions/paymentAction';
 import { FaPlus } from "react-icons/fa";
 import { MdEdit } from "react-icons/md";
+import { SlMagnifier  } from 'react-icons/sl'
+import ModalAddBank from './modals/modalAddBank.js';
+import {useForm} from 'react-hook-form'
+import ModalEditBank from './modals/modalEditBank.js';
 
-
-const Bank = (props) => {
+const Bank = () => {
     const dispatch = useDispatch();
+    const ref = useRef();
+    const { register, resetField, handleSubmit } = useForm();
     const {
         getBankResult, 
         getBankLoading, 
-        getBankError,
-
-        addBankResult,
-        addBankLoading,
-        addBankError,
+        getBankError       
     } = useSelector((state)=>state.paymentReducers);
 
-    // const handleReset = () => {
-    //     formRef.current.reset();
-    //     document.getElementById('addbank-modal').style.display='none'
-    //   };
-    // const submitBank = (data)=>{
-    //     setisAddBank(true)
-    //     dispatch(AddBank(data))
-    // }
-
+    
     const [showModalAddBank, setshowModalAddBank] = useState(false);
+    const [showModalEditBank, setshowModalEditBank] = useState(false);
+    const [isSearch, setisSearch] = useState(false);
+    const [Keyword, setKeyword] = useState('');
+    
+    const [Bank, setBank] = useState({
+        bank_entity_id : '',
+        bank_code : '',
+        bank_name : '',
+    });
 
     const showAddBank = ()=>{
         setshowModalAddBank(true);
     }
-    useEffect(() => {
-        // if(isAddBank){
-        //     if(addBankResult){
-        //     Swal.fire({
-        //         title: addBankResult,
-        //         text: 'Bank Berhasil Ditambah!',
-        //         icon: 'success'
-        //     }).then(()=>{
-        //         handleReset();
-                
-        //         document.getElementById("addbank-modal").classList.remove("show");
-        //         document.querySelectorAll(".modal-backdrop")
-        //         .forEach(el => el.classList.remove("modal-backdrop"));
-        //     })
-        //     }
-        //     else if(addBankError){
-        //         Swal.fire({
-        //             title: addBankError,
-        //             text: 'Gagal Menginput!',
-        //             icon: 'error'
-        //         })
-        //     }
-        // }
-        
-        dispatch(getBank())
-    }, [addBankResult,addBankError]);
 
-    console.log(showModalAddBank)
+    const closeAddBank = ()=>{
+        setshowModalAddBank(false);
+        resetField('bank_code');
+        resetField('bank_name');
+    }
+
+    const showEditBank = (bank_entity_id,bank_code, bank_name)=>{
+        setBank({
+            bank_entity_id: bank_entity_id,
+            bank_code: bank_code,
+            bank_name: bank_name
+        })
+        setshowModalEditBank(true);
+    }
+    const closeEditBank = ()=>{
+        setshowModalEditBank(false);
+        resetField('bank_code');
+        resetField('bank_name');
+    }
+
+    useEffect(() => {
+        if (isSearch) {
+            clearTimeout(ref.current)
+            ref.current = setTimeout(() => {
+                dispatch(getBank({bank_name:Keyword}))
+            },1000)
+            
+        }else{
+            dispatch(getBank({bank_name:Keyword}))
+        }
+        
+    }, [dispatch,Keyword]);
+
     return (
-        <div>
+        <>
             <div className='row'>
                 <div className='col-12 col-lg-12 col-sm-12 col-md-12 '>
 
@@ -70,7 +77,18 @@ const Bank = (props) => {
                         <label className="col-form-label">Search Bank</label>
                     </div>
                     <div className="col-8 col-lg-4 ">
-                        <input type="text" id="inputSearch" className="form-control"/>
+                    <div className="input-group">
+                        <span className="input-group-text bg-white " id="addon-wrapping"><SlMagnifier/></span>
+                        <input type="text" className="form-control border-start-0" placeholder="Search By Bank Name" aria-describedby="addon-wrapping"
+                            onChange={(e)=>{
+                                setKeyword(e.target.value)
+                                setisSearch(true)    
+                            }
+                            }
+                        />
+                    </div>
+
+                        
                     </div>
                     </div>
                 <table className="table w-100">
@@ -86,54 +104,24 @@ const Bank = (props) => {
                             </button>
                         </th>
 
-                            {/* <div className="modal fade" id="addbank-modal" tabIndex="-1" aria-labelledby="modal-addbanklabel" aria-hidden="true">
-                                <div className="modal-dialog">
-                                <form ref={formRef} onSubmit={handleSubmit(submitBank)}>
-                                    <div className="modal-content">
-                                        <div className="modal-header">
-                                            <h1 className="modal-title fs-5" id="exampleModalLabel">Add Bank</h1>
-                                            <button type="reset" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div className="modal-body">
-                                        <div className="row g-3 align-items-center">
-                                            <div className="col-4">
-                                                <label  className="col-form-label">Bank Code</label>
-                                            </div>
-                                            <div className="col-6">                                               
-                                                <input type="text" {...register('bank_code')} id="bankcode" className="form-control" required/>
-                                            </div>
-
-                                            <div className="col-4">
-                                                <label className="col-form-label">Bank Name</label>
-                                            </div>
-                                            <div className="col-6">
-                                                <input {...register('bank_name')} type="text" id="bankcode" className="form-control" required/>
-                                            </div>
-                                            </div>
-                                        </div>
-                                        <div className="modal-footer">                 
-                                                <button type="reset" className="btn btn-secondary me-2" data-bs-dismiss='modal' >Close</button>
-                                                <button type="submit" className="btn btn-primary" >Save changes</button>
-                                        </div>
-                                    </div>
-                                </form>
-
-                                </div>
-                            </div>    */}
-                        
                         </tr>
                     </thead>
                     <tbody>
                         {
-                            getBankResult.length>0 ?(
+                            getBankResult ?(
                                 getBankResult.map((bank,index)=>{
-
                                     return(
                                     <tr key={bank.bank_entity_id}>
                                         <th scope="row">{index+1}</th>
                                             <td>{bank.bank_code}</td>
                                             <td>{bank.bank_name}</td>
-                                            <td><button className='btn ms-3 '><MdEdit/></button></td>
+                                            <td><button className='btn ms-3' onClick={()=>{
+                                                showEditBank(
+                                                    bank.bank_entity_id,
+                                                    bank.bank_code,
+                                                    bank.bank_name
+                                                )
+                                            }}><MdEdit/></button></td>
                                     </tr>
                                     )
                                 }
@@ -142,21 +130,37 @@ const Bank = (props) => {
                             :getBankLoading?(
                                 <tr>Loading...</tr>
                             ):(
-                                <tr>{getBankError? getBankError : "data Kosong"}</tr>
+                                <tr>{getBankError ? getBankError : "data Kosong"}</tr>
                             )
 
                         }
                     </tbody>
-                    </table>                    
+                    </table> 
+
 
                 </div>
             </div>
-        
-            <AddBank
+
+            <ModalAddBank
                 showModalBank = {showModalAddBank}
+                handleCloseAddBank = {closeAddBank}
+                register = {register}
+                handleSubmit = {handleSubmit}
+                resetField = {resetField}
+                Keyword = {Keyword}
             />
 
-        </div>
+            <ModalEditBank
+                showModalBank = {showModalEditBank}
+                handleCloseEditBank = {closeEditBank}
+                handleSubmit = {handleSubmit}
+                register = {register}
+                Bank = {Bank}
+                setBank = {setBank}
+                resetField={resetField}
+                Keyword = {Keyword}
+            />
+        </>
         
     );
 }

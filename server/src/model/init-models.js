@@ -1,71 +1,71 @@
-import _sequelize, {Sequelize} from "sequelize";
-import _address from "./address.js";
-import _bank from "./bank.js";
-import _booking_order_detail from "./booking_order_detail.js";
-import _booking_order_detail_extra from "./booking_order_detail_extra.js";
-import _booking_orders from "./booking_orders.js";
-import _category_group from "./category_group.js";
-import _country from "./country.js";
-import _department from "./department.js";
-import _employee from "./employee.js";
-import _employee_pay_history from "./employee_pay_history.js";
-import _entity from "./entity.js";
-import _facilities from "./facilities.js";
-import _facility_photos from "./facility_photos.js";
-import _facility_price_history from "./facility_price_history.js";
-import _hotel_reviews from "./hotel_reviews.js";
-import _hotels from "./hotels.js";
-import _job_role from "./job_role.js";
-import _members from "./members.js";
-import _order_menu_detail from "./order_menu_detail.js";
-import _order_menus from "./order_menus.js";
-import _payment_gateway from "./payment_gateway.js";
-import _payment_transaction from "./payment_transaction.js";
-import _policy from "./policy.js";
-import _policy_category_group from "./policy_category_group.js";
-import _price_items from "./price_items.js";
-import _provinces from "./provinces.js";
-import _purchase_order_detail from "./purchase_order_detail.js";
-import _purchase_order_header from "./purchase_order_header.js";
-import _regions from "./regions.js";
-import _resto_menu_photos from "./resto_menu_photos.js";
-import _resto_menus from "./resto_menus.js";
-import _roles from "./roles.js";
-import _service_task from "./service_task.js";
-import _shift from "./shift.js";
-import _special_offer_coupons from "./special_offer_coupons.js";
-import _special_offers from "./special_offers.js";
-import _stock_detail from "./stock_detail.js";
-import _stock_photo from "./stock_photo.js";
-import _stocks from "./stocks.js";
-import _user_accounts from "./user_accounts.js";
-import _user_bonus_points from "./user_bonus_points.js";
-import _user_breakfast from "./user_breakfast.js";
-import _user_members from "./user_members.js";
-import _user_password from "./user_password.js";
-import _user_profiles from "./user_profiles.js";
-import _user_roles from "./user_roles.js";
-import _users from "./users.js";
-import _vendor from "./vendor.js";
-import _vendor_product from "./vendor_product.js";
-import _work_order_detail from "./work_order_detail.js";
-import _work_orders from "./work_orders.js";
-
+import _sequelize,{Sequelize} from "sequelize";
 const DataTypes = _sequelize.DataTypes;
+import _address from  "./address.js";
+import _bank from  "./bank.js";
+import _booking_order_detail from  "./booking_order_detail.js";
+import _booking_order_detail_extra from  "./booking_order_detail_extra.js";
+import _booking_orders from  "./booking_orders.js";
+import _category_group from  "./category_group.js";
+import _country from  "./country.js";
+import _department from  "./department.js";
+import _employee from  "./employee.js";
+import _employee_pay_history from  "./employee_pay_history.js";
+import _entity from  "./entity.js";
+import _facilities from  "./facilities.js";
+import _facility_photos from  "./facility_photos.js";
+import _facility_price_history from  "./facility_price_history.js";
+import _hotel_reviews from  "./hotel_reviews.js";
+import _hotels from  "./hotels.js";
+import _job_role from  "./job_role.js";
+import _members from  "./members.js";
+import _order_menu_detail from  "./order_menu_detail.js";
+import _order_menus from  "./order_menus.js";
+import _payment_gateway from  "./payment_gateway.js";
+import _payment_transaction from  "./payment_transaction.js";
+import _policy from  "./policy.js";
+import _policy_category_group from  "./policy_category_group.js";
+import _price_items from  "./price_items.js";
+import _provinces from  "./provinces.js";
+import _purchase_order_detail from  "./purchase_order_detail.js";
+import _purchase_order_header from  "./purchase_order_header.js";
+import _regions from  "./regions.js";
+import _resto_menu_photos from  "./resto_menu_photos.js";
+import _resto_menus from  "./resto_menus.js";
+import _roles from  "./roles.js";
+import _service_task from  "./service_task.js";
+import _shift from  "./shift.js";
+import _special_offer_coupons from  "./special_offer_coupons.js";
+import _special_offers from  "./special_offers.js";
+import _stock_detail from  "./stock_detail.js";
+import _stock_photo from  "./stock_photo.js";
+import _stocks from  "./stocks.js";
+import _user_accounts from  "./user_accounts.js";
+import _user_bonus_points from  "./user_bonus_points.js";
+import _user_breakfast from  "./user_breakfast.js";
+import _user_members from  "./user_members.js";
+import _user_password from  "./user_password.js";
+import _user_profiles from  "./user_profiles.js";
+import _user_roles from  "./user_roles.js";
+import _users from  "./users.js";
+import _vendor from  "./vendor.js";
+import _vendor_product from  "./vendor_product.js";
+import _work_order_detail from  "./work_order_detail.js";
+import _work_orders from  "./work_orders.js";
+
 
 const sequelize = new Sequelize(
-    process.env.DB_NAME,
-    process.env.DB_USER,
-    process.env.DB_PASS,
-    {
-      dialect: "postgres",
-      pool:{
-        max:5,
-        min: 0,
-        acquire: 30000,
-        idle:10000
-      }
+  process.env.DB_NAME,
+  process.env.DB_USER,
+  process.env.DB_PASS,
+  {
+    dialect: "postgres",
+    pool:{
+      max:5,
+      min: 0,
+      acquire: 30000,
+      idle:10000
     }
+  }
 );
 
 function initModels(sequelize) {
@@ -183,14 +183,12 @@ function initModels(sequelize) {
   provinces.hasMany(address, { as: "addresses", foreignKey: "addr_prov_id"});
   country.belongsTo(regions, { as: "country_region", foreignKey: "country_region_id"});
   regions.hasMany(country, { as: "countries", foreignKey: "country_region_id"});
-  user_accounts.belongsTo(bank, { as: "usac_entity", foreignKey: "usac_entity_id"});
-  bank.hasOne(user_accounts, { as: "user_account", foreignKey: "usac_entity_id"});
   bank.belongsTo(entity, { as: "bank_entity", foreignKey: "bank_entity_id"});
   entity.hasOne(bank, { as: "bank", foreignKey: "bank_entity_id"});
   payment_gateway.belongsTo(entity, { as: "paga_entity", foreignKey: "paga_entity_id"});
   entity.hasOne(payment_gateway, { as: "payment_gateway", foreignKey: "paga_entity_id"});
-  user_accounts.belongsTo(users, { as: "usac_user", foreignKey: "usac_user_id"});
-  users.hasMany(user_accounts, { as: "user_accounts", foreignKey: "usac_user_id"});
+  user_accounts.belongsTo(entity, { as: "usac_entity", foreignKey: "usac_entity_id"});
+  entity.hasOne(user_accounts, { as: "user_account", foreignKey: "usac_entity_id"});
   user_members.belongsTo(members, { as: "usme_memb_name_member", foreignKey: "usme_memb_name"});
   members.hasMany(user_members, { as: "user_members", foreignKey: "usme_memb_name"});
   user_members.belongsTo(users, { as: "usme_user", foreignKey: "usme_user_id"});
