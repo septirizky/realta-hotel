@@ -25,7 +25,7 @@ export const getBank = (bank_name)=>{
             method: "POST",
             url: 'http://localhost:4000/searchBank',
             data:bank_name,
-            timeout: 12000
+            timeout: 120000
         })
         .then((res)=>{
             // console.log(res.data)
@@ -45,7 +45,7 @@ export const getBank = (bank_name)=>{
                 payload: {
                     loading: false,
                     data: false,
-                    errorMessage: err.response.data.message
+                    errorMessage: err.message
                 }
             })
         })
@@ -139,7 +139,7 @@ export const getPaymentGateaway = (paga_code)=>{
         dispatch({
             type:GET_PAYMENTGATEAWAY,
             payload:{
-                loading :false,
+                loading :true,
                 data:false,
                 errorMessage:false
             }
@@ -162,13 +162,13 @@ export const getPaymentGateaway = (paga_code)=>{
             })
         })
         .catch((error)=>{
-            // console.log(error)
+            console.log(error)
             dispatch({
                 type:GET_PAYMENTGATEAWAY,
                 payload:{
                     loading :false,
                     data:false,
-                    errorMessage:error.response.data.message
+                    errorMessage:error.message
                 }
             })
         })
@@ -294,3 +294,4 @@ export const getUserAccount = (usac_user_id)=>{
         })
     }
 }
+

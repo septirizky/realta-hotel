@@ -4,11 +4,22 @@ import { FaPlus } from 'react-icons/fa';
 import { MdEdit } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserAccount } from '../../../actions/paymentAction';
+import ModalAddAccounts from './modals/modalAddAccounts';
 
 const Accounts = () => {
     const dispatch = useDispatch();
-
     const { register, resetField, handleSubmit } = useForm();
+
+    const [showModalAddAccount, setshowModalAddAccount] = useState(false);
+
+
+    const showAddAccount=()=>{
+        setshowModalAddAccount(true)
+    }
+
+    const closeAddAccount = ()=>{
+        setshowModalAddAccount(false)
+    }
 
     const userId = 1;
 
@@ -40,7 +51,7 @@ const Accounts = () => {
                         <th scope="col">Saldo</th>
                         <th scope="col">Type</th>
                         <th scope="col">
-                            <button type='button' className='btn'>
+                            <button type='button' className='btn' onClick={showAddAccount}>
                                 <FaPlus className='me-2'/>ADD
                             </button>
                         </th>
@@ -79,7 +90,15 @@ const Accounts = () => {
 
                 </div>
             </div>
+            
+            <ModalAddAccounts
+                showModalAccounts = {showModalAddAccount}
+                handleCloseMOdalAddAccount = {closeAddAccount}
+                register = {register}
+                handleSubmit = {handleSubmit}
+                resetField = {resetField}
 
+            />
 
         </>
         

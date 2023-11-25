@@ -106,9 +106,8 @@ const PaymentGateaway = () => {
                         </tr>
                     </thead>
                     <tbody>
-    
-                        {
-                            getPaymentGateawayResult.length>0 ?(
+                    {
+                            getPaymentGateawayResult ?(
                                 getPaymentGateawayResult.map((paga,index)=>{
                                     return(
                                     <tr key={paga.paga_entity_id}>
@@ -128,9 +127,9 @@ const PaymentGateaway = () => {
                                 )
                             )
                             :getPaymentGateawayLoading?(
-                                <h1>Loading...</h1>
+                                <tr>Loading...</tr>
                             ):(
-                                <h3>{getPaymentGateawayError? getPaymentGateawayError : "data Kosong"}</h3>
+                                <tr>{getPaymentGateawayError ? getPaymentGateawayError : "data Kosong"}</tr>
                             )
                         }
                     </tbody>

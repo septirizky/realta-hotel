@@ -128,7 +128,9 @@ const Bank = () => {
                                 )
                             )
                             :getBankLoading?(
-                                <tr>Loading...</tr>
+                                <div class="spinner-border" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
                             ):(
                                 <tr>{getBankError ? getBankError : "data Kosong"}</tr>
                             )
