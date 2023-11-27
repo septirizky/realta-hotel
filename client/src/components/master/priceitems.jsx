@@ -7,9 +7,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { getItemPrice } from "../../actions/masterAction";
 
 const PriceItems = () => {
-  const { getIPriceResult, getIPriceLoading, getIPriceError } = useSelector(
-    (state) => state.masterReducer
-  );
+  const {
+    getIPriceResult,
+    getIPriceLoading,
+    getIPriceError,
+    postIPriceResult,
+    updateIPriceResult,
+  } = useSelector((state) => state.masterReducer);
 
   const [keyItem, setKeyItems] = useState("");
   const [keyType, setKeyType] = useState("");
@@ -29,7 +33,7 @@ const PriceItems = () => {
   useEffect(() => {
     searchItemsPrice();
     // eslint-disable-next-line
-  }, [dispatch, keyItem, keyType]);
+  }, [dispatch, keyItem, keyType, postIPriceResult, updateIPriceResult]);
 
   const searchData = (e) => {
     e.preventDefault();

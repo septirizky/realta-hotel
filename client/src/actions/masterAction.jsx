@@ -57,6 +57,11 @@ export const UPDATE_SETA = "UPDATE_SETA";
 // delete service task
 export const DELETE_SETA = "DELETE_SETA";
 
+// add price items
+export const POST_IPRICE = "POST_IPRICE";
+// edit price items
+export const UPDATE_IPRICE = "UPDATE_IPRICE";
+
 // locations
 export const getRegions = () => {
   return async (dispatch) => {
@@ -1039,6 +1044,86 @@ export const getItemPrice = (dataItem) => {
       .catch((err) => {
         dispatch({
           type: GET_IPRICE,
+          payload: {
+            data: false,
+            loading: false,
+            errorMsg: err.response.data.message,
+          },
+        });
+      });
+  };
+};
+
+export const postItemPrice = (dataItem) => {
+  return async (dispatch) => {
+    dispatch({
+      type: POST_IPRICE,
+      payload: {
+        data: false,
+        loading: true,
+        errorMsg: false,
+      },
+    });
+
+    await axios({
+      method: "POST",
+      url: "http://localhost:4000/itemprice",
+      data: dataItem,
+      timeout: 120000,
+    })
+      .then((res) => {
+        dispatch({
+          type: POST_IPRICE,
+          payload: {
+            data: res.data,
+            loading: false,
+            errorMsg: false,
+          },
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: POST_IPRICE,
+          payload: {
+            data: false,
+            loading: false,
+            errorMsg: err.response.data.message,
+          },
+        });
+      });
+  };
+};
+
+export const updateItemPrice = (dataItemId, dataItem) => {
+  return async (dispatch) => {
+    dispatch({
+      type: UPDATE_IPRICE,
+      payload: {
+        data: false,
+        loading: true,
+        errorMsg: false,
+      },
+    });
+
+    await axios({
+      method: "PUT",
+      url: "http://localhost:4000/itemprice/" + dataItemId,
+      data: dataItem,
+      timeout: 120000,
+    })
+      .then((res) => {
+        dispatch({
+          type: UPDATE_IPRICE,
+          payload: {
+            data: res.data,
+            loading: false,
+            errorMsg: false,
+          },
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: UPDATE_IPRICE,
           payload: {
             data: false,
             loading: false,

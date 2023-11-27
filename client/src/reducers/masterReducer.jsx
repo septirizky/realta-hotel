@@ -24,6 +24,8 @@ import {
   UPDATE_SETA,
   DELETE_SETA,
   GET_IPRICE,
+  POST_IPRICE,
+  UPDATE_IPRICE,
 } from "../actions/masterAction";
 
 const initialState = {
@@ -102,6 +104,12 @@ const initialState = {
   getIPriceResult: false,
   getIPriceLoading: false,
   getIPriceError: false,
+  postIPriceResult: false,
+  postIPriceLoading: false,
+  postIPriceError: false,
+  updateIPriceResult: false,
+  updateIPriceLoading: false,
+  updateIPriceError: false,
 };
 const masterReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -279,6 +287,20 @@ const masterReducer = (state = initialState, action) => {
         getIPriceResult: action.payload.data,
         getIPriceLoading: action.payload.loading,
         getIPriceError: action.payload.errorMsg,
+      };
+    case POST_IPRICE:
+      return {
+        ...state,
+        postIPriceResult: action.payload.data,
+        postIPriceLoading: action.payload.loading,
+        postIPriceError: action.payload.errorMsg,
+      };
+    case UPDATE_IPRICE:
+      return {
+        ...state,
+        updateIPriceResult: action.payload.data,
+        updateIPriceLoading: action.payload.loading,
+        updateIPriceError: action.payload.errorMsg,
       };
     default:
       return state;

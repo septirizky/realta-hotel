@@ -4,6 +4,8 @@ import { AiOutlinePlus } from "react-icons/ai";
 import { FaPencilAlt, FaTimes } from "react-icons/fa";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 import DetailPriceItems from "./modal/DetailPriceItems";
+import AddPriceItems from "./modal/AddPriceItems";
+import EditPriceItems from "./modal/EditPriceItems";
 
 const GetAllPriceItems = (props) => {
   const formatRupiah = (number) => {
@@ -27,6 +29,10 @@ const GetAllPriceItems = (props) => {
   const [showModalDetailItemPrice, setShowModalDetailItemPrice] =
     useState(false);
 
+  const [showModalAddItemPrice, setShowModalAddItemPrice] = useState(false);
+
+  const [showModalEditItemPrice, setShowModalEditItemPrice] = useState(false);
+
   const [itemPriceId, setItemPriceId] = useState();
 
   const [itemPriceName, setItemPriceName] = useState("");
@@ -38,6 +44,47 @@ const GetAllPriceItems = (props) => {
   const [itemPriceType, setItemPriceType] = useState("");
 
   const [itemPriceIcon, setItemPriceIcon] = useState("");
+
+  const [image, setImage] = useState("");
+
+  const [preview, setPreview] = useState("");
+
+  const showAddItemPrice = () => {
+    setShowModalAddItemPrice(true);
+  };
+
+  const closeAddItemPrice = () => {
+    setImage("");
+    setPreview("");
+    setShowModalAddItemPrice(false);
+  };
+
+  const showEditItemPrice = (
+    itemPriceId,
+    itemPriceName,
+    itemPricePrit,
+    itemPriceDescription,
+    itemPriceType,
+    itemPriceIcon
+  ) => {
+    setItemPriceId(itemPriceId);
+    setItemPriceName(itemPriceName);
+    setItemPricePrit(itemPricePrit);
+    setItemPriceDescription(itemPriceDescription);
+    setItemPriceType(itemPriceType);
+    setItemPriceIcon(itemPriceIcon);
+    setShowModalEditItemPrice(true);
+  };
+
+  const closeEditItemPrice = () => {
+    setItemPriceId("");
+    setItemPriceName("");
+    setItemPricePrit("");
+    setItemPriceDescription("");
+    setItemPriceType("");
+    setItemPriceIcon("");
+    setShowModalEditItemPrice(false);
+  };
 
   const getShowDetailItemPrice = (
     itemPriceId,
@@ -82,7 +129,13 @@ const GetAllPriceItems = (props) => {
             <th className="text-center"></th>
             <th>Type</th>
             <th className="align-border-right">
-              <AiOutlinePlus /> Add
+              <button
+                type="button"
+                className="button-transparan"
+                onClick={showAddItemPrice}
+              >
+                <AiOutlinePlus /> Add
+              </button>
             </th>
           </tr>
         </thead>
@@ -132,7 +185,23 @@ const GetAllPriceItems = (props) => {
                     </td>
                     <td>{iprice.prit_type}</td>
                     <td className="align-border-right">
-                      <FaPencilAlt /> Edit <FaTimes /> Delete
+                      <button
+                        type="button"
+                        className="button-update-transparan"
+                        onClick={() =>
+                          showEditItemPrice(
+                            iprice.prit_id,
+                            iprice.prit_name,
+                            iprice.prit_price,
+                            iprice.prit_description,
+                            iprice.prit_type,
+                            iprice.prit_icon_url
+                          )
+                        }
+                      >
+                        <FaPencilAlt /> Edit
+                      </button>
+                      <FaTimes /> Delete
                     </td>
                   </tr>
                 </tbody>
@@ -169,6 +238,32 @@ const GetAllPriceItems = (props) => {
         itemPriceDescription={itemPriceDescription}
         itemPriceType={itemPriceType}
         itemPriceIcon={itemPriceIcon}
+      />
+
+      <AddPriceItems
+        showModalItemPrice={showModalAddItemPrice}
+        handleCloseAddItemPrice={closeAddItemPrice}
+        image={image}
+        setImage={setImage}
+        preview={preview}
+        setPreview={setPreview}
+      />
+
+      <EditPriceItems
+        showModalItemPrice={showModalEditItemPrice}
+        handleCloseEditItemPrice={closeEditItemPrice}
+        itemPriceId={itemPriceId}
+        itemPriceName={itemPriceName}
+        setItemPriceName={setItemPriceName}
+        itemPricePrit={itemPricePrit}
+        setItemPricePrit={setItemPricePrit}
+        itemPriceDescription={itemPriceDescription}
+        setItemPriceDescription={setItemPriceDescription}
+        itemPriceType={itemPriceType}
+        setItemPriceType={setItemPriceType}
+        itemPriceIcon={itemPriceIcon}
+        image={image}
+        setImage={setImage}
       />
     </>
   );
