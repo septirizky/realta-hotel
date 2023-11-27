@@ -13,6 +13,7 @@ const PriceItems = () => {
     getIPriceError,
     postIPriceResult,
     updateIPriceResult,
+    deleteIPriceResult,
   } = useSelector((state) => state.masterReducer);
 
   const [keyItem, setKeyItems] = useState("");
@@ -33,7 +34,14 @@ const PriceItems = () => {
   useEffect(() => {
     searchItemsPrice();
     // eslint-disable-next-line
-  }, [dispatch, keyItem, keyType, postIPriceResult, updateIPriceResult]);
+  }, [
+    dispatch,
+    keyItem,
+    keyType,
+    postIPriceResult,
+    updateIPriceResult,
+    deleteIPriceResult,
+  ]);
 
   const searchData = (e) => {
     e.preventDefault();

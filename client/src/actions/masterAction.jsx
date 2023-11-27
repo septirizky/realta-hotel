@@ -61,6 +61,8 @@ export const DELETE_SETA = "DELETE_SETA";
 export const POST_IPRICE = "POST_IPRICE";
 // edit price items
 export const UPDATE_IPRICE = "UPDATE_IPRICE";
+// delete price items
+export const DELETE_IPRICE = "DELETE_IPRICE";
 
 // locations
 export const getRegions = () => {
@@ -1124,6 +1126,45 @@ export const updateItemPrice = (dataItemId, dataItem) => {
       .catch((err) => {
         dispatch({
           type: UPDATE_IPRICE,
+          payload: {
+            data: false,
+            loading: false,
+            errorMsg: err.response.data.message,
+          },
+        });
+      });
+  };
+};
+
+export const deleteItemPrice = (dataItemId) => {
+  return async (dispatch) => {
+    dispatch({
+      type: DELETE_IPRICE,
+      payload: {
+        data: false,
+        loading: true,
+        errorMsg: false,
+      },
+    });
+
+    await axios({
+      method: "DELETE",
+      url: "http://localhost:4000/itemprice/" + dataItemId,
+      timeout: 120000,
+    })
+      .then((res) => {
+        dispatch({
+          type: DELETE_IPRICE,
+          payload: {
+            data: res.data,
+            loading: false,
+            errorMsg: false,
+          },
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: DELETE_IPRICE,
           payload: {
             data: false,
             loading: false,

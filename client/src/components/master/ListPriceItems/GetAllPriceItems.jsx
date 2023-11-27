@@ -6,6 +6,7 @@ import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 import DetailPriceItems from "./modal/DetailPriceItems";
 import AddPriceItems from "./modal/AddPriceItems";
 import EditPriceItems from "./modal/EditPriceItems";
+import DeletePriceItems from "./modal/DeletePriceItems";
 
 const GetAllPriceItems = (props) => {
   const formatRupiah = (number) => {
@@ -32,6 +33,9 @@ const GetAllPriceItems = (props) => {
   const [showModalAddItemPrice, setShowModalAddItemPrice] = useState(false);
 
   const [showModalEditItemPrice, setShowModalEditItemPrice] = useState(false);
+
+  const [showModalDeleteItemPrice, setShowModalDeleteItemPrice] =
+    useState(false);
 
   const [itemPriceId, setItemPriceId] = useState();
 
@@ -84,6 +88,18 @@ const GetAllPriceItems = (props) => {
     setItemPriceType("");
     setItemPriceIcon("");
     setShowModalEditItemPrice(false);
+  };
+
+  const showDeleteItemPrice = (itemPriceId, itemPriceName) => {
+    setItemPriceId(itemPriceId);
+    setItemPriceName(itemPriceName);
+    setShowModalDeleteItemPrice(true);
+  };
+
+  const closeDeleteItemPrice = () => {
+    setItemPriceId("");
+    setItemPriceName("");
+    setShowModalDeleteItemPrice(false);
   };
 
   const getShowDetailItemPrice = (
@@ -201,7 +217,15 @@ const GetAllPriceItems = (props) => {
                       >
                         <FaPencilAlt /> Edit
                       </button>
-                      <FaTimes /> Delete
+                      <button
+                        type="button"
+                        className="button-delete-transparan"
+                        onClick={() =>
+                          showDeleteItemPrice(iprice.prit_id, iprice.prit_name)
+                        }
+                      >
+                        <FaTimes /> Delete
+                      </button>
                     </td>
                   </tr>
                 </tbody>
@@ -264,6 +288,13 @@ const GetAllPriceItems = (props) => {
         itemPriceIcon={itemPriceIcon}
         image={image}
         setImage={setImage}
+      />
+
+      <DeletePriceItems
+        showModalItemPrice={showModalDeleteItemPrice}
+        handleCloseDeleteItemPrice={closeDeleteItemPrice}
+        itemPriceId={itemPriceId}
+        itemPriceName={itemPriceName}
       />
     </>
   );

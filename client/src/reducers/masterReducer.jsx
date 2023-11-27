@@ -26,6 +26,7 @@ import {
   GET_IPRICE,
   POST_IPRICE,
   UPDATE_IPRICE,
+  DELETE_IPRICE,
 } from "../actions/masterAction";
 
 const initialState = {
@@ -110,6 +111,9 @@ const initialState = {
   updateIPriceResult: false,
   updateIPriceLoading: false,
   updateIPriceError: false,
+  deleteIPriceResult: false,
+  deleteIPriceLoading: false,
+  deleteIPriceError: false,
 };
 const masterReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -301,6 +305,13 @@ const masterReducer = (state = initialState, action) => {
         updateIPriceResult: action.payload.data,
         updateIPriceLoading: action.payload.loading,
         updateIPriceError: action.payload.errorMsg,
+      };
+    case DELETE_IPRICE:
+      return {
+        ...state,
+        deleteIPriceResult: action.payload.data,
+        deleteIPriceLoading: action.payload.loading,
+        deleteIPriceError: action.payload.errorMsg,
       };
     default:
       return state;
