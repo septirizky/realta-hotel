@@ -1,9 +1,14 @@
+/* eslint-disable no-unreachable */
 import {
   GET_VENDOR,
   GET_STOCK,
   GET_ORDER,
   GET_VENDORSTOCK,
   GET_VENDORID,
+  GET_STOCKDETAIL,
+  GET_HOTEL,
+  GET_PURCHASE,
+  GET_GALLERY,
 } from "../actions/purchaseAction";
 
 const initialState = {
@@ -23,11 +28,30 @@ const initialState = {
   getStockLoading: false,
   getStockError: false,
 
+  getStockDetailResult: false,
+  getStockDetailLoading: false,
+  getStockDetailError: false,
+
   getOrderResult: false,
   getOrderLoading: false,
   getOrderError: false,
+
+  getPurchaseResult: false,
+  getPurchaseLoading: false,
+  getPurchaseError: false,
+
+  getHotelResult: false,
+  getHotelLoading: false,
+  getHotelError: false,
+
+  getGalleryResult: false,
+  getGallleryLoading: false,
+  getGalleryError: false,
 };
+
 const PurchaseReducer = (state = initialState, action) => {
+  const product = action.payload;
+  console.log(product);
   switch (action.type) {
     case GET_VENDOR:
       return {
@@ -57,6 +81,13 @@ const PurchaseReducer = (state = initialState, action) => {
         getStockLoading: action.payload.loading,
         getStockError: action.payload.errorMessage,
       };
+    case GET_STOCKDETAIL:
+      return {
+        ...state,
+        getStockDetailResult: action.payload.data,
+        getStockDetailLoading: action.payload.loading,
+        getStockDetailError: action.payload.errorMessage,
+      };
     case GET_ORDER:
       return {
         ...state,
@@ -64,8 +95,32 @@ const PurchaseReducer = (state = initialState, action) => {
         getOrderLoading: action.payload.loading,
         getOrderError: action.payload.errorMessage,
       };
+    case GET_PURCHASE:
+      return {
+        ...state,
+        getPurchaseResult: action.payload.data,
+        getPurchaseLoading: action.payload.loading,
+        getPurchaseError: action.payload.errorMessage,
+      };
+    case GET_HOTEL:
+      return {
+        ...state,
+        getHotelResult: action.payload.data,
+        getHotelLoading: action.payload.loading,
+        getHotelError: action.payload.errorMessage,
+      };
+    case GET_GALLERY:
+      return {
+        ...state,
+        getGalleryResult: action.payload.data,
+        getGalleryLoading: action.payload.loading,
+        getGalleryError: action.payload.errorMessage,
+      };
+
+      break;
     default:
       return state;
+      break;
   }
 };
 export default PurchaseReducer;

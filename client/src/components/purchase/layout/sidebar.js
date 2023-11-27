@@ -1,11 +1,17 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import { Link, Outlet, useLocation } from "react-router-dom";
 import "../css/style.css";
 import { BsPersonCircle } from "react-icons/bs";
 import { MdApartment } from "react-icons/md";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 export const PurchaseLayout = () => {
+  const state = useSelector((state) => state.handleCart);
+  // const t = cart.toString().split("").map(Number);
+
+  console.log(state, "4567");
   const pathname = useLocation();
   const [burgerActive, setBurgerActive] = useState(false);
   const sidebarToggler = (event) => {
@@ -21,7 +27,7 @@ export const PurchaseLayout = () => {
   return (
     <body className="sb-nav-fixed">
       <nav className="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-        <a className="navbar-brand ps-3" href="#">
+        <a className="navbar-brand ps-3" href="/">
           <MdApartment size="26" className="text-warning" /> Realta Hotel
         </a>
         <button
@@ -35,6 +41,7 @@ export const PurchaseLayout = () => {
           <RxHamburgerMenu size="26" />
         </button>
         <div className="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0"></div>
+
         <ul className="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
           <li className="nav-item dropdown">
             <a
@@ -57,7 +64,9 @@ export const PurchaseLayout = () => {
                 </a>
               </li>
               <li>
-                <hr className="dropdown-divider" />
+                <a className="dropdown-item" href="/cart">
+                  Cart ({state.length})
+                </a>
               </li>
               <li>
                 <a className="dropdown-item" href="#!">

@@ -5,8 +5,16 @@ export const GET_VENDORSTOCK = "GET_VENDORSTOCK";
 export const GET_VENDORID = "GET_VENDORID";
 
 export const GET_STOCK = "GET_STOCK";
+export const GET_STOCKDETAIL = "GET_STOCKDETAIL";
 
 export const GET_ORDER = "GET_ORDER";
+export const GET_PURCHASE = "GET_PURCHASE";
+export const GET_GALLERY = "GET_GALLERY";
+
+export const GET_HOTEL = "GET_HOTEL";
+
+export const ADDITEM = "ADDITEM";
+export const DELITEM = "DELITEM";
 
 export const GetVendor = () => {
   return (dispatch) => {
@@ -96,7 +104,7 @@ export const GetVendorId = (id) => {
     });
     axios({
       method: "GET",
-      url: "http://localhost:4001/getvendorbyId/{id}",
+      url: `http://localhost:4001/getvendorbyId/${id}`,
       timeout: 120000,
     })
       .then((res) => {
@@ -160,6 +168,44 @@ export const GetStock = () => {
       });
   };
 };
+export const GetStockDetail = (id) => {
+  return async (dispatch) => {
+    dispatch({
+      type: GET_STOCKDETAIL,
+      payload: {
+        loading: true,
+        data: false,
+        errorMessage: false,
+      },
+    });
+    await axios({
+      method: "GET",
+      url: `http://localhost:4001/detailinfostock/${id}`,
+      timeout: 120000,
+    })
+      .then((res) => {
+        console.log(res.data);
+        dispatch({
+          type: GET_STOCKDETAIL,
+          payload: {
+            loading: false,
+            data: res.data.data,
+            errorMessage: false,
+          },
+        });
+      })
+      .catch((e) => {
+        dispatch({
+          type: GET_STOCKDETAIL,
+          payload: {
+            loading: false,
+            data: false,
+            errorMessage: e.response.data.message,
+          },
+        });
+      });
+  };
+};
 export const GetOrder = () => {
   return async (dispatch) => {
     dispatch({
@@ -196,5 +242,134 @@ export const GetOrder = () => {
           },
         });
       });
+  };
+};
+export const GetHotel = () => {
+  return async (dispatch) => {
+    dispatch({
+      type: GET_HOTEL,
+      payload: {
+        loading: true,
+        data: false,
+        errorMessage: false,
+      },
+    });
+    await axios({
+      method: "GET",
+      url: "http://localhost:4001/listhotel",
+      timeout: 120000,
+    })
+      .then((res) => {
+        console.log(res.data);
+        dispatch({
+          type: GET_HOTEL,
+          payload: {
+            loading: false,
+            data: res.data.data,
+            errorMessage: false,
+          },
+        });
+      })
+      .catch((e) => {
+        dispatch({
+          type: GET_HOTEL,
+          payload: {
+            loading: false,
+            data: false,
+            errorMessage: e.response.data.message,
+          },
+        });
+      });
+  };
+};
+export const GetPurchaseOrder = () => {
+  return async (dispatch) => {
+    dispatch({
+      type: GET_PURCHASE,
+      payload: {
+        loading: true,
+        data: false,
+        errorMessage: false,
+      },
+    });
+    await axios({
+      method: "GET",
+      url: "http://localhost:4001/listpurchasegallery",
+      timeout: 120000,
+    })
+      .then((res) => {
+        console.log(res.data);
+        dispatch({
+          type: GET_PURCHASE,
+          payload: {
+            loading: false,
+            data: res.data.data,
+            errorMessage: false,
+          },
+        });
+      })
+      .catch((e) => {
+        dispatch({
+          type: GET_PURCHASE,
+          payload: {
+            loading: false,
+            data: false,
+            errorMessage: e.response.data.message,
+          },
+        });
+      });
+  };
+};
+
+export const GetGallery = () => {
+  return async (dispatch) => {
+    dispatch({
+      type: GET_GALLERY,
+      payload: {
+        loading: true,
+        data: false,
+        errorMessage: false,
+      },
+    });
+    await axios({
+      method: "GET",
+      url: "http://localhost:4001/listgallery",
+      timeout: 120000,
+    })
+      .then((res) => {
+        console.log(res.data);
+        dispatch({
+          type: GET_GALLERY,
+          payload: {
+            loading: false,
+            data: res.data.data,
+            errorMessage: false,
+          },
+        });
+      })
+      .catch((e) => {
+        dispatch({
+          type: GET_GALLERY,
+          payload: {
+            loading: false,
+            data: false,
+            errorMessage: e.response.data.message,
+          },
+        });
+      });
+  };
+};
+export const addCart = (listuser) => {
+  return {
+    type: "ADDITEM",
+    payload: listuser,
+  };
+};
+
+// For Delete Item to Cart
+export const delCart = (listuser) => {
+  return {
+    type: "DELITEM",
+    payload: listuser,
   };
 };

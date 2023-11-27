@@ -27,7 +27,7 @@ purchaseRouters.get("/liststocks", purchase.liststock);
 purchaseRouters.post("/insertstocks", purchase.insertstock);
 purchaseRouters.post("/updatestocks/:id", purchase.updatestocks);
 purchaseRouters.delete("/deletestocks/:id", purchase.deletestocks);
-
+purchaseRouters.get("/stockbyId/:id", purchase.stockbyId);
 //stock_photo
 purchaseRouters.get("/liststockphoto", purchase.liststock_photo);
 purchaseRouters.post(
@@ -38,8 +38,9 @@ purchaseRouters.post(
 purchaseRouters.get("/pictstockphoto/:filename", purchase.pictstockphoto);
 
 //stock_detail
-purchaseRouters.get("/detailinfostock", purchase.detailinfostock);
-purchaseRouters.post("/updatestockdetail", purchase.updatestockdetail);
+purchaseRouters.get("/detailinfostock/:id", purchase.detailinfostock);
+purchaseRouters.get("/detailinfostockbyid/:id", purchase.stockdetailbyId);
+purchaseRouters.post("/updatestockdetail/:idstock", purchase.updatestockdetail);
 
 //Vendor Product
 purchaseRouters.get(
@@ -63,4 +64,11 @@ purchaseRouters.post(
   "/updatepurchasedetail",
   purchase.updatepurchaseorderdetail
 );
+
+//hotel
+purchaseRouters.get("/listhotel", purchase.listhotel);
+
+//gallery
+purchaseRouters.get("/listgallery", purchase.listgallery);
+purchaseRouters.get("/listgalleryphoto", purchase.listgalleryphoto);
 export default purchaseRouters;

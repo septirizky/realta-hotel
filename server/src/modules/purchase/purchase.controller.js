@@ -6,7 +6,7 @@ const getvendor = async (req, res) => {
     const result = await models.vendor.findAll();
     res.status(201).json({ data: result, message: "Berhasil!" });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(400).json({ message: error.message });
   }
 };
 
@@ -18,7 +18,7 @@ const getvendorbyId = async (req, res) => {
     });
     res.status(201).json({ data: result, message: "Berhasil!" });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(400).json({ message: error.message });
   }
 };
 
@@ -47,7 +47,7 @@ const insertvendor = async (req, res) => {
     });
     res.status(201).json({ data: result, message: "Berhasil!" });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(400).json({ message: error.message });
   }
 };
 
@@ -58,7 +58,7 @@ const deletevendor = async (req, res) => {
     });
     res.status(201).json({ data: result, message: "Delete Success" });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(400).json({ message: error.message });
   }
 };
 
@@ -83,7 +83,7 @@ const updatevendor = async (req, res) => {
     );
     res.status(201).json({ data: result, message: "Update Success" });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(400).json({ message: error.message });
   }
 };
 
@@ -99,7 +99,7 @@ const getstokvendorproduct = async (req, res) => {
     const result = await sequelize.query(query);
     res.status(201).json({ data: result[0], message: "Success" });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(400).json({ message: error.message });
   }
 };
 
@@ -121,7 +121,7 @@ const insertstokvendorproduct = async (req, res) => {
     });
     res.status(201).json({ data: result, message: "Berhasil!" });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(400).json({ message: error.message });
   }
 };
 
@@ -132,7 +132,7 @@ const deletevendorproduct = async (req, res) => {
     });
     res.status(201).json({ data: result, message: "Berhasil!" });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(400).json({ message: error.message });
   }
 };
 
@@ -142,7 +142,18 @@ const liststock = async (req, res) => {
     const result = await models.stocks.findAll();
     res.status(201).json({ data: result, message: "Success" });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(400).json({ message: error.message });
+  }
+};
+
+const stockbyId = async (req, res) => {
+  try {
+    const result = await models.stocks.findOne({
+      where: { stock_id: req.params.id },
+    });
+    res.status(201).json({ data: result, message: "success" });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
   }
 };
 
@@ -170,7 +181,7 @@ const insertstock = async (req, res) => {
     });
     res.status(201).json({ data: result, message: "Success" });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(400).json({ message: error.message });
   }
 };
 
@@ -201,7 +212,7 @@ const updatestocks = async (req, res) => {
     );
     res.status(201).json({ data: result, message: "Success" });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(400).json({ message: error.message });
   }
 };
 const deletestocks = async (req, res) => {
@@ -211,7 +222,7 @@ const deletestocks = async (req, res) => {
     });
     res.status(201).json({ data: result, message: "Delete Success" });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(400).json({ message: error.message });
   }
 };
 
@@ -220,7 +231,7 @@ const liststock_photo = async (req, res) => {
     const result = await models.stock_photo.findAll();
     res.status(201).json({ data: result, message: "Success" });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(400).json({ message: error.message });
   }
 };
 const uploadstockphoto = async (req, res) => {
@@ -236,7 +247,7 @@ const uploadstockphoto = async (req, res) => {
     });
     res.status(201).json({ data: result, message: "Insert Success" });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(400).json({ message: error.message });
   }
 };
 
@@ -248,7 +259,7 @@ const deletestockphoto = async (req, res) => {
     const result = await sequelize.models.query(query);
     res.status(201).json({ data: result[0], message: "Success" });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(400).json({ message: error.message });
   }
 };
 const pictstockphoto = async (req, res) => {
@@ -274,49 +285,73 @@ const pictstockphoto = async (req, res) => {
       return Promise.reject(new Error("Image does not exist"));
     }
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(400).json({ message: error.message });
   }
 };
 
 const detailinfostock = async (req, res) => {
   try {
-    const query = `select purchase.stock_detail.stod_barcode_number,purchase.stock_detail.stod_status,
+    const query = `select purchase.stock_detail.stod_barcode_number,purchase.stock_detail.stod_status,purchase.stock_detail.stod_id,
                     purchase.stock_detail.stod_notes,purchase.purchase_order_header.pohe_number,
                     hotel.facilities.faci_room_number from purchase.stock_detail join  purchase.purchase_order_header
                     on purchase.stock_detail.stod_pohe_id=purchase.purchase_order_header.pohe_id
                     join hotel.facilities on hotel.facilities.faci_id=purchase.stock_detail.stod_faci_id
-                    join purchase.stocks on purchase.stocks.stock_id=purchase.stock_detail.stod_stock_id`;
+                    join purchase.stocks on purchase.stocks.stock_id=purchase.stock_detail.stod_stock_id where purchase.stock_detail.stod_stock_id=${req.params.id}`;
     const result = await sequelize.query(query);
     res.status(201).json({ data: result[0], message: "Success" });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(400).json({ message: error.message });
   }
 };
 
-const updatestockdetail = async (req, res) => {
+const stockdetailbyId = async (req, res) => {
   try {
-    const updatestockdetail = await models.stock_detail.update(
-      {
-        stod_status: req.body.stod_status,
-      },
-      { where: { stod_id: req.body.stod_id }, returning: true }
-    );
-    const updateroomhotel = await models.facilities.update(
-      {
-        faci_room_number: req.body.faci_room_number,
-      },
-      { where: { faci_id: req.body.faci_id }, returning: true }
-    );
-    const result = { updatestockdetail, updateroomhotel };
+    const result = await models.stock_detail.findOne({
+      where: { stod_id: req.params.id },
+    });
     res.status(201).json({
       data: result,
-      message: "Insert Success",
+      message: " Success",
     });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(400).json({ message: error.message });
+  }
+};
+const updatestockdetail = async (req, res) => {
+  try {
+    console.log(
+      req.body.stod_status,
+      req.body.stod_faci_id,
+      req.params.idstock
+    );
+    const { stod_status, stod_faci_id } = req.body;
+    const result = await models.stock_detail.update(
+      {
+        stod_status: stod_status,
+        stod_faci_id: stod_faci_id,
+      },
+      { where: { stod_id: req.params.idstock }, returning: true }
+    );
+    res.status(201).json({
+      data: result,
+      message: " Success",
+    });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
   }
 };
 
+const listhotel = async (req, res) => {
+  try {
+    const result = await models.facilities.findAll();
+    res.status(201).json({
+      data: result,
+      message: " Success",
+    });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
 const listpurchasing = async (req, res) => {
   try {
     const query = `select * from purchase.stocks join purchase.stock_detail on
@@ -328,7 +363,35 @@ const listpurchasing = async (req, res) => {
     const result = await sequelize.query(query);
     res.status(201).json({ data: result[0], message: "Success" });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(400).json({ message: error.message });
+  }
+};
+
+const listgallery = async (req, res) => {
+  try {
+    const query = `select * from purchase.stocks join purchase.stock_detail on
+                    purchase.stock_detail.stod_stock_id=purchase.stocks.stock_id
+                    join purchase.vendor_product on purchase.vendor_product.vepro_stock_id=purchase.stocks.stock_id
+                    join purchase.vendor on purchase.vendor.vendor_entity_id=purchase.vendor_product.vepro_vendor_id
+                    join purchase.stock_photo on purchase.stocks.stock_id=purchase.stock_photo.spho_stock_id`;
+
+    const result = await sequelize.query(query);
+    res.status(201).json({ data: result[0], message: "Success" });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+const listgalleryphoto = async (req, res) => {
+  try {
+    const query = `select * from purchase.stocks 
+                    join purchase.stock_photo on purchase.stocks.stock_id=purchase.stock_photo.spho_stock_id
+                    join purchase.vendor_product on purchase.stocks.stock_id=purchase.vendor_product.vepro_stock_id
+                    join purchase.vendor on purchase.vendor.vendor_entity_id=purchase.vendor_product.vepro_vendor_id`;
+
+    const result = await sequelize.query(query);
+    res.status(201).json({ data: result[0], message: "Success" });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
   }
 };
 
@@ -383,7 +446,7 @@ const insertpurchaseorder = async (req, res) => {
     const result = { insertpurchaseheader, insertpurchasedetail };
     res.status(201).json({ data: result, message: "Success" });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(400).json({ message: error.message });
   }
 };
 
@@ -397,7 +460,7 @@ const updatestatuspurchase = async (req, res) => {
     );
     res.status(201).json({ data: result, message: "Update Success" });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(400).json({ message: error.message });
   }
 };
 
@@ -412,7 +475,7 @@ const deletepurchasestock = async (req, res) => {
     const result = { deletpurchaseheader, deletepurchasedetail };
     res.status(201).json({ data: result, message: "Success" });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(400).json({ message: error.message });
   }
 };
 
@@ -443,7 +506,7 @@ const updatepurchaseorderdetail = async (req, res) => {
     const result = { updateorderdetail, updatestockdetail };
     res.status(201).json({ data: result, message: "Success" });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(400).json({ message: error.message });
   }
 };
 
@@ -470,4 +533,9 @@ export default {
   deletepurchasestock,
   updatepurchaseorderdetail,
   pictstockphoto,
+  stockbyId,
+  listhotel,
+  stockdetailbyId,
+  listgallery,
+  listgalleryphoto,
 };

@@ -1,5 +1,12 @@
+import {
+  MDBCol,
+  MDBContainer,
+  MDBRow,
+  MDBBreadcrumb,
+  MDBBreadcrumbItem,
+} from "mdb-react-ui-kit";
 import React, { useEffect, useState } from "react";
-import { GetVendorsStock } from "../../../actions/purchaseAction";
+import { GetVendorsStock, GetStock } from "../../../actions/purchaseAction";
 import { useDispatch, useSelector } from "react-redux";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -9,51 +16,39 @@ import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 
 const AddVendorProduct = () => {
-  const [stock_name, setStock] = useState("");
   const [qty, setQty] = useState("");
   const [remaining, setRemaining] = useState("");
   const [price, setPrice] = useState("");
-  const [vendorid, setVendorId] = useState("");
   const [stockid, setStockid] = useState("");
 
-  const { getVendorPResult, getVendorPLoading, getVendorPError } = useSelector(
-    (state) => state.PurchaseReducer
-  );
+  const {
+    getVendorPResult,
+    getVendorPLoading,
+    getVendorPError,
+    getStockResult,
+    getStockLoading,
+    getStockError,
+  } = useSelector((state) => state.PurchaseReducer);
   const { id } = useParams();
-  console.log(id, "dd");
+  console.log(getStockResult, "dd");
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(GetVendorsStock(id));
-    GetVendorsStocks();
+    dispatch(GetStock());
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
 
-  const GetVendorsStocks = async () => {
-    console.log(id, "23dd");
-    const response = await axios.get(
-      `http://localhost:4001/liststockvendorproduct/${id}`
-    );
-    const data = await response.data.data;
-    // eslint-disable-next-line array-callback-return
-    data.map((vendor) => {
-      console.log(vendor.vendor_entity_id, "123");
-      setVendorId(vendor.vendor_entity_id);
-      setStockid(vendor.stock_id);
-    });
-  };
-
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
-  const handleShow = async () => {
-    setShow(true);
-  };
+  const handleShow = () => setShow(true);
 
   //inputvendorstock
 
-  console.log(vendorid, stockid);
+  console.log(id, stockid);
   const insertVendorstock = (event) => {
     event.preventDefault();
-
+    console.log(id, stockid, qty, remaining, price);
     Swal.fire({
       title: "Are you sure?",
       icon: "warning",
@@ -72,7 +67,7 @@ const AddVendorProduct = () => {
             vepro_qty_remaining: remaining,
             vepro_price: price,
             vepro_stock_id: stockid,
-            vepro_vendor_id: vendorid,
+            vepro_vendor_id: id,
           },
         }).then((response) => {
           if (response.data.data !== 400) {
@@ -87,7 +82,7 @@ const AddVendorProduct = () => {
           }
           setShow(false);
           dispatch(GetVendorsStock(id));
-          setStock("");
+          setStockid("");
           setQty("");
           setRemaining("");
           setPrice("");
@@ -95,12 +90,26 @@ const AddVendorProduct = () => {
       }
     });
   };
+
   return (
-    <div className="MainDiv">
-      <div className="container">
-        <Link to="/vendor">
-          <p className="btn btn-sm btn-dark">Back</p>
-        </Link>
+    <section style={{ backgroundColor: "#eee" }}>
+      <MDBContainer className="py-5">
+        <MDBRow>
+          <MDBCol>
+            <MDBBreadcrumb className="rounded-3 p-3 mb-4">
+              <MDBBreadcrumbItem className="mb-3">
+                <Link to="/vendor">Home</Link>
+              </MDBBreadcrumbItem>
+              <MDBBreadcrumbItem className="mb-3">
+                <Link to="/vendor">Vendor</Link>
+              </MDBBreadcrumbItem>
+              <MDBBreadcrumbItem className="mb-3" active>
+                Add Vendor
+              </MDBBreadcrumbItem>
+            </MDBBreadcrumb>
+          </MDBCol>
+        </MDBRow>
+
         <table className="table">
           <thead>
             <tr>
@@ -109,7 +118,6 @@ const AddVendorProduct = () => {
               <th>Qty Remaining</th>
               <th>Price</th>
               <th>
-                {" "}
                 <button className="btn btn-sm btn-dark" onClick={handleShow}>
                   Add
                 </button>
@@ -133,7 +141,7 @@ const AddVendorProduct = () => {
             )}
           </tbody>
         </table>
-        <Form.Group
+        {/* <Form.Group
           className="mb-3"
           controlId="exampleForm.ControlTextarea1"
           style={{ display: "none" }}
@@ -158,7 +166,7 @@ const AddVendorProduct = () => {
             value={vendorid}
             onChange={(e) => setVendorId(e.target.value)}
           />
-        </Form.Group>
+        </Form.Group> */}
         <Modal show={show} onHide={handleClose}>
           <Modal.Header closeButton>
             <Modal.Title>Add/Edit Vendor Product</Modal.Title>
@@ -171,11 +179,26 @@ const AddVendorProduct = () => {
               >
                 <Form.Label>Stock Name</Form.Label>
                 <Form.Control
-                  type="email"
+                  as="select"
                   autoFocus
-                  value={stock_name}
-                  onChange={(e) => setStock(e.target.value)}
-                />
+                  value={stockid}
+                  onChange={(e) => {
+                    setStockid(e.target.value);
+                  }}
+                >
+                  <option></option>
+                  {getStockResult ? (
+                    getStockResult.map((x, y) => (
+                      <option value={x.stock_id} key={x.stock_id}>
+                        {x.stock_name}
+                      </option>
+                    ))
+                  ) : getStockLoading ? (
+                    <p> Loading . . .</p>
+                  ) : (
+                    <p> {getStockError ? getStockError : "Data Kosong"}</p>
+                  )}
+                </Form.Control>
               </Form.Group>
               <Form.Group
                 className="mb-4"
@@ -224,8 +247,8 @@ const AddVendorProduct = () => {
             </Button>
           </Modal.Footer>
         </Modal>
-      </div>
-    </div>
+      </MDBContainer>
+    </section>
   );
 };
 
