@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { addPaymentGateaway, createBank, createUserAccount, deleteBank, deletePaymentGateaway, getAllBank, getBankId, getPaymentGateaway, getPaymentGateawayById, getTransaction, getTransactionDetail, getTransactionPagination, getUserAccount, getUserAccountById, payment, searchBank, searchPaymentGateaway, updateBank, updatePaymentGateaway } from "./payment.controller.js";
+import { addPaymentGateaway, createBank, createUserAccount, deleteBank, deletePaymentGateaway, getAllBank, getBankId, getPaymentGateaway, getPaymentGateawayById, getTransaction, getTransactionDetail, getTransactionPagination, getUserAccount, getUserAccountById, getUserAccountExclude, payment, searchBank, searchPaymentGateaway, topUp, updateBank, updatePaymentGateaway, updateUserAccount } from "./payment.controller.js";
 
 
 const paymentRoutes = Router();
@@ -28,6 +28,7 @@ paymentRoutes.delete('/deletePaymentGateaway/:id',deletePaymentGateaway);
 paymentRoutes.get('/getUserAccount/',getUserAccount);
 paymentRoutes.get('/getUserAccountById/:usac_user_id',getUserAccountById);
 paymentRoutes.post('/addUserAccount', createUserAccount)
+paymentRoutes.put('/updateUserAccount/:id',updateUserAccount)
 
 
 //=================== Payment Transcation =============================
@@ -36,5 +37,11 @@ paymentRoutes.get('/getTransaction/:patr_user_id',getTransaction);
 paymentRoutes.get('/getTransactionPagination',getTransactionPagination);
 paymentRoutes.get('/getTransactionDetail/:patr_id',getTransactionDetail)
 
+
+
+//=================== Transfer =============================
+
+paymentRoutes.get('/getUserAccountExclude/:usac_user_id',getUserAccountExclude)
+paymentRoutes.post('/topUp/transfer/',topUp)
 
 export default paymentRoutes;

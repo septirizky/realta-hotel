@@ -9,6 +9,7 @@ import Payment from "./components/payment/index";
 import Bank from "./components/payment/bank/bank";
 import PaymentGateaway from "./components/payment/paymentGateaway/paymentGateaway";
 import Accounts from "./components/payment/accounts/accounts";
+import TopUp from "./components/payment/topUp/topUp";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
                         <Route index element={<Bank/>}/>
                         <Route path="/payment/paymentgateaway"index element={<PaymentGateaway/>}/>
                         <Route path="/payment/accounts"index element={<Accounts/>}/>
+                        <Route path="/payment/top-up"index element={<TopUp/>}/>
                   </Route>
               </Route>
           </Routes>

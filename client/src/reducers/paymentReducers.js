@@ -4,7 +4,9 @@ import { ADD_BANK,
     GET_PAYMENTGATEAWAY, 
     ADD_PAYMENTGATEAWAY, 
     UPDATE_PAYMENTGATEAWAY, 
-    GET_USER_ACCOUNT
+    GET_USER_ACCOUNT,
+    ADD_USER_ACCOUNT,
+    UPDATE_USER_ACCOUNT
 } from "../actions/paymentAction"
 
 const initialState = {
@@ -35,6 +37,16 @@ const initialState = {
     getUserAccountResult:false,
     getUserAccountLoading:false,
     getUserAccountError:false,
+
+    addUserAccountResult :false,
+    addUserAccountLoading :false,
+    addUserAccountError :false,
+
+    updateUserAccountResult:false,
+    updateUserAccountLoading:false,
+    updateUserAccountError:false,
+
+
 }
 
 export const paymentReducers = (state = initialState, action)=>{
@@ -100,6 +112,24 @@ export const paymentReducers = (state = initialState, action)=>{
                 getUserAccountResult:action.payload.data,
                 getUserAccountLoading:action.payload.loading,
                 getUserAccountError:action.payload.errorMessage
+            }
+        }
+
+        case ADD_USER_ACCOUNT:{
+            return{
+                ...state,
+                addUserAccountResult:action.payload.data,
+                addUserAccountLoading:action.payload.loading,
+                addUserAccountError:action.payload.errorMessage
+            }
+        }
+
+        case UPDATE_USER_ACCOUNT:{
+            return{
+                ...state,
+                updateUserAccountResult:action.payload.data,
+                updateUserAccountLoading:action.payload.loading,
+                updateUserAccountError:action.payload.errorMessage
             }
         }
 

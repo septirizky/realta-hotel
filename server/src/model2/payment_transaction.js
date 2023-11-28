@@ -17,11 +17,11 @@ export default class payment_transaction extends Model {
     },
     patr_debet: {
       type: DataTypes.INTEGER,
-      allowNull: true
+      allowNull: false
     },
     patr_credit: {
       type: DataTypes.INTEGER,
-      allowNull: true
+      allowNull: false
     },
     patr_type: {
       type: DataTypes.CHAR(3),

@@ -71,7 +71,7 @@ const Payment = () => {
                                 Accounts
                             </Link>
                             <Link to='/payment/top-up'
-                                  className={`nav-link`}>
+                                  className={`nav-link ${pathname.pathname === '/payment/top-up' ? "active" : ""}`}>
                                 <div className="sb-nav-link-icon"><IoIosCash size='26'/></div>
                                 Top Up
                             </Link>
@@ -85,7 +85,7 @@ const Payment = () => {
                 </nav>
             </div>
             <div id="layoutSidenav_content">
-                <main className='p-4'>
+                <main className='p-2'>
                     <Outlet/>
                 </main>
                 <footer className="py-4 bg-light mt-auto">

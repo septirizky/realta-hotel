@@ -70,7 +70,7 @@ const ModalAddBank = (props) => {
                       <label className="col-form-label">Bank Name</label>
                   </div>
                   <div className="col-6">
-                      <input {...register('bank_name')} type="text" id="bankcode" className="form-control" required/>
+                      <input {...register('bank_name')} type="text" id="bankname" className="form-control" required/>
                   </div>
               </div>
               

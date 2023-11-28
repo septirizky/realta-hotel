@@ -188,7 +188,7 @@ function initModels(sequelize) {
   payment_gateway.belongsTo(entity, { as: "paga_entity", foreignKey: "paga_entity_id"});
   entity.hasOne(payment_gateway, { as: "payment_gateway", foreignKey: "paga_entity_id"});
   user_accounts.belongsTo(entity, { as: "usac_entity", foreignKey: "usac_entity_id"});
-  entity.hasMany(user_accounts, { as: "user_accounts", foreignKey: "usac_entity_id"});
+  entity.hasMany(user_accounts, { as: "user_account", foreignKey: "usac_entity_id"});
   user_members.belongsTo(members, { as: "usme_memb_name_member", foreignKey: "usme_memb_name"});
   members.hasMany(user_members, { as: "user_members", foreignKey: "usme_memb_name"});
   user_members.belongsTo(users, { as: "usme_user", foreignKey: "usme_user_id"});

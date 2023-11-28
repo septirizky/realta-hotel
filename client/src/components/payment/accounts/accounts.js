@@ -5,20 +5,52 @@ import { MdEdit } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserAccount } from '../../../actions/paymentAction';
 import ModalAddAccounts from './modals/modalAddAccounts';
+import ModalEditAccounts from './modals/modalEditAccounts';
 
 const Accounts = () => {
     const dispatch = useDispatch();
-    const { register, resetField, handleSubmit } = useForm();
+    const { register, resetField, handleSubmit,reset} = useForm();
 
     const [showModalAddAccount, setshowModalAddAccount] = useState(false);
+    const [showModalEditAccount, setshowModalEditAccount] = useState(false);
 
+    const [UserAccount, setUserAccount] = useState({
+        usac_id : '',
+        account_number : '',
+        saldo : '',
+        type : '',
+        entity_id : '',
+        expmonth : '',
+        expyear : '',
+    });
 
     const showAddAccount=()=>{
         setshowModalAddAccount(true)
     }
+    const showEditAccount =(usac_id,account_number,entity_id,saldo,type,usac_expmonth,usac_expyear)=>{
+        // console.log(account_number)
+        setUserAccount({
+            usac_id:usac_id,
+            account_number:account_number,
+            saldo:saldo,
+            type:type,
+            entity_id:entity_id,
+            expmonth:usac_expmonth,
+            expyear:usac_expyear
+        })
+        
+        setshowModalEditAccount(true)
+        // console.log(UserAccount)
+    }
 
     const closeAddAccount = ()=>{
         setshowModalAddAccount(false)
+        reset();
+    }
+    
+    const closeEditAccount =()=>{
+        setshowModalEditAccount(false)
+        reset();
     }
 
     const userId = 1;
@@ -69,7 +101,19 @@ const Accounts = () => {
                                             <td>{usac.usac_entity.bank ? usac.usac_entity.bank.bank_name :usac.usac_entity.payment_gateway.paga_name }</td>
                                             <td>{usac.usac_saldo}</td>
                                             <td>{usac.usac_type}</td>
-                                            <td><button className='btn ms-3'><MdEdit/></button></td>
+                                            <td><button className='btn ms-3' onClick={()=>{
+                                               
+                                                showEditAccount(
+                                                    usac.usac_id,
+                                                    usac.usac_account_number,
+                                                    usac.usac_entity_id,
+                                                    usac.usac_saldo,
+                                                    usac.usac_type,
+                                                    usac.usac_expmonth,
+                                                    usac.usac_expyear,
+                                                )
+                                                // console.log(usac.usac_expmonth)
+                                            }}><MdEdit/></button></td>
                                     </tr>
                                     )
                                 }
@@ -93,11 +137,21 @@ const Accounts = () => {
             
             <ModalAddAccounts
                 showModalAccounts = {showModalAddAccount}
-                handleCloseMOdalAddAccount = {closeAddAccount}
+                handleCloseModalAddAccount = {closeAddAccount}
                 register = {register}
                 handleSubmit = {handleSubmit}
                 resetField = {resetField}
+                reset = {reset}
+            />
 
+            <ModalEditAccounts
+                showModalAccounts = {showModalEditAccount}
+                handleCloseEditAccount = {closeEditAccount}
+                register={register}
+                handleSubmit={handleSubmit}
+                reset={reset}
+                UserAccount = {UserAccount}
+                setUserAccount = {setUserAccount}
             />
 
         </>

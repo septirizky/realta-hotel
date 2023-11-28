@@ -8,8 +8,9 @@ export const GET_PAYMENTGATEAWAY = "GET_PAYMENTGATEAWAY";
 export const ADD_PAYMENTGATEAWAY = "ADD_PAYMENTGATEAWAY";
 export const UPDATE_PAYMENTGATEAWAY = "UPDATE_PAYMENTGATEAWAY";
 
-
 export const GET_USER_ACCOUNT = "GET_USER_ACCOUNT";
+export const ADD_USER_ACCOUNT = "ADD_USER_ACCOUNT";
+export const UPDATE_USER_ACCOUNT = "UPDATE_USER_ACCOUNT";
 
 export const getBank = (bank_name)=>{
     return async (dispatch) => {
@@ -219,7 +220,7 @@ export const updatePaymentGateaway = (data)=>{
         dispatch({
             type:UPDATE_PAYMENTGATEAWAY,
             payload:{
-                loading:false,
+                loading:true,
                 data:false,
                 errorMessage:false
             }
@@ -260,7 +261,7 @@ export const getUserAccount = (usac_user_id)=>{
         dispatch({
             type:GET_USER_ACCOUNT,
             payload:{
-                loading:false,
+                loading:true,
                 data:false,
                 errorMessage:false
             }
@@ -295,3 +296,85 @@ export const getUserAccount = (usac_user_id)=>{
     }
 }
 
+export const addUserAccount = (data)=>{
+    return async (dispatch)=>{
+        dispatch({
+            type:ADD_USER_ACCOUNT,
+            payload:{
+                loading:true,
+                data:false,
+                errorMessage:false
+            }
+        })
+        await axios({
+            method:'POST',
+            url:'http://localhost:4000/addUserAccount',
+            data:data,
+            timeout:12000
+        })
+        .then((result)=>{
+            console.log(result.data.message)
+            dispatch({
+                type:ADD_USER_ACCOUNT,
+                payload:{
+                    loading:false,
+                    data:result.data.message,
+                    errorMessage:false
+                }
+            })
+        })
+        .catch((error)=>{
+            console.log(error)
+            dispatch({
+                type:ADD_USER_ACCOUNT,
+                payload:{
+                    loading:false,
+                    data:false,
+                    errorMessage:error.response.data.message
+                }
+            })
+        })
+    }
+}
+
+
+export const updateUserAccount = (data)=>{
+    return async(dispatch)=>{
+        dispatch({
+            type:UPDATE_USER_ACCOUNT,
+            payload:{
+                loading:true,
+                data:false,
+                errorMessage:false
+            }
+        })
+        await axios({
+            method:'PUT',
+            url:'http://localhost:4000/updateUserAccount/'+ data.usac_id,
+            data:data,
+            timeout:12000
+        })
+        .then((result)=>{
+            // console.log(result)
+            dispatch({
+                type:UPDATE_USER_ACCOUNT,
+                payload:{
+                    loading:false,
+                    data:result.data.message,
+                    errorMessage:false
+                }
+            })
+        })
+        .catch((error)=>{
+            console.log(error)
+            dispatch({
+                type:UPDATE_USER_ACCOUNT,
+                payload:{
+                    loading:false,
+                    data:false,
+                    errorMessage:error.message
+                }
+            })
+        })
+    }
+}

@@ -1,24 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import Modal from 'react-bootstrap/esm/Modal';
-import Button from 'react-bootstrap/esm/Button';
+import Button from 'react-bootstrap/esm/Button'
 import { useDispatch, useSelector } from 'react-redux';
-import { addUserAccount, getBank, getPaymentGateaway, getUserAccount } from '../../../../actions/paymentAction';
-import Swal from 'sweetalert2'
+import { getBank, getPaymentGateaway, getUserAccount, updateUserAccount } from '../../../../actions/paymentAction';
+import Swal from 'sweetalert2';
 
-const ModalAddAccounts = (props) => {
+const ModalEditAccounts = (props) => {
     const {
         showModalAccounts,
-        handleCloseModalAddAccount,
-        register,
+        handleCloseEditAccount,
         handleSubmit,
-        resetField,
+        UserAccount,
+        setUserAccount,
         reset
     } = props;
     
     const dispatch = useDispatch();
-    const [Type, setType] = useState('Debet');
-    const [isAdd, setisAdd] = useState(false);
-
     const{
       getBankResult, 
       getBankLoading, 
@@ -28,77 +25,83 @@ const ModalAddAccounts = (props) => {
       getPaymentGateawayError,
       getPaymentGateawayLoading,
 
-      addUserAccountResult
-      ,addUserAccountError 
+      updateUserAccountResult,
+      updateUserAccountLoading,
+      updateUserAccountError,
+
+
     } = useSelector(
       (state)=>state.paymentReducers
     )
+    const [isEdit, setisEdit] = useState(false);
+    const [Exp, setExp] = useState('');
 
-    const userId = 1
+    const submitEdit = (data)=>{
+        const month = Exp.split("-");
+        UserAccount.expyear = month[0]
+        UserAccount.expmonth = month[1]
+        data = UserAccount
+        setisEdit(true)
+        dispatch(updateUserAccount(data))
 
-    const tambahUserAccount = (data)=>{
-      const date = data.expyear.split("-");
-      data.expyear = date[0]
-      data.expmonth = date[1]
-      data.user_id = userId
-      // console.log(data)
-      setisAdd(true)
-      dispatch(addUserAccount(data))
     }
 
+    const userId = 1;
     useEffect(() => {
-
-      if(isAdd){
-        if(addUserAccountResult){
+      setExp(UserAccount.expyear + '-' + UserAccount.expmonth)
+      
+      if(isEdit){
+        if(updateUserAccountResult){
             Swal.fire({
-                title: addUserAccountResult,
-                text: 'Bank Berhasil Ditambah!',
+                title: updateUserAccountResult,
+                text: 'Bank Berhasil Diubah!',
                 icon: 'success'
             }).then(()=>{
-              handleCloseModalAddAccount(false)
-              dispatch(getUserAccount(userId))
+              handleCloseEditAccount(false)
               reset()
+              dispatch(getUserAccount(userId))
+              setisEdit(false)
             })
-            }
-            else if(addUserAccountError){
-                Swal.fire({
-                    title: addUserAccountError,
-                    text: 'Gagal Menginput!',
-                    icon: 'error'
-                })
-            }
         }
+        else if(updateUserAccountError){
+            Swal.fire({
+                title: updateUserAccountError,
+                text: 'Gagal Mengubah Data!',
+                icon: 'error'
+            })
+        }
+    }
 
       dispatch(getBank({bank_name:''}))
       dispatch(getPaymentGateaway({paga_code:''}))
+    },[dispatch,UserAccount,updateUserAccountResult,updateUserAccountError]);
 
-    }, [dispatch,addUserAccountResult,addUserAccountError]);
 
     return (
-        <Modal show={showModalAccounts} onHide={handleCloseModalAddAccount}>
+        <Modal show={showModalAccounts} onHide={handleCloseEditAccount}>
         <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
+          <Modal.Title>Edit User Account</Modal.Title>
         </Modal.Header>
-        <form onSubmit={handleSubmit(tambahUserAccount)}>
+        <form onSubmit={handleSubmit(submitEdit)}>
         <Modal.Body>
           <div className="row g-3 align-items-center">
               <div className="col-6">
                   <label  className="col-form-label">Account Number</label>
               </div>
               <div className="col-6">                                               
-                  <input type="text" {...register('account_number')} id="account_number" className="form-control" required/>
+                  <input type="text" value={UserAccount.account_number} id="account_number" className="form-control" required onChange={(e)=>setUserAccount({...UserAccount,account_number:e.target.value})}/>
               </div>
               <div className="col-6">
                   <label className="col-form-label">Saldo</label>
               </div>
               <div className="col-6">
-                  <input {...register('saldo')} type="text" id="saldo" className="form-control" required/>
+                  <input value={UserAccount.saldo} type="text" id="saldo" className="form-control" required onChange={(e)=>setUserAccount({...UserAccount,saldo:e.target.value})}/>
               </div>
               <div className="col-6">
                   <label className="col-form-label">Type</label>
               </div>
               <div className="col-6">
-              <select className="form-select" aria-label="Default select example" {...register('type')} onChange={(e)=>setType(e.target.value)}>
+              <select className="form-select" aria-label="Default select example" value={UserAccount.type} onChange={(e)=>setUserAccount({...UserAccount,type:e.target.value})}>
                 <option selected value='Debet'>Debet</option>
                 <option value='Credit Card'>Credit Card</option>
                 <option value='Payment'>Payment</option>
@@ -109,9 +112,9 @@ const ModalAddAccounts = (props) => {
                   <label className="col-form-label">Bank Name / Fintech Name</label>
               </div>
               <div className="col-6">
-                 <select className="form-select" {...register('entity_id')}>
+                 <select className="form-select" value={UserAccount.entity_id} onChange={(e)=>setUserAccount({...UserAccount,entity_id:e.target.value})}>
                  {  
-                    Type === "Debet"|| Type === "Credit Card" ?
+                    UserAccount.type === "Debet"|| UserAccount.type === "Credit Card" ?
                       getBankResult ?(
                           getBankResult.map((bank)=>{
                                 return(
@@ -150,13 +153,14 @@ const ModalAddAccounts = (props) => {
                   <label className="col-form-label">Expired In</label>
               </div>
               <div className="col-6">
-              <input {...register('expyear','expmonth')}type="month" id="expired" className="form-control" required/>
+              <input onChange={(e)=>setExp(e.target.value)} value={Exp} type="month" id="expired" className="form-control" required/>
               </div>
+              
           </div>
           
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseModalAddAccount}>
+          <Button variant="secondary" onClick={handleCloseEditAccount}>
             Close
           </Button>
           <Button variant="primary" type='submit'>
@@ -168,4 +172,4 @@ const ModalAddAccounts = (props) => {
     );
 }
 
-export default ModalAddAccounts;
+export default ModalEditAccounts;

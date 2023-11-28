@@ -223,7 +223,7 @@ export const deletePaymentGateaway = async (req, res) => {
 export const getUserAccount = async(req,res)=>{
     try {
         const data1 = await models.user_accounts.findAll({
-            attributes: ['usac_user_id','usac_entity_id', 'usac_account_number','usac_saldo','usac_type','usac_expmonth','usac_expyear'],
+            attributes: ['usac_id','usac_user_id','usac_entity_id', 'usac_account_number','usac_saldo','usac_type','usac_expmonth','usac_expyear'],
             include : [{
                 model:entity, as:'usac_entity',attributes: ['entity_id'],required:true,
                 include: [{
@@ -276,7 +276,7 @@ export const getUserAccountById = async(req, res) =>{
         const usac_user_id = req.params.usac_user_id
         const data1 = await models.user_accounts.findAll({
             where: {usac_user_id},
-            attributes: ['usac_user_id','usac_entity_id', 'usac_account_number','usac_saldo','usac_type','usac_expmonth','usac_expyear'],
+            attributes: ['usac_id','usac_user_id','usac_entity_id', 'usac_account_number','usac_saldo','usac_type','usac_expmonth','usac_expyear'],
             include : [{
                 model:entity, as:'usac_entity',attributes: ['entity_id'],required:true,
                 include: [{
@@ -288,7 +288,7 @@ export const getUserAccountById = async(req, res) =>{
 
         const data2 = await models.user_accounts.findAll({
             where: {usac_user_id},
-            attributes: ['usac_user_id','usac_entity_id', 'usac_account_number','usac_saldo','usac_type','usac_expmonth','usac_expyear'],
+            attributes: ['usac_id','usac_user_id','usac_entity_id', 'usac_account_number','usac_saldo','usac_type','usac_expmonth','usac_expyear'],
             include : [{
                 model:entity, as:'usac_entity',attributes: ['entity_id'],required:true,
                 include: [{
@@ -305,7 +305,35 @@ export const getUserAccountById = async(req, res) =>{
     }
 }
 
+export const updateUserAccount = async(req,res)=>{
+    try {
+        const id = req.params.id;
+        const {entity_id,user_id,account_number,saldo,type,expmonth,expyear} = req.body;
+        
+        const result = await models.user_accounts.update({
+            usac_entity_id:entity_id,
+            usac_account_number : account_number,
+            usac_saldo : saldo,
+            usac_type: type,
+            usac_expmonth: expmonth,
+            usac_expyear: expyear,
+        },{
+            where:{usac_id:id},
+            returning:true
+        }) 
+
+        return result[0] === 1
+        ? res.status(200).json({message: `Data Berhasil Diubah`, data:result})
+        : res.status(400).json({message:`Data Dengan Id ${id} Tidak Ditemukan`})
+
+        
+    } catch (error) {
+        res.status(404).json(error.message)
+    }
+}
+
 // ========================== BackEnd Transaction =========================
+
 
 export const getTransaction = async(req,res)=>{
     try {
@@ -342,5 +370,65 @@ export const getTransactionDetail = async(req,res)=>{
         return res.status(200).json({data:result})
     } catch (error) {
         return res.status(404).json({message:error.message})
+    }
+}
+
+
+// ========================== BackEnd TopUp =========================
+
+export const getUserAccountExclude = async(req,res)=>{
+    try {
+        const usac_user_id = req.params.usac_user_id;
+
+        const result = await models.user_accounts.findAll({
+            where:{
+                usac_user_id:{[Op.not]: usac_user_id}
+            }
+        })
+        // console.log(result)
+        return res.status(200).json(result)
+    } catch (error) {
+        return res.status(404).json(error.message)
+    }
+}
+
+export const topUp = async(req,res)=>{
+    try {
+        const {source_id, target_id, saldo} = req.body
+        const source = await models.user_accounts.findOne({
+            where: {usac_id : source_id}
+        })
+
+        const target = await models.user_accounts.findOne({
+            where: {usac_id:target_id}
+        })
+        
+        if(source.usac_saldo < saldo){
+            return res.status(200).json({message:'Maaf Saldo Anda Kurang'})
+       }else{
+
+        const newSourceSaldo = source.usac_saldo - +saldo;
+        const newTargetSaldo = target.usac_saldo + +saldo;
+        
+        const updateSource = await models.user_accounts.update({
+            usac_saldo : newSourceSaldo
+        },{
+            where : {usac_id : source_id},
+            returning:true
+        })
+
+        const updateTarget = await models.user_accounts.update({
+            usac_saldo : newTargetSaldo
+        },{
+            where : {usac_id : target_id},
+            returning:true
+        })
+        
+        updateSource[0] && updateTarget[0] === 1
+        ? res.status(200).json({data:updateSource, data2: updateTarget,message:'Berhasil Melakukan Transfer'})
+        : res.status(203).json({message:'Gagal Melakukan Transfer'})
+    }
+    } catch (error) {
+        return res.status(404).json(error.message)
     }
 }
