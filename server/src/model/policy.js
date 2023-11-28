@@ -17,7 +17,7 @@ export default class policy extends Model {
     },
     poli_description: {
       type: DataTypes.STRING(255),
-      allowNull: false
+      allowNull: true
     },
     createdat: {
       type: DataTypes.DATE,

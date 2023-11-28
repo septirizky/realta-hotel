@@ -553,6 +553,16 @@ export const cagroGetAll = async (req, res) => {
         "createdat",
         "updatedat",
       ],
+      include: {
+        model: models.policy_category_group,
+        as: "policy_category_groups",
+        required: true,
+        include: {
+          model: models.policy,
+          as: "poca_poli",
+          required: true,
+        },
+      },
       order: [["cagro_id", "ASC"]],
     });
 

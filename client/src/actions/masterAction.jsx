@@ -15,6 +15,9 @@ export const GET_SETA = "GET_SETA";
 // show item price
 export const GET_IPRICE = "GET_IPRICE";
 
+// show category group
+export const GET_CAGRO = "GET_CAGRO";
+
 // add locations region
 export const POST_REGION = "POST_REGION";
 // update locations region
@@ -1165,6 +1168,46 @@ export const deleteItemPrice = (dataItemId) => {
       .catch((err) => {
         dispatch({
           type: DELETE_IPRICE,
+          payload: {
+            data: false,
+            loading: false,
+            errorMsg: err.response.data.message,
+          },
+        });
+      });
+  };
+};
+
+// category group
+export const getCagro = () => {
+  return async (dispatch) => {
+    dispatch({
+      type: GET_CAGRO,
+      payload: {
+        data: false,
+        loading: true,
+        errorMsg: false,
+      },
+    });
+
+    await axios({
+      method: "GET",
+      url: "http://localhost:4000/cagro",
+      timeout: 120000,
+    })
+      .then((res) => {
+        dispatch({
+          type: GET_CAGRO,
+          payload: {
+            data: res.data.data,
+            loading: false,
+            errorMsg: false,
+          },
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: GET_CAGRO,
           payload: {
             data: false,
             loading: false,

@@ -21,7 +21,7 @@ export default class address extends Model {
     },
     addr_postal_code: {
       type: DataTypes.STRING(5),
-      allowNull: false
+      allowNull: true
     },
     addr_spatial_location: {
       type: DataTypes.STRING(225),
@@ -29,7 +29,7 @@ export default class address extends Model {
     },
     addr_city_id: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
       references: {
         model: 'city',
         key: 'city_id'

@@ -17,7 +17,7 @@ export default class provinces extends Model {
     },
     prov_country_id: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
       references: {
         model: 'country',
         key: 'country_id'
