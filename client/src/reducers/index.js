@@ -1,7 +1,6 @@
-import {combineReducers} from "redux";
-import HrReducer from "./hrReducer";
+import { combineReducers } from "redux";
+import HotelReducer from "./hotel";
 
 export default combineReducers({
-    // masukan reducer baru
-    HrReducer
-})
+  HotelReducer,
+});
