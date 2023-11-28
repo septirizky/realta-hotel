@@ -57,14 +57,14 @@ purchaseRouters.delete(
 );
 
 //purchasing_order
-purchaseRouters.get("/listpurchasegallery", purchase.listpurchasing);
+purchaseRouters.get("/listpurchase", purchase.listpurchasing);
 purchaseRouters.post("/updatestatuspurchase", purchase.updatestatuspurchase);
 purchaseRouters.delete("/deletepurchaseorder", purchase.deletepurchasestock);
 purchaseRouters.post(
   "/updatepurchasedetail",
   purchase.updatepurchaseorderdetail
 );
-
+purchaseRouters.post("/insertorder", purchase.insertpurchaseorder);
 //hotel
 purchaseRouters.get("/listhotel", purchase.listhotel);
 

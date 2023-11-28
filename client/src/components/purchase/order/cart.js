@@ -1,16 +1,13 @@
 /* eslint-disable no-const-assign */
 import React from "react";
-import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { addCart, delCart } from "../../../actions/purchaseAction";
 import Swal from "sweetalert2";
 import axios from "axios";
 
 const Cart = () => {
   const state = JSON.parse(localStorage.getItem("access_token"));
   console.log(state, "45");
-  const dispatch = useDispatch();
-  const t = "";
+
   const EmptyCart = () => {
     return (
       <div className="container">
@@ -24,59 +21,6 @@ const Cart = () => {
         </div>
       </div>
     );
-  };
-
-  const inputdata = (event) => {
-    event.preventDefault();
-    // console.log(stock_name, desc, point, qty, used, scrap, color, size, id);
-    Swal.fire({
-      title: "Are you sure?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        axios({
-          method: "POST",
-          url: `http://localhost:4001/updatestocks/`,
-          timeout: 12000,
-          data: {
-            // stock_name: stock_name,
-            // stock_description: desc,
-            // stock_quantity: qty,
-            // stock_reorder_point: point,
-            // stock_used: used,
-            // stock_scrap: scrap,
-            // stock_size: size,
-            // stock_color: color,
-          },
-        }).then((response) => {
-          if (response.data.data !== 400) {
-            Swal.fire({
-              icon: "success",
-            });
-            // setEdit(false);
-            // dispatch(GetStock());
-            // setStock("");
-            // setDesc("");
-            // setPoint("");
-            // setQty("");
-            // setUsed("");
-            // setScrap("");
-            // setSize("");
-            // setColor("");
-          } else {
-            Swal.fire({
-              icon: "warning",
-              text: response.data.code,
-            });
-          }
-          // setShow(false);
-        });
-      }
-    });
   };
 
   const ShowCart = () => {
@@ -95,6 +39,87 @@ const Cart = () => {
     state.map((item) => {
       return (totalItems += item.qty);
     });
+    const orderheader = [];
+    const orderdetail = [];
+    state.map((item) => {
+      const ponumber = "PO" + new Date().valueOf();
+      const tax = Math.round(subtotal * 0.1);
+      const total = Math.round(subtotal * 0.1 + subtotal);
+      // const today = new Date();
+      // const dd = String(today.getDate()).padStart(2, "0");
+      // var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+      // var yyyy = today.getFullYear();
+
+      // today = mm + "/" + dd + "/" + yyyy;
+
+      orderheader.push({
+        pohe_number: ponumber,
+        pohe_status: 1,
+        pohe_order_date: new Date(),
+        pohe_subtotal: subtotal,
+        pohe_tax: tax,
+        pohe_total_amount: total,
+        pohe_refund: 0,
+        pohe_arrival_date: new Date(),
+        pohe_pay_type: "TR",
+        pohe_emp_id: 1,
+        pohe_vendor_id: item.vendor_entity_id,
+      });
+      orderdetail.push({
+        pode_order_qty: item.qty,
+        pode_price: item.vepro_price,
+        pode_line_total: item.qty,
+        pode_received_qty: 0,
+        pode_rejected_qty: 0,
+        pode_stocked_qty: item.stock_quantity,
+        pode_modified_date: new Date(),
+        pode_stock_id: item.stock_id,
+      });
+      // return orderheader & orderdetail;
+    });
+    const inputdata = (event) => {
+      event.preventDefault();
+      console.log(orderheader, orderdetail, "90");
+      Swal.fire({
+        title: "Are you sure?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          axios({
+            method: "POST",
+            url: `http://localhost:4001/insertorder`,
+            timeout: 12000,
+            data: { orderdetail, orderheader },
+          }).then((response) => {
+            if (response.data.data !== 400) {
+              Swal.fire({
+                icon: "success",
+              });
+              // setEdit(false);
+              // dispatch(GetStock());
+              // setStock("");
+              // setDesc("");
+              // setPoint("");
+              // setQty("");
+              // setUsed("");
+              // setScrap("");
+              // setSize("");
+              // setColor("");
+            } else {
+              Swal.fire({
+                icon: "warning",
+                text: response.data.code,
+              });
+            }
+            // setShow(false);
+          });
+        }
+      });
+    };
     return (
       <>
         <section className="h-100 gradient-custom">
@@ -211,7 +236,6 @@ const Cart = () => {
     <>
       {/* <Navbar /> */}
       <div className="container my-3 py-3">
-        <h1 className="text-center">Cart</h1>
         <hr />
         {state ? <ShowCart /> : <EmptyCart />}
       </div>

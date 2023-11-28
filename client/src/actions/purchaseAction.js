@@ -294,7 +294,7 @@ export const GetPurchaseOrder = () => {
     });
     await axios({
       method: "GET",
-      url: "http://localhost:4001/listpurchasegallery",
+      url: "http://localhost:4001/listpurchase",
       timeout: 120000,
     })
       .then((res) => {

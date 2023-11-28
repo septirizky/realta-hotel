@@ -9,7 +9,7 @@ import $ from "jquery";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 
-const PurchaseOrder = () => {
+const DetailOrder = () => {
   const { getOrderResult, getOrderLoading, getOrderError } = useSelector(
     (state) => state.PurchaseReducer
   );
@@ -79,4 +79,4 @@ const PurchaseOrder = () => {
   );
 };
 
-export default PurchaseOrder;
+export default DetailOrder;

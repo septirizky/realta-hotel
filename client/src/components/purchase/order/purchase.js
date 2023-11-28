@@ -1,3 +1,6 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-const-assign */
+/* eslint-disable eqeqeq */
 import React, { useEffect } from "react";
 import { GetPurchaseOrder } from "../../../actions/purchaseAction";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,7 +18,7 @@ const PurchaseOrder = () => {
     console.log("1. use effect home");
     dispatch(GetPurchaseOrder());
   }, [dispatch]);
-
+  let active = "";
   return (
     <div>
       <table className="table">
@@ -33,12 +36,22 @@ const PurchaseOrder = () => {
           {getPurchaseResult ? (
             getPurchaseResult.map((vendor, index) => (
               <tr key={index}>
-                <td>{vendor.stock_name}</td>
-                <td>{vendor.stock_quantity}</td>
-                <td>{vendor.pode_price}</td>
-                <td>{vendor.pode_received_qty}</td>
-                <td>{vendor.pode_rejected_qty}</td>
+                <td>{vendor.pohe_number}</td>
+                <td>{vendor.pohe_order_date}</td>
+                <td>{vendor.vendor_name}</td>
                 <td>{vendor.pode_line_total}</td>
+                <td>{vendor.pohe_total_amount}</td>
+                <td>
+                  {vendor.pohe_status == 1
+                    ? (active = "Pending")
+                    : vendor.vendor_active == 2
+                    ? (active = "Approve")
+                    : vendor.vendor_active == 3
+                    ? (active = "Rejected")
+                    : vendor.vendor_active == 4
+                    ? (active = "Complete")
+                    : null}
+                </td>
                 <td>
                   <DropdownButton
                     id="dropdown-basic-button"
@@ -46,7 +59,7 @@ const PurchaseOrder = () => {
                     split
                     variant="Secondary"
                   >
-                    <Dropdown.Item href="#/action-2">Details</Dropdown.Item>
+                    <Dropdown.Item href="/detailorder">Details</Dropdown.Item>
                     <Dropdown.Item href="#/action-3">
                       Switch Status
                     </Dropdown.Item>
