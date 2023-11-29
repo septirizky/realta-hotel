@@ -27,7 +27,7 @@ function App() {
           <Route path="/stock" index element={<Stock />} />
           <Route path="/stock/:id" index element={<StockDetail />} />
           <Route path="/purchaseorder" index element={<PurchaseOrder />} />
-          <Route path="/detailorder" index element={<DetailOrder />} />
+          <Route path="/detailorder/:id" index element={<DetailOrder />} />
         </Route>
       </Routes>
     </BrowserRouter>

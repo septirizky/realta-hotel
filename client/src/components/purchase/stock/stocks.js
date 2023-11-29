@@ -10,7 +10,13 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import { useNavigate, generatePath } from "react-router-dom";
-import { MDBCardImage } from "mdb-react-ui-kit";
+import {
+  MDBCol,
+  MDBContainer,
+  MDBRow,
+  MDBBreadcrumb,
+  MDBBreadcrumbItem,
+} from "mdb-react-ui-kit";
 
 const Stock = () => {
   const [stock_name, setStock] = useState("");
@@ -259,289 +265,326 @@ const Stock = () => {
     navigate(generatePath("/stock/:id", { id: id }));
   };
   return (
-    <div>
-      <>
-        <table className="table text-muted">
-          <thead>
-            <tr>
-              <th>Stock</th>
-              <th>Re-Order Point</th>
-              <th>Qty</th>
-              <th>Used</th>
-              <th>Scrap</th>
-              <th>Size Color</th>
-              <th>
-                {" "}
-                <button className="btn btn-sm btn-dark" onClick={handleShow}>
-                  Add
-                </button>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {getStockResult ? (
-              getStockResult.map((vendor, index) => (
-                <tr key={index}>
-                  <td>{vendor.stock_name}</td>
-                  <td>{vendor.stock_reorder_point}</td>
-                  <td>{vendor.stock_quantity}</td>
-                  <td>{vendor.stock_used}</td>
-                  <td>{vendor.stock_scrap}</td>
-                  <td>{vendor.stock_size + "-" + vendor.stock_color}</td>
-                  <td>
-                    <DropdownButton
-                      id="dropdown-basic-button"
-                      title=""
-                      split
-                      variant="Secondary"
-                    >
-                      <Dropdown.Item onClick={() => editStock(vendor.stock_id)}>
-                        Edit
-                      </Dropdown.Item>
-                      <Dropdown.Item
-                        onClick={() => handleUpload(vendor.stock_id)}
+    <section style={{ backgroundColor: "#eee" }}>
+      <MDBContainer className="py-5">
+        <MDBRow>
+          <MDBCol>
+            <MDBBreadcrumb className="bg-light rounded-3 p-3 mb-4">
+              <MDBBreadcrumbItem>
+                <a href="/">Home</a>
+              </MDBBreadcrumbItem>
+              <MDBBreadcrumbItem active>Stock</MDBBreadcrumbItem>
+            </MDBBreadcrumb>
+          </MDBCol>
+        </MDBRow>
+        <MDBBreadcrumb className="bg-light rounded-3 p-3 mb-4">
+          <div className="w-100">
+            <>
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>Stock</th>
+                    <th>Re-Order Point</th>
+                    <th>Qty</th>
+                    <th>Used</th>
+                    <th>Scrap</th>
+                    <th>Size Color</th>
+                    <th>
+                      {" "}
+                      <button
+                        className="btn btn-sm btn-dark"
+                        onClick={handleShow}
                       >
-                        Upload Photo
-                      </Dropdown.Item>
-                      <Dropdown.Item
-                        onClick={() => deleteHandler(vendor.stock_id)}
-                      >
-                        Delete
-                      </Dropdown.Item>
-                      <Dropdown.Item
-                        onClick={() => detailstock(vendor.stock_id)}
-                      >
-                        Detail Info Stock
-                      </Dropdown.Item>
-                    </DropdownButton>
-                  </td>
-                </tr>
-              ))
-            ) : getStockLoading ? (
-              <p> Loading . . .</p>
-            ) : (
-              <p> {getStockError ? getStockError : "Data Kosong"}</p>
-            )}
-          </tbody>
-        </table>
-      </>
+                        Add
+                      </button>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {getStockResult ? (
+                    getStockResult.map((vendor, index) => (
+                      <tr key={index}>
+                        <td>{vendor.stock_name}</td>
+                        <td>{vendor.stock_reorder_point}</td>
+                        <td>{vendor.stock_quantity}</td>
+                        <td>{vendor.stock_used}</td>
+                        <td>{vendor.stock_scrap}</td>
+                        <td>{vendor.stock_size + "-" + vendor.stock_color}</td>
+                        <td>
+                          <DropdownButton
+                            id="dropdown-basic-button"
+                            title=""
+                            split
+                            variant="Secondary"
+                          >
+                            <Dropdown.Item
+                              onClick={() => editStock(vendor.stock_id)}
+                            >
+                              Edit
+                            </Dropdown.Item>
+                            <Dropdown.Item
+                              onClick={() => handleUpload(vendor.stock_id)}
+                            >
+                              Upload Photo
+                            </Dropdown.Item>
+                            <Dropdown.Item
+                              onClick={() => deleteHandler(vendor.stock_id)}
+                            >
+                              Delete
+                            </Dropdown.Item>
+                            <Dropdown.Item
+                              onClick={() => detailstock(vendor.stock_id)}
+                            >
+                              Detail Info Stock
+                            </Dropdown.Item>
+                          </DropdownButton>
+                        </td>
+                      </tr>
+                    ))
+                  ) : getStockLoading ? (
+                    <p> Loading . . .</p>
+                  ) : (
+                    <p> {getStockError ? getStockError : "Data Kosong"}</p>
+                  )}
+                </tbody>
+              </table>
+            </>
 
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Add/Edit Vendor Product</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form id="create-course-form">
-            <Form.Group className="mb-12" controlId="exampleForm.ControlInput1">
-              <Form.Label>Stock</Form.Label>
-              <Form.Control
-                type="email"
-                value={stock_name}
-                onChange={(e) => setStock(e.target.value)}
-                autoFocus
-              />
-            </Form.Group>
-            <Form.Group className="mb-12" controlId="exampleForm.ControlInput1">
-              <Form.Label>Stock Description</Form.Label>
-              <Form.Control
-                type="email"
-                value={desc}
-                onChange={(e) => setDesc(e.target.value)}
-                autoFocus
-              />
-            </Form.Group>
-            <Form.Group controlId="formBasicSelect">
-              <Form.Label>Re-order-point</Form.Label>
-              <Form.Control
-                value={point}
-                onChange={(e) => {
-                  console.log("e.target.value", e.target.value);
-                  setPoint(e.target.value);
-                }}
-              ></Form.Control>
-            </Form.Group>
-            <Form.Group
-              className="mb-3"
-              controlId="exampleForm.ControlTextarea1"
-            >
-              <Form.Label>Quantity</Form.Label>
-              <Form.Control
-                value={qty}
-                onChange={(e) => {
-                  console.log("e.target.value", e.target.value);
-                  setQty(e.target.value);
-                }}
-                autoFocus
-              />
-            </Form.Group>
-            <Form.Group controlId="duedate">
-              <Form.Label>Used</Form.Label>
-              <Form.Control
-                value={used}
-                onChange={(e) => setUsed(e.target.value)}
-              />
-            </Form.Group>
-            <Form.Group controlId="formBasicSelect">
-              <Form.Label>Scrap</Form.Label>
-              <Form.Control
-                value={scrap}
-                onChange={(e) => setScrap(e.target.value)}
-              ></Form.Control>
-            </Form.Group>
-            <Form.Group controlId="formBasicSelect">
-              <Form.Label>Size</Form.Label>
-              <Form.Control
-                value={size}
-                onChange={(e) => setSize(e.target.value)}
-              ></Form.Control>
-            </Form.Group>
-            <Form.Group controlId="formBasicSelect">
-              <Form.Label>Color</Form.Label>
-              <Form.Control
-                value={color}
-                onChange={(e) => setColor(e.target.value)}
-              ></Form.Control>
-            </Form.Group>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Cancel
-          </Button>
-          <Button variant="primary" onClick={insertstock}>
-            Save
-          </Button>
-        </Modal.Footer>
-      </Modal>
-      <Modal show={edit} onHide={handleEditC}>
-        <Modal.Header closeButton>
-          <Modal.Title>Add/Edit Vendor Product</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form id="create-course-form">
-            <Form.Group className="mb-12" controlId="exampleForm.ControlInput1">
-              <Form.Label>Stock</Form.Label>
-              <Form.Control
-                type="email"
-                value={stock_name}
-                onChange={(e) => setStock(e.target.value)}
-                autoFocus
-              />
-            </Form.Group>
-            <Form.Group className="mb-12" controlId="exampleForm.ControlInput1">
-              <Form.Label>Stock Description</Form.Label>
-              <Form.Control
-                type="email"
-                value={desc}
-                onChange={(e) => setDesc(e.target.value)}
-                autoFocus
-              />
-            </Form.Group>
-            <Form.Group controlId="formBasicSelect">
-              <Form.Label>Re-order-point</Form.Label>
-              <Form.Control
-                value={point}
-                onChange={(e) => {
-                  console.log("e.target.value", e.target.value);
-                  setPoint(e.target.value);
-                }}
-              ></Form.Control>
-            </Form.Group>
-            <Form.Group
-              className="mb-3"
-              controlId="exampleForm.ControlTextarea1"
-            >
-              <Form.Label>Quantity</Form.Label>
-              <Form.Control
-                value={qty}
-                onChange={(e) => {
-                  console.log("e.target.value", e.target.value);
-                  setQty(e.target.value);
-                }}
-                autoFocus
-              />
-            </Form.Group>
-            <Form.Group controlId="duedate">
-              <Form.Label>Used</Form.Label>
-              <Form.Control
-                value={used}
-                onChange={(e) => setUsed(e.target.value)}
-              />
-            </Form.Group>
-            <Form.Group controlId="duedate" style={{ display: "none" }}>
-              <Form.Label>Used</Form.Label>
-              <Form.Control
-                value={id}
-                onChange={(e) => setId(e.target.value)}
-              />
-            </Form.Group>
-            <Form.Group controlId="formBasicSelect">
-              <Form.Label>Scrap</Form.Label>
-              <Form.Control
-                value={scrap}
-                onChange={(e) => setScrap(e.target.value)}
-              ></Form.Control>
-            </Form.Group>
-            <Form.Group controlId="formBasicSelect">
-              <Form.Label>Size</Form.Label>
-              <Form.Control
-                value={size}
-                onChange={(e) => setSize(e.target.value)}
-              ></Form.Control>
-            </Form.Group>
-            <Form.Group controlId="formBasicSelect">
-              <Form.Label>Color</Form.Label>
-              <Form.Control
-                value={color}
-                onChange={(e) => setColor(e.target.value)}
-              ></Form.Control>
-            </Form.Group>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleEditC}>
-            Cancel
-          </Button>
-          <Button variant="primary" onClick={editVendor}>
-            Simpan
-          </Button>
-        </Modal.Footer>
-      </Modal>
-      <Modal show={photo} onHide={handlePhoto}>
-        <Modal.Header closeButton>
-          <Modal.Title>Upload Photo Stock</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <div className="row">
-            <div className="col-1 ">
-              <input type="file" accept="image/*" onChange={handleChange} />
-            </div>
+            <Modal show={show} onHide={handleClose}>
+              <Modal.Header closeButton>
+                <Modal.Title>Add/Edit Vendor Product</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <Form id="create-course-form">
+                  <Form.Group
+                    className="mb-12"
+                    controlId="exampleForm.ControlInput1"
+                  >
+                    <Form.Label>Stock</Form.Label>
+                    <Form.Control
+                      type="email"
+                      value={stock_name}
+                      onChange={(e) => setStock(e.target.value)}
+                      autoFocus
+                    />
+                  </Form.Group>
+                  <Form.Group
+                    className="mb-12"
+                    controlId="exampleForm.ControlInput1"
+                  >
+                    <Form.Label>Stock Description</Form.Label>
+                    <Form.Control
+                      type="email"
+                      value={desc}
+                      onChange={(e) => setDesc(e.target.value)}
+                      autoFocus
+                    />
+                  </Form.Group>
+                  <Form.Group controlId="formBasicSelect">
+                    <Form.Label>Re-order-point</Form.Label>
+                    <Form.Control
+                      value={point}
+                      onChange={(e) => {
+                        console.log("e.target.value", e.target.value);
+                        setPoint(e.target.value);
+                      }}
+                    ></Form.Control>
+                  </Form.Group>
+                  <Form.Group
+                    className="mb-3"
+                    controlId="exampleForm.ControlTextarea1"
+                  >
+                    <Form.Label>Quantity</Form.Label>
+                    <Form.Control
+                      value={qty}
+                      onChange={(e) => {
+                        console.log("e.target.value", e.target.value);
+                        setQty(e.target.value);
+                      }}
+                      autoFocus
+                    />
+                  </Form.Group>
+                  <Form.Group controlId="duedate">
+                    <Form.Label>Used</Form.Label>
+                    <Form.Control
+                      value={used}
+                      onChange={(e) => setUsed(e.target.value)}
+                    />
+                  </Form.Group>
+                  <Form.Group controlId="formBasicSelect">
+                    <Form.Label>Scrap</Form.Label>
+                    <Form.Control
+                      value={scrap}
+                      onChange={(e) => setScrap(e.target.value)}
+                    ></Form.Control>
+                  </Form.Group>
+                  <Form.Group controlId="formBasicSelect">
+                    <Form.Label>Size</Form.Label>
+                    <Form.Control
+                      value={size}
+                      onChange={(e) => setSize(e.target.value)}
+                    ></Form.Control>
+                  </Form.Group>
+                  <Form.Group controlId="formBasicSelect">
+                    <Form.Label>Color</Form.Label>
+                    <Form.Control
+                      value={color}
+                      onChange={(e) => setColor(e.target.value)}
+                    ></Form.Control>
+                  </Form.Group>
+                </Form>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button variant="secondary" onClick={handleClose}>
+                  Cancel
+                </Button>
+                <Button variant="primary" onClick={insertstock}>
+                  Save
+                </Button>
+              </Modal.Footer>
+            </Modal>
+            <Modal show={edit} onHide={handleEditC}>
+              <Modal.Header closeButton>
+                <Modal.Title>Add/Edit Vendor Product</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <Form id="create-course-form">
+                  <Form.Group
+                    className="mb-12"
+                    controlId="exampleForm.ControlInput1"
+                  >
+                    <Form.Label>Stock</Form.Label>
+                    <Form.Control
+                      type="email"
+                      value={stock_name}
+                      onChange={(e) => setStock(e.target.value)}
+                      autoFocus
+                    />
+                  </Form.Group>
+                  <Form.Group
+                    className="mb-12"
+                    controlId="exampleForm.ControlInput1"
+                  >
+                    <Form.Label>Stock Description</Form.Label>
+                    <Form.Control
+                      type="email"
+                      value={desc}
+                      onChange={(e) => setDesc(e.target.value)}
+                      autoFocus
+                    />
+                  </Form.Group>
+                  <Form.Group controlId="formBasicSelect">
+                    <Form.Label>Re-order-point</Form.Label>
+                    <Form.Control
+                      value={point}
+                      onChange={(e) => {
+                        console.log("e.target.value", e.target.value);
+                        setPoint(e.target.value);
+                      }}
+                    ></Form.Control>
+                  </Form.Group>
+                  <Form.Group
+                    className="mb-3"
+                    controlId="exampleForm.ControlTextarea1"
+                  >
+                    <Form.Label>Quantity</Form.Label>
+                    <Form.Control
+                      value={qty}
+                      onChange={(e) => {
+                        console.log("e.target.value", e.target.value);
+                        setQty(e.target.value);
+                      }}
+                      autoFocus
+                    />
+                  </Form.Group>
+                  <Form.Group controlId="duedate">
+                    <Form.Label>Used</Form.Label>
+                    <Form.Control
+                      value={used}
+                      onChange={(e) => setUsed(e.target.value)}
+                    />
+                  </Form.Group>
+                  <Form.Group controlId="duedate" style={{ display: "none" }}>
+                    <Form.Label>Used</Form.Label>
+                    <Form.Control
+                      value={id}
+                      onChange={(e) => setId(e.target.value)}
+                    />
+                  </Form.Group>
+                  <Form.Group controlId="formBasicSelect">
+                    <Form.Label>Scrap</Form.Label>
+                    <Form.Control
+                      value={scrap}
+                      onChange={(e) => setScrap(e.target.value)}
+                    ></Form.Control>
+                  </Form.Group>
+                  <Form.Group controlId="formBasicSelect">
+                    <Form.Label>Size</Form.Label>
+                    <Form.Control
+                      value={size}
+                      onChange={(e) => setSize(e.target.value)}
+                    ></Form.Control>
+                  </Form.Group>
+                  <Form.Group controlId="formBasicSelect">
+                    <Form.Label>Color</Form.Label>
+                    <Form.Control
+                      value={color}
+                      onChange={(e) => setColor(e.target.value)}
+                    ></Form.Control>
+                  </Form.Group>
+                </Form>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button variant="secondary" onClick={handleEditC}>
+                  Cancel
+                </Button>
+                <Button variant="primary" onClick={editVendor}>
+                  Simpan
+                </Button>
+              </Modal.Footer>
+            </Modal>
+            <Modal show={photo} onHide={handlePhoto}>
+              <Modal.Header closeButton>
+                <Modal.Title>Upload Photo Stock</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <div className="row">
+                  <div className="col-1 ">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleChange}
+                    />
+                  </div>
 
-            <div className="col-3">
-              <label className=" p-3">
-                <Avatar
-                  src={file}
-                  sx={{
-                    width: 150,
-                    height: 150,
-                    left: 150,
-                    right: 300,
-                  }}
-                />
-              </label>
-            </div>
+                  <div className="col-3">
+                    <label className=" p-3">
+                      <Avatar
+                        src={file}
+                        sx={{
+                          width: 150,
+                          height: 150,
+                          left: 150,
+                          right: 300,
+                        }}
+                      />
+                    </label>
+                  </div>
+                </div>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button variant="secondary" onClick={handlePhoto}>
+                  Cancel
+                </Button>
+                <Button variant="primary" onClick={uploadphoto}>
+                  Simpan
+                </Button>
+              </Modal.Footer>
+            </Modal>
           </div>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handlePhoto}>
-            Cancel
-          </Button>
-          <Button variant="primary" onClick={uploadphoto}>
-            Simpan
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    </div>
+        </MDBBreadcrumb>
+      </MDBContainer>
+    </section>
   );
 };
 

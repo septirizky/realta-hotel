@@ -58,6 +58,8 @@ purchaseRouters.delete(
 
 //purchasing_order
 purchaseRouters.get("/listpurchase", purchase.listpurchasing);
+purchaseRouters.get("/listorderdetail/:id", purchase.listdetailorder);
+purchaseRouters.get("/listorderdetailbyId/:id", purchase.listdetailorderById);
 purchaseRouters.post("/updatestatuspurchase", purchase.updatestatuspurchase);
 purchaseRouters.delete("/deletepurchaseorder", purchase.deletepurchasestock);
 purchaseRouters.post(
@@ -65,6 +67,10 @@ purchaseRouters.post(
   purchase.updatepurchaseorderdetail
 );
 purchaseRouters.post("/insertorder", purchase.insertpurchaseorder);
+purchaseRouters.delete(
+  "/deleteorderdetail/:id",
+  purchase.deletepurchasestockdetail
+);
 //hotel
 purchaseRouters.get("/listhotel", purchase.listhotel);
 

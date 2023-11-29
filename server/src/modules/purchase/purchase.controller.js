@@ -352,6 +352,34 @@ const listhotel = async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 };
+const listdetailorder = async (req, res) => {
+  try {
+    const query = `select  distinct * from  purchase.purchase_order_header join purchase.vendor
+                on purchase.purchase_order_header.pohe_vendor_id=purchase.vendor.vendor_entity_id
+                join purchase.purchase_order_detail 
+                on purchase.purchase_order_detail.pode_pohe_id=purchase.purchase_order_header.pohe_id
+				join purchase.stocks on purchase.purchase_order_detail.pode_stock_id=purchase.stocks.stock_id
+				where purchase.purchase_order_header.pohe_number='${req.params.id}'`;
+    const result = await sequelize.query(query);
+    res.status(201).json({ data: result[0], message: "Success" });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+const listdetailorderById = async (req, res) => {
+  try {
+    const query = `select  distinct * from  purchase.purchase_order_header join purchase.vendor
+                on purchase.purchase_order_header.pohe_vendor_id=purchase.vendor.vendor_entity_id
+                join purchase.purchase_order_detail 
+                on purchase.purchase_order_detail.pode_pohe_id=purchase.purchase_order_header.pohe_id
+				join purchase.stocks on purchase.purchase_order_detail.pode_stock_id=purchase.stocks.stock_id
+				where purchase.purchase_order_detail.pode_id='${req.params.id}'`;
+    const result = await sequelize.query(query);
+    res.status(201).json({ data: result[0], message: "Success" });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
 const listpurchasing = async (req, res) => {
   try {
     const query = `select * from  purchase.purchase_order_header join purchase.vendor
@@ -359,6 +387,7 @@ const listpurchasing = async (req, res) => {
                 join purchase.purchase_order_detail 
                 on purchase.purchase_order_detail.pode_pohe_id=purchase.purchase_order_header.pohe_id`;
     const result = await sequelize.query(query);
+    console.log(result[0]);
     res.status(201).json({ data: result[0], message: "Success" });
   } catch (error) {
     res.status(400).json({ message: error.message });
@@ -447,21 +476,21 @@ const insertpurchaseorder = async (req, res) => {
     );
     const { orderdetail } = req.body;
     orderdetail.map(async (map) => {
-      const insertpurchasedetail = await models.purchase_order_detail.create({
-        pode_order_qty: map.pode_order_qty,
-        pode_price: map.pode_price,
-        pode_line_total: map.pode_line_total,
-        pode_received_qty: map.pode_received_qty,
-        pode_rejected_qty: map.pode_rejected_qty,
-        pode_stocked_qty: map.pode_stocked_qty,
-        pode_modified_date: map.pode_modified_date,
-        pode_stock_id: map.pode_stock_id,
-        pode_pohe_id: insertpurchaseheader[0].pohe_id,
+      insertpurchaseheader.map(async (order) => {
+        const insertpurchasedetail = await models.purchase_order_detail.create({
+          pode_order_qty: map.pode_order_qty,
+          pode_price: map.pode_price,
+          pode_line_total: map.pode_line_total,
+          pode_received_qty: map.pode_received_qty,
+          pode_rejected_qty: map.pode_rejected_qty,
+          pode_stocked_qty: map.pode_stocked_qty,
+          pode_modified_date: map.pode_modified_date,
+          pode_stock_id: map.pode_stock_id,
+          pode_pohe_id: order.pohe_id,
+        });
       });
-      const result = { insertpurchaseheader, insertpurchasedetail };
-      res.status(201).json({ data: result, message: "Success" });
     });
-    console.log(insertpurchaseheader[0].pohe_id);
+    res.status(201).json({ message: "Success" });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
@@ -496,6 +525,16 @@ const deletepurchasestock = async (req, res) => {
   }
 };
 
+const deletepurchasestockdetail = async (req, res) => {
+  try {
+    const result = await models.purchase_order_detail.destroy({
+      where: { pode_id: req.params.id },
+    });
+    res.status(201).json({ data: result, message: "Success" });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
 const updatepurchaseorderdetail = async (req, res) => {
   try {
     const {
@@ -512,7 +551,7 @@ const updatepurchaseorderdetail = async (req, res) => {
         pode_received_qty: pode_received_qty,
         pode_rejected_qty: pode_rejected_qty,
       },
-      { where: { pode_pohe_id: req.body.pode_pohe_id } }
+      { where: { pode_pohe_id: req.params.pode_id } }
     );
     const updatestockdetail = await models.stock_detail.update(
       {
@@ -549,10 +588,13 @@ export default {
   updatestatuspurchase,
   deletepurchasestock,
   updatepurchaseorderdetail,
+  deletepurchasestockdetail,
   pictstockphoto,
   stockbyId,
   listhotel,
   stockdetailbyId,
   listgallery,
   listgalleryphoto,
+  listdetailorder,
+  listdetailorderById,
 };

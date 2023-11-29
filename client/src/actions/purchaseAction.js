@@ -206,7 +206,7 @@ export const GetStockDetail = (id) => {
       });
   };
 };
-export const GetOrder = () => {
+export const GetOrder = (id) => {
   return async (dispatch) => {
     dispatch({
       type: GET_ORDER,
@@ -218,7 +218,7 @@ export const GetOrder = () => {
     });
     await axios({
       method: "GET",
-      url: "http://localhost:4001/listpurchasegallery",
+      url: `http://localhost:4001/listorderdetail/${id}`,
       timeout: 120000,
     })
       .then((res) => {
