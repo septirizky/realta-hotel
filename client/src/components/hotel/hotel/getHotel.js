@@ -6,6 +6,7 @@ import Search from "../search";
 import AddHotel from "./modal/addHotel";
 import EditHotel from "./modal/editHotel";
 import DeleteHotel from "./modal/deleteHotel";
+import SwitchStatus from "./modal/switchStatus";
 
 const GetHotel = (props) => {
   const { getHotelResult, getHotelLoading, getHotelError, getCityResult } =
@@ -16,6 +17,7 @@ const GetHotel = (props) => {
   const [showModalAddHotel, setShowModalAddHotel] = useState(false);
   const [showModalEditHotel, setShowModalEditHotel] = useState(false);
   const [showModalDeleteHotel, setShowModalDeleteHotel] = useState(false);
+  const [showModalSwitchStatus, setShowModalSwitchStatus] = useState(false);
 
   const [search, setSearch] = useState("");
 
@@ -77,6 +79,17 @@ const GetHotel = (props) => {
     setShowModalDeleteHotel(false);
   };
 
+  const showSwitchStatus = (hotel_id, hotel_status) => {
+    setHotel({
+      hotelId: hotel_id,
+      status: hotel_status,
+    });
+    setShowModalSwitchStatus(true);
+  };
+  const closeSwitchStatus = () => {
+    reset();
+    setShowModalSwitchStatus(false);
+  };
   return (
     <div>
       <Search search={search} setSearch={setSearch} />
@@ -180,9 +193,9 @@ const GetHotel = (props) => {
                             <button
                               type="button"
                               className="button-update-transparan"
-                              // onClick={() =>
-                              //   showEditStatus(hotel_id, hotel_status)
-                              // }
+                              onClick={() =>
+                                showSwitchStatus(hotel_id, hotel_status)
+                              }
                             >
                               Switch Status
                             </button>
@@ -225,6 +238,15 @@ const GetHotel = (props) => {
         handleCloseDeleteHotel={closeDeleteHotel}
         hotel={hotel}
         handleSubmit={handleSubmit}
+      />
+
+      <SwitchStatus
+        showModalHotel={showModalSwitchStatus}
+        handleCloseSwitchStatus={closeSwitchStatus}
+        handleSubmit={handleSubmit}
+        reset={reset}
+        hotel={hotel}
+        setHotel={setHotel}
       />
     </div>
   );
