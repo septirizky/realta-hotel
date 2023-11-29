@@ -115,6 +115,7 @@ const ModalAddAccounts = (props) => {
                       getBankResult ?(
                           getBankResult.map((bank)=>{
                                 return(
+                                  
                                     <option value={bank.bank_entity_id}>{bank.bank_name}</option>
                                       
                                   )
@@ -129,6 +130,7 @@ const ModalAddAccounts = (props) => {
                             :
                             getPaymentGateawayResult ?(
                               getPaymentGateawayResult.map((paga)=>{
+                                // console.log(paga)
                                     return(
                                         <option value={paga.paga_entity_id}>{paga.paga_name}</option>
                                           

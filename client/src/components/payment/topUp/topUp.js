@@ -1,21 +1,207 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUserAccount, getUserAccountExclude, topUp } from '../../../actions/paymentAction';
+import Swal from 'sweetalert2'
 
 const TopUp = () => {
+    const dispatch = useDispatch();
+    const userId = 1;
+
+    const formatRupiah = (number) => {
+        return new Intl.NumberFormat("id-ID", {
+          style: "currency",
+          currency: "IDR",
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 0,
+        }).format(number);
+      };
+    const { register, resetField, handleSubmit,reset } = useForm();
+    const {
+        getUserAccountResult,
+        getUserAccountError,
+        getUserAccountLoading,
+
+        getUserAccountExcludeResult,
+        getUserAccountExcludeError,
+        getUserAccountExcludeLoading,
+
+        topUpResult,
+        topUpLoading,
+        topUpError,
+    } = useSelector((state)=>state.paymentReducers);;
+
+
+    const [saldoSource, setsaldoSource] = useState('');
+    const [saldoTarget, setsaldoTarget] = useState('');
+    const [saldo, setsaldo] = useState('');
+    const [isTransfer, setisTransfer] = useState(false);
+
+    const tranfer= ()=>{
+        const data = {
+            source_id : saldoSource.split(',')[1], 
+            target_id : saldoTarget.split(',')[1], 
+            saldo : saldo,
+            saldoSource :saldoSource.split(',')[0], 
+            saldoTarget : saldoTarget.split(',')[0], 
+            sourceAccountNumber: saldoSource.split(',')[2], 
+            targetAccountNumber: saldoTarget.split(',')[2],
+            userId:userId
+        }
+        Swal.fire({
+            title: "Confirm Transfer?",
+            text: `Apakah Kamu Yakin Ingin Melakukan Transfer Dari ${data.sourceAccountNumber} Ke ${data.targetAccountNumber}`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Transfer"
+          }).then((result) => {
+            if (result.isConfirmed) {
+                setisTransfer(true)
+                dispatch(topUp(data))
+            }
+          });
+        
+    }
+    useEffect(() => {
+        if(isTransfer){
+            if(topUpResult){
+                Swal.fire({
+                    title: topUpResult,
+                    text: 'Transfer Berhasil Dilakukan!',
+                    icon: 'success'
+                }).then(()=>{
+                    setsaldo('')
+                    setsaldoSource('')
+                    setsaldoTarget('')
+                    dispatch(getUserAccount(userId))
+                    dispatch(getUserAccountExclude(userId))
+                })
+                }
+                else if(topUpError){
+                    Swal.fire({
+                        title: topUpError,
+                        text: 'Gagal Melakukan Transfer!',
+                        icon: 'error'
+                    })
+                }
+            }
+        dispatch(getUserAccount(userId))
+        dispatch(getUserAccountExclude(userId))
+    }, [topUpResult,topUpError]);
+    
+
     return (
         <>
             <div className='row'>    
-                <div className='col-5'>
-                    <h1 className='text-center'>Source</h1>
-                
-                    <form></form>
+                <div className='col-6 border-end border-dark border-3'>
+                    <h1 className='text-center mb-5'>Source</h1>
+                    <div className='row g-3 align-items-center p-5'>
+                        <div className="col-5 ">
+                            <label  className="col-form-label">Source Name</label>
+                        </div>
+                        <div className="col-7">                                               
+                            <input type="text" id="source_name" className="form-control rounded-pill"/>
+                        </div>
+                        <div className="col-5">
+                            <label className="col-form-label">Account</label>
+                        </div>
+                        <div className="col-7">                                               
+                        <select className="form-select rounded-pill" value={saldoSource} onChange={(e)=>setsaldoSource(e.target.value)} required>
+                            <option value={'0'}>Pilih Akun anda</option>
+                            {
+                                getUserAccountResult ?(
+                                    getUserAccountResult.map((user)=>{
+                                        // console.log(user)
+                                          return(
+                                              <option value={user.usac_saldo +','+ user.usac_id+','+user.usac_account_number}>{user.usac_account_number}</option>
+                                            )
+                                          }
+                                          )
+                                      )
+                                      :getUserAccountLoading?(
+                                          <option>Loading...</option>
+                                      ):(
+                                          <option>{getUserAccountError ? getUserAccountError : "data Kosong"}</option>
+                                      )
+                            }
+                            
+                        </select>
+                        </div>
+                        <div className='mt-5'></div>
+                        <div className="col-5 ">
+                            <label  className="col-form-label">Current Saldo</label>
+                        </div>
+                        <div className="col-7">                                               
+                        <input type="text" id="current_saldo" placeholder={formatRupiah(saldoSource.split(',')[0])} className="form-control border-0 bg-white text-center fs-4" disabled/>
+                        <hr className='mt-1 border-bottom border-black'/>
+                        </div>
+
+                    </div>
+                    
+                </div>
+
+
+                <div className='col-6 mb-4'>
+                    <h1 className='text-center mb-5'>Target</h1>
+                    <div className='row g-3 align-items-center p-5'>
+                        <div className="col-5 ">
+                            <label  className="col-form-label">Target Name</label>
+                        </div>
+                        <div className="col-7">                                               
+                            <input type="text" id="source_name" className="form-control rounded-pill" required/>
+                        </div>
+                        <div className="col-5">
+                            <label className="col-form-label">Account</label>
+                        </div>
+                        <div className="col-7">                                               
+                        <select className="form-select rounded-pill" value={saldoTarget} onChange={(e)=>setsaldoTarget(e.target.value)} required>
+                        <option value='0'>Pilih Akun anda</option>
+                        {
+                                getUserAccountExcludeResult ?(
+                                    getUserAccountExcludeResult.map((target)=>{
+                                        // console.log(user)
+                                          return(
+                                              <option value={target.usac_saldo +','+ target.usac_id+','+target.usac_account_number}>{target.usac_account_number}</option>
+                                            )
+                                          }
+                                          )
+                                      )
+                                      :getUserAccountExcludeLoading?(
+                                          <option>Loading...</option>
+                                      ):(
+                                          <option>{getUserAccountExcludeError ? getUserAccountExcludeError : "data Kosong"}</option>
+                                      )
+                            }
+                            {/* <option value=''>1</option> */}
+                        </select>
+                        </div>
+                        <div className='mt-5'></div>
+                        <div className="col-5 ">
+                            <label className="col-form-label">Current Saldo</label>
+                        </div>
+                        <div className="col-7">                                               
+                        <input type="text" id="current_saldo" placeholder={formatRupiah(saldoTarget.split(',')[0])}className="form-control border-0 bg-white text-center fs-4" disabled/>
+                        <hr className='mt-1 border-bottom border-black'/>
+                        </div>
+
+                    </div>
+                   
+                </div>
+                <div className='col-6'>
+                    <div className='row'>    
+                        <div className='col-6 text-center'>
+                        <form onSubmit={handleSubmit(tranfer)}>
+                        <button type="submit" class="btn btn-primary w-75">Transfer</button>
+                        </form>
+                        </div>
+                        <div className='col-5'>
+                            <input type="text" value={saldo} id="saldo"className="form-control border-black" onChange={(e)=>setsaldo(e.target.value)} required/>
+                        </div>
+                    </div>
                 </div>
                 
-                <div className='col-2 border-end border-dark border-3'>
-                </div>
-                
-                <div className='col-5'>
-                    <h1 className='text-center'>Target</h1>
-                </div>
             </div>    
         </>
     );

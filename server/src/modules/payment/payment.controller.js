@@ -338,7 +338,7 @@ export const updateUserAccount = async(req,res)=>{
 export const getTransaction = async(req,res)=>{
     try {
         const patr_user_id = req.params.patr_user_id
-        const result = await models.payment_transaction.findAll({where:{patr_user_id}})
+        const result = await models.payment_transaction.findAll()
 
         return res.status(200).json({data:result, message:`Data Ditemukan`})
     } catch (error) {
@@ -394,22 +394,14 @@ export const getUserAccountExclude = async(req,res)=>{
 
 export const topUp = async(req,res)=>{
     try {
-        const {source_id, target_id, saldo} = req.body
-        const source = await models.user_accounts.findOne({
-            where: {usac_id : source_id}
-        })
-
-        const target = await models.user_accounts.findOne({
-            where: {usac_id:target_id}
-        })
+        const {source_id, target_id, saldo,saldoSource, saldoTarget, sourceAccountNumber, targetAccountNumber,userId} = req.body
         
-        if(source.usac_saldo < saldo){
-            return res.status(200).json({message:'Maaf Saldo Anda Kurang'})
-       }else{
+        if(saldoSource < saldo){
+            return res.status(500).json({message:'Maaf Saldo Anda Kurang'})
+       }else if (saldoSource>= saldo){
+        const newSourceSaldo = +saldoSource - +saldo;
+        const newTargetSaldo = +saldoTarget + +saldo;
 
-        const newSourceSaldo = source.usac_saldo - +saldo;
-        const newTargetSaldo = target.usac_saldo + +saldo;
-        
         const updateSource = await models.user_accounts.update({
             usac_saldo : newSourceSaldo
         },{
@@ -424,11 +416,43 @@ export const topUp = async(req,res)=>{
             returning:true
         })
         
-        updateSource[0] && updateTarget[0] === 1
-        ? res.status(200).json({data:updateSource, data2: updateTarget,message:'Berhasil Melakukan Transfer'})
-        : res.status(203).json({message:'Gagal Melakukan Transfer'})
+        if (updateSource[0] && updateTarget[0] === 1) {
+            
+            const tgl = new Date().toISOString().split('T')[0].split("-");
+            const random = Math.floor(Math.random()* 9000 + 1000)
+    
+            const trx = `TP#${random}-${tgl[0]+tgl[1]+tgl[2]}`
+
+            const transaction = await models.payment_transaction.create({
+                patr_trx_number : trx,
+                patr_debet : saldo,
+                patr_type : 'TP',
+                patr_note :'Top Up Saldo',
+                patr_modified_date: new Date(),
+                patr_source_id : sourceAccountNumber,
+                patr_target_id : targetAccountNumber,
+                patr_user_id: userId  
+            })
+
+            res.status(200).json({transaction,message:'Berhasil Melakukan Transfer'})
+        }else{
+
+            throw new res.status(203).json({message:'Gagal Melakukan Transfer'})
+        }
     }
     } catch (error) {
         return res.status(404).json(error.message)
+    }
+}
+
+export const testApi = async(req,res)=>{
+    try {
+        const tgl = new Date().toISOString().split('T')[0].split("-");
+        const random = Math.floor(Math.random()* 9000 + 1000)
+
+        const trx = `TP#${random}-${tgl[0]+tgl[1]+tgl[2]}`
+        return res.status(200).json({trx})
+    } catch (error) {
+        return res.status(404).json(json.error)
     }
 }

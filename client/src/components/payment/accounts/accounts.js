@@ -24,6 +24,15 @@ const Accounts = () => {
         expyear : '',
     });
 
+    const formatRupiah = (number) => {
+        return new Intl.NumberFormat("id-ID", {
+          style: "currency",
+          currency: "IDR",
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 0,
+        }).format(number);
+      };
+
     const showAddAccount=()=>{
         setshowModalAddAccount(true)
     }
@@ -99,7 +108,7 @@ const Accounts = () => {
                                         <th scope="row">{index+1}</th>
                                             <td>{usac.usac_account_number}</td>
                                             <td>{usac.usac_entity.bank ? usac.usac_entity.bank.bank_name :usac.usac_entity.payment_gateway.paga_name }</td>
-                                            <td>{usac.usac_saldo}</td>
+                                            <td>{formatRupiah(usac.usac_saldo)}</td>
                                             <td>{usac.usac_type}</td>
                                             <td><button className='btn ms-3' onClick={()=>{
                                                
