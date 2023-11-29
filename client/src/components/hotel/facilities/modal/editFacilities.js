@@ -52,6 +52,7 @@ const EditFacilities = (props) => {
   const [isUpdateFaci, setIsUpdateFaci] = useState(false);
 
   const handleUpdateFaci = (data) => {
+    const hasil = (+data.faci_low_price + +data.faci_high_price) / 2;
     const dataJson = {
       name: data.faci_name,
       cagro_id: cagroId,
@@ -64,7 +65,7 @@ const EditFacilities = (props) => {
       startdate: data.faci_startdate,
       enddate: data.faci_enddate,
       description: data.faci_description,
-      rate_price: data.faci_rate_price,
+      rate_price: hasil,
       hotel_id: params_hotel_id,
     };
 
@@ -93,7 +94,7 @@ const EditFacilities = (props) => {
               resetField("faci_tax");
               resetField("faci_startdate");
               resetField("faci_enddate");
-              resetField("faci_faci_description");
+              resetField("faci_description");
               resetField("faci_hotel_id");
               handleCloseEditFaci(false);
             })

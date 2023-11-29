@@ -111,7 +111,6 @@ const GetHotel = (props) => {
             <th>Phone Number</th>
             <th>Modified Data</th>
             <th>Status</th>
-            <th>City</th>
             <th className="align-border-right">
               <button
                 type="button"
@@ -140,12 +139,15 @@ const GetHotel = (props) => {
               return (
                 <tr key={hotel_id}>
                   <td>{hotel_id}</td>
-                  <td>{hotel_name}</td>
+                  <td>
+                    <Link to={"/hotel/facilities/" + hotel_id}>
+                      {hotel_name}
+                    </Link>
+                  </td>
                   <td>{hotel_rating_star}</td>
                   <td>{hotel_phonenumber}</td>
                   <td>{hotel_modified_date}</td>
                   <td>{hotel_status}</td>
-                  <td>{hotel_addr.addr_city_id}</td>
                   <td>
                     <div className="dropdown">
                       <BsThreeDotsVertical

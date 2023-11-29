@@ -14,6 +14,15 @@ const GetFacilities = (props) => {
     params_hotel_id,
   } = props;
 
+  const formatRupiah = (number) => {
+    return new Intl.NumberFormat("id-ID", {
+      style: "currency",
+      currency: "IDR",
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(number);
+  };
+
   const { register, resetField, handleSubmit } = useForm();
 
   const [showModalAddFaci, setShowModalAddFaci] = useState(false);
@@ -155,14 +164,17 @@ const GetFacilities = (props) => {
                   <td>{faci_room_number}</td>
                   <td>{faci_measure_unit}</td>
                   <td>
-                    {faci_startdate} <br></br> {faci_enddate}
+                    {faci_startdate}
+                    <br />
+                    {faci_enddate}
                   </td>
                   <td>
-                    {faci_low_price} <br></br> {faci_high_price}
+                    {formatRupiah(faci_low_price)} <br />
+                    {formatRupiah(faci_high_price)}
                   </td>
-                  <td>{faci_discount}</td>
-                  <td>{faci_rate_price}</td>
-                  <td>{faci_tax_rate}</td>
+                  <td>{faci_discount} %</td>
+                  <td>{formatRupiah(faci_rate_price)}</td>
+                  <td>{faci_tax_rate} %</td>
                   <td>
                     <div className="dropdown">
                       <BsThreeDotsVertical

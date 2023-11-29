@@ -240,6 +240,7 @@ export const facilitiesUpdate = async (req, res) => {
       tax,
       startdate,
       enddate,
+      description,
       cagro_id,
       hotel_id,
     } = req.body;
@@ -257,6 +258,7 @@ export const facilitiesUpdate = async (req, res) => {
         faci_tax_rate: tax,
         faci_startdate: startdate,
         faci_enddate: enddate,
+        faci_description: description,
         faci_cagro_id: cagro_id,
         faci_hotel_id: hotel_id,
       },
