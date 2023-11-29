@@ -41,6 +41,10 @@ export default class order_menu_detail extends Model {
         model: 'resto_menus',
         key: 'reme_id'
       }
+    },
+    orme_tax: {
+      type: DataTypes.INTEGER,
+      allowNull: true
     }
   }, {
     sequelize,

@@ -1,5 +1,4 @@
 import _sequelize from 'sequelize';
-
 const { Model, Sequelize } = _sequelize;
 
 export default class users extends Model {

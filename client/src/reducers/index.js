@@ -1,7 +1,7 @@
-import {combineReducers} from "redux";
-import HrReducer from "./hrReducer";
+import { combineReducers } from "redux";
+import restoReducer from "./restoreducer";
+
 
 export default combineReducers({
-    // masukan reducer baru
-    HrReducer
-})
+  restoReducer,
+});

@@ -24,7 +24,7 @@ export default class resto_menus extends Model {
     },
     reme_description: {
       type: DataTypes.STRING(255),
-      allowNull: false
+      allowNull: true
     },
     reme_price: {
       type: DataTypes.INTEGER,
@@ -38,6 +38,10 @@ export default class resto_menus extends Model {
       type: DataTypes.DATE,
       allowNull: true,
       defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
+    },
+    reme_type: {
+      type: DataTypes.STRING(20),
+      allowNull: true
     }
   }, {
     sequelize,

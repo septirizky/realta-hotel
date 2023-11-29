@@ -27,12 +27,12 @@ export default class address extends Model {
       type: DataTypes.STRING(225),
       allowNull: true
     },
-    addr_prov_id: {
+    addr_city_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'provinces',
-        key: 'prov_id'
+        model: 'city',
+        key: 'city_id'
       }
     },
     createdat: {
@@ -56,6 +56,12 @@ export default class address extends Model {
         unique: true,
         fields: [
           { name: "addr_id" },
+        ]
+      },
+      {
+        name: "fki_addr_city_id_fkey",
+        fields: [
+          { name: "addr_city_id" },
         ]
       },
     ]
