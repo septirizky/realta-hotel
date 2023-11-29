@@ -4,6 +4,7 @@ import { FaPencilAlt, FaTimes } from "react-icons/fa";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 import DetailCagro from "./modal/DetailCagro";
 import AddCagro from "./modal/AddCagro";
+import DeleteCagro from "./modal/DeleteCagro";
 
 const GetAllCagro = (props) => {
   const { getCagroResult, getCagroLoading, getCagroError, getPolicyResult } =
@@ -12,6 +13,8 @@ const GetAllCagro = (props) => {
   const [showModalDetailCagro, setShowModalDetailCagro] = useState(false);
 
   const [showModalAddCagro, setShowModalAddCagro] = useState(false);
+
+  const [showModalDeleteCagro, setShowModalDeleteCagro] = useState(false);
 
   const [cagroId, setCagroId] = useState();
 
@@ -37,6 +40,18 @@ const GetAllCagro = (props) => {
     setImage("");
     setPreview("");
     setShowModalAddCagro(false);
+  };
+
+  const showDeleteCagro = (cagroId, cagroName) => {
+    setCagroId(cagroId);
+    setCagroName(cagroName);
+    setShowModalDeleteCagro(true);
+  };
+
+  const closeDeleteCagro = () => {
+    setCagroId("");
+    setCagroName("");
+    setShowModalDeleteCagro(false);
   };
 
   const getShowDetailCagro = (
@@ -120,7 +135,16 @@ const GetAllCagro = (props) => {
                   </td>
                   <td>{cagro.cagro_type}</td>
                   <td className="align-border-right">
-                    <FaPencilAlt /> Edit <FaTimes /> Delete
+                    <FaPencilAlt /> Edit
+                    <button
+                      type="button"
+                      className="button-delete-transparan"
+                      onClick={() =>
+                        showDeleteCagro(cagro.cagro_id, cagro.cagro_name)
+                      }
+                    >
+                      <FaTimes /> Delete
+                    </button>
                   </td>
                 </tr>
               </tbody>
@@ -166,6 +190,13 @@ const GetAllCagro = (props) => {
         preview={preview}
         setPreview={setPreview}
         getPolicyResult={getPolicyResult}
+      />
+
+      <DeleteCagro
+        showModalCagro={showModalDeleteCagro}
+        handleCloseDeleteCagro={closeDeleteCagro}
+        cagroId={cagroId}
+        cagroName={cagroName}
       />
     </>
   );

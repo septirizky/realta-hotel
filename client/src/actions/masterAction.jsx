@@ -69,6 +69,8 @@ export const DELETE_IPRICE = "DELETE_IPRICE";
 
 // add category group
 export const POST_CAGRO = "POST_CAGRO";
+// delete category group
+export const DELETE_CAGRO = "DELETE_CAGRO";
 
 // locations
 export const getRegions = () => {
@@ -1251,6 +1253,45 @@ export const postCagro = (dataCagro) => {
       .catch((err) => {
         dispatch({
           type: POST_CAGRO,
+          payload: {
+            data: false,
+            loading: false,
+            errorMsg: err.response.data.message,
+          },
+        });
+      });
+  };
+};
+
+export const deleteCagro = (dataCagroId) => {
+  return async (dispatch) => {
+    dispatch({
+      type: DELETE_CAGRO,
+      payload: {
+        data: false,
+        loading: true,
+        errorMsg: false,
+      },
+    });
+
+    await axios({
+      method: "DELETE",
+      url: "http://localhost:4000/cagro/" + dataCagroId,
+      timeout: 120000,
+    })
+      .then((res) => {
+        dispatch({
+          type: DELETE_CAGRO,
+          payload: {
+            data: res.data,
+            loading: false,
+            errorMsg: false,
+          },
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: DELETE_CAGRO,
           payload: {
             data: false,
             loading: false,

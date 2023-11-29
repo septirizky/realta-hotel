@@ -56,7 +56,7 @@ const DeletePriceItems = (props) => {
       <Form onSubmit={handleSubmit(handleDelete)}>
         <Modal.Body>
           <input type="hidden" name="prit_id" value={itemPriceId} />
-          Are you sure want delete Policy {itemPriceName}?
+          Are you sure want delete Price Item {itemPriceName}?
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseDeleteItemPrice}>
