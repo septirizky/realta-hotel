@@ -69,6 +69,10 @@ export default class employee extends Model {
         model: 'job_role',
         key: 'joro_id'
       }
+    },
+    emp_fullname: {
+      type: DataTypes.STRING(255),
+      allowNull: true
     }
   }, {
     sequelize,

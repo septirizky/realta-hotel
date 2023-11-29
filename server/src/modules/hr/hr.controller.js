@@ -4,6 +4,9 @@ import work_orders from "../../model/work_orders.js";
 import facilities from "../../model/facilities.js";
 import service_task from "../../model/service_task.js";
 import employee from "../../model/employee.js";
+import employee_pay_history from "../../model/employee_pay_history.js";
+import employee_department_history from "../../model/employee_department_history.js";
+import fs from "fs";
 
 /*
  * Department
@@ -91,7 +94,28 @@ export const searchDepartment = async (req, res) => {
 
 export const getEmployee = async (req, res) => {
     try {
-        const result = await models.employee.findAll();
+        const result = await models.employee.findAll({
+            where: {
+                [Op.and]: {
+                    emp_fullname: {
+                        [Op.iLike]: `%${req.body.emp_fullname ? req.body.emp_fullname : ''}%`,
+                    },
+                    emp_current_flag: req.body.emp_current_flag ? req.body.emp_current_flag : [0, 1]
+                }
+            },
+            include: [
+                {
+                    model: employee_pay_history,
+                    as: 'employee_pay_histories',
+                    attributes: ["ephi_pay_frequence", "ephi_rate_salary"],
+                    required: true,
+                }, {
+                    model: employee_department_history,
+                    as: 'employee_department_histories',
+                    required: true,
+                },
+            ],
+        });
         return res.status(200).json(result);
     } catch (error) {
         return res.status(500).json({message: error.message});
@@ -107,6 +131,7 @@ export const createEmployee = async (req, res) => {
         }
         const create = await models.employee.create({
             emp_national_id: req.body.emp_national_id,
+            emp_fullname: req.body.emp_fullname,
             emp_birth_date: req.body.emp_birth_date,
             emp_marital_status: req.body.emp_marital_status,
             emp_gender: req.body.emp_gender,
@@ -117,12 +142,31 @@ export const createEmployee = async (req, res) => {
             emp_current_flag: req.body.emp_current_flag,
             emp_photo: finalImageUrl,
             emp_modified_date: new Date(),
-            emp_emp_id: req.body.emp_emp_id,
             emp_joro_id: req.body.emp_joro_id,
         }, {
             returning: true
         })
-        res.status(201).json({data: create, message: "Sukses input Employee"})
+        const createEphi = await models.employee_pay_history.create({
+            ephi_emp_id: create.dataValues.emp_id,
+            ephi_rate_salary: req.body.ephi_rate_salary,
+            ephi_pay_frequence: req.body.ephi_pay_frequence,
+            ephi_modified_date: new Date(),
+            ephi_rate_exchange_date: new Date(),
+        }, {
+            returning: true
+        })
+        const createEdhi = await models.employee_department_history.create({
+            edhi_emp_id: create.dataValues.emp_id,
+            edhi_start_date: req.body.edhi_start_date,
+            edhi_end_date: req.body.edhi_end_date,
+            edhi_modified_date: new Date(),
+            edhi_dept_id: req.body.edhi_dept_id,
+            edhi_shift_id: req.body.edhi_shift_id,
+        })
+        res.status(201).json({
+            data: {employee: create, payHistory: createEphi, deptHistory: createEdhi},
+            message: "Sukses input Employee"
+        })
     } catch (e) {
         res.status(500).json(e.message)
     }
@@ -130,14 +174,18 @@ export const createEmployee = async (req, res) => {
 
 export const updateEmployee = async (req, res) => {
     try {
-        let finalImageUrl = ''
-        if (req.file) {
+        let finalImageUrl = req.file ? req.file.filename : ''
+        if (req.body.oldImage === "https://via.placeholder.com/100" && finalImageUrl) {
+            finalImageUrl = req.protocol + "://" + req.get('host') + "/uploads/" + req.file.filename;
+        } else if (finalImageUrl) {
+            fs.unlinkSync('./src/public/uploads/' + req.body.oldImage.split('/').slice(-1)[0])
             finalImageUrl = req.protocol + "://" + req.get('host') + "/uploads/" + req.file.filename;
         } else {
             finalImageUrl = req.body.oldImage
         }
         const update = await models.employee.update({
             emp_national_id: req.body.emp_national_id,
+            emp_fullname: req.body.emp_fullname,
             emp_birth_date: req.body.emp_birth_date,
             emp_marital_status: req.body.emp_marital_status,
             emp_gender: req.body.emp_gender,
@@ -153,7 +201,57 @@ export const updateEmployee = async (req, res) => {
             where: {emp_id: req.params.id},
             returning: true
         })
-        update[0] === 1 ?
+        const updateEphi = await models.employee_pay_history.update({
+            ephi_rate_salary: req.body.ephi_rate_salary,
+            ephi_pay_frequence: req.body.ephi_pay_frequence,
+            ephi_modified_date: new Date(),
+        }, {
+            where: {
+                ephi_emp_id: req.params.id
+            }
+        })
+        const updateEdhi = await models.employee_department_history.update({
+            edhi_start_date: req.body.edhi_start_date,
+            edhi_end_date: req.body.edhi_end_date,
+            edhi_modified_date: new Date(),
+            edhi_dept_id: req.body.edhi_dept_id,
+            edhi_shift_id: req.body.edhi_shift_id,
+        },{
+            where: {
+                edhi_emp_id: req.params.id
+            }
+        })
+        // const search = await models.employee_pay_history.findOne({
+        //     where: {
+        //         ephi_rate_exchange_date: ephi_rate_exchange_date,
+        //         ephi_emp_id: create.dataValues.emp_id
+        //     }
+        // })
+        // if (search === null) {
+        //     const createEphi = await models.employee_pay_history.create({
+        //         ephi_emp_id: ephi_emp_id,
+        //         ephi_rate_salary: ephi_rate_salary,
+        //         ephi_pay_frequence: ephi_pay_frequence,
+        //         ephi_modified_date: ephi_modified_date,
+        //         ephi_rate_exchange_date: ephi_rate_exchange_date,
+        //     }, {
+        //         returning: true
+        //     })
+        //     console.log(createEphi)
+        // } else {
+        //     const updateEphi = await models.employee_pay_history.update({
+        //         ephi_rate_salary: ephi_rate_salary,
+        //         ephi_pay_frequence: ephi_pay_frequence,
+        //         ephi_modified_date: ephi_modified_date,
+        //     },{
+        //         where: {
+        //             ephi_rate_exchange_date: ephi_rate_exchange_date,
+        //             ephi_emp_id: ephi_emp_id
+        //         }
+        //     })
+        //     console.log(updateEphi)
+        // }
+        updateEdhi[0] === 1 ?
             res.status(200).json({message: "Sukses update Employee"}) :
             res.status(404).json({message: `ID Employee ${req.params.id} not found!`})
     } catch (e) {
@@ -164,6 +262,9 @@ export const updateEmployee = async (req, res) => {
 export const deleteEmployee = async (req, res) => {
     try {
         const del = await models.employee.destroy({where: {emp_id: req.params.id}})
+        if (req.body.oldImage !== "https://via.placeholder.com/100") {
+            fs.unlinkSync('./src/public/uploads/' + req.body.oldImage.split('/').slice(-1)[0])
+        }
         del === 1 ?
             res.status(200).json({message: "Sukses hapus Employee"}) :
             res.status(404).json({message: `ID Employee ${req.params.id} not found!`})
@@ -311,7 +412,24 @@ export const deleteShift = async (req, res) => {
  */
 export const getWorkOrder = async (req, res) => {
     try {
-        const result = await models.work_orders.findAll();
+        let result = '';
+        if (req.body.startDate && req.body.endDate){
+            console.log(req.body.startDate.split(' ')[0])
+            result = await models.work_orders.findAll({
+                where: {
+                    [Op.and]: {
+                        woro_start_date: {[Op.between]: [req.body.startDate.split(' ')[0], req.body.startDate.split(' ')[0]]},
+                        woro_status: req.body.workOrderStatus?req.body.workOrderStatus:["OPEN","CLOSED","CANCELLED"]
+                    }
+                }
+            });
+        } else {
+            result = await models.work_orders.findAll({
+                where: {
+                    woro_status: req.body.workOrderStatus?req.body.workOrderStatus:["OPEN","CLOSED","CANCELLED"]
+                }
+            });
+        }
         return res.status(200).json(result);
     } catch (error) {
         return res.status(500).json({message: error.message});
@@ -398,7 +516,17 @@ export const getWorkOrderDetail = async (req, res) => {
 
 export const createWorkOrderDetail = async (req, res) => {
     try {
-        const {wode_task_name, wode_status, wode_start_date, wode_end_date, wode_notes, wode_emp_id, wode_seta_id, wode_faci_id, wode_woro_id} = req.body
+        const {
+            wode_task_name,
+            wode_status,
+            wode_start_date,
+            wode_end_date,
+            wode_notes,
+            wode_emp_id,
+            wode_seta_id,
+            wode_faci_id,
+            wode_woro_id
+        } = req.body
         const result = await models.work_order_detail.create({
             wode_task_name: wode_task_name,
             wode_status: wode_status,
@@ -420,7 +548,17 @@ export const createWorkOrderDetail = async (req, res) => {
 
 export const updateWorkOrderDetail = async (req, res) => {
     try {
-        const {wode_task_name, wode_status, wode_start_date, wode_end_date, wode_notes, wode_emp_id, wode_seta_id, wode_faci_id, wode_woro_id} = req.body
+        const {
+            wode_task_name,
+            wode_status,
+            wode_start_date,
+            wode_end_date,
+            wode_notes,
+            wode_emp_id,
+            wode_seta_id,
+            wode_faci_id,
+            wode_woro_id
+        } = req.body
         const update = await models.work_order_detail.update({
             wode_task_name: wode_task_name,
             wode_status: wode_status,
@@ -453,3 +591,51 @@ export const deleteWorkOrderDetail = async (req, res) => {
         res.status(500).json(e.message)
     }
 };
+
+/*
+ * Employee Pay History
+*/
+// export const createEmployeePayHistory = async (req, res) => {
+//     try {
+//         const {
+//             ephi_rate_exchange_date,
+//             ephi_emp_id,
+//             ephi_rate_salary,
+//             ephi_pay_frequence,
+//             ephi_modified_date
+//         } = req.body
+//         const search = await models.employee_pay_history.findOne({
+//             where: {
+//                 ephi_rate_exchange_date: ephi_rate_exchange_date,
+//                 ephi_emp_id: ephi_emp_id
+//             }
+//         })
+//         if (search === null) {
+//             const createEphi = await models.employee_pay_history.create({
+//                 ephi_emp_id: ephi_emp_id,
+//                 ephi_rate_salary: ephi_rate_salary,
+//                 ephi_pay_frequence: ephi_pay_frequence,
+//                 ephi_modified_date: ephi_modified_date,
+//                 ephi_rate_exchange_date: ephi_rate_exchange_date,
+//             }, {
+//                 returning: true
+//             })
+//             console.log(createEphi)
+//         } else {
+//             const updateEphi = await models.employee_pay_history.update({
+//                 ephi_rate_salary: ephi_rate_salary,
+//                 ephi_pay_frequence: ephi_pay_frequence,
+//                 ephi_modified_date: ephi_modified_date,
+//             },{
+//                 where: {
+//                     ephi_rate_exchange_date: ephi_rate_exchange_date,
+//                     ephi_emp_id: ephi_emp_id
+//                 }
+//             })
+//             console.log(updateEphi)
+//         }
+//         // res.status(201).json({data: create, message: "Sukses input Job Role"})
+//     } catch (e) {
+//         res.status(500).json(e.message)
+//     }
+// };

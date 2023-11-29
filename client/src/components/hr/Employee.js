@@ -1,51 +1,869 @@
+import {BiPlus} from "react-icons/bi";
+import {useEffect, useState} from "react";
+import {PiDotsThreeOutlineVerticalDuotone} from "react-icons/pi";
+import {FiEdit, FiTrash} from "react-icons/fi";
+import {TiTimes} from "react-icons/ti";
+import {useDispatch, useSelector} from "react-redux";
+import {
+    DeleteDepartment,
+    DeleteEmployee, GetDepartment,
+    GetEmployee,
+    GetJobRole, GetShift,
+    PostDepartment, PostEmployee,
+    UpdateDepartment, UpdateEmployee
+} from "../../actions/hrAction";
+import Swal from "sweetalert2";
+import {MdHistory} from "react-icons/md";
+import {useForm} from "react-hook-form";
+
 export const Employee = () => {
+    const {
+        register,
+        handleSubmit,
+        reset,
+        setValue,
+        formState: {errors}
+    } = useForm()
+    const {
+        register: register2,
+        handleSubmit: handleSubmit2,
+        reset: reset2,
+        setValue: setValue2,
+        watch: watch2,
+        formState: {errors: errors2}
+    } = useForm()
+    const [activeKeyword, setActiveKeyword] = useState('')
+    const [formKeyword, setFormKeyword] = useState('')
+    const [image, setImage] = useState("https://via.placeholder.com/100")
+    const [imageEdit, setImageEdit] = useState("https://via.placeholder.com/100")
+    const [imageSave, setImageSave] = useState(null)
+    const [imageSaveEdit, setImageSaveEdit] = useState(null)
+    const [isAddEmp, setIsAddEmp] = useState(false)
+    const [isDelEmp, setIsDelEmp] = useState(false)
+    const [isPutEmp, setIsPutEmp] = useState(false)
+    const dispatch = useDispatch()
+    const {
+        getEmployeeResult,
+        getJobRoleResult,
+        getDepartmentResult,
+        getShiftResult,
+        postEmployeeResult,
+        deleteEmployeeResult,
+        updateEmployeeResult,
+        getEmployeeLoading,
+        getEmployeeError
+    } = useSelector((state) => state.HrReducer)
+    const postEmp = (data) => {
+        const formData = new FormData()
+        formData.append('emp_national_id', data.emp_national_id)
+        formData.append('emp_fullname', data.emp_fullname)
+        formData.append('emp_birth_date', data.emp_birth_date)
+        formData.append('emp_hire_date', data.emp_hire_date)
+        formData.append('emp_marital_status', data.emp_marital_status)
+        formData.append('emp_gender', data.emp_gender)
+        formData.append('emp_salaried_flag', data.emp_salaried_flag)
+        formData.append('emp_vacation_hours', data.emp_vacation_hours)
+        formData.append('emp_sickleave_hours', data.emp_sickleave_hours)
+        formData.append('emp_current_flag', data.emp_current_flag)
+        formData.append('emp_joro_id', data.emp_joro_id)
+        formData.append('ephi_pay_frequence', data.ephi_pay_frequence)
+        formData.append('ephi_rate_salary', data.ephi_rate_salary)
+        formData.append('edhi_dept_id', data.edhi_dept_id)
+        formData.append('edhi_start_date', data.edhi_start_date)
+        formData.append('edhi_end_date', data.edhi_end_date)
+        formData.append('edhi_shift_id', data.edhi_shift_id)
+        formData.append('emp_photo', imageSave)
+        dispatch(PostEmployee(formData))
+        setIsAddEmp(true)
+    }
+    const updateEmp = (data) => {
+        const formData2 = new FormData()
+        formData2.append('emp_national_id', data.emp_national_id)
+        formData2.append('emp_fullname', data.emp_fullname)
+        formData2.append('emp_birth_date', data.emp_birth_date)
+        formData2.append('emp_hire_date', data.emp_hire_date)
+        formData2.append('emp_marital_status', data.emp_marital_status)
+        formData2.append('emp_gender', data.emp_gender)
+        formData2.append('emp_salaried_flag', data.emp_salaried_flag)
+        formData2.append('emp_vacation_hours', data.emp_vacation_hours)
+        formData2.append('emp_sickleave_hours', data.emp_sickleave_hours)
+        formData2.append('emp_current_flag', data.emp_current_flag)
+        formData2.append('emp_joro_id', data.emp_joro_id)
+        formData2.append('ephi_pay_frequence', data.ephi_pay_frequence)
+        formData2.append('ephi_rate_salary', data.ephi_rate_salary)
+        formData2.append('edhi_dept_id', data.edhi_dept_id)
+        formData2.append('edhi_start_date', data.edhi_start_date)
+        formData2.append('edhi_end_date', data.edhi_end_date)
+        formData2.append('edhi_shift_id', data.edhi_shift_id)
+        formData2.append('oldImage', data.emp_photo)
+        formData2.append('emp_photo', imageSaveEdit)
+        setIsPutEmp(true)
+        dispatch(UpdateEmployee(data.emp_id, formData2))
+    }
+    const deleteEmp = (id, event, name, oldImage) => {
+        Swal.fire({
+            title: `Delete Employee ${name}?`,
+            showCancelButton: true,
+            confirmButtonText: 'Sure',
+            confirmButtonColor: '#EBAB2D'
+        }).then((res) => {
+            if (res.isConfirmed) {
+                event.preventDefault()
+                setIsDelEmp(true)
+                dispatch(DeleteEmployee(id, oldImage))
+            }
+        })
+    }
+    const resetHandler = () => {
+        reset()
+        setImageSave(null)
+        setImage("https://via.placeholder.com/100")
+    }
+
+    useEffect(() => {
+        if (isDelEmp) {
+            let timerInterval
+            Swal.fire({
+                title: 'Delete Employee success',
+                html: 'Auto Close',
+                timer: 1100,
+                showConfirmButton: false,
+                timerProgressBar: true,
+                willClose: () => {
+                    clearInterval(timerInterval)
+                }
+            })
+        } else if (isAddEmp) {
+            let timerInterval
+            Swal.fire({
+                title: 'Add Employee success',
+                html: 'Auto Close',
+                timer: 1100,
+                showConfirmButton: false,
+                timerProgressBar: true,
+                willClose: () => {
+                    clearInterval(timerInterval)
+                }
+            }).then(result => {
+                if (result.isDismissed) {
+                    reset()
+                    setImageSave(null)
+                    setImage("https://via.placeholder.com/100")
+                }
+            })
+        } else if (isPutEmp){
+            let timerInterval
+            Swal.fire({
+                title: 'Update Employee success',
+                html: 'Auto Close',
+                timer: 1100,
+                showConfirmButton: false,
+                timerProgressBar: true,
+                willClose: () => {
+                    clearInterval(timerInterval)
+                }
+            }).then(result => {
+                if (result.isDismissed) {
+                    reset2({dummy: ''})
+                    setImageSaveEdit(null)
+                }
+            })
+        }
+        dispatch(GetEmployee({
+            emp_fullname: formKeyword,
+            emp_current_flag: activeKeyword,
+        }))
+        dispatch(GetJobRole())
+        dispatch(GetShift())
+        dispatch(GetDepartment({dept_name: ''}))
+        setIsDelEmp(false)
+        setIsAddEmp(false)
+        setIsPutEmp(false)
+    }, [deleteEmployeeResult, postEmployeeResult, updateEmployeeResult, formKeyword, activeKeyword]);
     return (
         <div>
             <h1>Employee</h1>
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi ac est est. Duis id elit ante. Curabitur condimentum libero ut hendrerit semper. Duis laoreet, neque at elementum pulvinar, tortor sem cursus ligula, quis sollicitudin tellus lacus ut ligula. Sed sed ligula vestibulum massa egestas bibendum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam eu pellentesque risus.
+            <nav className='bread-separator' aria-label="breadcrumb">
+                <ol className="breadcrumb">
+                    <li className="breadcrumb-item active" aria-current="page">Employee</li>
+                </ol>
+            </nav>
+            <div className='row mb-4 justify-content-between'>
+                <div className='col-sm-2 align-content-center mt-2'>
+                    <button type="button" className="btn custom-btn-yellow" data-bs-toggle="modal"
+                            data-bs-target="#addModal">
+                        <BiPlus size='26'/> Add Employee
+                    </button>
+                </div>
+                <div className='col-sm-8'>
+                    <div className='row'>
+                        <div className='col'>
+                            <div className="form-floating">
+                                <input type="text"
+                                       onChange={(e) => setFormKeyword(e.target.value)}
+                                       value={formKeyword}
+                                       className="form-control text-dark form-control-sm" id="searchDept"
+                                       placeholder="name@example.com" required/>
+                                <label htmlFor="searchDept">Search Employee Name</label>
+                            </div>
+                        </div>
+                        <div className='col'>
+                            <div className="form-floating">
+                                <select className="form-select"
+                                        onChange={(e) => {
+                                            setActiveKeyword(e.target.value)
+                                            console.log("Status", e.target.value)
+                                        }}
+                                        aria-label="Floating label select example">
+                                    <option value="">Default</option>
+                                    <option value="1">Active</option>
+                                    <option value="0">InActive</option>
+                                </select>
+                                <label htmlFor="addEmp">Status Employee</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <table className="table table-striped table-hover align-middle">
+                <caption>Jumlah data : {getEmployeeResult ? getEmployeeResult.length : 0}</caption>
+                <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">National ID</th>
+                    <th scope="col">Full Name</th>
+                    <th scope="col">Birth Date</th>
+                    <th scope="col">Hire Date</th>
+                    <th scope="col">Status</th>
+                    <th scope="col" className='text-end'>
 
-                Cras metus tellus, molestie in nisi ut, dignissim sagittis justo. Proin nec lacinia odio. Nulla consequat odio ac magna facilisis tincidunt. In et augue elementum, ullamcorper nulla a, cursus massa. Mauris placerat imperdiet nibh. Donec turpis dolor, pellentesque a augue et, condimentum lacinia nibh. Aenean eleifend porta commodo. Fusce nec est ut ex interdum ullamcorper eu a turpis. Duis porta et lectus et vehicula. Nunc risus felis, fringilla quis lectus at, imperdiet lobortis nibh. Fusce turpis felis, ullamcorper id dolor eget, egestas pharetra dolor. Integer nec ligula sed felis porttitor placerat sit amet ac purus. Integer consequat interdum lectus, vestibulum aliquam dolor congue vel. Suspendisse potenti. Morbi laoreet odio a metus imperdiet blandit.
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                {
+                    getEmployeeResult ? (
+                        getEmployeeResult.length !== 0 ? (
+                            getEmployeeResult.map((value, index) => {
+                                const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                                let birthDate = new Date(value.emp_birth_date)
+                                let hireDate = new Date(value.emp_hire_date)
+                                return (
+                                    <tr key={index}>
+                                        <th scope="row">{value.emp_id}</th>
+                                        <td>{value.emp_national_id}</td>
+                                        <td>{value.emp_fullname}</td>
+                                        <td>{(birthDate.getDate().toString().split('').length === 1 ? '0' + birthDate.getDate() : birthDate.getDate()) + " " + months[birthDate.getMonth()] + " " + birthDate.getFullYear()}</td>
+                                        <td>{(hireDate.getDate().toString().split('').length === 1 ? '0' + hireDate.getDate() : hireDate.getDate()) + " " + months[hireDate.getMonth()] + " " + hireDate.getFullYear()}</td>
+                                        <td>{value.emp_current_flag ? (
+                                            <span className="badge bg-success">Active</span>) : (
+                                            <span className="badge bg-danger">Inactive</span>)}</td>
+                                        <td className='text-end pe-4'>
+                                            <div className="dropstart">
+                                                <button className='btn btn-light' data-bs-toggle="dropdown"
+                                                        aria-expanded="false">
+                                                    <PiDotsThreeOutlineVerticalDuotone size='24'/>
+                                                </button>
+                                                <ul className="dropdown-menu">
+                                                    <li>
+                                                        <a className="dropdown-item custom-hover-yellow" href='#'
+                                                           onClick={() => {
+                                                               setImageEdit(value.emp_photo)
+                                                               setValue2("emp_id", value.emp_id)
+                                                               setValue2("emp_photo", value.emp_photo)
+                                                               setValue2("emp_national_id", value.emp_national_id)
+                                                               setValue2("emp_fullname", value.emp_fullname)
+                                                               setValue2("emp_birth_date", value.emp_birth_date)
+                                                               setValue2("emp_hire_date", value.emp_hire_date)
+                                                               setValue2("emp_marital_status", value.emp_marital_status)
+                                                               setValue2("emp_gender", value.emp_gender)
+                                                               setValue2("emp_salaried_flag", value.emp_salaried_flag)
+                                                               setValue2("emp_vacation_hours", value.emp_vacation_hours)
+                                                               setValue2("emp_sickleave_hours", value.emp_sickleave_hours)
+                                                               setValue2("emp_current_flag", value.emp_current_flag)
+                                                               setValue2("emp_joro_id", value.emp_joro_id)
+                                                               setValue2("ephi_rate_salary", value.employee_pay_histories[0].ephi_rate_salary)
+                                                               setValue2("ephi_pay_frequence", value.employee_pay_histories[0].ephi_pay_frequence)
+                                                               setValue2("edhi_dept_id", value.employee_department_histories[0].edhi_dept_id)
+                                                               setValue2("edhi_start_date", value.employee_department_histories[0].edhi_start_date)
+                                                               setValue2("edhi_end_date", value.employee_department_histories[0].edhi_end_date)
+                                                               setValue2("edhi_shift_id", value.employee_department_histories[0].edhi_shift_id)
+                                                               console.log(value)
+                                                           }}
+                                                           data-bs-toggle="modal"
+                                                           data-bs-target="#editModal"><FiEdit
+                                                            size='16'/> Edit</a>
+                                                    </li>
+                                                    <li>
+                                                        <a className="dropdown-item custom-hover-yellow"
+                                                           href='#'><MdHistory size='16'/> Salary History</a>
+                                                    </li>
+                                                    <li>
+                                                        <a className="dropdown-item custom-hover-yellow"
+                                                           href='#'><MdHistory size='16'/> Department History</a>
+                                                    </li>
+                                                    <li>
+                                                        <a className="dropdown-item custom-hover-yellow text-danger"
+                                                           onClick={(e) => deleteEmp(value.emp_id, e, value.emp_fullname, value.emp_photo)}
+                                                           href='#'><FiTrash size='16'/> Delete</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                )
+                            })
+                        ) : (
+                            <tr>
+                                <td colSpan='7' className='text-center'>Tidak ada data</td>
+                            </tr>
+                        )
+                    ) : getEmployeeLoading ? (
+                        <tr>
+                            <td colSpan='3'>Loading...</td>
+                        </tr>
+                    ) : (
+                        <tr>
+                            <td colSpan='3'>{getEmployeeError}</td>
+                        </tr>
+                    )
+                }
 
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque malesuada mollis mauris in pretium. Aenean gravida malesuada consequat. Duis tincidunt ultricies ipsum id hendrerit. Vivamus ultricies sem eu purus placerat aliquam. Sed finibus odio et enim commodo vulputate. Donec urna turpis, aliquet vel est ac, pharetra rutrum purus. Sed id cursus mi, ut ornare quam. Curabitur efficitur sem a eros ornare, quis pharetra felis finibus. Maecenas venenatis orci at tortor gravida tempor. Pellentesque fringilla nunc eget enim vulputate, rutrum facilisis magna commodo. Pellentesque pellentesque quam quis mi consectetur, eu lobortis urna blandit.
+                </tbody>
+            </table>
+            <div className="modal fade modal-xl" id="addModal" data-bs-keyboard="false" data-bs-backdrop="static"
+                 tabIndex="-1" aria-hidden="true">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title" id="exampleModalLabel">Add Employee</h5>
+                            <TiTimes data-bs-dismiss="modal" aria-label="Close" color='#EBAB2D' size={26}
+                                     onClick={() => resetHandler()}/>
+                        </div>
+                        <form key={1} onSubmit={handleSubmit(postEmp)}>
+                            <div className="modal-body">
+                                <h6>General</h6>
+                                <hr/>
+                                <div className='row'>
+                                    <div className='col-sm-9'>
+                                        <div className='row mb-4'>
+                                            <div className='col'>
+                                                <div className="form-floating">
+                                                    <input
+                                                        type="number" {...register('emp_national_id', {required: true})}
+                                                        className="form-control text-dark" placeholder='16 digit'
+                                                        id="National"
+                                                        required/>
+                                                    <label htmlFor="National">National ID</label>
+                                                </div>
+                                            </div>
+                                            <div className='col'>
+                                                <div className="form-floating">
+                                                    <input type="text" {...register('emp_fullname', {required: true})}
+                                                           className="form-control text-dark" id="dept"
+                                                           placeholder="name@example.com" required/>
+                                                    <label htmlFor="dept">Fullname</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className='row mb-4'>
+                                            <div className='col'>
+                                                <div className="form-floating">
+                                                    <input type="date" {...register('emp_birth_date', {required: true})}
+                                                           className="form-control text-dark" id="addEmp"
+                                                           placeholder="name@example.com" required/>
+                                                    <label htmlFor="addEmp">Birth Date</label>
+                                                </div>
+                                            </div>
+                                            <div className='col'>
+                                                <div className="form-floating">
+                                                    <input type="date" {...register('emp_hire_date', {required: true})}
+                                                           className="form-control text-dark" id="addEmp"
+                                                           placeholder="name@example.com" required/>
+                                                    <label htmlFor="addEmp">Hire Date</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className='row mb-4'>
+                                            <div className='col'>
+                                                <div className="form-floating">
+                                                    <select className="form-select"
+                                                            id="addEmp" {...register('emp_marital_status', {required: true})}
+                                                            aria-label="Floating label select example">
+                                                        <option value="S">Single</option>
+                                                        <option value="M">Married</option>
+                                                    </select>
+                                                    <label htmlFor="addEmp">Marital Status</label>
+                                                </div>
+                                            </div>
+                                            <div className='col'>
+                                                <div className="form-floating">
+                                                    <select className="form-select"
+                                                            id="addEmp" {...register('emp_gender', {required: true})}
+                                                            aria-label="Floating label select example">
+                                                        <option value="M">Male</option>
+                                                        <option value="F">Female</option>
+                                                    </select>
+                                                    <label htmlFor="addEmp">Gender</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className='row mb-4'>
+                                            <div className='col'>
+                                                <div className="form-floating">
+                                                    <select className="form-select"
+                                                            id="addEmp" {...register('emp_salaried_flag', {required: true})}
+                                                            aria-label="Floating label select example">
+                                                        <option value="0">Hourly</option>
+                                                        <option value="1">Monthly</option>
+                                                    </select>
+                                                    <label htmlFor="addEmp">Salaried Flag</label>
+                                                </div>
+                                            </div>
+                                            <div className='col'>
+                                                <div className="form-floating">
+                                                    <select className="form-select"
+                                                            id="addEmp" {...register('emp_current_flag', {required: true})}
+                                                            aria-label="Floating label select example">
+                                                        <option value="1">Active</option>
+                                                        <option value="0">InActive</option>
+                                                    </select>
+                                                    <label htmlFor="addEmp">Current Flag</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className='row mb-4'>
+                                            <div className='col'>
+                                                <div className="form-floating">
+                                                    <input
+                                                        type="number" {...register('emp_vacation_hours', {required: true})}
+                                                        className="form-control text-dark" id="addEmp"
+                                                        placeholder="name@example.com" required/>
+                                                    <label htmlFor="addEmp">Vacation Hours</label>
+                                                </div>
+                                            </div>
+                                            <div className='col'>
+                                                <div className="form-floating">
+                                                    <input
+                                                        type="number" {...register('emp_sickleave_hours', {required: true})}
+                                                        className="form-control text-dark" id="addEmp"
+                                                        placeholder="name@example.com" required/>
+                                                    <label htmlFor="addEmp">Sick Leave Hours</label>
+                                                </div>
+                                            </div>
+                                            <div className='col'>
+                                                {
+                                                    getJobRoleResult ? (
+                                                        <div className="form-floating">
+                                                            <select className="form-select"
+                                                                    id="addEmp" {...register('emp_joro_id', {required: true})}
+                                                                    aria-label="Floating label select example">
+                                                                {getJobRoleResult.map((value) => {
+                                                                    return (
+                                                                        <option
+                                                                            value={value.joro_id}>{value.joro_name}</option>
+                                                                    )
+                                                                })}
+                                                            </select>
+                                                            <label htmlFor="addEmp">Job Role</label>
+                                                        </div>
 
-                Cras finibus nunc leo, sed accumsan metus viverra egestas. Donec id elementum eros. Proin vulputate, est ut pulvinar rhoncus, lacus felis placerat sapien, vitae dignissim tellus arcu sed neque. Sed in odio libero. Ut massa nunc, scelerisque et ligula vitae, bibendum accumsan tortor. Duis nibh velit, eleifend iaculis leo in, rutrum feugiat risus. Aenean dapibus urna ac massa tempus, vitae suscipit felis mattis. Suspendisse ultrices diam tempor, consequat elit ac, mollis diam.
+                                                    ) : (
+                                                        <div>
+                                                            Job Role tidak ada
+                                                        </div>
+                                                    )
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className='col-sm-3'>
+                                        <div>
+                                            <img className='object-fit-contain' style={{width: "100%", height: "330px"}}
+                                                 src={image} alt=''/>
+                                        </div>
+                                        <div className='mt-3'>
+                                            <input type="file" className="form-control text-dark" id="addEmp"
+                                                   onChange={(e) => {
+                                                       setImageSave(e.target.files[0])
+                                                       setImage(e.target.files[0] ? URL.createObjectURL(e.target.files[0]) : "https://via.placeholder.com/100")
+                                                   }}
+                                                   placeholder="name@example.com"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <h6>Salary</h6>
+                                <hr/>
+                                <div className='row mb-4'>
+                                    <div className='col'>
+                                        <div className="form-floating">
+                                            <input type="number" {...register('ephi_rate_salary', {required: true})}
+                                                   className="form-control text-dark" placeholder='16 digit'
+                                                   id="National"
+                                            />
+                                            <label htmlFor="National">Salary Rate</label>
+                                        </div>
+                                    </div>
+                                    <div className='col'>
+                                        <div className="form-floating">
+                                            <select className="form-select"
+                                                    id="addEmp" {...register('ephi_pay_frequence', {required: true})}
+                                                    aria-label="Floating label select example">
+                                                <option value="0">Hourly</option>
+                                                <option value="1">Monthly</option>
+                                            </select>
+                                            <label htmlFor="addEmp">Frequency</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <h6>Assignment</h6>
+                                <hr/>
+                                <div className='row mb-4'>
+                                    <div className='col'>
+                                        {
+                                            getDepartmentResult ? (
+                                                <div className="form-floating">
+                                                    <select className="form-select"
+                                                            id="addEmp" {...register('edhi_dept_id', {required: true})}
+                                                            aria-label="Floating label select example">
+                                                        {getDepartmentResult.map((value) => {
+                                                            return (
+                                                                <option
+                                                                    value={value.dept_id}>{value.dept_name}</option>
+                                                            )
+                                                        })}
+                                                    </select>
+                                                    <label htmlFor="addEmp">Department</label>
+                                                </div>
+                                            ) : (
+                                                <div>
+                                                    Department tidak ada
+                                                </div>
+                                            )
+                                        }
+                                    </div>
+                                    <div className='col'>
+                                        <div className="form-floating">
+                                            <input type="date" {...register('edhi_start_date', {required: true})}
+                                                   className="form-control text-dark" placeholder='16 digit'
+                                                   id="National"
+                                            />
+                                            <label htmlFor="National">Start Date</label>
+                                        </div>
+                                    </div>
+                                    <div className='col'>
+                                        <div className="form-floating">
+                                            <input type="date" {...register('edhi_end_date', {required: true})}
+                                                   className="form-control text-dark" placeholder='16 digit'
+                                                   id="National"
+                                            />
+                                            <label htmlFor="National">End Date</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <h6>Shift</h6>
+                                <hr/>
+                                {
+                                    getShiftResult ? (
+                                        <div className="form-floating">
+                                            <select className="form-select" defaultValue='1'
+                                                    id="addEmp" {...register('edhi_shift_id', {required: true})}
+                                                    aria-label="Floating label select example">
+                                                {getShiftResult.map((value) => {
+                                                    return (
+                                                        <option value={value.shift_id}>{value.shift_name}</option>
+                                                    )
+                                                })}
+                                            </select>
+                                            <label htmlFor="addEmp">Shift</label>
+                                        </div>
+                                    ) : (
+                                        <div>
+                                            Shift tidak ada
+                                        </div>
+                                    )
+                                }
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-dark" data-bs-dismiss="modal">Close
+                                </button>
+                                <button type="submit" className="btn custom-btn-yellow">Submit
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div className="modal fade modal-xl" id="editModal" data-bs-keyboard="false" data-bs-backdrop="static"
+                 tabIndex="-1" aria-hidden="true">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title" id="exampleModalLabel">Edit Employee</h5>
+                            <TiTimes data-bs-dismiss="modal" aria-label="Close" color='#EBAB2D' size={26}
+                                     onClick={() => resetHandler()}/>
+                        </div>
+                        <form key={2} onSubmit={handleSubmit2(updateEmp)}>
+                            <div className="modal-body">
+                                <h6 className="text-start">General</h6>
+                                <hr/>
+                                <div className='row'>
+                                    <div className='col-sm-9'>
+                                        <div className='row mb-4'>
+                                            <div className='col'>
+                                                    <input type='text' {...register2('emp_id', {required: true})} hidden/>
+                                                    <input type='text' {...register2('emp_photo', {required: true})} hidden/>
+                                                <div className="form-floating">
+                                                    <input
+                                                        type="number" {...register2('emp_national_id', {required: true})}
+                                                        className="form-control text-dark" placeholder='16 digit'
+                                                        id="National"
+                                                        required/>
+                                                    <label htmlFor="National">National ID</label>
+                                                </div>
+                                            </div>
+                                            <div className='col'>
+                                                <div className="form-floating">
+                                                    <input
+                                                        type="text" {...register2('emp_fullname', {required: true})}
+                                                        className="form-control text-dark" id="dept"
+                                                        placeholder="name@example.com" required/>
+                                                    <label htmlFor="dept">Fullname</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className='row mb-4'>
+                                            <div className='col'>
+                                                <div className="form-floating">
+                                                    <input
+                                                        type="date" {...register2('emp_birth_date', {required: true})}
+                                                        className="form-control text-dark" id="addEmp"
+                                                        placeholder="name@example.com" required/>
+                                                    <label htmlFor="addEmp">Birth Date</label>
+                                                </div>
+                                            </div>
+                                            <div className='col'>
+                                                <div className="form-floating">
+                                                    <input
+                                                        type="date" {...register2('emp_hire_date', {required: true})}
+                                                        className="form-control text-dark" id="addEmp"
+                                                        placeholder="name@example.com" required/>
+                                                    <label htmlFor="addEmp">Hire Date</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className='row mb-4'>
+                                            <div className='col'>
+                                                <div className="form-floating">
+                                                    <select className="form-select"
+                                                            id="addEmp" {...register2('emp_marital_status', {required: true})}
+                                                            aria-label="Floating label select example">
+                                                        <option value="S">Single</option>
+                                                        <option value="M">Married</option>
+                                                    </select>
+                                                    <label htmlFor="addEmp">Marital Status</label>
+                                                </div>
+                                            </div>
+                                            <div className='col'>
+                                                <div className="form-floating">
+                                                    <select className="form-select"
+                                                            id="addEmp" {...register2('emp_gender', {required: true})}
+                                                            aria-label="Floating label select example">
+                                                        <option value="M">Male</option>
+                                                        <option value="F">Female</option>
+                                                    </select>
+                                                    <label htmlFor="addEmp">Gender</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className='row mb-4'>
+                                            <div className='col'>
+                                                <div className="form-floating">
+                                                    <select className="form-select"
+                                                            id="addEmp" {...register2('emp_salaried_flag', {required: true})}
+                                                            aria-label="Floating label select example">
+                                                        <option value="0">Hourly</option>
+                                                        <option value="1">Monthly</option>
+                                                    </select>
+                                                    <label htmlFor="addEmp">Salaried Flag</label>
+                                                </div>
+                                            </div>
+                                            <div className='col'>
+                                                <div className="form-floating">
+                                                    <select className="form-select"
+                                                            id="addEmp" {...register2('emp_current_flag', {required: true})}
+                                                            aria-label="Floating label select example">
+                                                        <option value="1">Active</option>
+                                                        <option value="0">InActive</option>
+                                                    </select>
+                                                    <label htmlFor="addEmp">Current Flag</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className='row mb-4'>
+                                            <div className='col'>
+                                                <div className="form-floating">
+                                                    <input
+                                                        type="number" {...register2('emp_vacation_hours', {required: true})}
+                                                        className="form-control text-dark" id="addEmp"
+                                                        placeholder="name@example.com" required/>
+                                                    <label htmlFor="addEmp">Vacation Hours</label>
+                                                </div>
+                                            </div>
+                                            <div className='col'>
+                                                <div className="form-floating">
+                                                    <input
+                                                        type="number" {...register2('emp_sickleave_hours', {required: true})}
+                                                        className="form-control text-dark" id="addEmp"
+                                                        placeholder="name@example.com" required/>
+                                                    <label htmlFor="addEmp">Sick Leave Hours</label>
+                                                </div>
+                                            </div>
+                                            <div className='col'>
+                                                {
+                                                    getJobRoleResult ? (
+                                                        <div className="form-floating">
+                                                            <select className="form-select"
+                                                                    id="addEmp" {...register2('emp_joro_id', {required: true})}
+                                                                    aria-label="Floating label select example">
+                                                                {getJobRoleResult.map((value) => {
+                                                                    return (
+                                                                        <option
+                                                                            value={value.joro_id}>{value.joro_name}</option>
+                                                                    )
+                                                                })}
+                                                            </select>
+                                                            <label htmlFor="addEmp">Job Role</label>
+                                                        </div>
 
-                Etiam eleifend purus eu velit consectetur, at vulputate ex facilisis. Curabitur viverra, velit ac gravida tincidunt, orci quam gravida ex, nec consequat eros nisi sed dui. Donec aliquam purus eget nisi varius, et mattis purus pellentesque. Donec libero lacus, aliquam eget magna eu, pharetra gravida nulla. Suspendisse facilisis ipsum vitae vulputate eleifend. Suspendisse scelerisque placerat augue eget vulputate. Aliquam erat volutpat. Ut vel nisi interdum, pulvinar purus non, ornare dui.
-            </p>
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi ac est est. Duis id elit ante. Curabitur condimentum libero ut hendrerit semper. Duis laoreet, neque at elementum pulvinar, tortor sem cursus ligula, quis sollicitudin tellus lacus ut ligula. Sed sed ligula vestibulum massa egestas bibendum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam eu pellentesque risus.
+                                                    ) : (
+                                                        <div>
+                                                            Job Role tidak ada
+                                                        </div>
+                                                    )
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className='col-sm-3'>
+                                        <div>
+                                            <img className='object-fit-contain' style={{width: "100%", height: "330px"}}
+                                                 src={imageEdit} alt=''/>
+                                        </div>
+                                        <div className='mt-3'>
+                                            <input type="file" className="form-control text-dark" id="addEmp" {...register2('dummy')}
+                                                   onChange={(e) => {
+                                                       setImageSaveEdit(e.target.files[0])
+                                                       setImageEdit(e.target.files[0] ? URL.createObjectURL(e.target.files[0]) : "https://via.placeholder.com/100")
+                                                   }}
+                                                   placeholder="name@example.com"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <h6 className="text-start">Salary</h6>
+                                <hr/>
+                                <div className='row mb-4'>
+                                    <div className='col'>
+                                        <div className="form-floating">
+                                            <input
+                                                type="number" {...register2('ephi_rate_salary', {required: true})}
+                                                className="form-control text-dark" placeholder='16 digit'
+                                                id="National"
+                                            />
+                                            <label htmlFor="National">Salary Rate</label>
+                                        </div>
+                                    </div>
+                                    <div className='col'>
+                                        <div className="form-floating">
+                                            <select className="form-select"
+                                                    id="addEmp" {...register2('ephi_pay_frequence', {required: true})}
+                                                    aria-label="Floating label select example">
+                                                <option value="0">Hourly</option>
+                                                <option value="1">Monthly</option>
+                                            </select>
+                                            <label htmlFor="addEmp">Frequency</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <h6 className="text-start">Assignment</h6>
+                                <hr/>
+                                <div className='row mb-4'>
+                                    <div className='col'>
+                                        {
+                                            getDepartmentResult ? (
+                                                <div className="form-floating">
+                                                    <select className="form-select"
+                                                            id="addEmp" {...register2('edhi_dept_id', {required: true})}
+                                                            aria-label="Floating label select example">
+                                                        {getDepartmentResult.map((value) => {
+                                                            return (
+                                                                <option value={value.dept_id}>{value.dept_name}</option>
+                                                            )
+                                                        })}
+                                                    </select>
+                                                    <label htmlFor="addEmp">Department</label>
+                                                </div>
 
-                Cras metus tellus, molestie in nisi ut, dignissim sagittis justo. Proin nec lacinia odio. Nulla consequat odio ac magna facilisis tincidunt. In et augue elementum, ullamcorper nulla a, cursus massa. Mauris placerat imperdiet nibh. Donec turpis dolor, pellentesque a augue et, condimentum lacinia nibh. Aenean eleifend porta commodo. Fusce nec est ut ex interdum ullamcorper eu a turpis. Duis porta et lectus et vehicula. Nunc risus felis, fringilla quis lectus at, imperdiet lobortis nibh. Fusce turpis felis, ullamcorper id dolor eget, egestas pharetra dolor. Integer nec ligula sed felis porttitor placerat sit amet ac purus. Integer consequat interdum lectus, vestibulum aliquam dolor congue vel. Suspendisse potenti. Morbi laoreet odio a metus imperdiet blandit.
+                                            ) : (
+                                                <div>
+                                                    Department tidak ada
+                                                </div>
+                                            )
+                                        }
+                                    </div>
+                                    <div className='col'>
+                                        <div className="form-floating">
+                                            <input type="date" {...register2('edhi_start_date', {required: true})}
+                                                   className="form-control text-dark" placeholder='16 digit'
+                                                   id="National"
+                                            />
+                                            <label htmlFor="National">Start Date</label>
+                                        </div>
+                                    </div>
+                                    <div className='col'>
+                                        <div className="form-floating">
+                                            <input type="date" {...register2('edhi_end_date', {required: true})}
+                                                   className="form-control text-dark" placeholder='16 digit'
+                                                   id="National"
+                                            />
+                                            <label htmlFor="National">End Date</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <h6 className="text-start">Shift</h6>
+                                <hr/>
+                                {
+                                    getShiftResult ? (
+                                        <div className="form-floating">
+                                            <select className="form-select"
+                                                    id="addEmp" {...register2('edhi_shift_id', {required: true})}
+                                                    aria-label="Floating label select example">
+                                                {getShiftResult.map((value) => {
+                                                    return (
+                                                        <option value={value.shift_id}>{value.shift_name}</option>
+                                                    )
+                                                })}
+                                            </select>
+                                            <label htmlFor="addEmp">Shift</label>
+                                        </div>
 
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque malesuada mollis mauris in pretium. Aenean gravida malesuada consequat. Duis tincidunt ultricies ipsum id hendrerit. Vivamus ultricies sem eu purus placerat aliquam. Sed finibus odio et enim commodo vulputate. Donec urna turpis, aliquet vel est ac, pharetra rutrum purus. Sed id cursus mi, ut ornare quam. Curabitur efficitur sem a eros ornare, quis pharetra felis finibus. Maecenas venenatis orci at tortor gravida tempor. Pellentesque fringilla nunc eget enim vulputate, rutrum facilisis magna commodo. Pellentesque pellentesque quam quis mi consectetur, eu lobortis urna blandit.
-
-                Cras finibus nunc leo, sed accumsan metus viverra egestas. Donec id elementum eros. Proin vulputate, est ut pulvinar rhoncus, lacus felis placerat sapien, vitae dignissim tellus arcu sed neque. Sed in odio libero. Ut massa nunc, scelerisque et ligula vitae, bibendum accumsan tortor. Duis nibh velit, eleifend iaculis leo in, rutrum feugiat risus. Aenean dapibus urna ac massa tempus, vitae suscipit felis mattis. Suspendisse ultrices diam tempor, consequat elit ac, mollis diam.
-
-                Etiam eleifend purus eu velit consectetur, at vulputate ex facilisis. Curabitur viverra, velit ac gravida tincidunt, orci quam gravida ex, nec consequat eros nisi sed dui. Donec aliquam purus eget nisi varius, et mattis purus pellentesque. Donec libero lacus, aliquam eget magna eu, pharetra gravida nulla. Suspendisse facilisis ipsum vitae vulputate eleifend. Suspendisse scelerisque placerat augue eget vulputate. Aliquam erat volutpat. Ut vel nisi interdum, pulvinar purus non, ornare dui.
-            </p>
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi ac est est. Duis id elit ante. Curabitur condimentum libero ut hendrerit semper. Duis laoreet, neque at elementum pulvinar, tortor sem cursus ligula, quis sollicitudin tellus lacus ut ligula. Sed sed ligula vestibulum massa egestas bibendum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam eu pellentesque risus.
-
-                Cras metus tellus, molestie in nisi ut, dignissim sagittis justo. Proin nec lacinia odio. Nulla consequat odio ac magna facilisis tincidunt. In et augue elementum, ullamcorper nulla a, cursus massa. Mauris placerat imperdiet nibh. Donec turpis dolor, pellentesque a augue et, condimentum lacinia nibh. Aenean eleifend porta commodo. Fusce nec est ut ex interdum ullamcorper eu a turpis. Duis porta et lectus et vehicula. Nunc risus felis, fringilla quis lectus at, imperdiet lobortis nibh. Fusce turpis felis, ullamcorper id dolor eget, egestas pharetra dolor. Integer nec ligula sed felis porttitor placerat sit amet ac purus. Integer consequat interdum lectus, vestibulum aliquam dolor congue vel. Suspendisse potenti. Morbi laoreet odio a metus imperdiet blandit.
-
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque malesuada mollis mauris in pretium. Aenean gravida malesuada consequat. Duis tincidunt ultricies ipsum id hendrerit. Vivamus ultricies sem eu purus placerat aliquam. Sed finibus odio et enim commodo vulputate. Donec urna turpis, aliquet vel est ac, pharetra rutrum purus. Sed id cursus mi, ut ornare quam. Curabitur efficitur sem a eros ornare, quis pharetra felis finibus. Maecenas venenatis orci at tortor gravida tempor. Pellentesque fringilla nunc eget enim vulputate, rutrum facilisis magna commodo. Pellentesque pellentesque quam quis mi consectetur, eu lobortis urna blandit.
-
-                Cras finibus nunc leo, sed accumsan metus viverra egestas. Donec id elementum eros. Proin vulputate, est ut pulvinar rhoncus, lacus felis placerat sapien, vitae dignissim tellus arcu sed neque. Sed in odio libero. Ut massa nunc, scelerisque et ligula vitae, bibendum accumsan tortor. Duis nibh velit, eleifend iaculis leo in, rutrum feugiat risus. Aenean dapibus urna ac massa tempus, vitae suscipit felis mattis. Suspendisse ultrices diam tempor, consequat elit ac, mollis diam.
-
-                Etiam eleifend purus eu velit consectetur, at vulputate ex facilisis. Curabitur viverra, velit ac gravida tincidunt, orci quam gravida ex, nec consequat eros nisi sed dui. Donec aliquam purus eget nisi varius, et mattis purus pellentesque. Donec libero lacus, aliquam eget magna eu, pharetra gravida nulla. Suspendisse facilisis ipsum vitae vulputate eleifend. Suspendisse scelerisque placerat augue eget vulputate. Aliquam erat volutpat. Ut vel nisi interdum, pulvinar purus non, ornare dui.
-            </p>
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi ac est est. Duis id elit ante. Curabitur condimentum libero ut hendrerit semper. Duis laoreet, neque at elementum pulvinar, tortor sem cursus ligula, quis sollicitudin tellus lacus ut ligula. Sed sed ligula vestibulum massa egestas bibendum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam eu pellentesque risus.
-
-                Cras metus tellus, molestie in nisi ut, dignissim sagittis justo. Proin nec lacinia odio. Nulla consequat odio ac magna facilisis tincidunt. In et augue elementum, ullamcorper nulla a, cursus massa. Mauris placerat imperdiet nibh. Donec turpis dolor, pellentesque a augue et, condimentum lacinia nibh. Aenean eleifend porta commodo. Fusce nec est ut ex interdum ullamcorper eu a turpis. Duis porta et lectus et vehicula. Nunc risus felis, fringilla quis lectus at, imperdiet lobortis nibh. Fusce turpis felis, ullamcorper id dolor eget, egestas pharetra dolor. Integer nec ligula sed felis porttitor placerat sit amet ac purus. Integer consequat interdum lectus, vestibulum aliquam dolor congue vel. Suspendisse potenti. Morbi laoreet odio a metus imperdiet blandit.
-
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque malesuada mollis mauris in pretium. Aenean gravida malesuada consequat. Duis tincidunt ultricies ipsum id hendrerit. Vivamus ultricies sem eu purus placerat aliquam. Sed finibus odio et enim commodo vulputate. Donec urna turpis, aliquet vel est ac, pharetra rutrum purus. Sed id cursus mi, ut ornare quam. Curabitur efficitur sem a eros ornare, quis pharetra felis finibus. Maecenas venenatis orci at tortor gravida tempor. Pellentesque fringilla nunc eget enim vulputate, rutrum facilisis magna commodo. Pellentesque pellentesque quam quis mi consectetur, eu lobortis urna blandit.
-
-                Cras finibus nunc leo, sed accumsan metus viverra egestas. Donec id elementum eros. Proin vulputate, est ut pulvinar rhoncus, lacus felis placerat sapien, vitae dignissim tellus arcu sed neque. Sed in odio libero. Ut massa nunc, scelerisque et ligula vitae, bibendum accumsan tortor. Duis nibh velit, eleifend iaculis leo in, rutrum feugiat risus. Aenean dapibus urna ac massa tempus, vitae suscipit felis mattis. Suspendisse ultrices diam tempor, consequat elit ac, mollis diam.
-
-                Etiam eleifend purus eu velit consectetur, at vulputate ex facilisis. Curabitur viverra, velit ac gravida tincidunt, orci quam gravida ex, nec consequat eros nisi sed dui. Donec aliquam purus eget nisi varius, et mattis purus pellentesque. Donec libero lacus, aliquam eget magna eu, pharetra gravida nulla. Suspendisse facilisis ipsum vitae vulputate eleifend. Suspendisse scelerisque placerat augue eget vulputate. Aliquam erat volutpat. Ut vel nisi interdum, pulvinar purus non, ornare dui.
-            </p>
+                                    ) : (
+                                        <div>
+                                            Shift tidak ada
+                                        </div>
+                                    )
+                                }
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-dark" data-bs-dismiss="modal">Close
+                                </button>
+                                <button type="submit" className="btn custom-btn-yellow">Submit
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     )
 }

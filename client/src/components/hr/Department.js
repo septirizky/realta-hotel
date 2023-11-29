@@ -92,7 +92,7 @@ export const Department = () => {
     }, [postDepartmentResult, deleteDepartmentResult, updateDepartmentResult, formKeyword]);
     return (
         <div>
-            <h1 className='mb-4'>Department</h1>
+            <h1>Department</h1>
             <nav className='bread-separator' aria-label="breadcrumb">
                 <ol className="breadcrumb">
                     <li className="breadcrumb-item active" aria-current="page">Department</li>
@@ -160,8 +160,8 @@ export const Department = () => {
                                                     <div className="modal-content">
                                                         <form>
                                                             <div className="modal-header">
-                                                                <h5 className="modal-title" id="exampleModalLabel">Add
-                                                                    Department</h5>
+                                                                <h5 className="modal-title" id="exampleModalLabel">
+                                                                    Edit Department</h5>
                                                                 <TiTimes data-bs-dismiss="modal" aria-label="Close"
                                                                          color='#EBAB2D' size={26}/>
                                                             </div>
@@ -228,7 +228,9 @@ export const Department = () => {
                             </div>
                         </div>
                         <div className="modal-footer">
-                            <button type="button" className="btn btn-dark" data-bs-dismiss="modal">Close</button>
+                            <button type="button" className="btn btn-dark" data-bs-dismiss="modal"
+                                    onClick={() => setFormDept('')}>Close
+                            </button>
                             <button type="button" className="btn custom-btn-yellow" onClick={() => postDept()}
                                     data-bs-dismiss="modal">Submit
                             </button>

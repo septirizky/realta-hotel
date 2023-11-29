@@ -12,14 +12,15 @@ export default class shift extends Model {
     },
     shift_name: {
       type: DataTypes.STRING(25),
-      allowNull: false
+      allowNull: false,
+      unique: "shift_shift_name_unique"
     },
     shift_start_time: {
-      type: DataTypes.DATE,
+      type: DataTypes.TIME,
       allowNull: false
     },
     shift_end_time: {
-      type: DataTypes.DATE,
+      type: DataTypes.TIME,
       allowNull: false
     }
   }, {
@@ -33,6 +34,13 @@ export default class shift extends Model {
         unique: true,
         fields: [
           { name: "shift_id" },
+        ]
+      },
+      {
+        name: "shift_shift_name_unique",
+        unique: true,
+        fields: [
+          { name: "shift_name" },
         ]
       },
     ]

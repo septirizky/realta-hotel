@@ -22,8 +22,10 @@ export const HrNav = () => {
         <body className="sb-nav-fixed">
         <nav className="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <a className="navbar-brand ps-3" href="#"><MdApartment size='26' className='text-warning'/> Realta Hotel</a>
-            <button className={`btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0 yellow-hover ${burgerActive?"yellow-button":""}`} id="sidebarToggle" href="#!"
-                    onClick={(e) => sidebarToggler(e)}><RxHamburgerMenu size='26'/></button>
+            <button
+                className={`btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0 yellow-hover ${burgerActive ? "yellow-button" : ""}`}
+                id="sidebarToggle"
+                onClick={(e) => sidebarToggler(e)}><RxHamburgerMenu size='26'/></button>
             <div className='d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0'>
             </div>
             <ul className="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
@@ -31,11 +33,11 @@ export const HrNav = () => {
                     <a className="nav-link dropdown-toggle yellow-hover" id="navbarDropdown" href="#" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false"><BsPersonCircle className='' size='26'/></a>
                     <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a className="dropdown-item" href="#!">Profile</a></li>
+                        <li><a className="dropdown-item">Profile</a></li>
                         <li>
                             <hr className="dropdown-divider"/>
                         </li>
-                        <li><a className="dropdown-item" href="#!">Logout</a></li>
+                        <li><a className="dropdown-item">Logout</a></li>
                     </ul>
                 </li>
             </ul>
