@@ -69,6 +69,8 @@ export const DELETE_IPRICE = "DELETE_IPRICE";
 
 // add category group
 export const POST_CAGRO = "POST_CAGRO";
+// edit category group
+export const UPDATE_CAGRO = "UPDATE_CAGRO";
 // delete category group
 export const DELETE_CAGRO = "DELETE_CAGRO";
 
@@ -1253,6 +1255,46 @@ export const postCagro = (dataCagro) => {
       .catch((err) => {
         dispatch({
           type: POST_CAGRO,
+          payload: {
+            data: false,
+            loading: false,
+            errorMsg: err.response.data.message,
+          },
+        });
+      });
+  };
+};
+
+export const updateCagro = (dataCagroId, dataCagro) => {
+  return async (dispatch) => {
+    dispatch({
+      type: UPDATE_CAGRO,
+      payload: {
+        data: false,
+        loading: true,
+        errorMsg: false,
+      },
+    });
+
+    await axios({
+      method: "PUT",
+      url: "http://localhost:4000/cagro/" + dataCagroId,
+      data: dataCagro,
+      timeout: 120000,
+    })
+      .then((res) => {
+        dispatch({
+          type: UPDATE_CAGRO,
+          payload: {
+            data: res.data,
+            loading: false,
+            errorMsg: false,
+          },
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: UPDATE_CAGRO,
           payload: {
             data: false,
             loading: false,

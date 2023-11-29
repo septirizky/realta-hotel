@@ -13,6 +13,7 @@ const CategoryGroup = () => {
     getCagroLoading,
     getCagroError,
     postCagroResult,
+    updateCagroResult,
     deleteCagroResult,
   } = useSelector((state) => state.masterReducer);
 
@@ -21,7 +22,7 @@ const CategoryGroup = () => {
   useEffect(() => {
     dispatch(getCagro());
     dispatch(getPolicy());
-  }, [dispatch, postCagroResult, deleteCagroResult]);
+  }, [dispatch, postCagroResult, updateCagroResult, deleteCagroResult]);
 
   return (
     <>

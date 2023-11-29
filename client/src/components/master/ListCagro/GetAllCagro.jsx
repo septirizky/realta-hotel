@@ -5,6 +5,7 @@ import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 import DetailCagro from "./modal/DetailCagro";
 import AddCagro from "./modal/AddCagro";
 import DeleteCagro from "./modal/DeleteCagro";
+import EditCagro from "./modal/EditCagro";
 
 const GetAllCagro = (props) => {
   const { getCagroResult, getCagroLoading, getCagroError, getPolicyResult } =
@@ -13,6 +14,8 @@ const GetAllCagro = (props) => {
   const [showModalDetailCagro, setShowModalDetailCagro] = useState(false);
 
   const [showModalAddCagro, setShowModalAddCagro] = useState(false);
+
+  const [showModalEditCagro, setShowModalEditCagro] = useState(false);
 
   const [showModalDeleteCagro, setShowModalDeleteCagro] = useState(false);
 
@@ -25,6 +28,8 @@ const GetAllCagro = (props) => {
   const [cagroDesc, setCagroDesc] = useState("");
 
   const [cagroIcon, setCagroIcon] = useState("");
+
+  const [policyId, setPolicyId] = useState("");
 
   const [policyName, setPolicyName] = useState("");
 
@@ -40,6 +45,36 @@ const GetAllCagro = (props) => {
     setImage("");
     setPreview("");
     setShowModalAddCagro(false);
+  };
+
+  const showEditCagro = (
+    cagroId,
+    cagroName,
+    cagroType,
+    policyId,
+    policyName,
+    cagroDesc,
+    cagroIcon
+  ) => {
+    setCagroId(cagroId);
+    setCagroName(cagroName);
+    setCagroType(cagroType);
+    setPolicyId(policyId);
+    setPolicyName(policyName);
+    setCagroDesc(cagroDesc);
+    setCagroIcon(cagroIcon);
+    setShowModalEditCagro(true);
+  };
+
+  const closeEditCagro = () => {
+    setCagroId("");
+    setCagroName("");
+    setCagroType("");
+    setPolicyId("");
+    setPolicyName("");
+    setCagroDesc("");
+    setCagroIcon("");
+    setShowModalEditCagro(false);
   };
 
   const showDeleteCagro = (cagroId, cagroName) => {
@@ -135,7 +170,23 @@ const GetAllCagro = (props) => {
                   </td>
                   <td>{cagro.cagro_type}</td>
                   <td className="align-border-right">
-                    <FaPencilAlt /> Edit
+                    <button
+                      type="button"
+                      className="button-update-transparan"
+                      onClick={() =>
+                        showEditCagro(
+                          cagro.cagro_id,
+                          cagro.cagro_name,
+                          cagro.cagro_type,
+                          cagro.policy_category_groups[0].poca_poli.poli_id,
+                          cagro.policy_category_groups[0].poca_poli.poli_name,
+                          cagro.cagro_description,
+                          cagro.cagro_icon_url
+                        )
+                      }
+                    >
+                      <FaPencilAlt /> Edit
+                    </button>
                     <button
                       type="button"
                       className="button-delete-transparan"
@@ -189,6 +240,25 @@ const GetAllCagro = (props) => {
         setImage={setImage}
         preview={preview}
         setPreview={setPreview}
+        getPolicyResult={getPolicyResult}
+      />
+
+      <EditCagro
+        showModalCagro={showModalEditCagro}
+        handleCloseEditCagro={closeEditCagro}
+        cagroId={cagroId}
+        setCagroId={setCagroId}
+        cagroName={cagroName}
+        setCagroName={setCagroName}
+        cagroType={cagroType}
+        setCagroType={setCagroType}
+        policyId={policyId}
+        setPolicyId={setPolicyId}
+        cagroDesc={cagroDesc}
+        setCagroDesc={setCagroDesc}
+        cagroIcon={cagroIcon}
+        image={image}
+        setImage={setImage}
         getPolicyResult={getPolicyResult}
       />
 
