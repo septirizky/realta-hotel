@@ -11,7 +11,7 @@ export default class members extends Model {
     },
     memb_description: {
       type: DataTypes.STRING(100),
-      allowNull: false
+      allowNull: true
     },
     createdat: {
       type: DataTypes.DATE,

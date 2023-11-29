@@ -14,6 +14,10 @@ export default class employee_pay_history extends Model {
         key: 'emp_id'
       }
     },
+    ephi_rate_exchange_date: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
     ephi_rate_salary: {
       type: DataTypes.INTEGER,
       allowNull: true
@@ -25,11 +29,6 @@ export default class employee_pay_history extends Model {
     ephi_modified_date: {
       type: DataTypes.DATE,
       allowNull: true
-    },
-    ephi_rate_exchange_date: {
-      type: DataTypes.DATEONLY,
-      allowNull: false,
-      primaryKey: true
     }
   }, {
     sequelize,
@@ -38,11 +37,10 @@ export default class employee_pay_history extends Model {
     timestamps: false,
     indexes: [
       {
-        name: "employee_pay_history_ephi_rate_exchange_date_ephi_emp_id",
+        name: "employee_pay_history_pkey",
         unique: true,
         fields: [
           { name: "ephi_emp_id" },
-          { name: "ephi_rate_exchange_date" },
         ]
       },
       {

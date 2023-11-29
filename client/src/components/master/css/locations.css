@@ -1,0 +1,63 @@
+.color-gray-thead {
+  background-color: gray;
+  color: white;
+}
+
+table {
+  border: 1px solid gray;
+}
+
+th {
+  text-align: center;
+  padding: 8px 0;
+}
+
+td {
+  text-align: center;
+  padding: 8px 0;
+}
+
+.align-border-right {
+  text-align: right;
+  padding-right: 10px;
+}
+
+.button-transparan {
+  color: white;
+  font-weight: bold;
+  background-color: transparent;
+  border: 0 solid transparent;
+}
+
+.button-delete-transparan {
+  background-color: transparent;
+  border-color: transparent;
+  color: red;
+}
+
+.button-update-transparan {
+  background-color: transparent;
+  border-color: transparent;
+  color: rgb(134, 134, 24);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.content-utama-master {
+  margin-top: 57px;
+}
+
+@media screen and (max-width: 900px) {
+  .content-utama-master {
+    margin-top: 0px;
+  }
+}
+
+@media screen and (max-width: 575px) {
+  .content-utama-master {
+    margin-top: 0px;
+  }
+}

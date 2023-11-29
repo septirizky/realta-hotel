@@ -1,0 +1,17 @@
+.hp-mini {
+  position: fixed;
+  background-color: white;
+  top: 61px;
+}
+
+@media screen and (max-width: 900px) {
+  .hp-mini {
+    position: static;
+  }
+}
+
+@media screen and (max-width: 575px) {
+  .hp-mini {
+    position: static;
+  }
+}

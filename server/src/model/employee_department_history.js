@@ -13,18 +13,14 @@ export default class employee_department_history extends Model {
     edhi_emp_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      primaryKey: true,
-      references: {
-        model: 'employee',
-        key: 'emp_id'
-      }
+      primaryKey: true
     },
     edhi_start_date: {
-      type: DataTypes.DATEONLY,
+      type: DataTypes.DATE,
       allowNull: false
     },
     edhi_end_date: {
-      type: DataTypes.DATEONLY,
+      type: DataTypes.DATE,
       allowNull: false
     },
     edhi_modified_date: {
@@ -58,12 +54,6 @@ export default class employee_department_history extends Model {
         unique: true,
         fields: [
           { name: "edhi_id" },
-          { name: "edhi_emp_id" },
-        ]
-      },
-      {
-        name: "fki_employee_department_history_edhi_emp_id_fkey",
-        fields: [
           { name: "edhi_emp_id" },
         ]
       },
