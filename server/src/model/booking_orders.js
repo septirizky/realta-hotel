@@ -31,19 +31,19 @@ export default class booking_orders extends Model {
       allowNull: true
     },
     boor_discount: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.DECIMAL,
       allowNull: true
     },
     boor_total_tax: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.DECIMAL,
       allowNull: true
     },
     boor_total_amount: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.DECIMAL,
       allowNull: true
     },
     boor_down_payment: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.DECIMAL,
       allowNull: true
     },
     boor_pay_type: {
@@ -85,6 +85,10 @@ export default class booking_orders extends Model {
         model: 'hotels',
         key: 'hotel_id'
       }
+    },
+    boor_payment_amount: {
+      type: DataTypes.DECIMAL,
+      allowNull: true
     }
   }, {
     sequelize,

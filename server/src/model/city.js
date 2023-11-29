@@ -1,32 +1,27 @@
 import _sequelize from 'sequelize';
 const { Model, Sequelize } = _sequelize;
 
-export default class category_group extends Model {
+export default class city extends Model {
   static init(sequelize, DataTypes) {
   return super.init({
-    cagro_id: {
+    city_id: {
       autoIncrement: true,
       autoIncrementIdentity: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    cagro_name: {
-      type: DataTypes.STRING(25),
-      allowNull: false,
-      unique: "category_group_cagro_name_key"
-    },
-    cagro_type: {
-      type: DataTypes.STRING(25),
+    city_name: {
+      type: DataTypes.STRING(128),
       allowNull: false
     },
-    cagro_icon: {
-      type: DataTypes.STRING(255),
-      allowNull: true
-    },
-    cagro_icon_url: {
-      type: DataTypes.STRING(255),
-      allowNull: true
+    city_province_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'provinces',
+        key: 'prov_id'
+      }
     },
     createdat: {
       type: DataTypes.DATE,
@@ -37,29 +32,18 @@ export default class category_group extends Model {
       type: DataTypes.DATE,
       allowNull: true,
       defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
-    },
-    cagro_description: {
-      type: DataTypes.STRING(255),
-      allowNull: true
     }
   }, {
     sequelize,
-    tableName: 'category_group',
+    tableName: 'city',
     schema: 'master',
     timestamps: false,
     indexes: [
       {
-        name: "category_group_cagro_name_key",
+        name: "city_pkey",
         unique: true,
         fields: [
-          { name: "cagro_name" },
-        ]
-      },
-      {
-        name: "category_group_pkey",
-        unique: true,
-        fields: [
-          { name: "cagro_id" },
+          { name: "city_id" },
         ]
       },
     ]

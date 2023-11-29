@@ -15,8 +15,7 @@ export default class user_members extends Model {
     },
     usme_memb_name: {
       type: DataTypes.STRING(15),
-      allowNull: false,
-      primaryKey: true,
+      allowNull: true,
       references: {
         model: 'members',
         key: 'memb_name'
@@ -38,7 +37,7 @@ export default class user_members extends Model {
   }, {
     sequelize,
     tableName: 'user_members',
-    schema: 'public',
+    schema: 'users',
     timestamps: false,
     indexes: [
       {
@@ -46,7 +45,6 @@ export default class user_members extends Model {
         unique: true,
         fields: [
           { name: "usme_user_id" },
-          { name: "usme_memb_name" },
         ]
       },
     ]

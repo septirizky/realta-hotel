@@ -38,6 +38,10 @@ export default class resto_menus extends Model {
       type: DataTypes.DATE,
       allowNull: true,
       defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
+    },
+    reme_type: {
+      type: DataTypes.STRING(20),
+      allowNull: true
     }
   }, {
     sequelize,
