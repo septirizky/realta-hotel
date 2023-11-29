@@ -14,8 +14,8 @@ const AddFacilities = (props) => {
     showModalFaci,
     handleCloseAddFaci,
     register,
-    resetField,
     handleSubmit,
+    reset,
     params_hotel_id,
     getCategoryResult,
   } = props;
@@ -59,19 +59,7 @@ const AddFacilities = (props) => {
               text: addFaciResult.message,
               confirmButtonText: "OK",
             }).then(() => {
-              resetField("faci_id");
-              resetField("faci_name");
-              resetField("faci_room_number");
-              resetField("faci_measure_unit");
-              resetField("faci_low_price");
-              resetField("faci_high_price");
-              resetField("faci_discount");
-              resetField("faci_tax");
-              resetField("faci_startdate");
-              resetField("faci_enddate");
-              resetField("faci_description");
-              resetField("faci_cagro_id");
-              resetField("faci_hotel_id");
+              reset()
               handleCloseAddFaci(false);
             })
           : Swal.fire("Gagal", addFaciError, "error");

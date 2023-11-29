@@ -13,33 +13,10 @@ const EditFacilities = (props) => {
   const {
     showModalFaci,
     handleCloseEditFaci,
-    register,
-    resetField,
     handleSubmit,
-    faciId,
-    faciName,
-    cagroId,
-    faciRoom,
-    faciMax,
-    faciLowPrice,
-    faciHighPrice,
-    faciDiscount,
-    faciTax,
-    faciStartDate,
-    faciEndDate,
-    faciDesc,
-    setFaciName,
-    setCagroId,
-    setFaciRoom,
-    setFaciMax,
-    setFaciLowPrice,
-    setFaciHighPrice,
-    setFaciDiscount,
-    setFaciTax,
-    setFaciStartDate,
-    setFaciEndDate,
-    setFaciDesc,
-    params_hotel_id,
+    reset,
+    facility,
+    setFacility,
     getCategoryResult,
   } = props;
 
@@ -52,25 +29,13 @@ const EditFacilities = (props) => {
   const [isUpdateFaci, setIsUpdateFaci] = useState(false);
 
   const handleUpdateFaci = (data) => {
-    const hasil = (+data.faci_low_price + +data.faci_high_price) / 2;
-    const dataJson = {
-      name: data.faci_name,
-      cagro_id: cagroId,
-      room_number: data.faci_room_number,
-      max_vacant: data.faci_measure_unit,
-      low_price: data.faci_low_price,
-      high_price: data.faci_high_price,
-      discount: data.faci_discount,
-      tax: data.faci_tax_rate,
-      startdate: data.faci_startdate,
-      enddate: data.faci_enddate,
-      description: data.faci_description,
-      rate_price: hasil,
-      hotel_id: params_hotel_id,
-    };
-
+    const low_price = facility.low_price;
+    const high_price = facility.high_price;
+    const hasil = (+low_price + +high_price) / 2;
+    facility.rate_price = hasil;
+    data = facility;
     setIsUpdateFaci(true);
-    dispatch(updateFacilities(dataJson, faciId));
+    dispatch(updateFacilities(data));
   };
 
   useEffect(() => {
@@ -83,19 +48,7 @@ const EditFacilities = (props) => {
               text: updateFaciResult.message,
               confirmButtonText: "OK",
             }).then(() => {
-              resetField("faci_id");
-              resetField("faci_name");
-              resetField("faci_cagro_id");
-              resetField("faci_room_number");
-              resetField("faci_measure_unit");
-              resetField("faci_low_price");
-              resetField("faci_high_price");
-              resetField("faci_discount");
-              resetField("faci_tax");
-              resetField("faci_startdate");
-              resetField("faci_enddate");
-              resetField("faci_description");
-              resetField("faci_hotel_id");
+              reset();
               handleCloseEditFaci(false);
             })
           : Swal.fire("Gagal", updateFaciError, "error");
@@ -118,13 +71,15 @@ const EditFacilities = (props) => {
                 </Form.Label>
               </Col>
               <Col>
-                <Form.Control type="hidden" value={faciId} />
+                <Form.Control type="hidden" value={facility.faciId} />
                 <Form.Control
                   type="text"
                   id="formFaciName"
-                  {...register("faci_name")}
-                  value={faciName}
-                  onChange={(e) => setFaciName(e.target.value)}
+                  value={facility.name}
+                  onChange={(e) =>
+                    setFacility({ ...facility, name: e.target.value })
+                  }
+                  required
                 />
               </Col>
               <Col>
@@ -138,9 +93,11 @@ const EditFacilities = (props) => {
                     <Form.Select
                       className="form-select"
                       id="EditFaci"
-                      // {...register("faci_cagro_id")}
-                      value={cagroId}
-                      onChange={(e) => setCagroId(e.target.value)}
+                      value={facility.cagro_id}
+                      onChange={(e) =>
+                        setFacility({ ...facility, cagro_id: e.target.value })
+                      }
+                      required
                     >
                       {getCategoryResult.map((value) => {
                         return (
@@ -166,9 +123,11 @@ const EditFacilities = (props) => {
                 <Form.Control
                   type="text"
                   id="formRoomNumber"
-                  {...register("faci_room_number")}
-                  value={faciRoom}
-                  onChange={(e) => setFaciRoom(e.target.value)}
+                  value={facility.room_number}
+                  onChange={(e) =>
+                    setFacility({ ...facility, room_number: e.target.value })
+                  }
+                  required
                 />
               </Col>
               <Col>
@@ -180,9 +139,11 @@ const EditFacilities = (props) => {
                 <Form.Control
                   type="text"
                   id="formMaxVacant"
-                  {...register("faci_measure_unit")}
-                  value={faciMax}
-                  onChange={(e) => setFaciMax(e.target.value)}
+                  value={facility.max_vacant}
+                  onChange={(e) =>
+                    setFacility({ ...facility, max_vacant: e.target.value })
+                  }
+                  required
                 />
               </Col>
             </Form.Group>
@@ -196,9 +157,11 @@ const EditFacilities = (props) => {
                 <Form.Control
                   type="text"
                   id="formLowPrice"
-                  {...register("faci_low_price")}
-                  value={faciLowPrice}
-                  onChange={(e) => setFaciLowPrice(e.target.value)}
+                  value={facility.low_price}
+                  onChange={(e) =>
+                    setFacility({ ...facility, low_price: e.target.value })
+                  }
+                  required
                 />
               </Col>
               <Col>
@@ -210,9 +173,11 @@ const EditFacilities = (props) => {
                 <Form.Control
                   type="text"
                   id="formHighPrice"
-                  {...register("faci_high_price")}
-                  value={faciHighPrice}
-                  onChange={(e) => setFaciHighPrice(e.target.value)}
+                  value={facility.high_price}
+                  onChange={(e) =>
+                    setFacility({ ...facility, high_price: e.target.value })
+                  }
+                  required
                 />
               </Col>
             </Form.Group>
@@ -226,9 +191,11 @@ const EditFacilities = (props) => {
                 <Form.Control
                   type="text"
                   id="formDiscount"
-                  {...register("faci_discount")}
-                  value={faciDiscount}
-                  onChange={(e) => setFaciDiscount(e.target.value)}
+                  value={facility.discount}
+                  onChange={(e) =>
+                    setFacility({ ...facility, discount: e.target.value })
+                  }
+                  required
                 />
               </Col>
               <Col>
@@ -240,9 +207,11 @@ const EditFacilities = (props) => {
                 <Form.Control
                   type="text"
                   id="formTax"
-                  {...register("faci_tax_rate")}
-                  value={faciTax}
-                  onChange={(e) => setFaciTax(e.target.value)}
+                  value={facility.tax}
+                  onChange={(e) =>
+                    setFacility({ ...facility, tax: e.target.value })
+                  }
+                  required
                 />
               </Col>
             </Form.Group>
@@ -256,9 +225,11 @@ const EditFacilities = (props) => {
                 <Form.Control
                   type="date"
                   id="formStartDate"
-                  {...register("faci_startdate")}
-                  value={faciStartDate}
-                  onChange={(e) => setFaciStartDate(e.target.value)}
+                  value={facility.startdate}
+                  onChange={(e) =>
+                    setFacility({ ...facility, startdate: e.target.value })
+                  }
+                  required
                 />
               </Col>
               <Col>
@@ -270,9 +241,11 @@ const EditFacilities = (props) => {
                 <Form.Control
                   type="date"
                   id="formEndDate"
-                  {...register("faci_enddate")}
-                  value={faciEndDate}
-                  onChange={(e) => setFaciEndDate(e.target.value)}
+                  value={facility.enddate}
+                  onChange={(e) =>
+                    setFacility({ ...facility, enddate: e.target.value })
+                  }
+                  required
                 />
               </Col>
             </Form.Group>
@@ -283,9 +256,11 @@ const EditFacilities = (props) => {
               <Form.Control
                 as="textarea"
                 id="formFaciDesc"
-                {...register("faci_description")}
-                value={faciDesc}
-                onChange={(e) => setFaciDesc(e.target.value)}
+                value={facility.description}
+                onChange={(e) =>
+                  setFacility({ ...facility, description: e.target.value })
+                }
+                required
                 rows={5}
                 maxLength={255}
               />

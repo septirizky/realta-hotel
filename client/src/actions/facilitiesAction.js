@@ -136,7 +136,7 @@ export const addFacilities = (data) => {
   };
 };
 
-export const updateFacilities = (data, idFaci) => {
+export const updateFacilities = (data) => {
   return async (dispatch) => {
     dispatch({
       type: UPDATE_FACI,
@@ -148,7 +148,7 @@ export const updateFacilities = (data, idFaci) => {
     });
     await axios({
       method: "PUT",
-      url: "http://localhost:4000/hotel/facilities/" + idFaci,
+      url: "http://localhost:4000/hotel/facilities/" + data.faciId,
       data: data,
       timeout: 120000,
     })

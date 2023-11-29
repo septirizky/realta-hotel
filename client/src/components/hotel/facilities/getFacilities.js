@@ -23,91 +23,80 @@ const GetFacilities = (props) => {
     }).format(number);
   };
 
-  const { register, resetField, handleSubmit } = useForm();
+  const { register, handleSubmit, reset } = useForm();
 
   const [showModalAddFaci, setShowModalAddFaci] = useState(false);
   const [showModalEditFaci, setShowModalEditFaci] = useState(false);
   const [showModalDeleteFaci, setShowModalDeleteFaci] = useState(false);
 
-  const [faciId, setFaciId] = useState();
-  const [faciName, setFaciName] = useState("");
-  const [cagroId, setCagroId] = useState("");
-  const [faciRoom, setFaciRoom] = useState("");
-  const [faciMax, setFaciMax] = useState("");
-  const [faciLowPrice, setFaciLowPrice] = useState("");
-  const [faciHighPrice, setFaciHighPrice] = useState("");
-  const [faciDiscount, setFaciDiscount] = useState("");
-  const [faciTax, setFaciTax] = useState("");
-  const [faciStartDate, setFaciStartDate] = useState("");
-  const [faciEndDate, setFaciEndDate] = useState("");
-  const [faciDesc, setFaciDesc] = useState("");
+  const [facility, setFacility] = useState({
+    faciId: "",
+    name: "",
+    cagro_id: "",
+    room_number: "",
+    max_vacant: "",
+    low_price: "",
+    high_price: "",
+    discount: "",
+    tax: "",
+    startdate: "",
+    enddate: "",
+    description: "",
+    rate_price: "",
+    hotel_id: "",
+  });
 
   const showAddFaci = () => {
     setShowModalAddFaci(true);
   };
   const closeAddFaci = () => {
-    resetField("faci_name");
-    resetField("faci_room_number");
-    resetField("faci_measure_unit");
-    resetField("faci_low_price");
-    resetField("faci_high_price");
-    resetField("faci_discount");
-    resetField("faci_tax_rate");
-    resetField("faci_startdate");
-    resetField("faci_enddate");
-    resetField("faci_description");
-    resetField("faci_hotel");
+    reset();
     setShowModalAddFaci(false);
   };
 
   const showEditFaci = (
-    faciId,
-    faciName,
-    cagroId,
-    faciRoom,
-    faciMaxVacant,
-    faciLowPrice,
-    faciHighPrice,
-    faciDiscount,
-    faciTax,
-    faciStartDate,
-    faciEndDate,
-    faciDesc
+    faci_id,
+    faci_name,
+    faci_cagro_id,
+    faci_room_number,
+    faci_measure_unit,
+    faci_low_price,
+    faci_high_price,
+    faci_discount,
+    faci_tax_rate,
+    faci_startdate,
+    faci_enddate,
+    faci_description
   ) => {
-    setFaciId(faciId);
-    setFaciName(faciName);
-    setCagroId(cagroId);
-    setFaciRoom(faciRoom);
-    setFaciMax(faciMaxVacant);
-    setFaciLowPrice(faciLowPrice);
-    setFaciHighPrice(faciHighPrice);
-    setFaciDiscount(faciDiscount);
-    setFaciTax(faciTax);
-    setFaciStartDate(faciStartDate);
-    setFaciEndDate(faciEndDate);
-    setFaciDesc(faciDesc);
+    // const hasil =
+    setFacility({
+      faciId: faci_id,
+      name: faci_name,
+      cagro_id: faci_cagro_id,
+      room_number: faci_room_number,
+      max_vacant: faci_measure_unit,
+      low_price: faci_low_price,
+      high_price: faci_high_price,
+      discount: faci_discount,
+      tax: faci_tax_rate,
+      startdate: faci_startdate,
+      enddate: faci_enddate,
+      description: faci_description,
+      // rate_price: "",
+      hotel_id: params_hotel_id,
+    });
     setShowModalEditFaci(true);
   };
   const closeEditFaci = () => {
-    resetField("faci_id");
-    resetField("faci_name");
-    resetField("cagro_name");
-    resetField("faci_room_number");
-    resetField("faci_measure_unit");
-    resetField("faci_low_price");
-    resetField("faci_high_price");
-    resetField("faci_discount");
-    resetField("faci_tax");
-    resetField("faci_startdate");
-    resetField("faci_enddate");
-    resetField("faci_description");
-    resetField("faci_hotel_id");
+    reset();
     setShowModalEditFaci(false);
   };
 
-  const showDeleteFaci = (faciId, faciName) => {
-    setFaciId(faciId);
-    setFaciName(faciName);
+  const showDeleteFaci = (faci_id, faci_name) => {
+    setFacility({
+      faciId: faci_id,
+      name: faci_name,
+    });
     setShowModalDeleteFaci(true);
   };
 
@@ -241,8 +230,8 @@ const GetFacilities = (props) => {
         showModalFaci={showModalAddFaci}
         handleCloseAddFaci={closeAddFaci}
         register={register}
-        resetField={resetField}
         handleSubmit={handleSubmit}
+        reset={reset}
         params_hotel_id={params_hotel_id}
         getCategoryResult={getCategoryResult}
       />
@@ -250,42 +239,17 @@ const GetFacilities = (props) => {
       <EditFacilities
         showModalFaci={showModalEditFaci}
         handleCloseEditFaci={closeEditFaci}
-        register={register}
-        resetField={resetField}
         handleSubmit={handleSubmit}
-        faciId={faciId}
-        faciName={faciName}
-        cagroId={cagroId}
-        faciRoom={faciRoom}
-        faciMax={faciMax}
-        faciLowPrice={faciLowPrice}
-        faciHighPrice={faciHighPrice}
-        faciDiscount={faciDiscount}
-        faciTax={faciTax}
-        faciStartDate={faciStartDate}
-        faciEndDate={faciEndDate}
-        faciDesc={faciDesc}
-        setFaciId={setFaciId}
-        setFaciName={setFaciName}
-        setCagroId={setCagroId}
-        setFaciRoom={setFaciRoom}
-        setFaciMax={setFaciMax}
-        setFaciLowPrice={setFaciLowPrice}
-        setFaciHighPrice={setFaciHighPrice}
-        setFaciDiscount={setFaciDiscount}
-        setFaciTax={setFaciTax}
-        setFaciStartDate={setFaciStartDate}
-        setFaciEndDate={setFaciEndDate}
-        setFaciDesc={setFaciDesc}
-        params_hotel_id={params_hotel_id}
+        reset={reset}
+        facility={facility}
+        setFacility={setFacility}
         getCategoryResult={getCategoryResult}
       />
 
       <DeleteFacilities
         showModalFaci={showModalDeleteFaci}
         handleCloseDeleteFaci={closeDeleteFaci}
-        faciId={faciId}
-        faciName={faciName}
+        facility={facility}
         handleSubmit={handleSubmit}
       />
     </div>

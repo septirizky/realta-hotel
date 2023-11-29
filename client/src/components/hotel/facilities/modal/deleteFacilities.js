@@ -10,9 +10,8 @@ const DeleteFacilities = (props) => {
     const {
         showModalFaci,
         handleCloseDeleteFaci,
-        faciId,
-        faciName,
         handleSubmit,
+        facility,
       } = props;
     
       const { deleteFaciResult, deleteFaciError } = useSelector(
@@ -26,7 +25,7 @@ const DeleteFacilities = (props) => {
       const handleDelete = () => {
         handleCloseDeleteFaci();
         setIsDeleteFaci(true);
-        dispatch(deleteFacilities(faciId));
+        dispatch(deleteFacilities(facility.faciId));
       };
     
       useEffect(() => {
@@ -53,8 +52,8 @@ const DeleteFacilities = (props) => {
       </Modal.Header>
       <Form onSubmit={handleSubmit(handleDelete)}>
         <Modal.Body>
-          <input type="hidden" name="poli_id" value={faciId} />
-          Are you sure want delete Facilities {faciName}?
+          <input type="hidden" name="poli_id" value={facility.faciId} />
+          Are you sure want delete {facility.name}?
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseDeleteFaci}>
