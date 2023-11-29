@@ -294,6 +294,6 @@ function initModels(sequelize) {
     work_orders,
   };
 }
-const model = initModels(sequelize);
-export default model;
+const models = initModels(sequelize);
+export default models;
 export { sequelize };
