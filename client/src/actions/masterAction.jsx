@@ -67,6 +67,9 @@ export const UPDATE_IPRICE = "UPDATE_IPRICE";
 // delete price items
 export const DELETE_IPRICE = "DELETE_IPRICE";
 
+// add category group
+export const POST_CAGRO = "POST_CAGRO";
+
 // locations
 export const getRegions = () => {
   return async (dispatch) => {
@@ -1208,6 +1211,46 @@ export const getCagro = () => {
       .catch((err) => {
         dispatch({
           type: GET_CAGRO,
+          payload: {
+            data: false,
+            loading: false,
+            errorMsg: err.response.data.message,
+          },
+        });
+      });
+  };
+};
+
+export const postCagro = (dataCagro) => {
+  return async (dispatch) => {
+    dispatch({
+      type: POST_CAGRO,
+      payload: {
+        data: false,
+        loading: true,
+        errorMsg: false,
+      },
+    });
+
+    await axios({
+      method: "POST",
+      url: "http://localhost:4000/cagro",
+      data: dataCagro,
+      timeout: 120000,
+    })
+      .then((res) => {
+        dispatch({
+          type: POST_CAGRO,
+          payload: {
+            data: res.data,
+            loading: false,
+            errorMsg: false,
+          },
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: POST_CAGRO,
           payload: {
             data: false,
             loading: false,

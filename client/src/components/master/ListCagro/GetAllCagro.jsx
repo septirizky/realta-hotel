@@ -3,11 +3,15 @@ import { AiOutlinePlus } from "react-icons/ai";
 import { FaPencilAlt, FaTimes } from "react-icons/fa";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 import DetailCagro from "./modal/DetailCagro";
+import AddCagro from "./modal/AddCagro";
 
 const GetAllCagro = (props) => {
-  const { getCagroResult, getCagroLoading, getCagroError } = props;
+  const { getCagroResult, getCagroLoading, getCagroError, getPolicyResult } =
+    props;
 
   const [showModalDetailCagro, setShowModalDetailCagro] = useState(false);
+
+  const [showModalAddCagro, setShowModalAddCagro] = useState(false);
 
   const [cagroId, setCagroId] = useState();
 
@@ -20,6 +24,20 @@ const GetAllCagro = (props) => {
   const [cagroIcon, setCagroIcon] = useState("");
 
   const [policyName, setPolicyName] = useState("");
+
+  const [image, setImage] = useState("");
+
+  const [preview, setPreview] = useState("");
+
+  const showAddCagro = () => {
+    setShowModalAddCagro(true);
+  };
+
+  const closeAddCagro = () => {
+    setImage("");
+    setPreview("");
+    setShowModalAddCagro(false);
+  };
 
   const getShowDetailCagro = (
     cagroId,
@@ -56,7 +74,11 @@ const GetAllCagro = (props) => {
             <th></th>
             <th>Type</th>
             <th className="align-border-right">
-              <button type="button" className="button-transparan">
+              <button
+                type="button"
+                className="button-transparan"
+                onClick={showAddCagro}
+              >
                 <AiOutlinePlus /> Add
               </button>
             </th>
@@ -134,6 +156,16 @@ const GetAllCagro = (props) => {
         cagroDesc={cagroDesc}
         cagroIcon={cagroIcon}
         policyName={policyName}
+      />
+
+      <AddCagro
+        showModalCagro={showModalAddCagro}
+        handleCloseAddCagro={closeAddCagro}
+        image={image}
+        setImage={setImage}
+        preview={preview}
+        setPreview={setPreview}
+        getPolicyResult={getPolicyResult}
       />
     </>
   );

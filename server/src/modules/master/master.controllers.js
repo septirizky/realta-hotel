@@ -604,6 +604,14 @@ export const cagroPost = async (req, res) => {
     }
 
     if (
+      poca_poli_id === "" ||
+      poca_poli_id === undefined ||
+      poca_poli_id === null
+    ) {
+      return res.status(400).json({ message: "Aturan Kebijakan Wajib diisi!" });
+    }
+
+    if (
       cagro_description === "" ||
       cagro_description === undefined ||
       cagro_description === null
@@ -640,9 +648,6 @@ export const cagroPost = async (req, res) => {
           poca_poli_id: poca_poli_id,
           poca_cagro_id: result1.dataValues.cagro_id,
         });
-
-        // console.log(result1);
-        // console.log(result1.dataValues.cagro_id);
 
         return res
           .status(201)
@@ -688,6 +693,14 @@ export const cagroUpdate = async (req, res) => {
       return res
         .status(400)
         .json({ message: "Tipe Kategori Group Wajib diisi!" });
+    }
+
+    if (
+      poca_poli_id === "" ||
+      poca_poli_id === undefined ||
+      poca_poli_id === null
+    ) {
+      return res.status(400).json({ message: "Aturan Kebijakan Wajib diisi!" });
     }
 
     if (

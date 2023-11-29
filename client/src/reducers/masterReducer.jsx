@@ -28,6 +28,7 @@ import {
   UPDATE_IPRICE,
   DELETE_IPRICE,
   GET_CAGRO,
+  POST_CAGRO,
 } from "../actions/masterAction";
 
 const initialState = {
@@ -118,6 +119,9 @@ const initialState = {
   getCagroResult: false,
   getCagroLoading: false,
   getCagroError: false,
+  postCagroResult: false,
+  postCagroLoading: false,
+  postCagroError: false,
 };
 const masterReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -323,6 +327,13 @@ const masterReducer = (state = initialState, action) => {
         getCagroResult: action.payload.data,
         getCagroLoading: action.payload.loading,
         getCagroError: action.payload.errorMsg,
+      };
+    case POST_CAGRO:
+      return {
+        ...state,
+        postCagroResult: action.payload.data,
+        postCagroLoading: action.payload.loading,
+        postCagroError: action.payload.errorMsg,
       };
     default:
       return state;

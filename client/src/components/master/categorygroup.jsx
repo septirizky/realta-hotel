@@ -4,18 +4,23 @@ import { FaHome } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import GetAllCagro from "./ListCagro/GetAllCagro";
 import { useDispatch, useSelector } from "react-redux";
-import { getCagro } from "../../actions/masterAction";
+import { getCagro, getPolicy } from "../../actions/masterAction";
 
 const CategoryGroup = () => {
-  const { getCagroResult, getCagroLoading, getCagroError } = useSelector(
-    (state) => state.masterReducer
-  );
+  const {
+    getPolicyResult,
+    getCagroResult,
+    getCagroLoading,
+    getCagroError,
+    postCagroResult,
+  } = useSelector((state) => state.masterReducer);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getCagro());
-  }, [dispatch]);
+    dispatch(getPolicy());
+  }, [dispatch, postCagroResult]);
 
   return (
     <>
@@ -40,6 +45,7 @@ const CategoryGroup = () => {
             getCagroResult={getCagroResult}
             getCagroLoading={getCagroLoading}
             getCagroError={getCagroError}
+            getPolicyResult={getPolicyResult}
           />
         </div>
       </div>
