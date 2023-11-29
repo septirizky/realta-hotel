@@ -94,7 +94,7 @@ export const addHotel = (data) => {
   };
 };
 
-export const updateHotel = (data, idHotel) => {
+export const updateHotel = (data) => {
   return async (dispatch) => {
     dispatch({
       type: UPDATE_HOTEL,
@@ -106,7 +106,7 @@ export const updateHotel = (data, idHotel) => {
     });
     await axios({
       method: "PUT",
-      url: "http://localhost:4000/hotel/" + idHotel,
+      url: "http://localhost:4000/hotel/" + data.hotelId,
       data: data,
       timeout: 120000,
     })
