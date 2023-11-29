@@ -1,9 +1,9 @@
 .custom-hover-yellow:hover{
-    background-color: #EBAB2D !important;
-    color: white !important;
+    background-color: #EBAB2D ;
+    color: white ;
 }
 .custom-text-yellow{
-    color: #EBAB2D !important;
+    color: #EBAB2D;
 }
 .custom-bg-dark{
     background-color: #212529;
