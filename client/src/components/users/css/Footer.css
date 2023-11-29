@@ -1,0 +1,94 @@
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    background-image: url('../Image/hotel3.jpg'); /* Ganti dengan path gambar yang sesuai */
+    background-size: cover;
+    color: #fff;
+    padding: 20px;
+  }
+  
+  .footer-left{
+    width: 20%; 
+    margin-right: 0 auto;
+    
+}
+  .footer-center{
+    flex: 1;
+    margin: 0 auto; 
+    text-align: center;
+    
+  }
+    
+  .footer-right {
+    flex: 1;
+  }
+  
+  
+  .footer-left h3,
+  .footer-center h3,
+  .footer-right h3 {
+    color: #fff;
+  }
+  
+  .footer-center ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .footer-center a {
+    display: auto;
+    justify-content: space-between;
+    color: #fff;
+    text-decoration: none;
+    align-items: center;
+    
+  }
+  
+  .subscribe-box {
+    display: flex;
+  }
+  
+  .subscribe-box input {
+    flex: 2;
+    padding: 5px;
+    margin-right: 10px;
+  }
+  
+  .subscribe-box button {
+    flex: 1;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+  }
+  
+  .address {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    
+  }
+
+  .quick-links {
+    margin-right: 5%; /* Sesuaikan margin sesuai kebutuhan */
+    margin-left: 5%; /* Sesuaikan margin sesuai kebutuhan */
+    text-align: center;
+ }
+  .links-list {
+    align-content: center;
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+
+  }
+  
+  .left-links{
+    width: 45%; /* Misalnya, Anda bisa menyesuaikan lebar sesuai kebutuhan */
+  margin-left: 27%;
+
+  }
+  .right-links {
+    width: 45%; /* Misalnya, Anda bisa menyesuaikan lebar sesuai kebutuhan */
+    margin-right: 30%
+  }
