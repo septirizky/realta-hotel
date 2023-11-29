@@ -29,7 +29,7 @@ const SignupGuest = () => {
           }).then(async (result) => {
             if (result.isConfirmed) {
               await axios
-                .post(`http://localhost:2112/users/signupGuest`, {
+                .post(`http://localhost:4000/users/signupGuest`, {
                     phone_number: phone_number,
                 })
     
