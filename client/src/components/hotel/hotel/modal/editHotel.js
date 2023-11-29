@@ -12,25 +12,10 @@ const EditHotel = (props) => {
   const {
     showModalHotel,
     handleCloseEditHotel,
-    register,
-    resetField,
     handleSubmit,
-    addrId,
-    hotelId,
-    hotelName,
-    phoneNumber,
-    hotelStatus,
-    hotelCity,
-    hotelAddress,
-    hotelDescription,
-    // hotelRatingStar,
-    setHotelName,
-    setPhoneNumber,
-    setHotelStatus,
-    setHotelCity,
-    setHotelAddress,
-    setHotelDescription,
-    // setHotelRatingStar,
+    reset,
+    hotel,
+    setHotel,
     getCityResult,
   } = props;
 
@@ -43,17 +28,9 @@ const EditHotel = (props) => {
   const [isUpdateHotel, setIsUpdateHotel] = useState(false);
 
   const handleUpdateHotel = (data) => {
-    const dataJson = {
-      name: data.hotel_name,
-      phonenumber: data.hotel_phonenumber,
-      status: data.hotel_status,
-      city: data.addr_city_id,
-      address: data.addr_line_1,
-      description: data.hotel_description,
-      addr_id: addrId,
-    };
+    data = hotel;
     setIsUpdateHotel(true);
-    dispatch(updateHotel(dataJson, hotelId));
+    dispatch(updateHotel(data));
   };
 
   useEffect(() => {
@@ -66,13 +43,7 @@ const EditHotel = (props) => {
               text: updateHotelResult.message,
               confirmButtonText: "OK",
             }).then(() => {
-              resetField("hotel_id");
-              resetField("hotel_name");
-              resetField("hotel_phonenumber");
-              resetField("hotel_status");
-              resetField("addr_city_id");
-              resetField("addr_line_1");
-              resetField("hotel_description");
+              reset()
               handleCloseEditHotel(false);
             })
           : Swal.fire("Gagal", updateHotelError, "error");
@@ -92,13 +63,13 @@ const EditHotel = (props) => {
               Hotel Name
             </Form.Label>
             <Col sm="6">
-              <Form.Control type="hidden" value={hotelId} />
+              <Form.Control type="hidden" value={hotel.hotelId} />
               <Form.Control
                 type="text"
                 id="formHotelName"
-                {...register("hotel_name")}
-                value={hotelName}
-                onChange={(e) => setHotelName(e.target.value)}
+                value={hotel.name}
+                onChange={(e) => setHotel({ ...hotel, name: e.target.value })}
+                required
               />
             </Col>
           </Form.Group>
@@ -111,9 +82,11 @@ const EditHotel = (props) => {
               <Form.Control
                 type="text"
                 id="formHotelPhone"
-                {...register("hotel_phonenumber")}
-                value={phoneNumber}
-                onChange={(e) => setPhoneNumber(e.target.value)}
+                value={hotel.phonenumber}
+                onChange={(e) =>
+                  setHotel({ ...hotel, phonenumber: e.target.value })
+                }
+                required
               />
             </Col>
           </Form.Group>
@@ -125,9 +98,9 @@ const EditHotel = (props) => {
               <Form.Select
                 className="form-select"
                 id="addHotel"
-                {...register("hotel_status")}
-                value={hotelStatus}
-                onChange={(e) => setHotelStatus(e.target.value)}
+                value={hotel.status}
+                onChange={(e) => setHotel({ ...hotel, status: e.target.value })}
+                required
               >
                 <option value="Active">Active</option>
                 <option value="Disactive">Disactive</option>
@@ -144,9 +117,11 @@ const EditHotel = (props) => {
                   <Form.Select
                     className="form-select"
                     id="addHotel"
-                    {...register("addr_city_id")}
-                    value={hotelCity}
-                    onChange={(e) => setHotelCity(e.target.value)}
+                    value={hotel.city}
+                    onChange={(e) =>
+                      setHotel({ ...hotel, city: e.target.value })
+                    }
+                    required
                   >
                     {getCityResult.map((value) => {
                       return (
@@ -170,9 +145,9 @@ const EditHotel = (props) => {
               as="textarea"
               id="formHotelAddr"
               maxLength={255}
-              {...register("addr_line_1")}
-              value={hotelAddress}
-              onChange={(e) => setHotelAddress(e.target.value)}
+              value={hotel.address}
+              onChange={(e) => setHotel({ ...hotel, address: e.target.value })}
+              required
               rows={5}
             />
           </Form.Group>
@@ -183,10 +158,10 @@ const EditHotel = (props) => {
             <Form.Control
               as="textarea"
               id="formHotelDesc"
-              {...register("hotel_description")}
-              value={hotelDescription}
-              onChange={(e) => setHotelDescription(e.target.value)}
               maxLength={255}
+              value={hotel.description}
+              onChange={(e) => setHotel({ ...hotel, description: e.target.value })}
+                required
               rows={5}
             />
           </Form.Group>

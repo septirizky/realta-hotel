@@ -13,8 +13,8 @@ const AddHotel = (props) => {
     showModalHotel,
     handleCloseAddHotel,
     register,
-    resetField,
     handleSubmit,
+    reset,
     getCityResult,
   } = props;
 
@@ -31,7 +31,7 @@ const AddHotel = (props) => {
       name: data.hotel_name,
       phonenumber: data.hotel_phonenumber,
       status: data.hotel_status,
-      city:data.addr_city_id,
+      city: data.addr_city_id,
       address: data.addr_line_1,
       description: data.hotel_description,
     };
@@ -49,13 +49,7 @@ const AddHotel = (props) => {
               text: addHotelResult.message,
               confirmButtonText: "OK",
             }).then(() => {
-              resetField("hotel_id");
-              resetField("hotel_name");
-              resetField("hotel_phonenumber");
-              resetField("hotel_status");
-              resetField("addr_city_id");
-              resetField("addr_line_1");
-              resetField("hotel_description");
+              reset();
               handleCloseAddHotel(false);
             })
           : Swal.fire("Gagal", addHotelError, "error");

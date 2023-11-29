@@ -11,93 +11,71 @@ const GetHotel = (props) => {
   const { getHotelResult, getHotelLoading, getHotelError, getCityResult } =
     props;
 
-  const { register, resetField, handleSubmit } = useForm();
+  const { register, handleSubmit, reset } = useForm();
 
   const [showModalAddHotel, setShowModalAddHotel] = useState(false);
   const [showModalEditHotel, setShowModalEditHotel] = useState(false);
   const [showModalDeleteHotel, setShowModalDeleteHotel] = useState(false);
-  // const [showModalEditStatus, setShowModalEditStatus] = useState(false);
-
-  const [addrId, setAddrId] = useState("");
-  const [hotelId, setHotelId] = useState("");
-  const [hotelName, setHotelName] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [hotelStatus, setHotelStatus] = useState("");
-  const [hotelCity, setHotelCity] = useState("");
-  const [hotelAddress, setHotelAddress] = useState("");
-  const [hotelDescription, setHotelDescription] = useState("");
-  const [hotelRatingStar, setHotelRatingStar] = useState("");
 
   const [search, setSearch] = useState("");
+
+  const [hotel, setHotel] = useState({
+    hotelId: "",
+    name: "",
+    phonenumber: "",
+    status: "",
+    city: "",
+    address: "",
+    description: "",
+    addr_id: "",
+    ratingstar: "",
+  });
 
   const showAddHotel = () => {
     setShowModalAddHotel(true);
   };
   const closeAddHotel = () => {
-    resetField("hotel_name");
-    resetField("hotel_phonenumber");
-    resetField("hotel_status");
-    resetField("addr_city_id");
-    resetField("addr_line_1");
-    resetField("hotel_description");
-    resetField("hotel_ratingstar");
+    reset();
     setShowModalAddHotel(false);
   };
 
   const showEditHotel = (
-    hotelId,
-    hotelName,
-    phoneNumber,
-    hotelStatus,
-    hotelCity,
-    hotelAddress,
-    hotelDescription,
-    addrId
-    // hotelRatingStar
+    hotel_id,
+    hotel_name,
+    hotel_phonenumber,
+    hotel_status,
+    city,
+    address,
+    hotel_description,
+    hotel_addr_id
   ) => {
-    setHotelId(hotelId);
-    setHotelName(hotelName);
-    setPhoneNumber(phoneNumber);
-    setHotelStatus(hotelStatus);
-    setHotelCity(hotelCity);
-    setHotelAddress(hotelAddress);
-    setHotelDescription(hotelDescription);
-    setAddrId(addrId);
-    // setHotelRatingStar(hotelRatingStar);
+    setHotel({
+      hotelId: hotel_id,
+      name: hotel_name,
+      phonenumber: hotel_phonenumber,
+      status: hotel_status,
+      city: city,
+      address: address,
+      description: hotel_description,
+      addr_id: hotel_addr_id,
+    });
     setShowModalEditHotel(true);
   };
   const closeEditHotel = () => {
-    resetField("hotel_id");
-    resetField("addr_id");
-    resetField("hotel_name");
-    resetField("hotel_phonenumber");
-    resetField("hotel_status");
-    resetField("addr_city_id");
-    resetField("addr_line_1");
-    resetField("hotel_description");
-    resetField("hotel_ratingstar");
+    reset();
     setShowModalEditHotel(false);
   };
 
-  const showDeleteHotel = (hotelName, hotelId) => {
-    setHotelName(hotelName);
-    setHotelId(hotelId);
+  const showDeleteHotel = (hotel_id, hotel_name) => {
+    setHotel({
+      hotelId: hotel_id,
+      name: hotel_name,
+    });
     setShowModalDeleteHotel(true);
   };
   const closeDeleteHotel = () => {
     setShowModalDeleteHotel(false);
   };
-
-  // const showEditStatus = (hotelId, hotelStatus) => {
-  //   setHotelId(hotelId);
-  //   setHotelStatus(hotelStatus);
-  //   setShowModalEditStatus(true);
-  // };
-  // const closeEditStatus = () => {
-  //   resetField("hotel_id");
-  //   resetField("hotel_status");
-  //   setShowModalEditStatus(false);
-  // };
 
   return (
     <div>
@@ -109,8 +87,8 @@ const GetHotel = (props) => {
             <th>Hotel Name</th>
             <th>Rating Star</th>
             <th>Phone Number</th>
-            <th>Modified Data</th>
             <th>Status</th>
+            <th>Modified Data</th>
             <th className="align-border-right">
               <button
                 type="button"
@@ -146,8 +124,8 @@ const GetHotel = (props) => {
                   </td>
                   <td>{hotel_rating_star}</td>
                   <td>{hotel_phonenumber}</td>
-                  <td>{hotel_modified_date}</td>
                   <td>{hotel_status}</td>
+                  <td>{hotel_modified_date}</td>
                   <td>
                     <div className="dropdown">
                       <BsThreeDotsVertical
@@ -183,20 +161,20 @@ const GetHotel = (props) => {
                               type="button"
                               className="button-delete-transparan"
                               onClick={() =>
-                                showDeleteHotel(hotel_name, hotel_id)
+                                showDeleteHotel(hotel_id, hotel_name)
                               }
                             >
                               Delete
                             </button>
                           </a>
                         </li>
-                        <li>
+                        {/* <li>
                           <a className="dropdown-item" href="#">
                             <Link to={"/hotel/facilities/" + hotel_id}>
                               Facilities
                             </Link>
                           </a>
-                        </li>
+                        </li> */}
                         <li>
                           <a className="dropdown-item" href="#">
                             <button
@@ -227,57 +205,27 @@ const GetHotel = (props) => {
         showModalHotel={showModalAddHotel}
         handleCloseAddHotel={closeAddHotel}
         register={register}
-        resetField={resetField}
         handleSubmit={handleSubmit}
+        reset={reset}
         getCityResult={getCityResult}
       />
 
       <EditHotel
         showModalHotel={showModalEditHotel}
         handleCloseEditHotel={closeEditHotel}
-        register={register}
-        resetField={resetField}
         handleSubmit={handleSubmit}
-        addrId={addrId}
-        hotelId={hotelId}
-        hotelName={hotelName}
-        phoneNumber={phoneNumber}
-        hotelStatus={hotelStatus}
-        hotelCity={hotelCity}
-        hotelAddress={hotelAddress}
-        hotelDescription={hotelDescription}
-        hotelRatingStar={hotelRatingStar}
-        setAddrId={setAddrId}
-        setHotelId={setHotelId}
-        setHotelName={setHotelName}
-        setPhoneNumber={setPhoneNumber}
-        setHotelStatus={setHotelStatus}
-        setHotelCity={setHotelCity}
-        setHotelAddress={setHotelAddress}
-        setHotelDescription={setHotelDescription}
-        setHotelRatingStar={setHotelRatingStar}
+        reset={reset}
+        hotel={hotel}
+        setHotel={setHotel}
         getCityResult={getCityResult}
       />
 
       <DeleteHotel
         showModalHotel={showModalDeleteHotel}
         handleCloseDeleteHotel={closeDeleteHotel}
-        hotelId={hotelId}
-        hotelName={hotelName}
+        hotel={hotel}
         handleSubmit={handleSubmit}
       />
-
-      {/* <Status
-        showModalStatus={showModalEditStatus}
-        handleCloseEditStatus={closeEditStatus}
-        register={register}
-        resetField={resetField}
-        handleSubmit={handleSubmit}
-        hotelId={hotelId}
-        hotelStatus={hotelStatus}
-        setHotelId={setHotelId}
-        setHotelStatus={setHotelStatus}
-      /> */}
     </div>
   );
 };

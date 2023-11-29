@@ -7,13 +7,7 @@ import Form from "react-bootstrap/Form";
 import { deleteHotel } from "../../../../actions/hotelAction";
 
 const DeleteHotel = (props) => {
-  const {
-    showModalHotel,
-    handleCloseDeleteHotel,
-    hotelName,
-    hotelId,
-    handleSubmit,
-  } = props;
+  const { showModalHotel, handleCloseDeleteHotel, hotel, handleSubmit } = props;
 
   const { deleteHotelResult, deleteHotelError } = useSelector(
     (state) => state.HotelReducer
@@ -26,7 +20,7 @@ const DeleteHotel = (props) => {
   const handleDelete = () => {
     handleCloseDeleteHotel();
     setIsDeleteHotel(true);
-    dispatch(deleteHotel(hotelId));
+    dispatch(deleteHotel(hotel.hotelId));
   };
 
   useEffect(() => {
@@ -54,8 +48,8 @@ const DeleteHotel = (props) => {
       </Modal.Header>
       <Form onSubmit={handleSubmit(handleDelete)}>
         <Modal.Body>
-          <input type="hidden" name="poli_id" value={hotelId} />
-          Are you sure want delete Hotel {hotelName}?
+          <input type="hidden" name="poli_id" value={hotel.hotelId} />
+          Are you sure want delete {hotel.name}?
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseDeleteHotel}>
