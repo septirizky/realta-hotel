@@ -53,9 +53,6 @@ const Transaction = () => {
                             }}
                             />
                         </div>
-                        <div className='d-grid gap-2 col-3'>
-                            <button type='submit'className='btn btn-dark'> Search</button>
-                        </div>
                         <div className='col-3'>
                             <select className="form-select rounded-3" required value={Transaction.type} onChange={(e)=>{
                                  setTransaction({...Transaction,type:e.target.value})
