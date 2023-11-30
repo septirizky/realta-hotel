@@ -17,18 +17,19 @@ const Transaction = () => {
 
     const [Transaction, setTransaction] = useState({
         trx_num:'',
-        type:'TP'
+        type:''
     });
     
     useEffect(() => {
         if (isSearch) {
+            console.log(Transaction)
             clearTimeout(ref.current)
             ref.current = setTimeout(() => {
                 dispatch(getTransaction(Transaction))
             },1000)
             
         }else{
-            Transaction.type=''
+            // Transaction.type=''
             // console.log(Transaction)
             dispatch(getTransaction(Transaction))
         }
