@@ -40,7 +40,7 @@ export default class hotels extends Model {
       }
     },
     hotel_status: {
-      type: DataTypes.BOOLEAN,
+      type: DataTypes.STRING,
       allowNull: true
     }
   }, {

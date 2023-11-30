@@ -5,7 +5,7 @@ export const TempNav = () => {
         <div>
             <nav className="navbar navbar-expand-sm navbar-dark bg-dark">
                 <div className="container-fluid">
-                    {/* <a className="navbar-brand" href="javascript:void(0)">Logo</a> */}
+                    <a className="navbar-brand" href="javascript:void(0)">Logo</a>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
                         <span className="navbar-toggler-icon"></span>
                     </button>
@@ -16,9 +16,6 @@ export const TempNav = () => {
                             </li>
                             <li className="nav-item">
                                 <Link to='/hr' className="nav-link">HR</Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link to='/payment' className="nav-link">Payment</Link>
                             </li>
                         </ul>
                         <form className="d-flex">

@@ -69,6 +69,19 @@ const sequelize = new Sequelize(
       idle: 10000,
     },
   }
+  process.env.DB_NAME,
+  process.env.DB_USER,
+  process.env.DB_PASS,
+  {
+    dialect: "postgres",
+    port: "5433",
+    pool: {
+      max: 5,
+      min: 0,
+      acquire: 30000,
+      idle: 10000,
+    },
+  }
 );
 
 function initModels(sequelize) {
@@ -100,8 +113,6 @@ function initModels(sequelize) {
   const hotel_reviews = _hotel_reviews.init(sequelize, DataTypes);
   const hotels = _hotels.init(sequelize, DataTypes);
   const job_role = _job_role.init(sequelize, DataTypes);
-  const joinahotel = _joinahotel.init(sequelize, DataTypes);
-  const joinmenu = _joinmenu.init(sequelize, DataTypes);
   const members = _members.init(sequelize, DataTypes);
   const order_menu_detail = _order_menu_detail.init(sequelize, DataTypes);
   const order_menus = _order_menus.init(sequelize, DataTypes);
@@ -608,8 +619,6 @@ function initModels(sequelize) {
     hotel_reviews,
     hotels,
     job_role,
-    joinahotel,
-    joinmenu,
     members,
     order_menu_detail,
     order_menus,
@@ -649,4 +658,5 @@ function initModels(sequelize) {
 
 const models = initModels(sequelize);
 export default models;
+
 export { sequelize };

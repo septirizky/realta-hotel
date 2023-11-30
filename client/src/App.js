@@ -24,6 +24,13 @@ import Bank from "./components/payment/bank/bank";
 import PaymentGateaway from "./components/payment/paymentGateaway/paymentGateaway";
 import Accounts from "./components/payment/accounts/accounts";
 import TopUp from "./components/payment/topUp/topUp";
+import "./App.css";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Sidebar } from "./components/hotel/sidebar";
+import { Dashboard } from "./components/dashboard";
+import Hotel from "./components/hotel/hotel";
+import Facilities from "./components/hotel/facilities";
+
 
 function App() {
     return (
@@ -57,6 +64,11 @@ function App() {
                   <Route path="/master/priceitems" element={<PriceItems />} />
                   <Route path="/master/cagro" element={<CategoryGroup />} />
               </Route>
+                  <Route path="/" index element={<Dashboard />} />
+                  <Route path="/hotel" element={<Sidebar />}>
+                      <Route index element={<Hotel />} />
+                      <Route path="/hotel/facilities/:hotel_id" element={<Facilities />} />
+                  </Route>
           </Routes>
       </BrowserRouter>
   );

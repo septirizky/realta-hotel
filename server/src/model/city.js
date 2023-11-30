@@ -17,7 +17,7 @@ export default class city extends Model {
     },
     city_province_id: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+      allowNull: false,
       references: {
         model: 'provinces',
         key: 'prov_id'
