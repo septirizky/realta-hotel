@@ -115,14 +115,14 @@ const GetAllCagro = (props) => {
       <div className="border border-black container-fluid py-3">
         Category Group
       </div>
-      <table>
+      <table className="master-table">
         <thead className="color-gray-thead">
           <tr>
-            <th></th>
-            <th>#</th>
-            <th>Category Name</th>
-            <th></th>
-            <th>Type</th>
+            <th className="master-thead"></th>
+            <th className="master-thead">#</th>
+            <th className="master-thead">Category Name</th>
+            <th className="master-thead"></th>
+            <th className="master-thead">Type</th>
             <th className="align-border-right">
               <button
                 type="button"
@@ -139,7 +139,7 @@ const GetAllCagro = (props) => {
             return (
               <tbody key={cagro.cagro_id}>
                 <tr>
-                  <td>
+                  <td className="master-tdata">
                     <img
                       src={cagro.cagro_icon_url}
                       alt={cagro.cagro_icon}
@@ -148,9 +148,9 @@ const GetAllCagro = (props) => {
                       className="rounded-circle"
                     />
                   </td>
-                  <td>{index + 1}</td>
-                  <td>{cagro.cagro_name}</td>
-                  <td>
+                  <td className="master-tdata">{index + 1}</td>
+                  <td className="master-tdata">{cagro.cagro_name}</td>
+                  <td className="master-tdata">
                     <button
                       type="button"
                       className="button-detail-transparan"
@@ -168,7 +168,7 @@ const GetAllCagro = (props) => {
                       <MdKeyboardDoubleArrowRight />
                     </button>
                   </td>
-                  <td>{cagro.cagro_type}</td>
+                  <td className="master-tdata">{cagro.cagro_type}</td>
                   <td className="align-border-right">
                     <button
                       type="button"
@@ -204,19 +204,25 @@ const GetAllCagro = (props) => {
         ) : getCagroLoading ? (
           <tbody>
             <tr>
-              <td colSpan={6}>Loading ...</td>
+              <td className="master-tdata" colSpan={6}>
+                Loading ...
+              </td>
             </tr>
           </tbody>
         ) : getCagroError ? (
           <tbody>
             <tr>
-              <td colSpan={6}>{getCagroError}</td>
+              <td className="master-tdata" colSpan={6}>
+                {getCagroError}
+              </td>
             </tr>
           </tbody>
         ) : (
           <tbody>
             <tr>
-              <td colSpan={6}>Data Category Group is Empty</td>
+              <td className="master-tdata" colSpan={6}>
+                Data Category Group is Empty
+              </td>
             </tr>
           </tbody>
         )}

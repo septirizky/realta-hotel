@@ -68,12 +68,12 @@ const GetAllRegion = (props) => {
   return (
     <>
       <div className="border border-black container-fluid py-3">Regions</div>
-      <table>
+      <table className="master-table">
         <thead className="color-gray-thead">
           <tr>
-            <th></th>
-            <th>#</th>
-            <th>Region Name</th>
+            <th className="master-thead"></th>
+            <th className="master-thead">#</th>
+            <th className="master-thead">Region Name</th>
             <th className="align-border-right">
               <button
                 type="button"
@@ -90,7 +90,7 @@ const GetAllRegion = (props) => {
             return (
               <tbody key={region.region_code}>
                 <tr>
-                  <td>
+                  <td className="master-tdata">
                     <input
                       type="radio"
                       name="region_code"
@@ -104,8 +104,8 @@ const GetAllRegion = (props) => {
                       }
                     />
                   </td>
-                  <td>{index + 1}</td>
-                  <td>{region.region_name}</td>
+                  <td className="master-tdata">{index + 1}</td>
+                  <td className="master-tdata">{region.region_name}</td>
                   <td className="align-border-right">
                     <button
                       type="button"
@@ -139,19 +139,25 @@ const GetAllRegion = (props) => {
         ) : getRegionsLoading ? (
           <tbody>
             <tr>
-              <td colSpan="4">Loading...</td>
+              <td colSpan="4" className="master-tdata">
+                Loading...
+              </td>
             </tr>
           </tbody>
         ) : getRegionsError ? (
           <tbody>
             <tr>
-              <td colSpan="4">{getRegionsError}</td>
+              <td colSpan="4" className="master-tdata">
+                {getRegionsError}
+              </td>
             </tr>
           </tbody>
         ) : (
           <tbody>
             <tr>
-              <td colSpan="4">Data Region is Empty</td>
+              <td colSpan="4" className="master-tdata">
+                Data Region is Empty
+              </td>
             </tr>
           </tbody>
         )}

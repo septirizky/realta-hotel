@@ -76,12 +76,12 @@ const GetAllPolicy = (props) => {
   return (
     <>
       <div className="border border-black container-fluid py-3">Policy</div>
-      <table>
+      <table className="master-table">
         <thead className="color-gray-thead">
           <tr>
-            <th></th>
-            <th>#</th>
-            <th className="text-center">Policy Name</th>
+            <th className="master-thead"></th>
+            <th className="master-thead">#</th>
+            <th className="master-thead">Policy Name</th>
             <th className="align-border-right">
               <button
                 type="button"
@@ -98,15 +98,15 @@ const GetAllPolicy = (props) => {
             return (
               <tbody key={policy.poli_id}>
                 <tr>
-                  <td>
+                  <td className="master-tdata">
                     <input
                       type="radio"
                       name="poli_id"
                       id={`poli_id${policy.poli_id}`}
                     />
                   </td>
-                  <td>{index + 1}</td>
-                  <td>{policy.poli_name}</td>
+                  <td className="master-tdata">{index + 1}</td>
+                  <td className="master-tdata">{policy.poli_name}</td>
                   <td className="align-border-right">
                     <span className="align-border-left">
                       <button
@@ -153,19 +153,25 @@ const GetAllPolicy = (props) => {
         ) : getPolicyLoading ? (
           <tbody>
             <tr>
-              <td colSpan="4">Loading...</td>
+              <td className="master-tdata" colSpan="4">
+                Loading...
+              </td>
             </tr>
           </tbody>
         ) : getPolicyError ? (
           <tbody>
             <tr>
-              <td colSpan="4">{getPolicyError}</td>
+              <td className="master-tdata" colSpan="4">
+                {getPolicyError}
+              </td>
             </tr>
           </tbody>
         ) : (
           <tbody>
             <tr>
-              <td colSpan="4">Data Policy is Empty</td>
+              <td className="master-tdata" colSpan="4">
+                Data Policy is Empty
+              </td>
             </tr>
           </tbody>
         )}

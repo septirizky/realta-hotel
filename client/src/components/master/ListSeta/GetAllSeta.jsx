@@ -62,10 +62,10 @@ const GetAllSeta = (props) => {
       <div className="border border-black container-fluid py-3">
         Service Task
       </div>
-      <table>
+      <table className="master-table">
         <thead className="color-gray-thead">
           <tr>
-            <th>#</th>
+            <th className="master-thead">#</th>
             <th className="text-center">Task Name</th>
             <th className="text-center">Sequence Order</th>
             <th className="align-border-right">
@@ -84,9 +84,9 @@ const GetAllSeta = (props) => {
             return (
               <tbody key={seta.seta_id}>
                 <tr>
-                  <td>{index + 1}</td>
-                  <td>{seta.seta_name}</td>
-                  <td>{seta.seta_seq}</td>
+                  <td className="master-tdata">{index + 1}</td>
+                  <td className="master-tdata">{seta.seta_name}</td>
+                  <td className="master-tdata">{seta.seta_seq}</td>
                   <td className="align-border-right">
                     <button
                       type="button"
@@ -118,19 +118,25 @@ const GetAllSeta = (props) => {
         ) : getSetaLoading ? (
           <tbody>
             <tr>
-              <td colSpan="4">Loading...</td>
+              <td className="master-tdata" colSpan="4">
+                Loading...
+              </td>
             </tr>
           </tbody>
         ) : getSetaError ? (
           <tbody>
             <tr>
-              <td colSpan="4">{getSetaError}</td>
+              <td className="master-tdata" colSpan="4">
+                {getSetaError}
+              </td>
             </tr>
           </tbody>
         ) : (
           <tbody>
             <tr>
-              <td colSpan="4">Data Service Task is Empty</td>
+              <td className="master-tdata" colSpan="4">
+                Data Service Task is Empty
+              </td>
             </tr>
           </tbody>
         )}

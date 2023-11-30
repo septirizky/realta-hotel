@@ -3,16 +3,16 @@
   color: white;
 }
 
-table {
+table.master-table {
   border: 1px solid gray;
 }
 
-th {
+th.master-thead {
   text-align: center;
   padding: 8px 0;
 }
 
-td {
+td.master-tdata {
   text-align: center;
   padding: 8px 0;
 }
@@ -41,7 +41,7 @@ td {
   color: rgb(134, 134, 24);
 }
 
-table {
+table.master-table {
   border-collapse: collapse;
   width: 100%;
 }
