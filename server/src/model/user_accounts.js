@@ -14,7 +14,11 @@ export default class user_accounts extends Model {
     },
     usac_user_id: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
+      references: {
+        model: 'users',
+        key: 'user_id'
+      }
     },
     usac_account_number: {
       type: DataTypes.STRING(25),
@@ -28,6 +32,10 @@ export default class user_accounts extends Model {
     },
     usac_type: {
       type: DataTypes.STRING(15),
+      allowNull: false
+    },
+    usac_expmonth: {
+      type: DataTypes.SMALLINT,
       allowNull: false
     },
     usac_expyear: {
@@ -44,10 +52,6 @@ export default class user_accounts extends Model {
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
-    },
-    usac_expmonth: {
-      type: DataTypes.STRING(2),
-      allowNull: false
     }
   }, {
     sequelize,
@@ -55,6 +59,12 @@ export default class user_accounts extends Model {
     schema: 'payment',
     timestamps: false,
     indexes: [
+      {
+        name: "fki_user_accounts_usac_entity_id_fkey",
+        fields: [
+          { name: "usac_entity_id" },
+        ]
+      },
       {
         name: "user_accounts_pkey",
         unique: true,
