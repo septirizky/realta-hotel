@@ -128,7 +128,9 @@ const BookingCreate = () => {
 
   useEffect(() => {
     if (updateBookingOrderResult) {
-      navigate(`/booking/hotel/invoice/${updateBookingOrderResult.boor_id}`);
+      navigate(
+        `/booking/hotel/invoice/${updateBookingOrderResult.data.boor_id}`
+      );
     }
   }, [updateBookingOrderResult, navigate]);
 
