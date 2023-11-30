@@ -98,12 +98,12 @@ const GetAllProvinceByCountry = (props) => {
           <div className="border border-black container-fluid py-3">
             Provinces
           </div>
-          <table>
+          <table className="master-table">
             <thead className="color-gray-thead">
               <tr>
-                <th></th>
-                <th>#</th>
-                <th>Province Name</th>
+                <th className="master-thead"></th>
+                <th className="master-thead">#</th>
+                <th className="master-thead">Province Name</th>
                 <th className="align-border-right">
                   <button
                     type="button"
@@ -121,7 +121,7 @@ const GetAllProvinceByCountry = (props) => {
               getProvinceResult.map((province, index) => (
                 <tbody key={province.prov_id}>
                   <tr>
-                    <td>
+                    <td className="master-tdata">
                       <label htmlFor={`prov_id${province.prov_id}`}></label>
                       <input
                         type="radio"
@@ -136,8 +136,8 @@ const GetAllProvinceByCountry = (props) => {
                         }
                       />
                     </td>
-                    <td>{index + 1}</td>
-                    <td>{province.prov_name}</td>
+                    <td className="master-tdata">{index + 1}</td>
+                    <td className="master-tdata">{province.prov_name}</td>
                     <td className="align-border-right">
                       <button
                         type="button"

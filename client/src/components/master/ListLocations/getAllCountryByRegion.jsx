@@ -100,12 +100,12 @@ const GetAllCountryByRegion = (props) => {
           <div className="border border-black container-fluid py-3">
             Countries
           </div>
-          <table>
+          <table className="master-table">
             <thead className="color-gray-thead">
               <tr>
-                <th></th>
-                <th>#</th>
-                <th>Country Name</th>
+                <th className="master-thead"></th>
+                <th className="master-thead">#</th>
+                <th className="master-thead">Country Name</th>
                 <th className="align-border-right">
                   <button
                     type="button"
@@ -121,7 +121,7 @@ const GetAllCountryByRegion = (props) => {
               getCountryResult.map((country, index) => (
                 <tbody key={country.country_id}>
                   <tr>
-                    <td>
+                    <td className="master-tdata">
                       <label
                         htmlFor={`country_id${country.country_id}`}
                       ></label>
@@ -138,8 +138,8 @@ const GetAllCountryByRegion = (props) => {
                         }
                       />
                     </td>
-                    <td>{index + 1}</td>
-                    <td>{country.country_name}</td>
+                    <td className="master-tdata">{index + 1}</td>
+                    <td className="master-tdata">{country.country_name}</td>
                     <td className="align-border-right">
                       <button
                         type="button"

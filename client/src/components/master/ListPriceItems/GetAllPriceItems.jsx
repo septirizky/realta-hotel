@@ -135,15 +135,15 @@ const GetAllPriceItems = (props) => {
         setKueri2={setKueri2}
         searchData={searchData}
       />
-      <table>
+      <table className="master-table">
         <thead className="color-gray-thead">
           <tr>
-            <th></th>
-            <th>#</th>
+            <th className="master-thead"></th>
+            <th className="master-thead">#</th>
             <th className="text-center">Item Name</th>
             <th className="text-center">Price</th>
             <th className="text-center"></th>
-            <th>Type</th>
+            <th className="master-thead">Type</th>
             <th className="align-border-right">
               <button
                 type="button"
@@ -159,7 +159,9 @@ const GetAllPriceItems = (props) => {
           getIPriceResult.length === 0 ? (
             <tbody>
               <tr>
-                <td colSpan={7}>Data Price Items is Not Found!</td>
+                <td className="master-tdata" colSpan={7}>
+                  Data Price Items is Not Found!
+                </td>
               </tr>
             </tbody>
           ) : (
@@ -167,7 +169,7 @@ const GetAllPriceItems = (props) => {
               return (
                 <tbody key={iprice.prit_id}>
                   <tr>
-                    <td>
+                    <td className="master-tdata">
                       <img
                         src={iprice.prit_icon_url}
                         alt={iprice.prit_icon}
@@ -176,7 +178,7 @@ const GetAllPriceItems = (props) => {
                         height={30}
                       />
                     </td>
-                    <td>{index + 1}</td>
+                    <td className="master-tdata">{index + 1}</td>
                     <td className="text-start">{iprice.prit_name}</td>
                     <td className="text-end">
                       {formatRupiah(iprice.prit_price)}
@@ -199,7 +201,7 @@ const GetAllPriceItems = (props) => {
                         <MdKeyboardDoubleArrowRight />
                       </button>
                     </td>
-                    <td>{iprice.prit_type}</td>
+                    <td className="master-tdata">{iprice.prit_type}</td>
                     <td className="align-border-right">
                       <button
                         type="button"
@@ -235,19 +237,25 @@ const GetAllPriceItems = (props) => {
         ) : getIPriceLoading ? (
           <tbody>
             <tr>
-              <td colSpan={7}>Loading...</td>
+              <td className="master-tdata" colSpan={7}>
+                Loading...
+              </td>
             </tr>
           </tbody>
         ) : getIPriceError ? (
           <tbody>
             <tr>
-              <td colSpan={7}>{getIPriceError}</td>
+              <td className="master-tdata" colSpan={7}>
+                {getIPriceError}
+              </td>
             </tr>
           </tbody>
         ) : (
           <tbody>
             <tr>
-              <td colSpan={7}>Data Item Price is Empty</td>
+              <td className="master-tdata" colSpan={7}>
+                Data Item Price is Empty
+              </td>
             </tr>
           </tbody>
         )}
