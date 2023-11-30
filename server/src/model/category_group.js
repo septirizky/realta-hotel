@@ -40,7 +40,7 @@ export default class category_group extends Model {
     },
     cagro_description: {
       type: DataTypes.STRING(255),
-      allowNull: false
+      allowNull: true
     }
   }, {
     sequelize,

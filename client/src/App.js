@@ -1,5 +1,5 @@
-import "bootstrap/dist/css/bootstrap.css";
-import "bootstrap/dist/js/bootstrap.js";
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/js/bootstrap.js';
 import './App.css';
 import {BrowserRouter, Route, Routes,} from "react-router-dom";
 import {Dashboard} from "./components/dashboard";
@@ -37,6 +37,15 @@ import Resto from "./components/resto/menu";
 // import {Hr} from "./components/hr";
 
 
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Dashboard } from './components/dashboard';
+import { TempNav } from './components/tempNav';
+import { Hr } from './components/hr';
+import ListHotel from './components/booking/ListHotel';
+import BookingLayout from './components/booking/BookingLayout';
+import HotelDetail from './components/booking/HotelDetail';
+import BookingCreate from './components/booking/BookingCreate';
+import BookingInvoice from './components/booking/BookingInvoice';
 
 function App() {
     return (
@@ -79,6 +88,12 @@ function App() {
                   <Route path="/hotel" element={<Sidebar />}>
                       <Route index element={<Hotel />} />
                       <Route path="/hotel/facilities/:hotel_id" element={<Facilities />} />
+                  </Route>
+                  <Route path="/booking/hotel" element={<BookingLayout />}>
+                      <Route index element={<ListHotel />} />
+                      <Route path=":id" element={<HotelDetail />} />
+                      <Route path="create/:id" element={<BookingCreate />} />
+                      <Route path="invoice/:id" element={<BookingInvoice />} />
                   </Route>
           </Routes>
       </BrowserRouter>

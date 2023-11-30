@@ -39,23 +39,27 @@ export default class booking_order_detail extends Model {
       allowNull: true
     },
     borde_extra: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.DECIMAL,
       allowNull: true
     },
     borde_discount: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.DECIMAL,
       allowNull: true
     },
     borde_tax: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.DECIMAL,
       allowNull: true
     },
     borde_subtotal: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.DECIMAL,
       allowNull: true
     },
     borde_faci_id: {
       type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    borde_subtotal_with_tax: {
+      type: DataTypes.DECIMAL,
       allowNull: true
     }
   }, {

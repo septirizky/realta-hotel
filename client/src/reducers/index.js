@@ -8,6 +8,7 @@ import HotelReducer from "./hotel";
 import { combineReducers } from "redux";
 import restoReducer from "./restoreducer";
 
+import BookingHotelReducer from './bookingHotelReducer';
 
 export default combineReducers({
     // masukan reducer baru
@@ -16,4 +17,5 @@ export default combineReducers({
     paymentReducers,
     HotelReducer,
     restoReducer,
+    BookingHotelReducer,
 })
