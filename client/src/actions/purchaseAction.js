@@ -34,7 +34,6 @@ export const GetVendor = () => {
       timeout: 120000,
     })
       .then((res) => {
-        console.log(res.data);
         dispatch({
           type: GET_VENDOR,
           payload: {
@@ -73,7 +72,6 @@ export const GetPostVendor = (data) => {
       data: data,
     })
       .then((res) => {
-        console.log(res.data);
         dispatch({
           type: GET_POSTVENDOR,
           payload: {
@@ -111,7 +109,6 @@ export const GetDeleteVendor = (id) => {
       timeout: 120000,
     })
       .then((res) => {
-        console.log(res.data);
         dispatch({
           type: GET_DELETEVENDOR,
           payload: {
@@ -149,7 +146,6 @@ export const GetVendorsStock = (id) => {
       timeout: 120000,
     })
       .then((res) => {
-        console.log(res.data);
         dispatch({
           type: GET_VENDORSTOCK,
           payload: {
@@ -187,7 +183,6 @@ export const GetVendorId = (id) => {
       timeout: 120000,
     })
       .then((res) => {
-        console.log(res.data);
         dispatch({
           type: GET_VENDORID,
           payload: {
@@ -225,7 +220,6 @@ export const GetStock = () => {
       timeout: 120000,
     })
       .then((res) => {
-        console.log(res.data);
         dispatch({
           type: GET_STOCK,
           payload: {
@@ -263,7 +257,6 @@ export const GetStockDetail = (id) => {
       timeout: 120000,
     })
       .then((res) => {
-        console.log(res.data);
         dispatch({
           type: GET_STOCKDETAIL,
           payload: {
@@ -301,7 +294,6 @@ export const GetOrder = (id) => {
       timeout: 120000,
     })
       .then((res) => {
-        console.log(res.data);
         dispatch({
           type: GET_ORDER,
           payload: {
@@ -339,7 +331,6 @@ export const GetHotel = () => {
       timeout: 120000,
     })
       .then((res) => {
-        console.log(res.data);
         dispatch({
           type: GET_HOTEL,
           payload: {
@@ -377,7 +368,6 @@ export const GetPurchaseOrder = () => {
       timeout: 120000,
     })
       .then((res) => {
-        console.log(res.data);
         dispatch({
           type: GET_PURCHASE,
           payload: {
@@ -416,7 +406,6 @@ export const GetGallery = () => {
       timeout: 120000,
     })
       .then((res) => {
-        console.log(res.data);
         dispatch({
           type: GET_GALLERY,
           payload: {

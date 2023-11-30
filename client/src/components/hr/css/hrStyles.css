@@ -1,6 +1,6 @@
 .custom-hover-yellow:hover{
-    background-color: #EBAB2D ;
-    color: white ;
+    background-color: #EBAB2D !important;
+    color: white !important;
 }
 .custom-text-yellow{
     color: #EBAB2D !important;

@@ -50,8 +50,8 @@ const initialState = {
 };
 
 const PurchaseReducer = (state = initialState, action) => {
-  const product = action.payload;
-  console.log(product);
+  // const product = action.payload;
+  // console.log(product);
   switch (action.type) {
     case GET_VENDOR:
       return {
@@ -117,10 +117,10 @@ const PurchaseReducer = (state = initialState, action) => {
         getGalleryError: action.payload.errorMessage,
       };
 
-      break;
+      // break;
     default:
       return state;
-      break;
+      // break;
   }
 };
 export default PurchaseReducer;

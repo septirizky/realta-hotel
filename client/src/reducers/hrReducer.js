@@ -1,11 +1,11 @@
 import {
     DELETE_DEPARTMENT,
-    DELETE_EMPLOYEE,
+    DELETE_EMPLOYEE, DELETE_WORK_ORDER,
     GET_DEPARTMENT,
     GET_EMPLOYEE,
     GET_JOB_ROLE,
     GET_SHIFT, GET_WORK_ORDER,
-    POST_DEPARTMENT, POST_EMPLOYEE, POST_WORK_ORDER,
+    POST_DEPARTMENT, POST_EMPLOYEE, POST_WORK_ORDER, PUT_WORK_ORDER,
     UPDATE_DEPARTMENT, UPDATE_EMPLOYEE
 } from "../actions/hrAction";
 
@@ -72,6 +72,14 @@ const initialState = {
     postWorkOrderResult: false,
     postWorkOrderLoading: false,
     postWorkOrderError: false,
+
+    putWorkOrderResult: false,
+    putWorkOrderLoading: false,
+    putWorkOrderError: false,
+
+    deleteWorkOrderResult: false,
+    deleteWorkOrderLoading: false,
+    deleteWorkOrderError: false,
 }
 const HrReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -158,6 +166,20 @@ const HrReducer = (state = initialState, action) => {
                 postWorkOrderResult: action.payload.data,
                 postWorkOrderLoading: action.payload.loading,
                 postWorkOrderError: action.payload.errorMessage,
+            }
+        case PUT_WORK_ORDER:
+            return {
+                ...state,
+                putWorkOrderResult: action.payload.data,
+                putWorkOrderLoading: action.payload.loading,
+                putWorkOrderError: action.payload.errorMessage,
+            }
+        case DELETE_WORK_ORDER:
+            return {
+                ...state,
+                deleteWorkOrderResult: action.payload.data,
+                deleteWorkOrderLoading: action.payload.loading,
+                deleteWorkOrderError: action.payload.errorMessage,
             }
         default:
             return state

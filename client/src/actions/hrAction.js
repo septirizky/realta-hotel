@@ -12,6 +12,8 @@ export const GET_JOB_ROLE = "GET_JOB_ROLE"
 export const GET_SHIFT = "GET_SHIFT"
 export const GET_WORK_ORDER = "GET_WORK_ORDER"
 export const POST_WORK_ORDER = "POST_WORK_ORDER"
+export const PUT_WORK_ORDER = "PUT_WORK_ORDER"
+export const DELETE_WORK_ORDER = "DELETE_WORK_ORDER"
 
 export const GetDepartment = (data) => {
     return async (dispatch) => {
@@ -436,6 +438,77 @@ export const PostWorkOrder = (data) => {
         }).catch((e) => {
             dispatch({
                 type: POST_WORK_ORDER,
+                payload: {
+                    loading: false,
+                    data: false,
+                    errorMessage: e.response.data
+                }
+            })
+        })
+    }
+}
+export const PutWorkOrder = (data, id) => {
+    return async (dispatch) => {
+        dispatch({
+            type: PUT_WORK_ORDER,
+            payload: {
+                loading: true,
+                data: false,
+                errorMessage: false
+            }
+        })
+        await axios({
+            method: "PUT",
+            url: "http://localhost:4000/hr/work-orders/"+id,
+            data: data,
+            timeout: 120000
+        }).then((res) => {
+            dispatch({
+                type: PUT_WORK_ORDER,
+                payload: {
+                    loading: false,
+                    data: res.data,
+                    errorMessage: false
+                }
+            })
+        }).catch((e) => {
+            dispatch({
+                type: PUT_WORK_ORDER,
+                payload: {
+                    loading: false,
+                    data: false,
+                    errorMessage: e.response.data
+                }
+            })
+        })
+    }
+}
+export const DeleteWorkOrder = (id) => {
+    return async (dispatch) => {
+        dispatch({
+            type: DELETE_WORK_ORDER,
+            payload: {
+                loading: true,
+                data: false,
+                errorMessage: false
+            }
+        })
+        await axios({
+            method: "DELETE",
+            url: "http://localhost:4000/hr/work-orders/"+id,
+            timeout: 120000
+        }).then((res) => {
+            dispatch({
+                type: DELETE_WORK_ORDER,
+                payload: {
+                    loading: false,
+                    data: res.data,
+                    errorMessage: false
+                }
+            })
+        }).catch((e) => {
+            dispatch({
+                type: DELETE_WORK_ORDER,
                 payload: {
                     loading: false,
                     data: false,

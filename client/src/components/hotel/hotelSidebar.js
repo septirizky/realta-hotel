@@ -6,7 +6,7 @@ import { MdApartment, MdOutlineHotelClass } from "react-icons/md";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { useEffect, useState } from "react";
 
-export const Sidebar = () => {
+export const HotelSidebar = () => {
   const pathname = useLocation();
   const [burgerActive, setBurgerActive] = useState(false);
   const sidebarToggler = (event) => {

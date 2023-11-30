@@ -41,6 +41,7 @@ import StockDetail from "./components/purchase/stock/detailStock";
 import Cart from "./components/purchase/order/cart";
 import DetailOrder from "./components/purchase/order/detailorder";
 import {Sidebar} from "primereact/sidebar";
+import {HotelSidebar} from "./components/hotel/hotelSidebar";
 
 function App() {
     return (
@@ -75,7 +76,7 @@ function App() {
                     <Route path="/master/cagro" element={<CategoryGroup/>}/>
                 </Route>
                 <Route path="/" index element={<Dashboard/>}/>
-                <Route path="/hotel" element={<Sidebar/>}>
+                <Route path="/hotel" element={<HotelSidebar/>}>
                     <Route index element={<Hotel/>}/>
                     <Route path="/hotel/facilities/:hotel_id" element={<Facilities/>}/>
                 </Route>

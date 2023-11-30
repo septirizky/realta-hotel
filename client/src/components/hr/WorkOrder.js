@@ -1,7 +1,7 @@
 import {BiPlus} from "react-icons/bi";
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {GetWorkOrder, PostWorkOrder} from "../../actions/hrAction";
+import {DeleteEmployee, DeleteWorkOrder, GetWorkOrder, PostWorkOrder, PutWorkOrder} from "../../actions/hrAction";
 import reducers from "../../reducers";
 import HrReducer from "../../reducers/hrReducer";
 import {PiDotsThreeOutlineVerticalDuotone} from "react-icons/pi";
@@ -10,6 +10,7 @@ import {MdHistory} from "react-icons/md";
 import {TiTimes} from "react-icons/ti";
 import Swal from "sweetalert2";
 import {useForm} from "react-hook-form";
+import {FaTasks} from "react-icons/fa";
 
 export const WorkOrder = () => {
     const [searchForm, setSearchForm] = useState({
@@ -25,17 +26,19 @@ export const WorkOrder = () => {
         formState: {errors}
     } = useForm()
     const {
-        register2,
-        handleSubmit2,
-        reset2,
-        setValue2,
+        register: register2,
+        handleSubmit: handleSubmit2,
+        reset: reset2,
+        setValue: setValue2,
         formState: {errors: errors2}
     } = useForm()
-    const [formDate, setFormDate] = useState('')
-    const [formStatus, setFormStatus] = useState('')
     const [isPost, setIsPost] = useState(false)
+    const [isPut, setIsPut] = useState(false)
+    const [isDelete, setIsDelete] = useState(false)
     const {
         postWorkOrderResult,
+        putWorkOrderResult,
+        deleteWorkOrderResult,
         getWorkOrderResult,
         getWorkOrderLoading,
         getWorkOrderError,
@@ -45,6 +48,23 @@ export const WorkOrder = () => {
         setIsPost(true)
         // console.log(data)
         dispatch(PostWorkOrder({woro_start_date: data.woro_start_date, woro_status: 'OPEN', woro_user_id: 1}))
+    }
+    const putWorkOrder = (data) => {
+        setIsPut(true)
+        dispatch(PutWorkOrder({woro_start_date: data.woro_start_date, woro_status: data.woro_status}, data.woro_id))
+    }
+    const deleteWorkOrder = (id, tanggal) => {
+        Swal.fire({
+            title: `Delete Work Order \n ${tanggal}?`,
+            showCancelButton: true,
+            confirmButtonText: 'Sure',
+            confirmButtonColor: '#EBAB2D'
+        }).then((res) => {
+            if (res.isConfirmed) {
+                setIsDelete(true)
+                dispatch(DeleteWorkOrder(id))
+            }
+        })
     }
     useEffect(() => {
         if (isPost) {
@@ -59,11 +79,38 @@ export const WorkOrder = () => {
                     clearInterval(timerInterval)
                 }
             })
+        } else if (isPut) {
+            let timerInterval
+            Swal.fire({
+                title: 'Update Work Order success',
+                html: 'Auto Close',
+                timer: 1500,
+                showConfirmButton: false,
+                timerProgressBar: true,
+                willClose: () => {
+                    clearInterval(timerInterval)
+                }
+            })
+        } else if (isDelete) {
+            let timerInterval
+            Swal.fire({
+                title: 'Delete Work Order success',
+                html: 'Auto Close',
+                timer: 1500,
+                showConfirmButton: false,
+                timerProgressBar: true,
+                willClose: () => {
+                    clearInterval(timerInterval)
+                }
+            })
         }
         reset()
+        reset2()
         setIsPost(false)
+        setIsPut(false)
+        setIsDelete(false)
         dispatch(GetWorkOrder(searchForm))
-    }, [searchForm, postWorkOrderResult]);
+    }, [searchForm, postWorkOrderResult, putWorkOrderResult, deleteWorkOrderResult]);
     return (
         <div>
             <h1>Work Order</h1>
@@ -143,7 +190,7 @@ export const WorkOrder = () => {
                                     <tr key={index}>
                                         <td scope="row">{(workOrderDate.getDate().toString().split('').length === 1 ? '0' + workOrderDate.getDate() : workOrderDate.getDate()) + " " + months[workOrderDate.getMonth()] + " " + workOrderDate.getFullYear()}</td>
                                         <td>{value.woro_status}</td>
-                                        <td>{value.woro_user_id}</td>
+                                        <td>{value.woro_user.user_full_name}</td>
                                         <td className='text-end pe-4'>
                                             <div className="dropstart">
                                                 <button className='btn btn-light' data-bs-toggle="dropdown"
@@ -152,26 +199,29 @@ export const WorkOrder = () => {
                                                 </button>
                                                 <ul className="dropdown-menu">
                                                     <li>
+                                                        <a className="dropdown-item custom-hover-yellow"
+                                                           href='#'><FaTasks size='16'/> Work Order Detail</a>
+                                                    </li>
+                                                    <li>
                                                         <a className="dropdown-item custom-hover-yellow" href='#'
                                                            onClick={() => {
                                                                setValue2("woro_start_date", value.woro_start_date)
                                                                setValue2("woro_status", value.woro_status)
-                                                               console.log(value)
+                                                               setValue2("woro_id", value.woro_id)
+                                                               // console.log(value)
                                                            }}
                                                            data-bs-toggle="modal"
                                                            data-bs-target="#editWorkOrder"><FiEdit
                                                             size='16'/> Edit</a>
                                                     </li>
                                                     <li>
-                                                        <a className="dropdown-item custom-hover-yellow"
-                                                           href='#'><MdHistory size='16'/> Salary History</a>
-                                                    </li>
-                                                    <li>
-                                                        <a className="dropdown-item custom-hover-yellow"
-                                                           href='#'><MdHistory size='16'/> Department History</a>
-                                                    </li>
-                                                    <li>
                                                         <a className="dropdown-item custom-hover-yellow text-danger"
+                                                           onClick={(e)=>{
+                                                               deleteWorkOrder(
+                                                                   value.woro_id,
+                                                                   (workOrderDate.getDate().toString().split('').length === 1 ? '0' + workOrderDate.getDate() : workOrderDate.getDate()) + " " + months[workOrderDate.getMonth()] + " " + workOrderDate.getFullYear()
+                                                               )
+                                                           }}
                                                            href='#'><FiTrash size='16'/> Delete</a>
                                                     </li>
                                                 </ul>
@@ -233,17 +283,17 @@ export const WorkOrder = () => {
                             <h5 className="modal-title" id="exampleModalLabel">Add Work Order</h5>
                             <TiTimes data-bs-dismiss="modal" aria-label="Close" color='#EBAB2D' size={26}/>
                         </div>
-                        <form onSubmit={handleSubmit(postWorkOrder)}>
+                        <form onSubmit={handleSubmit2(putWorkOrder)}>
                             <div className="modal-body">
                                 <div className="form-floating m-3">
-                                    <input type="date" {...register('woro_start_date', {required: true})}
+                                    <input type="date" {...register2('woro_start_date', {required: true})}
                                            className="form-control text-dark" id="addDept"
                                            placeholder="name@example.com" required/>
                                     <label htmlFor="addDept">Start Date</label>
                                 </div>
                                 <div className="form-floating m-3">
                                     <select className="form-select"
-                                            {...register('woro_status', {required: true})}
+                                            {...register2('woro_status', {required: true})}
                                             aria-label="Floating label select example">
                                         <option value="OPEN">Open</option>
                                         <option value="CLOSED">Closed</option>

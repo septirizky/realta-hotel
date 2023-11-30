@@ -7,6 +7,7 @@ import employee from "../../model/employee.js";
 import employee_pay_history from "../../model/employee_pay_history.js";
 import employee_department_history from "../../model/employee_department_history.js";
 import fs from "fs";
+import users from "../../model/users.js";
 
 /*
  * Department
@@ -428,6 +429,14 @@ export const getWorkOrder = async (req, res) => {
                 order: [
                     ["woro_start_date", "DESC"],
                 ],
+                include: [
+                    {
+                        model: users,
+                        as: 'woro_user',
+                        attributes: ["user_full_name"],
+                        required: true,
+                    }
+                ],
             });
         } else {
             result = await models.work_orders.findAll({
@@ -436,6 +445,14 @@ export const getWorkOrder = async (req, res) => {
                 },
                 order: [
                     ["woro_start_date", "DESC"],
+                ],
+                include: [
+                    {
+                        model: users,
+                        as: 'woro_user',
+                        attributes: ["user_full_name"],
+                        required: true,
+                    }
                 ],
             });
         }
@@ -463,11 +480,10 @@ export const createWorkOrder = async (req, res) => {
 
 export const updateWorkOrder = async (req, res) => {
     try {
-        const {woro_status, woro_user_id} = req.body
+        const {woro_status, woro_start_date} = req.body
         const update = await models.work_orders.update({
-            woro_start_date: new Date(),
+            woro_start_date: woro_start_date,
             woro_status: woro_status,
-            woro_user_id: woro_user_id,
         }, {
             where: {woro_id: req.params.id},
             returning: true
