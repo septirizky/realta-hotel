@@ -6,6 +6,6 @@ export const validatorsError = (req, res, next) => {
 
     next();
   } catch (error) {
-    res.status(400).json({ message: error.errors[0].msg });
+    res.status(201).json({ message: error.errors[0].msg });
   }
 };

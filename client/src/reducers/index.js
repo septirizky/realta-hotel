@@ -1,4 +1,4 @@
-import {combineReducers} from "redux";
+import { combineReducers } from "redux";
 import HrReducer from "./hrReducer";
 import masterReducer from "./masterReducer";
 
@@ -9,6 +9,8 @@ import { combineReducers } from "redux";
 import restoReducer from "./restoreducer";
 
 import BookingHotelReducer from './bookingHotelReducer';
+import PurchaseReducer from "./purchaseReducer";
+import handleCart from "./cartpurchase";
 
 export default combineReducers({
     // masukan reducer baru
@@ -18,4 +20,6 @@ export default combineReducers({
     HotelReducer,
     restoReducer,
     BookingHotelReducer,
+    PurchaseReducer,
+    handleCart,
 })

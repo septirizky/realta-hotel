@@ -14,7 +14,7 @@ export const regionGetAll = async (req, res) => {
       .status(200)
       .json({ data: result, message: "Berhasil menampilkan data regions!" });
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    return res.status(400).json({ message: error.message });
   }
 };
 
@@ -28,7 +28,7 @@ export const regionPost = async (req, res) => {
       .status(201)
       .json({ data: result, message: "Berhasil menambahkan data regions!" });
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    return res.status(400).json({ message: error.message });
   }
 };
 
@@ -49,7 +49,7 @@ export const regionUpdate = async (req, res) => {
       .status(200)
       .json({ data: result, message: "Berhasil mengubah data regions!" });
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    return res.status(400).json({ message: error.message });
   }
 };
 
@@ -65,7 +65,7 @@ export const regionDelete = async (req, res) => {
       .status(200)
       .json({ data: result, message: "Berhasil menghapus data regions!" });
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    return res.status(400).json({ message: error.message });
   }
 };
 
