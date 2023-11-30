@@ -1,7 +1,7 @@
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.js";
 import './App.css';
-import {BrowserRouter, Route, Routes} from "react-router-dom";
+import {BrowserRouter, Route, Routes,} from "react-router-dom";
 import {Dashboard} from "./components/dashboard";
 import {HrNav} from "./components/hr/HrNav";
 import {Department} from "./components/hr/Department";
@@ -31,6 +31,12 @@ import { Dashboard } from "./components/dashboard";
 import Hotel from "./components/hotel/hotel";
 import Facilities from "./components/hotel/facilities";
 
+import { RestoNav } from "./components/resto/restoNav";
+import Resto from "./components/resto/menu";
+// import {TempNav} from "./components/tempNav";
+// import {Hr} from "./components/hr";
+
+
 
 function App() {
     return (
@@ -50,6 +56,11 @@ function App() {
                   <Route path='/hr/department' index element={<Department/>}/>
                   <Route path='/hr/employee' index element={<Employee/>}/>
                   <Route path='/hr/work-order' index element={<WorkOrder/>}/>
+                <Route path="/" index element={<Dashboard/>}/>
+              <Route path='/resto' element={<RestoNav/>}>
+                  <Route path="/resto" index element={<Resto/>} />
+                  {/* <Route path='/resto/menu' element={<Menu/>}/> */}
+
               </Route>
               <Route path="/" element={<NavbarComponent />}>
                   <Route path="/vendor" index element={<ProfilePage />} />

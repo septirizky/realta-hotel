@@ -5,6 +5,9 @@ import masterReducer from "./masterReducer";
 import {paymentReducers} from "./paymentReducers";
 import { combineReducers } from "redux";
 import HotelReducer from "./hotel";
+import { combineReducers } from "redux";
+import restoReducer from "./restoreducer";
+
 
 export default combineReducers({
     // masukan reducer baru
@@ -12,4 +15,5 @@ export default combineReducers({
     masterReducer,
     paymentReducers,
     HotelReducer,
+    restoReducer,
 })
