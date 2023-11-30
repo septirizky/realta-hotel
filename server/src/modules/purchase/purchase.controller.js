@@ -237,13 +237,16 @@ const liststock_photo = async (req, res) => {
 const uploadstockphoto = async (req, res) => {
   try {
     const { spho_primary, spho_url, spho_stock_id } = req.body;
-    console.log(req.file);
-    const result = await models.stock_photo.create({
-      spho_thumbnail_filename: req.file.path,
-      spho_photo_filename: req.file.originalname,
-      spho_primary: spho_primary,
-      spho_url: spho_url,
-      spho_stock_id: spho_stock_id,
+    // const { files } =;
+    console.log(req.files);
+    req.files.map(async (photo) => {
+      const result = await models.stock_photo.create({
+        spho_thumbnail_filename: photo.path,
+        spho_photo_filename: photo.originalname,
+        spho_primary: spho_primary,
+        spho_url: spho_url,
+        spho_stock_id: spho_stock_id,
+      });
     });
     res.status(201).json({ data: result, message: "Insert Success" });
   } catch (error) {

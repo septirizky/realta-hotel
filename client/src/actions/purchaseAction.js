@@ -3,6 +3,8 @@ import axios from "axios";
 export const GET_VENDOR = "GET_VENDOR";
 export const GET_VENDORSTOCK = "GET_VENDORSTOCK";
 export const GET_VENDORID = "GET_VENDORID";
+export const GET_POSTVENDOR = "GET_POSTVENDOR";
+export const GET_DELETEVENDOR = "GET_DELETEVENDOR";
 
 export const GET_STOCK = "GET_STOCK";
 export const GET_STOCKDETAIL = "GET_STOCKDETAIL";
@@ -45,6 +47,83 @@ export const GetVendor = () => {
       .catch((e) => {
         dispatch({
           type: GET_VENDOR,
+          payload: {
+            loading: false,
+            data: false,
+            errorMessage: e.response.data.message,
+          },
+        });
+      });
+  };
+};
+export const GetPostVendor = (data) => {
+  return async (dispatch) => {
+    dispatch({
+      type: GET_POSTVENDOR,
+      payload: {
+        loading: true,
+        data: false,
+        errorMessage: false,
+      },
+    });
+    axios({
+      method: "POST",
+      url: `http://localhost:4001/insertvendor`,
+      timeout: 120000,
+      data: data,
+    })
+      .then((res) => {
+        console.log(res.data);
+        dispatch({
+          type: GET_POSTVENDOR,
+          payload: {
+            loading: false,
+            data: res.data.data,
+            errorMessage: false,
+          },
+        });
+      })
+      .catch((e) => {
+        dispatch({
+          type: GET_POSTVENDOR,
+          payload: {
+            loading: false,
+            data: false,
+            errorMessage: e.response.data.message,
+          },
+        });
+      });
+  };
+};
+export const GetDeleteVendor = (id) => {
+  return (dispatch) => {
+    dispatch({
+      type: GET_DELETEVENDOR,
+      payload: {
+        loading: true,
+        data: false,
+        errorMessage: false,
+      },
+    });
+    axios({
+      method: "DELETE",
+      url: `http://localhost:4001/deletevendor/${id}`,
+      timeout: 120000,
+    })
+      .then((res) => {
+        console.log(res.data);
+        dispatch({
+          type: GET_DELETEVENDOR,
+          payload: {
+            loading: false,
+            data: res.data.data,
+            errorMessage: false,
+          },
+        });
+      })
+      .catch((e) => {
+        dispatch({
+          type: GET_DELETEVENDOR,
           payload: {
             loading: false,
             data: false,
@@ -365,7 +444,6 @@ export const addCart = (listuser) => {
     payload: listuser,
   };
 };
-
 // For Delete Item to Cart
 export const delCart = (listuser) => {
   return {

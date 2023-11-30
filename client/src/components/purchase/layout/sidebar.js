@@ -122,6 +122,19 @@ export const PurchaseLayout = () => {
                   </div>
                   Purchase Order
                 </Link>
+
+                <Link
+                  to="/"
+                  className={`nav-link ${
+                    pathname.pathname === "/hr/work-order" ? "active" : ""
+                  }`}
+                  href=""
+                >
+                  <div className="sb-nav-link-icon">
+                    {/* <BsListCheck size="26" /> */}
+                  </div>
+                  Galery
+                </Link>
               </div>
             </div>
           </nav>

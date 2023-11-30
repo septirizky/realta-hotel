@@ -28,16 +28,24 @@ const Stock = () => {
   const [scrap, setScrap] = useState("");
   const [size, setSize] = useState("");
   const [color, setColor] = useState("");
-  const [file, setFile] = useState();
-  const [imagephoto, setFileStock] = useState();
+  const [file, setFile] = useState([]);
+  const [imagephoto, setFileStock] = useState([]);
   const [stock_id, setStockId] = useState();
   const { getStockResult, getStockLoading, getStockError } = useSelector(
     (state) => state.PurchaseReducer
   );
+
   const handleChange = (e) => {
-    setFile(URL.createObjectURL(e.target.files[0]));
-    setFileStock(e.target.files[0]);
+    let images = [];
+    let imagefile = [];
+    for (let i = 0; i < e.target.files.length; i++) {
+      images.push(URL.createObjectURL(e.target.files[i]));
+      imagefile.push(e.target.files[i]);
+    }
+    setFileStock(imagefile);
+    setFile(images);
   };
+  console.log(file, imagephoto);
   const uploadphoto = (event) => {
     event.preventDefault();
     const spho_primary = 1;
@@ -552,24 +560,25 @@ const Stock = () => {
                   <div className="col-1 ">
                     <input
                       type="file"
+                      multiple
                       accept="image/*"
                       onChange={handleChange}
                     />
                   </div>
-
-                  <div className="col-3">
-                    <label className=" p-3">
-                      <Avatar
-                        src={file}
-                        sx={{
-                          width: 150,
-                          height: 150,
-                          left: 150,
-                          right: 300,
-                        }}
-                      />
-                    </label>
-                  </div>
+                  {file && (
+                    <div>
+                      {file.map((img, i) => {
+                        return (
+                          <img
+                            className="preview"
+                            src={img}
+                            alt={"image-" + i}
+                            key={i}
+                          />
+                        );
+                      })}
+                    </div>
+                  )}
                 </div>
               </Modal.Body>
               <Modal.Footer>

@@ -72,9 +72,9 @@ const Products = () => {
             <div
               id={listuser.stock_id}
               key={listuser.stock_id}
-              className="col-md-4 col-sm-6 col-xs-8 col-12 mb-4"
+              className="col-md-3 col-sm-1 col-xs-1 col-1 mb-4"
             >
-              <div className="card text-center h-100" key={listuser.stock_id}>
+              <div className="card text-center h-60" key={listuser.stock_id}>
                 <img
                   className="card-img-top p-3"
                   src={`http://localhost:4001/pictstockphoto/${listuser.spho_photo_filename}`}
@@ -117,7 +117,7 @@ const Products = () => {
   };
   return (
     <>
-      <div className="container my-3 py-3">
+      <div className="container my-1 py-1">
         <div className="row">
           <div className="col-12"></div>
         </div>

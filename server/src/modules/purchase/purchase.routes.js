@@ -32,7 +32,7 @@ purchaseRouters.get("/stockbyId/:id", purchase.stockbyId);
 purchaseRouters.get("/liststockphoto", purchase.liststock_photo);
 purchaseRouters.post(
   "/uploadstockphoto",
-  upload.single("imagephoto"),
+  upload.any("imagephoto"),
   purchase.uploadstockphoto
 );
 purchaseRouters.get("/pictstockphoto/:filename", purchase.pictstockphoto);
