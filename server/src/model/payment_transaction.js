@@ -32,7 +32,7 @@ export default class payment_transaction extends Model {
       allowNull: true
     },
     patr_modified_date: {
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
       allowNull: true,
       defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
     },

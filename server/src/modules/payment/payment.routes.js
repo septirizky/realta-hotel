@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { addPaymentGateaway, createBank, createUserAccount, deleteBank, deletePaymentGateaway, getAllBank, getBankId, getPaymentGateaway, getPaymentGateawayById, getTransaction, getTransactionDetail, getTransactionPagination, getUserAccount, getUserAccountById, getUserAccountExclude, payment, searchBank, searchPaymentGateaway, testApi, topUp, updateBank, updatePaymentGateaway, updateUserAccount } from "./payment.controller.js";
+import { addPaymentGateaway, createBank, createUserAccount, deleteBank, deletePaymentGateaway, getAllBank, getBankId, getPaymentGateaway, getPaymentGateawayById, getTransaction, getTransactionDetail, getTransactionPagination, getTransactionSearch, getUserAccount, getUserAccountById, getUserAccountExclude, payment, searchBank, searchPaymentGateaway, testApi, topUp, updateBank, updatePaymentGateaway, updateUserAccount } from "./payment.controller.js";
 
 
 const paymentRoutes = Router();
@@ -36,7 +36,7 @@ paymentRoutes.put('/updateUserAccount/:id',updateUserAccount)
 paymentRoutes.get('/getTransaction/',getTransaction);
 paymentRoutes.get('/getTransactionPagination',getTransactionPagination);
 paymentRoutes.get('/getTransactionDetail/:patr_id',getTransactionDetail)
-
+paymentRoutes.post('/getTransactionSearch', getTransactionSearch)
 
 
 //=================== Transfer =============================

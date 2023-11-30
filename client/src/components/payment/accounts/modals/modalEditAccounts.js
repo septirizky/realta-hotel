@@ -49,7 +49,6 @@ const ModalEditAccounts = (props) => {
     const userId = 1;
     useEffect(() => {
       setExp(UserAccount.expyear + '-' + UserAccount.expmonth)
-      
       if(isEdit){
         if(updateUserAccountResult){
             Swal.fire({
@@ -71,7 +70,6 @@ const ModalEditAccounts = (props) => {
             })
         }
     }
-
       dispatch(getBank({bank_name:''}))
       dispatch(getPaymentGateaway({paga_code:''}))
     },[dispatch,UserAccount,updateUserAccountResult,updateUserAccountError]);

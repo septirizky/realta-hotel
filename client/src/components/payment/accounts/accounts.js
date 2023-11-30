@@ -74,7 +74,7 @@ const Accounts = () => {
 
     useEffect(() => {
         dispatch(getUserAccount(userId))
-    }, [dispatch]);
+    }, []);
     
     return (
         <>
@@ -110,8 +110,7 @@ const Accounts = () => {
                                             <td>{usac.usac_entity.bank ? usac.usac_entity.bank.bank_name :usac.usac_entity.payment_gateway.paga_name }</td>
                                             <td>{formatRupiah(usac.usac_saldo)}</td>
                                             <td>{usac.usac_type}</td>
-                                            <td><button className='btn ms-3' onClick={()=>{
-                                               
+                                            <td><button className='btn ms-3' onClick={()=>{   
                                                 showEditAccount(
                                                     usac.usac_id,
                                                     usac.usac_account_number,

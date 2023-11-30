@@ -1,4 +1,4 @@
-import _sequelize,{Sequelize} from "sequelize";
+import _sequelize, { Sequelize } from "sequelize";
 const DataTypes = _sequelize.DataTypes;
 import _address from  "./address.js";
 import _bank from  "./bank.js";
@@ -52,7 +52,6 @@ import _vendor_product from  "./vendor_product.js";
 import _work_order_detail from  "./work_order_detail.js";
 import _work_orders from  "./work_orders.js";
 
-
 const sequelize = new Sequelize(
   process.env.DB_NAME,
   process.env.DB_USER,
@@ -67,6 +66,7 @@ const sequelize = new Sequelize(
     }
   }
 );
+
 
 function initModels(sequelize) {
   const address = _address.init(sequelize, DataTypes);
@@ -292,6 +292,7 @@ function initModels(sequelize) {
     work_orders,
   };
 }
+
 const model = initModels(sequelize);
 export default model;
 export { sequelize };

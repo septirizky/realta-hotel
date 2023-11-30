@@ -373,6 +373,38 @@ export const getTransactionDetail = async(req,res)=>{
     }
 }
 
+export const getTransactionSearch = async(req,res)=>{
+    try {
+        const {trx_num,type} = req.body;
+    if (trx_num && type === null) {
+        const result = await models.payment_transaction.findAll()
+        return res.status(201).json({data:result, message:`Data Ditemukan`})
+    } else {
+        const result = await models.payment_transaction.findAll({
+            where: {
+                [Op.or]:{
+                    patr_trx_number: {[Op.like]:`${trx_num}%`},
+                    patr_type:type
+                }
+            },order: [
+                ['patr_id', 'ASC'],
+            ]}
+        )
+            if(result=== null){
+                return res.status(402).json({ message:'Data Tidak Ditemukan'})
+
+            } else{
+                return res.status(200).json(result)
+
+            }
+    }
+
+        
+    } catch (error) {
+        return res.status(404).json({message:error.message})
+    }
+}
+
 
 // ========================== BackEnd TopUp =========================
 
@@ -426,7 +458,7 @@ export const topUp = async(req,res)=>{
             const transaction = await models.payment_transaction.create({
                 patr_trx_number : trx,
                 patr_debet : saldo,
-                patr_type : 'TP',
+                patr_type :'TP',
                 patr_note :'Top Up Saldo',
                 patr_modified_date: new Date(),
                 patr_source_id : sourceAccountNumber,

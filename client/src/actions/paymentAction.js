@@ -13,6 +13,8 @@ export const GET_USER_ACCOUNT_EXCLUDE = "GET_USER_ACCOUNT_EXCLUDE"
 export const ADD_USER_ACCOUNT = "ADD_USER_ACCOUNT";
 export const UPDATE_USER_ACCOUNT = "UPDATE_USER_ACCOUNT";
 
+export const GET_TRANSACTION = "GET_TRANSACTION";
+
 export const TOP_UP = "TOP_UP";
 
 export const getBank = (bank_name)=>{
@@ -339,7 +341,6 @@ export const getUserAccountExclude = (usac_user_id)=>{
     }
 }
 
-
 export const addUserAccount = (data)=>{
     return async (dispatch)=>{
         dispatch({
@@ -457,6 +458,50 @@ export const topUp = (data)=>{
                     loading:false,
                     data:false,
                     errorMessage:error.response.data.message
+                }
+            })
+        })
+    }
+}
+
+export const getTransaction = (data)=>{
+    return async(dispatch)=>{
+        console.log(data)
+        dispatch({
+            type:GET_TRANSACTION,
+            payload:{
+                loading:true,
+                data:false,
+                errorMessage:false
+            }
+        })
+
+        await axios({
+            method:'POST',
+            url:'http://localhost:4000/getTransactionSearch',
+            timeout:12000,
+            data:data
+        })
+
+        .then((result)=>{
+            console.log(result)
+            dispatch({
+                type:GET_TRANSACTION,
+                payload:{
+                    loading:false,
+                    data:result.data,
+                    errorMessage:false
+                }
+            })
+        })
+        .catch((error)=>{
+            console.log(error)
+            dispatch({
+                type:GET_TRANSACTION,
+                payload:{
+                    loading:false,
+                    data:false,
+                    errorMessage:error
                 }
             })
         })

@@ -76,7 +76,7 @@ const Payment = () => {
                                 Top Up
                             </Link>
                             <Link to='/payment/transaction'
-                                  className={`nav-link`}>
+                                  className={`nav-link ${pathname.pathname === '/payment/transaction' ? "active" : ""}`}>
                                 <div className="sb-nav-link-icon"><FaHistory size='26'/></div>
                                 Transaction
                             </Link>
