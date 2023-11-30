@@ -1,12 +1,15 @@
 import {BiPlus} from "react-icons/bi";
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {GetWorkOrder} from "../../actions/hrAction";
+import {GetWorkOrder, PostWorkOrder} from "../../actions/hrAction";
 import reducers from "../../reducers";
 import HrReducer from "../../reducers/hrReducer";
 import {PiDotsThreeOutlineVerticalDuotone} from "react-icons/pi";
 import {FiEdit, FiTrash} from "react-icons/fi";
 import {MdHistory} from "react-icons/md";
+import {TiTimes} from "react-icons/ti";
+import Swal from "sweetalert2";
+import {useForm} from "react-hook-form";
 
 export const WorkOrder = () => {
     const [searchForm, setSearchForm] = useState({
@@ -15,14 +18,52 @@ export const WorkOrder = () => {
         workOrderStatus: ''
     })
     const {
+        register,
+        handleSubmit,
+        reset,
+        setValue,
+        formState: {errors}
+    } = useForm()
+    const {
+        register2,
+        handleSubmit2,
+        reset2,
+        setValue2,
+        formState: {errors: errors2}
+    } = useForm()
+    const [formDate, setFormDate] = useState('')
+    const [formStatus, setFormStatus] = useState('')
+    const [isPost, setIsPost] = useState(false)
+    const {
+        postWorkOrderResult,
         getWorkOrderResult,
         getWorkOrderLoading,
         getWorkOrderError,
     } = useSelector((state) => state.HrReducer)
     const dispatch = useDispatch()
+    const postWorkOrder = (data) => {
+        setIsPost(true)
+        // console.log(data)
+        dispatch(PostWorkOrder({woro_start_date: data.woro_start_date, woro_status: 'OPEN', woro_user_id: 1}))
+    }
     useEffect(() => {
+        if (isPost) {
+            let timerInterval
+            Swal.fire({
+                title: 'Add Work Order success',
+                html: 'Auto Close',
+                timer: 1500,
+                showConfirmButton: false,
+                timerProgressBar: true,
+                willClose: () => {
+                    clearInterval(timerInterval)
+                }
+            })
+        }
+        reset()
+        setIsPost(false)
         dispatch(GetWorkOrder(searchForm))
-    }, [searchForm]);
+    }, [searchForm, postWorkOrderResult]);
     return (
         <div>
             <h1>Work Order</h1>
@@ -34,7 +75,7 @@ export const WorkOrder = () => {
             <div className='row mb-4 justify-content-between'>
                 <div className='col-sm-2 align-content-center mt-2'>
                     <button type="button" className="btn custom-btn-yellow" data-bs-toggle="modal"
-                            data-bs-target="#addModal">
+                            data-bs-target="#addWorkOrder">
                         <BiPlus size='26'/> Add Work Order
                     </button>
                 </div>
@@ -43,7 +84,7 @@ export const WorkOrder = () => {
                         <div className='col'>
                             <div className="form-floating">
                                 <input type="date"
-                                       onChange={(e)=> {
+                                       onChange={(e) => {
                                            setSearchForm({...searchForm, startDate: e.target.value})
                                            console.log(e.target.value)
                                        }}
@@ -55,7 +96,7 @@ export const WorkOrder = () => {
                         <div className='col'>
                             <div className="form-floating">
                                 <input type="date"
-                                       onChange={(e)=>setSearchForm({...searchForm, endDate: e.target.value})}
+                                       onChange={(e) => setSearchForm({...searchForm, endDate: e.target.value})}
                                        className="form-control text-dark form-control-sm" id="searchDept"
                                        placeholder="name@example.com" required/>
                                 <label htmlFor="searchDept">End Date</label>
@@ -81,7 +122,7 @@ export const WorkOrder = () => {
                 </div>
             </div>
             <table className="table table-striped table-hover align-middle">
-                <caption>Jumlah data : {getWorkOrderResult? getWorkOrderResult.length:''}</caption>
+                <caption>Jumlah data : {getWorkOrderResult ? getWorkOrderResult.length : ''}</caption>
                 <thead>
                 <tr>
                     <th scope="col">Work Order Date</th>
@@ -113,14 +154,12 @@ export const WorkOrder = () => {
                                                     <li>
                                                         <a className="dropdown-item custom-hover-yellow" href='#'
                                                            onClick={() => {
-                                                               // setImageEdit(value.emp_photo)
-                                                               // setValue2("emp_id", value.emp_id)
-                                                               // setValue2("emp_photo", value.emp_photo)
-                                                               // setValue2("emp_national_id", value.emp_national_id)
+                                                               setValue2("woro_start_date", value.woro_start_date)
+                                                               setValue2("woro_status", value.woro_status)
                                                                console.log(value)
                                                            }}
                                                            data-bs-toggle="modal"
-                                                           data-bs-target="#editModal"><FiEdit
+                                                           data-bs-target="#editWorkOrder"><FiEdit
                                                             size='16'/> Edit</a>
                                                     </li>
                                                     <li>
@@ -159,539 +198,70 @@ export const WorkOrder = () => {
 
                 </tbody>
             </table>
-            {/*<div className="modal fade modal-xl" id="addModal" data-bs-keyboard="false" data-bs-backdrop="static"*/}
-            {/*     tabIndex="-1" aria-hidden="true">*/}
-            {/*    <div className="modal-dialog">*/}
-            {/*        <div className="modal-content">*/}
-            {/*            <div className="modal-header">*/}
-            {/*                <h5 className="modal-title" id="exampleModalLabel">Add Employee</h5>*/}
-            {/*                <TiTimes data-bs-dismiss="modal" aria-label="Close" color='#EBAB2D' size={26}*/}
-            {/*                         onClick={() => resetHandler()}/>*/}
-            {/*            </div>*/}
-            {/*            <form key={1} onSubmit={handleSubmit(postEmp)}>*/}
-            {/*                <div className="modal-body">*/}
-            {/*                    <h6>General</h6>*/}
-            {/*                    <hr/>*/}
-            {/*                    <div className='row'>*/}
-            {/*                        <div className='col-sm-9'>*/}
-            {/*                            <div className='row mb-4'>*/}
-            {/*                                <div className='col'>*/}
-            {/*                                    <div className="form-floating">*/}
-            {/*                                        <input*/}
-            {/*                                            type="number" {...register('emp_national_id', {required: true})}*/}
-            {/*                                            className="form-control text-dark" placeholder='16 digit'*/}
-            {/*                                            id="National"*/}
-            {/*                                            required/>*/}
-            {/*                                        <label htmlFor="National">National ID</label>*/}
-            {/*                                    </div>*/}
-            {/*                                </div>*/}
-            {/*                                <div className='col'>*/}
-            {/*                                    <div className="form-floating">*/}
-            {/*                                        <input type="text" {...register('emp_fullname', {required: true})}*/}
-            {/*                                               className="form-control text-dark" id="dept"*/}
-            {/*                                               placeholder="name@example.com" required/>*/}
-            {/*                                        <label htmlFor="dept">Fullname</label>*/}
-            {/*                                    </div>*/}
-            {/*                                </div>*/}
-            {/*                            </div>*/}
-            {/*                            <div className='row mb-4'>*/}
-            {/*                                <div className='col'>*/}
-            {/*                                    <div className="form-floating">*/}
-            {/*                                        <input type="date" {...register('emp_birth_date', {required: true})}*/}
-            {/*                                               className="form-control text-dark" id="addEmp"*/}
-            {/*                                               placeholder="name@example.com" required/>*/}
-            {/*                                        <label htmlFor="addEmp">Birth Date</label>*/}
-            {/*                                    </div>*/}
-            {/*                                </div>*/}
-            {/*                                <div className='col'>*/}
-            {/*                                    <div className="form-floating">*/}
-            {/*                                        <input type="date" {...register('emp_hire_date', {required: true})}*/}
-            {/*                                               className="form-control text-dark" id="addEmp"*/}
-            {/*                                               placeholder="name@example.com" required/>*/}
-            {/*                                        <label htmlFor="addEmp">Hire Date</label>*/}
-            {/*                                    </div>*/}
-            {/*                                </div>*/}
-            {/*                            </div>*/}
-            {/*                            <div className='row mb-4'>*/}
-            {/*                                <div className='col'>*/}
-            {/*                                    <div className="form-floating">*/}
-            {/*                                        <select className="form-select"*/}
-            {/*                                                id="addEmp" {...register('emp_marital_status', {required: true})}*/}
-            {/*                                                aria-label="Floating label select example">*/}
-            {/*                                            <option value="S">Single</option>*/}
-            {/*                                            <option value="M">Married</option>*/}
-            {/*                                        </select>*/}
-            {/*                                        <label htmlFor="addEmp">Marital Status</label>*/}
-            {/*                                    </div>*/}
-            {/*                                </div>*/}
-            {/*                                <div className='col'>*/}
-            {/*                                    <div className="form-floating">*/}
-            {/*                                        <select className="form-select"*/}
-            {/*                                                id="addEmp" {...register('emp_gender', {required: true})}*/}
-            {/*                                                aria-label="Floating label select example">*/}
-            {/*                                            <option value="M">Male</option>*/}
-            {/*                                            <option value="F">Female</option>*/}
-            {/*                                        </select>*/}
-            {/*                                        <label htmlFor="addEmp">Gender</label>*/}
-            {/*                                    </div>*/}
-            {/*                                </div>*/}
-            {/*                            </div>*/}
-            {/*                            <div className='row mb-4'>*/}
-            {/*                                <div className='col'>*/}
-            {/*                                    <div className="form-floating">*/}
-            {/*                                        <select className="form-select"*/}
-            {/*                                                id="addEmp" {...register('emp_salaried_flag', {required: true})}*/}
-            {/*                                                aria-label="Floating label select example">*/}
-            {/*                                            <option value="0">Hourly</option>*/}
-            {/*                                            <option value="1">Monthly</option>*/}
-            {/*                                        </select>*/}
-            {/*                                        <label htmlFor="addEmp">Salaried Flag</label>*/}
-            {/*                                    </div>*/}
-            {/*                                </div>*/}
-            {/*                                <div className='col'>*/}
-            {/*                                    <div className="form-floating">*/}
-            {/*                                        <select className="form-select"*/}
-            {/*                                                id="addEmp" {...register('emp_current_flag', {required: true})}*/}
-            {/*                                                aria-label="Floating label select example">*/}
-            {/*                                            <option value="1">Active</option>*/}
-            {/*                                            <option value="0">InActive</option>*/}
-            {/*                                        </select>*/}
-            {/*                                        <label htmlFor="addEmp">Current Flag</label>*/}
-            {/*                                    </div>*/}
-            {/*                                </div>*/}
-            {/*                            </div>*/}
-            {/*                            <div className='row mb-4'>*/}
-            {/*                                <div className='col'>*/}
-            {/*                                    <div className="form-floating">*/}
-            {/*                                        <input*/}
-            {/*                                            type="number" {...register('emp_vacation_hours', {required: true})}*/}
-            {/*                                            className="form-control text-dark" id="addEmp"*/}
-            {/*                                            placeholder="name@example.com" required/>*/}
-            {/*                                        <label htmlFor="addEmp">Vacation Hours</label>*/}
-            {/*                                    </div>*/}
-            {/*                                </div>*/}
-            {/*                                <div className='col'>*/}
-            {/*                                    <div className="form-floating">*/}
-            {/*                                        <input*/}
-            {/*                                            type="number" {...register('emp_sickleave_hours', {required: true})}*/}
-            {/*                                            className="form-control text-dark" id="addEmp"*/}
-            {/*                                            placeholder="name@example.com" required/>*/}
-            {/*                                        <label htmlFor="addEmp">Sick Leave Hours</label>*/}
-            {/*                                    </div>*/}
-            {/*                                </div>*/}
-            {/*                                <div className='col'>*/}
-            {/*                                    {*/}
-            {/*                                        getJobRoleResult ? (*/}
-            {/*                                            <div className="form-floating">*/}
-            {/*                                                <select className="form-select"*/}
-            {/*                                                        id="addEmp" {...register('emp_joro_id', {required: true})}*/}
-            {/*                                                        aria-label="Floating label select example">*/}
-            {/*                                                    {getJobRoleResult.map((value) => {*/}
-            {/*                                                        return (*/}
-            {/*                                                            <option*/}
-            {/*                                                                value={value.joro_id}>{value.joro_name}</option>*/}
-            {/*                                                        )*/}
-            {/*                                                    })}*/}
-            {/*                                                </select>*/}
-            {/*                                                <label htmlFor="addEmp">Job Role</label>*/}
-            {/*                                            </div>*/}
-
-            {/*                                        ) : (*/}
-            {/*                                            <div>*/}
-            {/*                                                Job Role tidak ada*/}
-            {/*                                            </div>*/}
-            {/*                                        )*/}
-            {/*                                    }*/}
-            {/*                                </div>*/}
-            {/*                            </div>*/}
-            {/*                        </div>*/}
-            {/*                        <div className='col-sm-3'>*/}
-            {/*                            <div>*/}
-            {/*                                <img className='object-fit-contain' style={{width: "100%", height: "330px"}}*/}
-            {/*                                     src={image} alt=''/>*/}
-            {/*                            </div>*/}
-            {/*                            <div className='mt-3'>*/}
-            {/*                                <input type="file" className="form-control text-dark" id="addEmp"*/}
-            {/*                                       onChange={(e) => {*/}
-            {/*                                           setImageSave(e.target.files[0])*/}
-            {/*                                           setImage(e.target.files[0] ? URL.createObjectURL(e.target.files[0]) : "https://via.placeholder.com/100")*/}
-            {/*                                       }}*/}
-            {/*                                       placeholder="name@example.com"/>*/}
-            {/*                            </div>*/}
-            {/*                        </div>*/}
-            {/*                    </div>*/}
-            {/*                    <h6>Salary</h6>*/}
-            {/*                    <hr/>*/}
-            {/*                    <div className='row mb-4'>*/}
-            {/*                        <div className='col'>*/}
-            {/*                            <div className="form-floating">*/}
-            {/*                                <input type="number" {...register('ephi_rate_salary', {required: true})}*/}
-            {/*                                       className="form-control text-dark" placeholder='16 digit'*/}
-            {/*                                       id="National"*/}
-            {/*                                />*/}
-            {/*                                <label htmlFor="National">Salary Rate</label>*/}
-            {/*                            </div>*/}
-            {/*                        </div>*/}
-            {/*                        <div className='col'>*/}
-            {/*                            <div className="form-floating">*/}
-            {/*                                <select className="form-select"*/}
-            {/*                                        id="addEmp" {...register('ephi_pay_frequence', {required: true})}*/}
-            {/*                                        aria-label="Floating label select example">*/}
-            {/*                                    <option value="0">Hourly</option>*/}
-            {/*                                    <option value="1">Monthly</option>*/}
-            {/*                                </select>*/}
-            {/*                                <label htmlFor="addEmp">Frequency</label>*/}
-            {/*                            </div>*/}
-            {/*                        </div>*/}
-            {/*                    </div>*/}
-            {/*                    <h6>Assignment</h6>*/}
-            {/*                    <hr/>*/}
-            {/*                    <div className='row mb-4'>*/}
-            {/*                        <div className='col'>*/}
-            {/*                            {*/}
-            {/*                                getDepartmentResult ? (*/}
-            {/*                                    <div className="form-floating">*/}
-            {/*                                        <select className="form-select"*/}
-            {/*                                                id="addEmp" {...register('edhi_dept_id', {required: true})}*/}
-            {/*                                                aria-label="Floating label select example">*/}
-            {/*                                            {getDepartmentResult.map((value) => {*/}
-            {/*                                                return (*/}
-            {/*                                                    <option*/}
-            {/*                                                        value={value.dept_id}>{value.dept_name}</option>*/}
-            {/*                                                )*/}
-            {/*                                            })}*/}
-            {/*                                        </select>*/}
-            {/*                                        <label htmlFor="addEmp">Department</label>*/}
-            {/*                                    </div>*/}
-            {/*                                ) : (*/}
-            {/*                                    <div>*/}
-            {/*                                        Department tidak ada*/}
-            {/*                                    </div>*/}
-            {/*                                )*/}
-            {/*                            }*/}
-            {/*                        </div>*/}
-            {/*                        <div className='col'>*/}
-            {/*                            <div className="form-floating">*/}
-            {/*                                <input type="date" {...register('edhi_start_date', {required: true})}*/}
-            {/*                                       className="form-control text-dark" placeholder='16 digit'*/}
-            {/*                                       id="National"*/}
-            {/*                                />*/}
-            {/*                                <label htmlFor="National">Start Date</label>*/}
-            {/*                            </div>*/}
-            {/*                        </div>*/}
-            {/*                        <div className='col'>*/}
-            {/*                            <div className="form-floating">*/}
-            {/*                                <input type="date" {...register('edhi_end_date', {required: true})}*/}
-            {/*                                       className="form-control text-dark" placeholder='16 digit'*/}
-            {/*                                       id="National"*/}
-            {/*                                />*/}
-            {/*                                <label htmlFor="National">End Date</label>*/}
-            {/*                            </div>*/}
-            {/*                        </div>*/}
-            {/*                    </div>*/}
-            {/*                    <h6>Shift</h6>*/}
-            {/*                    <hr/>*/}
-            {/*                    {*/}
-            {/*                        getShiftResult ? (*/}
-            {/*                            <div className="form-floating">*/}
-            {/*                                <select className="form-select" defaultValue='1'*/}
-            {/*                                        id="addEmp" {...register('edhi_shift_id', {required: true})}*/}
-            {/*                                        aria-label="Floating label select example">*/}
-            {/*                                    {getShiftResult.map((value) => {*/}
-            {/*                                        return (*/}
-            {/*                                            <option value={value.shift_id}>{value.shift_name}</option>*/}
-            {/*                                        )*/}
-            {/*                                    })}*/}
-            {/*                                </select>*/}
-            {/*                                <label htmlFor="addEmp">Shift</label>*/}
-            {/*                            </div>*/}
-            {/*                        ) : (*/}
-            {/*                            <div>*/}
-            {/*                                Shift tidak ada*/}
-            {/*                            </div>*/}
-            {/*                        )*/}
-            {/*                    }*/}
-            {/*                </div>*/}
-            {/*                <div className="modal-footer">*/}
-            {/*                    <button type="button" className="btn btn-dark" data-bs-dismiss="modal">Close*/}
-            {/*                    </button>*/}
-            {/*                    <button type="submit" className="btn custom-btn-yellow">Submit*/}
-            {/*                    </button>*/}
-            {/*                </div>*/}
-            {/*            </form>*/}
-            {/*        </div>*/}
-            {/*    </div>*/}
-            {/*</div>*/}
-            {/*<div className="modal fade modal-xl" id="editModal" data-bs-keyboard="false" data-bs-backdrop="static"*/}
-            {/*     tabIndex="-1" aria-hidden="true">*/}
-            {/*    <div className="modal-dialog">*/}
-            {/*        <div className="modal-content">*/}
-            {/*            <div className="modal-header">*/}
-            {/*                <h5 className="modal-title" id="exampleModalLabel">Edit Employee</h5>*/}
-            {/*                <TiTimes data-bs-dismiss="modal" aria-label="Close" color='#EBAB2D' size={26}*/}
-            {/*                         onClick={() => resetHandler()}/>*/}
-            {/*            </div>*/}
-            {/*            <form key={2} onSubmit={handleSubmit2(updateEmp)}>*/}
-            {/*                <div className="modal-body">*/}
-            {/*                    <h6 className="text-start">General</h6>*/}
-            {/*                    <hr/>*/}
-            {/*                    <div className='row'>*/}
-            {/*                        <div className='col-sm-9'>*/}
-            {/*                            <div className='row mb-4'>*/}
-            {/*                                <div className='col'>*/}
-            {/*                                    <input type='text' {...register2('emp_id', {required: true})} hidden/>*/}
-            {/*                                    <input type='text' {...register2('emp_photo', {required: true})} hidden/>*/}
-            {/*                                    <div className="form-floating">*/}
-            {/*                                        <input*/}
-            {/*                                            type="number" {...register2('emp_national_id', {required: true})}*/}
-            {/*                                            className="form-control text-dark" placeholder='16 digit'*/}
-            {/*                                            id="National"*/}
-            {/*                                            required/>*/}
-            {/*                                        <label htmlFor="National">National ID</label>*/}
-            {/*                                    </div>*/}
-            {/*                                </div>*/}
-            {/*                                <div className='col'>*/}
-            {/*                                    <div className="form-floating">*/}
-            {/*                                        <input*/}
-            {/*                                            type="text" {...register2('emp_fullname', {required: true})}*/}
-            {/*                                            className="form-control text-dark" id="dept"*/}
-            {/*                                            placeholder="name@example.com" required/>*/}
-            {/*                                        <label htmlFor="dept">Fullname</label>*/}
-            {/*                                    </div>*/}
-            {/*                                </div>*/}
-            {/*                            </div>*/}
-            {/*                            <div className='row mb-4'>*/}
-            {/*                                <div className='col'>*/}
-            {/*                                    <div className="form-floating">*/}
-            {/*                                        <input*/}
-            {/*                                            type="date" {...register2('emp_birth_date', {required: true})}*/}
-            {/*                                            className="form-control text-dark" id="addEmp"*/}
-            {/*                                            placeholder="name@example.com" required/>*/}
-            {/*                                        <label htmlFor="addEmp">Birth Date</label>*/}
-            {/*                                    </div>*/}
-            {/*                                </div>*/}
-            {/*                                <div className='col'>*/}
-            {/*                                    <div className="form-floating">*/}
-            {/*                                        <input*/}
-            {/*                                            type="date" {...register2('emp_hire_date', {required: true})}*/}
-            {/*                                            className="form-control text-dark" id="addEmp"*/}
-            {/*                                            placeholder="name@example.com" required/>*/}
-            {/*                                        <label htmlFor="addEmp">Hire Date</label>*/}
-            {/*                                    </div>*/}
-            {/*                                </div>*/}
-            {/*                            </div>*/}
-            {/*                            <div className='row mb-4'>*/}
-            {/*                                <div className='col'>*/}
-            {/*                                    <div className="form-floating">*/}
-            {/*                                        <select className="form-select"*/}
-            {/*                                                id="addEmp" {...register2('emp_marital_status', {required: true})}*/}
-            {/*                                                aria-label="Floating label select example">*/}
-            {/*                                            <option value="S">Single</option>*/}
-            {/*                                            <option value="M">Married</option>*/}
-            {/*                                        </select>*/}
-            {/*                                        <label htmlFor="addEmp">Marital Status</label>*/}
-            {/*                                    </div>*/}
-            {/*                                </div>*/}
-            {/*                                <div className='col'>*/}
-            {/*                                    <div className="form-floating">*/}
-            {/*                                        <select className="form-select"*/}
-            {/*                                                id="addEmp" {...register2('emp_gender', {required: true})}*/}
-            {/*                                                aria-label="Floating label select example">*/}
-            {/*                                            <option value="M">Male</option>*/}
-            {/*                                            <option value="F">Female</option>*/}
-            {/*                                        </select>*/}
-            {/*                                        <label htmlFor="addEmp">Gender</label>*/}
-            {/*                                    </div>*/}
-            {/*                                </div>*/}
-            {/*                            </div>*/}
-            {/*                            <div className='row mb-4'>*/}
-            {/*                                <div className='col'>*/}
-            {/*                                    <div className="form-floating">*/}
-            {/*                                        <select className="form-select"*/}
-            {/*                                                id="addEmp" {...register2('emp_salaried_flag', {required: true})}*/}
-            {/*                                                aria-label="Floating label select example">*/}
-            {/*                                            <option value="0">Hourly</option>*/}
-            {/*                                            <option value="1">Monthly</option>*/}
-            {/*                                        </select>*/}
-            {/*                                        <label htmlFor="addEmp">Salaried Flag</label>*/}
-            {/*                                    </div>*/}
-            {/*                                </div>*/}
-            {/*                                <div className='col'>*/}
-            {/*                                    <div className="form-floating">*/}
-            {/*                                        <select className="form-select"*/}
-            {/*                                                id="addEmp" {...register2('emp_current_flag', {required: true})}*/}
-            {/*                                                aria-label="Floating label select example">*/}
-            {/*                                            <option value="1">Active</option>*/}
-            {/*                                            <option value="0">InActive</option>*/}
-            {/*                                        </select>*/}
-            {/*                                        <label htmlFor="addEmp">Current Flag</label>*/}
-            {/*                                    </div>*/}
-            {/*                                </div>*/}
-            {/*                            </div>*/}
-            {/*                            <div className='row mb-4'>*/}
-            {/*                                <div className='col'>*/}
-            {/*                                    <div className="form-floating">*/}
-            {/*                                        <input*/}
-            {/*                                            type="number" {...register2('emp_vacation_hours', {required: true})}*/}
-            {/*                                            className="form-control text-dark" id="addEmp"*/}
-            {/*                                            placeholder="name@example.com" required/>*/}
-            {/*                                        <label htmlFor="addEmp">Vacation Hours</label>*/}
-            {/*                                    </div>*/}
-            {/*                                </div>*/}
-            {/*                                <div className='col'>*/}
-            {/*                                    <div className="form-floating">*/}
-            {/*                                        <input*/}
-            {/*                                            type="number" {...register2('emp_sickleave_hours', {required: true})}*/}
-            {/*                                            className="form-control text-dark" id="addEmp"*/}
-            {/*                                            placeholder="name@example.com" required/>*/}
-            {/*                                        <label htmlFor="addEmp">Sick Leave Hours</label>*/}
-            {/*                                    </div>*/}
-            {/*                                </div>*/}
-            {/*                                <div className='col'>*/}
-            {/*                                    {*/}
-            {/*                                        getJobRoleResult ? (*/}
-            {/*                                            <div className="form-floating">*/}
-            {/*                                                <select className="form-select"*/}
-            {/*                                                        id="addEmp" {...register2('emp_joro_id', {required: true})}*/}
-            {/*                                                        aria-label="Floating label select example">*/}
-            {/*                                                    {getJobRoleResult.map((value) => {*/}
-            {/*                                                        return (*/}
-            {/*                                                            <option*/}
-            {/*                                                                value={value.joro_id}>{value.joro_name}</option>*/}
-            {/*                                                        )*/}
-            {/*                                                    })}*/}
-            {/*                                                </select>*/}
-            {/*                                                <label htmlFor="addEmp">Job Role</label>*/}
-            {/*                                            </div>*/}
-
-            {/*                                        ) : (*/}
-            {/*                                            <div>*/}
-            {/*                                                Job Role tidak ada*/}
-            {/*                                            </div>*/}
-            {/*                                        )*/}
-            {/*                                    }*/}
-            {/*                                </div>*/}
-            {/*                            </div>*/}
-            {/*                        </div>*/}
-            {/*                        <div className='col-sm-3'>*/}
-            {/*                            <div>*/}
-            {/*                                <img className='object-fit-contain' style={{width: "100%", height: "330px"}}*/}
-            {/*                                     src={imageEdit} alt=''/>*/}
-            {/*                            </div>*/}
-            {/*                            <div className='mt-3'>*/}
-            {/*                                <input type="file" className="form-control text-dark" id="addEmp" {...register2('dummy')}*/}
-            {/*                                       onChange={(e) => {*/}
-            {/*                                           setImageSaveEdit(e.target.files[0])*/}
-            {/*                                           setImageEdit(e.target.files[0] ? URL.createObjectURL(e.target.files[0]) : "https://via.placeholder.com/100")*/}
-            {/*                                       }}*/}
-            {/*                                       placeholder="name@example.com"/>*/}
-            {/*                            </div>*/}
-            {/*                        </div>*/}
-            {/*                    </div>*/}
-            {/*                    <h6 className="text-start">Salary</h6>*/}
-            {/*                    <hr/>*/}
-            {/*                    <div className='row mb-4'>*/}
-            {/*                        <div className='col'>*/}
-            {/*                            <div className="form-floating">*/}
-            {/*                                <input*/}
-            {/*                                    type="number" {...register2('ephi_rate_salary', {required: true})}*/}
-            {/*                                    className="form-control text-dark" placeholder='16 digit'*/}
-            {/*                                    id="National"*/}
-            {/*                                />*/}
-            {/*                                <label htmlFor="National">Salary Rate</label>*/}
-            {/*                            </div>*/}
-            {/*                        </div>*/}
-            {/*                        <div className='col'>*/}
-            {/*                            <div className="form-floating">*/}
-            {/*                                <select className="form-select"*/}
-            {/*                                        id="addEmp" {...register2('ephi_pay_frequence', {required: true})}*/}
-            {/*                                        aria-label="Floating label select example">*/}
-            {/*                                    <option value="0">Hourly</option>*/}
-            {/*                                    <option value="1">Monthly</option>*/}
-            {/*                                </select>*/}
-            {/*                                <label htmlFor="addEmp">Frequency</label>*/}
-            {/*                            </div>*/}
-            {/*                        </div>*/}
-            {/*                    </div>*/}
-            {/*                    <h6 className="text-start">Assignment</h6>*/}
-            {/*                    <hr/>*/}
-            {/*                    <div className='row mb-4'>*/}
-            {/*                        <div className='col'>*/}
-            {/*                            {*/}
-            {/*                                getDepartmentResult ? (*/}
-            {/*                                    <div className="form-floating">*/}
-            {/*                                        <select className="form-select"*/}
-            {/*                                                id="addEmp" {...register2('edhi_dept_id', {required: true})}*/}
-            {/*                                                aria-label="Floating label select example">*/}
-            {/*                                            {getDepartmentResult.map((value) => {*/}
-            {/*                                                return (*/}
-            {/*                                                    <option value={value.dept_id}>{value.dept_name}</option>*/}
-            {/*                                                )*/}
-            {/*                                            })}*/}
-            {/*                                        </select>*/}
-            {/*                                        <label htmlFor="addEmp">Department</label>*/}
-            {/*                                    </div>*/}
-
-            {/*                                ) : (*/}
-            {/*                                    <div>*/}
-            {/*                                        Department tidak ada*/}
-            {/*                                    </div>*/}
-            {/*                                )*/}
-            {/*                            }*/}
-            {/*                        </div>*/}
-            {/*                        <div className='col'>*/}
-            {/*                            <div className="form-floating">*/}
-            {/*                                <input type="date" {...register2('edhi_start_date', {required: true})}*/}
-            {/*                                       className="form-control text-dark" placeholder='16 digit'*/}
-            {/*                                       id="National"*/}
-            {/*                                />*/}
-            {/*                                <label htmlFor="National">Start Date</label>*/}
-            {/*                            </div>*/}
-            {/*                        </div>*/}
-            {/*                        <div className='col'>*/}
-            {/*                            <div className="form-floating">*/}
-            {/*                                <input type="date" {...register2('edhi_end_date', {required: true})}*/}
-            {/*                                       className="form-control text-dark" placeholder='16 digit'*/}
-            {/*                                       id="National"*/}
-            {/*                                />*/}
-            {/*                                <label htmlFor="National">End Date</label>*/}
-            {/*                            </div>*/}
-            {/*                        </div>*/}
-            {/*                    </div>*/}
-            {/*                    <h6 className="text-start">Shift</h6>*/}
-            {/*                    <hr/>*/}
-            {/*                    {*/}
-            {/*                        getShiftResult ? (*/}
-            {/*                            <div className="form-floating">*/}
-            {/*                                <select className="form-select"*/}
-            {/*                                        id="addEmp" {...register2('edhi_shift_id', {required: true})}*/}
-            {/*                                        aria-label="Floating label select example">*/}
-            {/*                                    {getShiftResult.map((value) => {*/}
-            {/*                                        return (*/}
-            {/*                                            <option value={value.shift_id}>{value.shift_name}</option>*/}
-            {/*                                        )*/}
-            {/*                                    })}*/}
-            {/*                                </select>*/}
-            {/*                                <label htmlFor="addEmp">Shift</label>*/}
-            {/*                            </div>*/}
-
-            {/*                        ) : (*/}
-            {/*                            <div>*/}
-            {/*                                Shift tidak ada*/}
-            {/*                            </div>*/}
-            {/*                        )*/}
-            {/*                    }*/}
-            {/*                </div>*/}
-            {/*                <div className="modal-footer">*/}
-            {/*                    <button type="button" className="btn btn-dark" data-bs-dismiss="modal">Close*/}
-            {/*                    </button>*/}
-            {/*                    <button type="submit" className="btn custom-btn-yellow">Submit*/}
-            {/*                    </button>*/}
-            {/*                </div>*/}
-            {/*            </form>*/}
-            {/*        </div>*/}
-            {/*    </div>*/}
-            {/*</div>*/}
+            <div className="modal fade" id="addWorkOrder" tabIndex="-1" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title" id="exampleModalLabel">Add Work Order</h5>
+                            <TiTimes data-bs-dismiss="modal" aria-label="Close" color='#EBAB2D' size={26}/>
+                        </div>
+                        <form onSubmit={handleSubmit(postWorkOrder)}>
+                            <div className="modal-body">
+                                <div className="form-floating m-3">
+                                    <input type="date" {...register('woro_start_date', {required: true})}
+                                           className="form-control text-dark" id="addDept"
+                                           placeholder="name@example.com" required/>
+                                    <label htmlFor="addDept">Start Date</label>
+                                </div>
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-dark" data-bs-dismiss="modal">Close
+                                </button>
+                                <button type="submit" className="btn custom-btn-yellow">Submit
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div className="modal fade" id="editWorkOrder" tabIndex="-1" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title" id="exampleModalLabel">Add Work Order</h5>
+                            <TiTimes data-bs-dismiss="modal" aria-label="Close" color='#EBAB2D' size={26}/>
+                        </div>
+                        <form onSubmit={handleSubmit(postWorkOrder)}>
+                            <div className="modal-body">
+                                <div className="form-floating m-3">
+                                    <input type="date" {...register('woro_start_date', {required: true})}
+                                           className="form-control text-dark" id="addDept"
+                                           placeholder="name@example.com" required/>
+                                    <label htmlFor="addDept">Start Date</label>
+                                </div>
+                                <div className="form-floating m-3">
+                                    <select className="form-select"
+                                            {...register('woro_status', {required: true})}
+                                            aria-label="Floating label select example">
+                                        <option value="OPEN">Open</option>
+                                        <option value="CLOSED">Closed</option>
+                                        <option value="CANCELLED">Cancelled</option>
+                                    </select>
+                                    <label htmlFor="addEmp">Status Work Order</label>
+                                </div>
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-dark" data-bs-dismiss="modal">Close
+                                </button>
+                                <button type="submit" className="btn custom-btn-yellow">Submit
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     )
 }

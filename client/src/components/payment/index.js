@@ -85,7 +85,7 @@ const Payment = () => {
                 </nav>
             </div>
             <div id="layoutSidenav_content">
-                <main className='p-2'>
+                <main className='p-4'>
                     <Outlet/>
                 </main>
                 <footer className="py-4 bg-light mt-auto">

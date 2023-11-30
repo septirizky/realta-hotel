@@ -16,8 +16,8 @@ export default class payment_gateway extends Model {
     },
     paga_code: {
       type: DataTypes.STRING(10),
-      allowNull: false,
-      unique: "payment_gateway_paga_code"
+      allowNull: true,
+      unique: "payment_gateway_paga_code_paga_name_key"
     },
     paga_name: {
       type: DataTypes.STRING(55),
@@ -40,6 +40,14 @@ export default class payment_gateway extends Model {
         unique: true,
         fields: [
           { name: "paga_code" },
+        ]
+      },
+      {
+        name: "payment_gateway_paga_code_paga_name_key",
+        unique: true,
+        fields: [
+          { name: "paga_code" },
+          { name: "paga_name" },
         ]
       },
       {

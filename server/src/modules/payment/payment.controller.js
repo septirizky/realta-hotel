@@ -4,7 +4,6 @@ import user_accounts from "../../model/user_accounts.js"
 import bank from "../../model/bank.js"
 import payment_gateway from "../../model/payment_gateway.js"
 import entity from "../../model/entity.js"
-// import bank from "../../model/bank.js"
 
 
 // ================ BackEnd Bank ================
@@ -224,24 +223,24 @@ export const getUserAccount = async(req,res)=>{
     try {
         const data1 = await models.user_accounts.findAll({
             attributes: ['usac_id','usac_user_id','usac_entity_id', 'usac_account_number','usac_saldo','usac_type','usac_expmonth','usac_expyear'],
-            include : [{
-                model:entity, as:'usac_entity',attributes: ['entity_id'],required:true,
-                include: [{
-                    model:bank, as:'bank', attributes:['bank_code'],required: true,
-                }],
-                
-            }],
+            // include : [{
+            //     model:entity, as:'usac_entity',attributes: ['entity_id'],required:true,
+            //     include: [{
+            //         model:bank, as:'bank', attributes:['bank_code'],required: true,
+            //     }],
+            //
+            // }],
         })
 
         const data2 = await models.user_accounts.findAll({
             attributes: ['usac_user_id','usac_entity_id', 'usac_account_number','usac_saldo','usac_type','usac_expmonth','usac_expyear'],
-            include : [{
-                model:entity, as:'usac_entity',attributes: ['entity_id'],required:true,
-                include: [{
-                    model:payment_gateway, as:'payment_gateway', attributes:['paga_code'],required: true,
-                }],
-                
-            }],
+            // include : [{
+            //     model:entity, as:'usac_entity',attributes: ['entity_id'],required:true,
+            //     include: [{
+            //         model:payment_gateway, as:'payment_gateway', attributes:['paga_code'],required: true,
+            //     }],
+            //
+            // }],
         });
 
         const result = data1.concat(data2);
@@ -281,7 +280,7 @@ export const getUserAccountById = async(req, res) =>{
                 model:entity, as:'usac_entity',attributes: ['entity_id'],required:true,
                 include: [{
                     model:bank, as:'bank', attributes:['bank_name'],required: true,
-                }], 
+                }],
             }],
             
         })
@@ -293,7 +292,7 @@ export const getUserAccountById = async(req, res) =>{
                 model:entity, as:'usac_entity',attributes: ['entity_id'],required:true,
                 include: [{
                     model:payment_gateway, as:'payment_gateway', attributes:['paga_name'],required: true,
-                }], 
+                }],
             }],
         })
 

@@ -22,7 +22,7 @@ export default class price_items extends Model {
     },
     prit_description: {
       type: DataTypes.STRING(255),
-      allowNull: true
+      allowNull: false
     },
     prit_type: {
       type: DataTypes.STRING(15),

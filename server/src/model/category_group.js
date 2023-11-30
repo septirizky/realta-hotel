@@ -22,11 +22,11 @@ export default class category_group extends Model {
     },
     cagro_icon: {
       type: DataTypes.STRING(255),
-      allowNull: true
+      allowNull: false
     },
     cagro_icon_url: {
       type: DataTypes.STRING(255),
-      allowNull: true
+      allowNull: false
     },
     createdat: {
       type: DataTypes.DATE,
@@ -40,7 +40,7 @@ export default class category_group extends Model {
     },
     cagro_description: {
       type: DataTypes.STRING(255),
-      allowNull: true
+      allowNull: false
     }
   }, {
     sequelize,

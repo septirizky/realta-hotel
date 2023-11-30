@@ -11,6 +11,7 @@ export const UPDATE_EMPLOYEE = "UPDATE_EMPLOYEE"
 export const GET_JOB_ROLE = "GET_JOB_ROLE"
 export const GET_SHIFT = "GET_SHIFT"
 export const GET_WORK_ORDER = "GET_WORK_ORDER"
+export const POST_WORK_ORDER = "POST_WORK_ORDER"
 
 export const GetDepartment = (data) => {
     return async (dispatch) => {
@@ -230,6 +231,7 @@ export const PostEmployee = (data) => {
 }
 export const UpdateEmployee = (id, data) => {
     return async (dispatch) => {
+        console.log(data)
         dispatch({
             type: UPDATE_EMPLOYEE,
             payload: {
@@ -402,6 +404,42 @@ export const GetWorkOrder = (data) => {
                     loading: false,
                     data: false,
                     errorMessage: e.response.data.message
+                }
+            })
+        })
+    }
+}
+export const PostWorkOrder = (data) => {
+    return async (dispatch) => {
+        dispatch({
+            type: POST_WORK_ORDER,
+            payload: {
+                loading: true,
+                data: false,
+                errorMessage: false
+            }
+        })
+        await axios({
+            method: "POST",
+            url: "http://localhost:4000/hr/work-orders",
+            data: data,
+            timeout: 120000
+        }).then((res) => {
+            dispatch({
+                type: POST_WORK_ORDER,
+                payload: {
+                    loading: false,
+                    data: res.data,
+                    errorMessage: false
+                }
+            })
+        }).catch((e) => {
+            dispatch({
+                type: POST_WORK_ORDER,
+                payload: {
+                    loading: false,
+                    data: false,
+                    errorMessage: e.response.data
                 }
             })
         })

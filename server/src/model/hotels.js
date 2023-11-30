@@ -27,7 +27,7 @@ export default class hotels extends Model {
       allowNull: false
     },
     hotel_modified_date: {
-      type: DataTypes.DATEONLY,
+      type: DataTypes.DATE,
       allowNull: true,
       defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
     },
@@ -40,7 +40,7 @@ export default class hotels extends Model {
       }
     },
     hotel_status: {
-      type: DataTypes.STRING,
+      type: DataTypes.BOOLEAN,
       allowNull: true
     }
   }, {

@@ -74,7 +74,7 @@ const Accounts = () => {
 
     useEffect(() => {
         dispatch(getUserAccount(userId))
-    }, [dispatch]);
+    }, []);
     
     return (
         <>

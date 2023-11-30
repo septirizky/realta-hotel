@@ -24,7 +24,7 @@ export default class resto_menus extends Model {
     },
     reme_description: {
       type: DataTypes.STRING(255),
-      allowNull: true
+      allowNull: false
     },
     reme_price: {
       type: DataTypes.INTEGER,

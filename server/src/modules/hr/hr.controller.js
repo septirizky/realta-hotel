@@ -418,16 +418,25 @@ export const getWorkOrder = async (req, res) => {
             result = await models.work_orders.findAll({
                 where: {
                     [Op.and]: {
-                        woro_start_date: {[Op.between]: [req.body.startDate.split(' ')[0], req.body.startDate.split(' ')[0]]},
+                        woro_start_date: {
+                            [Op.lte]: req.body.endDate.split(' ')[0],
+                            [Op.gte]: req.body.startDate.split(' ')[0],
+                        },
                         woro_status: req.body.workOrderStatus?req.body.workOrderStatus:["OPEN","CLOSED","CANCELLED"]
                     }
-                }
+                },
+                order: [
+                    ["woro_start_date", "DESC"],
+                ],
             });
         } else {
             result = await models.work_orders.findAll({
                 where: {
                     woro_status: req.body.workOrderStatus?req.body.workOrderStatus:["OPEN","CLOSED","CANCELLED"]
-                }
+                },
+                order: [
+                    ["woro_start_date", "DESC"],
+                ],
             });
         }
         return res.status(200).json(result);
@@ -438,9 +447,9 @@ export const getWorkOrder = async (req, res) => {
 
 export const createWorkOrder = async (req, res) => {
     try {
-        const {woro_status, woro_user_id} = req.body
+        const {woro_start_date, woro_status, woro_user_id} = req.body
         const result = await models.work_orders.create({
-            woro_start_date: new Date(),
+            woro_start_date: woro_start_date,
             woro_status: woro_status,
             woro_user_id: woro_user_id,
         }, {
@@ -448,7 +457,7 @@ export const createWorkOrder = async (req, res) => {
         })
         res.status(201).json({data: result, message: "Sukses input Work Orders"})
     } catch (e) {
-        res.status(500).json(e.message)
+        res.status(500).json(e)
     }
 };
 

@@ -5,7 +5,7 @@ import {
     GET_EMPLOYEE,
     GET_JOB_ROLE,
     GET_SHIFT, GET_WORK_ORDER,
-    POST_DEPARTMENT, POST_EMPLOYEE,
+    POST_DEPARTMENT, POST_EMPLOYEE, POST_WORK_ORDER,
     UPDATE_DEPARTMENT, UPDATE_EMPLOYEE
 } from "../actions/hrAction";
 
@@ -67,7 +67,11 @@ const initialState = {
     */
     getWorkOrderResult: false,
     getWorkOrderLoading: false,
-    getWorkOrderError: false
+    getWorkOrderError: false,
+
+    postWorkOrderResult: false,
+    postWorkOrderLoading: false,
+    postWorkOrderError: false,
 }
 const HrReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -147,6 +151,13 @@ const HrReducer = (state = initialState, action) => {
                 getWorkOrderResult: action.payload.data,
                 getWorkOrderLoading: action.payload.loading,
                 getWorkOrderError: action.payload.errorMessage,
+            }
+        case POST_WORK_ORDER:
+            return {
+                ...state,
+                postWorkOrderResult: action.payload.data,
+                postWorkOrderLoading: action.payload.loading,
+                postWorkOrderError: action.payload.errorMessage,
             }
         default:
             return state

@@ -30,7 +30,7 @@ export const GetVendor = () => {
     });
     axios({
       method: "GET",
-      url: "http://localhost:4001/vendor",
+      url: "http://localhost:4000/vendor",
       timeout: 120000,
     })
       .then((res) => {
@@ -68,7 +68,7 @@ export const GetPostVendor = (data) => {
     });
     axios({
       method: "POST",
-      url: `http://localhost:4001/insertvendor`,
+      url: `http://localhost:4000/insertvendor`,
       timeout: 120000,
       data: data,
     })
@@ -107,7 +107,7 @@ export const GetDeleteVendor = (id) => {
     });
     axios({
       method: "DELETE",
-      url: `http://localhost:4001/deletevendor/${id}`,
+      url: `http://localhost:4000/deletevendor/${id}`,
       timeout: 120000,
     })
       .then((res) => {
@@ -145,7 +145,7 @@ export const GetVendorsStock = (id) => {
     });
     axios({
       method: "GET",
-      url: `http://localhost:4001/liststockvendorproduct/${id}`,
+      url: `http://localhost:4000/liststockvendorproduct/${id}`,
       timeout: 120000,
     })
       .then((res) => {
@@ -183,7 +183,7 @@ export const GetVendorId = (id) => {
     });
     axios({
       method: "GET",
-      url: `http://localhost:4001/getvendorbyId/${id}`,
+      url: `http://localhost:4000/getvendorbyId/${id}`,
       timeout: 120000,
     })
       .then((res) => {
@@ -221,7 +221,7 @@ export const GetStock = () => {
     });
     await axios({
       method: "GET",
-      url: "http://localhost:4001/liststocks",
+      url: "http://localhost:4000/liststocks",
       timeout: 120000,
     })
       .then((res) => {
@@ -259,7 +259,7 @@ export const GetStockDetail = (id) => {
     });
     await axios({
       method: "GET",
-      url: `http://localhost:4001/detailinfostock/${id}`,
+      url: `http://localhost:4000/detailinfostock/${id}`,
       timeout: 120000,
     })
       .then((res) => {
@@ -297,7 +297,7 @@ export const GetOrder = (id) => {
     });
     await axios({
       method: "GET",
-      url: `http://localhost:4001/listorderdetail/${id}`,
+      url: `http://localhost:4000/listorderdetail/${id}`,
       timeout: 120000,
     })
       .then((res) => {
@@ -335,7 +335,7 @@ export const GetHotel = () => {
     });
     await axios({
       method: "GET",
-      url: "http://localhost:4001/listhotel",
+      url: "http://localhost:4000/listhotel",
       timeout: 120000,
     })
       .then((res) => {
@@ -373,7 +373,7 @@ export const GetPurchaseOrder = () => {
     });
     await axios({
       method: "GET",
-      url: "http://localhost:4001/listpurchase",
+      url: "http://localhost:4000/listpurchase",
       timeout: 120000,
     })
       .then((res) => {
@@ -412,7 +412,7 @@ export const GetGallery = () => {
     });
     await axios({
       method: "GET",
-      url: "http://localhost:4001/listgallery",
+      url: "http://localhost:4000/listgallery",
       timeout: 120000,
     })
       .then((res) => {

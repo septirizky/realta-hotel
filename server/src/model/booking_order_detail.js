@@ -56,7 +56,11 @@ export default class booking_order_detail extends Model {
     },
     borde_faci_id: {
       type: DataTypes.INTEGER,
-      allowNull: true
+      allowNull: true,
+      references: {
+        model: 'facilities',
+        key: 'faci_id'
+      }
     },
     borde_subtotal_with_tax: {
       type: DataTypes.DECIMAL,

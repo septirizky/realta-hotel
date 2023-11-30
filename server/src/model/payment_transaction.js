@@ -17,11 +17,11 @@ export default class payment_transaction extends Model {
     },
     patr_debet: {
       type: DataTypes.INTEGER,
-      allowNull: true
+      allowNull: false
     },
     patr_credit: {
       type: DataTypes.INTEGER,
-      allowNull: true
+      allowNull: false
     },
     patr_type: {
       type: DataTypes.CHAR(3),
@@ -29,7 +29,7 @@ export default class payment_transaction extends Model {
     },
     patr_note: {
       type: DataTypes.STRING(255),
-      allowNull: true
+      allowNull: false
     },
     patr_modified_date: {
       type: DataTypes.DATE,
@@ -38,7 +38,7 @@ export default class payment_transaction extends Model {
     },
     patr_order_number: {
       type: DataTypes.STRING(255),
-      allowNull: true
+      allowNull: false
     },
     patr_source_id: {
       type: DataTypes.INTEGER,
@@ -50,7 +50,7 @@ export default class payment_transaction extends Model {
     },
     patr_trx_number_ref: {
       type: DataTypes.STRING(55),
-      allowNull: true,
+      allowNull: false,
       unique: "payment_transaction_patr_trx_number_patr_trx_number_ref_key"
     },
     patr_user_id: {

@@ -3,30 +3,30 @@
     color: white ;
 }
 .custom-text-yellow{
-    color: #EBAB2D;
+    color: #EBAB2D !important;
 }
 .custom-bg-dark{
-    background-color: #212529;
-    color: white;
+    background-color: #212529 !important;
+    color: white !important;
 }
 .custom-btn-yellow{
-    background-color: #EBAB2D;
-    color: white;
+    background-color: #EBAB2D !important;
+    color: white !important;
 }
 .custom-btn-yellow:hover{
-    background-color: #d78f0e;
-    color: white;
+    background-color: #d78f0e !important;
+    color: white !important;
 }
 .custom-bg-dark:hover{
-    background-color: #474f52;
-    color: white;
+    background-color: #474f52 !important;
+    color: white !important;
 }
 .modal-bg-dark{
-    background-color: #474f52;
-    color: white;
+    background-color: #474f52 !important;
+    color: white !important;
 }
 .bread-separator{
-    --bs-breadcrumb-divider: ">";
+    --bs-breadcrumb-divider: ">" !important;
 }
 .custom-legend {
     display: block !important;

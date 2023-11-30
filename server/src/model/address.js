@@ -21,18 +21,18 @@ export default class address extends Model {
     },
     addr_postal_code: {
       type: DataTypes.STRING(5),
-      allowNull: true
+      allowNull: false
     },
     addr_spatial_location: {
       type: DataTypes.STRING(225),
       allowNull: true
     },
-    addr_city_id: {
+    addr_prov_id: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+      allowNull: false,
       references: {
-        model: 'city',
-        key: 'city_id'
+        model: 'provinces',
+        key: 'prov_id'
       }
     },
     createdat: {
@@ -56,12 +56,6 @@ export default class address extends Model {
         unique: true,
         fields: [
           { name: "addr_id" },
-        ]
-      },
-      {
-        name: "fki_addr_city_id_fkey",
-        fields: [
-          { name: "addr_city_id" },
         ]
       },
     ]

@@ -18,7 +18,7 @@ export default class country extends Model {
     },
     country_region_id: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+      allowNull: false,
       references: {
         model: 'regions',
         key: 'region_code'
