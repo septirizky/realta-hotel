@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FaHome } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import SidebarMaster from "./layout/sidebar/sidebarMaster";
 import GetAllPriceItems from "./ListPriceItems/GetAllPriceItems";
 import { useDispatch, useSelector } from "react-redux";
 import { getItemPrice } from "../../actions/masterAction";
@@ -50,8 +49,8 @@ const PriceItems = () => {
 
   return (
     <>
-      <div className="border border-black container-fluid pt-3 hp-mini">
-        <nav aria-label="breadcrumb">
+      <div className="border border-black container-fluid pt-3 mb-3">
+        <nav className="bread-separator" aria-label="breadcrumb">
           <ol className="breadcrumb">
             <li className="breadcrumb-item">
               <FaHome className="me-2" />
@@ -64,21 +63,16 @@ const PriceItems = () => {
           </ol>
         </nav>
       </div>
-      <div className="content-utama-master">
-        <SidebarMaster />
-        <div className="content-master">
-          <GetAllPriceItems
-            getIPriceResult={getIPriceResult}
-            getIPriceLoading={getIPriceLoading}
-            getIPriceError={getIPriceError}
-            kueri1={kueri1}
-            setKueri1={setKueri1}
-            kueri2={keyType}
-            setKueri2={setKeyType}
-            searchData={searchData}
-          />
-        </div>
-      </div>
+      <GetAllPriceItems
+        getIPriceResult={getIPriceResult}
+        getIPriceLoading={getIPriceLoading}
+        getIPriceError={getIPriceError}
+        kueri1={kueri1}
+        setKueri1={setKueri1}
+        kueri2={keyType}
+        setKueri2={setKeyType}
+        searchData={searchData}
+      />
     </>
   );
 };
