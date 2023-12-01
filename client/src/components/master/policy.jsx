@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { FaHome } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import SidebarMaster from "./layout/sidebar/sidebarMaster";
 import GetAllPolicy from "./ListPolicy/GetAllPolicy";
 import { useDispatch, useSelector } from "react-redux";
 import { getPolicy } from "../../actions/masterAction";
@@ -24,8 +23,8 @@ const Policy = () => {
 
   return (
     <>
-      <div className="border border-black container-fluid pt-3 hp-mini">
-        <nav aria-label="breadcrumb">
+      <div className="border border-black container-fluid pt-3 mb-3">
+        <nav className="bread-separator" aria-label="breadcrumb">
           <ol className="breadcrumb">
             <li className="breadcrumb-item">
               <FaHome className="me-2" />
@@ -38,16 +37,11 @@ const Policy = () => {
           </ol>
         </nav>
       </div>
-      <div className="content-utama-master">
-        <SidebarMaster />
-        <div className="content-master">
-          <GetAllPolicy
-            getPolicyResult={getPolicyResult}
-            getPolicyLoading={getPolicyLoading}
-            getPolicyError={getPolicyError}
-          />
-        </div>
-      </div>
+      <GetAllPolicy
+        getPolicyResult={getPolicyResult}
+        getPolicyLoading={getPolicyLoading}
+        getPolicyError={getPolicyError}
+      />
     </>
   );
 };

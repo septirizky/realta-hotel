@@ -1,14 +1,12 @@
 import React from "react";
-import SidebarMaster from "./layout/sidebar/sidebarMaster";
 import { Link } from "react-router-dom";
 import { FaHome } from "react-icons/fa";
-import "../master/css/master-index.css";
 
 const Master = () => {
   return (
     <>
       <div className="border border-black container-fluid pt-3">
-        <nav aria-label="breadcrumb">
+        <nav className="bread-separator" aria-label="breadcrumb">
           <ol className="breadcrumb">
             <li className="breadcrumb-item">
               <FaHome className="me-2" />
@@ -18,8 +16,7 @@ const Master = () => {
           </ol>
         </nav>
       </div>
-      <SidebarMaster />
-      <div className="master-page my-3">
+      <div className="master-page text-center my-3">
         <h1>Master Page</h1>
       </div>
     </>

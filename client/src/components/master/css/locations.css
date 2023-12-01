@@ -45,19 +45,3 @@ table.master-table {
   border-collapse: collapse;
   width: 100%;
 }
-
-.content-utama-master {
-  margin-top: 57px;
-}
-
-@media screen and (max-width: 900px) {
-  .content-utama-master {
-    margin-top: 0px;
-  }
-}
-
-@media screen and (max-width: 575px) {
-  .content-utama-master {
-    margin-top: 0px;
-  }
-}

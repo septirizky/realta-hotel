@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FaHome } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import SidebarMaster from "./layout/sidebar/sidebarMaster";
 import "../master/css/locations.css";
-import "../master/css/custom.css";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getCity,
@@ -82,8 +80,8 @@ const LocationsMaster = () => {
 
   return (
     <>
-      <div className="border border-black container-fluid pt-3 hp-mini">
-        <nav aria-label="breadcrumb">
+      <div className="border border-black container-fluid pt-3 mb-3">
+        <nav className="bread-separator" aria-label="breadcrumb">
           <ol className="breadcrumb">
             <li className="breadcrumb-item">
               <FaHome className="me-2" />
@@ -96,60 +94,64 @@ const LocationsMaster = () => {
           </ol>
         </nav>
       </div>
-      <div className="content-utama-master">
-        <SidebarMaster />
-        <div className="content-master ">
-          <GetAllRegion
-            getRegionsResult={getRegionsResult}
-            getRegionsLoading={getRegionsLoading}
-            getRegionsError={getRegionsError}
-            getCountryAllByRegionCode={getCountryAllByRegionCode}
-          />
 
-          <GetAllCountryByRegion
-            regionId={regionId}
-            regionName={regionName}
-            setRegionName={setRegionName}
-            setRegionId={setRegionId}
-            getCountryAllByRegionCode={getCountryAllByRegionCode}
-            getCountryResult={getCountryResult}
-            getCountryLoading={getCountryLoading}
-            getCountryError={getCountryError}
-            postCountryResult={postCountryResult}
-            updateCountryResult={updateCountryResult}
-            deleteCountryResult={deleteCountryResult}
-            getProvinceAllByCountryId={getProvinceAllByCountryId}
-          />
+      <div className="mb-3">
+        <GetAllRegion
+          getRegionsResult={getRegionsResult}
+          getRegionsLoading={getRegionsLoading}
+          getRegionsError={getRegionsError}
+          getCountryAllByRegionCode={getCountryAllByRegionCode}
+        />
+      </div>
 
-          <GetAllProvinceByCountry
-            countryId={countryId}
-            countryName={countryName}
-            setCountryId={setCountryId}
-            setCountryName={setCountryName}
-            getProvinceAllByCountryId={getProvinceAllByCountryId}
-            getProvinceResult={getProvinceResult}
-            getProvinceLoading={getProvinceLoading}
-            getProvinceError={getProvinceError}
-            postProvResult={postProvResult}
-            updateProvResult={updateProvResult}
-            deleteProvResult={deleteProvResult}
-            getCityAllByProvinceId={getCityAllByProvinceId}
-          />
+      <div className="mb-3">
+        <GetAllCountryByRegion
+          regionId={regionId}
+          regionName={regionName}
+          setRegionName={setRegionName}
+          setRegionId={setRegionId}
+          getCountryAllByRegionCode={getCountryAllByRegionCode}
+          getCountryResult={getCountryResult}
+          getCountryLoading={getCountryLoading}
+          getCountryError={getCountryError}
+          postCountryResult={postCountryResult}
+          updateCountryResult={updateCountryResult}
+          deleteCountryResult={deleteCountryResult}
+          getProvinceAllByCountryId={getProvinceAllByCountryId}
+        />
+      </div>
 
-          <GetAllCityByProvince
-            provinceId={provinceId}
-            provinceName={provinceName}
-            setProvinceId={setProvinceId}
-            setProvinceName={setProvinceName}
-            getCityAllByProvinceId={getCityAllByProvinceId}
-            getCityResult={getCityResult}
-            getCityLoading={getCityLoading}
-            getCityError={getCityError}
-            postCityResult={postCityResult}
-            updateCityResult={updateCityResult}
-            deleteCityResult={deleteCityResult}
-          />
-        </div>
+      <div className="mb-3">
+        <GetAllProvinceByCountry
+          countryId={countryId}
+          countryName={countryName}
+          setCountryId={setCountryId}
+          setCountryName={setCountryName}
+          getProvinceAllByCountryId={getProvinceAllByCountryId}
+          getProvinceResult={getProvinceResult}
+          getProvinceLoading={getProvinceLoading}
+          getProvinceError={getProvinceError}
+          postProvResult={postProvResult}
+          updateProvResult={updateProvResult}
+          deleteProvResult={deleteProvResult}
+          getCityAllByProvinceId={getCityAllByProvinceId}
+        />
+      </div>
+
+      <div className="mb-3">
+        <GetAllCityByProvince
+          provinceId={provinceId}
+          provinceName={provinceName}
+          setProvinceId={setProvinceId}
+          setProvinceName={setProvinceName}
+          getCityAllByProvinceId={getCityAllByProvinceId}
+          getCityResult={getCityResult}
+          getCityLoading={getCityLoading}
+          getCityError={getCityError}
+          postCityResult={postCityResult}
+          updateCityResult={updateCityResult}
+          deleteCityResult={deleteCityResult}
+        />
       </div>
     </>
   );
