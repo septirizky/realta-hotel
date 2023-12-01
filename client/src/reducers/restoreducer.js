@@ -1,7 +1,9 @@
 import { GET_MENU,
   ADD_MENU,
   UPDATE_MENU,
-  DELETE_MENU
+  DELETE_MENU,
+  GET_MENUDETAIL
+  // ADD_PHOTO
 
 } from "../actions/restoaction";
 
@@ -22,6 +24,14 @@ const initialState = {
   deleteMenuResult: false,
   deleteMenuLoading: false,
   deleteMenuError: false,
+
+  getMenuDetailResult: false,
+  getMenuDetailLoading: false,
+  getMenuDetailError: false,
+
+  // addPhotoResult: false,
+  // addPhotoLoading: false,
+  // addPhotoError: false,
 };
 
 const restoReducer = (state = initialState, action) => {
@@ -58,6 +68,22 @@ const restoReducer = (state = initialState, action) => {
         deleteMenuLoading: action.payload.loading,
         deleteMenuError: action.payload.errorMessage,
       };
+
+      case GET_MENUDETAIL:
+      return {
+        ...state,
+        getMenuDetailResult: action.payload.data,
+        getMenuDetailLoading: action.payload.loading,
+        getMenuDetailError: action.payload.errorMessage,
+      };
+
+      // case ADD_PHOTO:
+      // return {
+      //   ...state,
+      //   addPhotoResult: action.payload.data,
+      //   addPhotoLoading: action.payload.loading,
+      //   addPhotoError: action.payload.errorMessage,
+      // };
 default:
       return state;
   }

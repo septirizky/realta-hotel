@@ -20,11 +20,13 @@ const EditMenu = (props) => {
     menuPrice,
     menuType,
     menuStatus,
+    menuDescription,
     setMenuId,
     setMenuName,
     setPrice,
     setType,
     setStatus,
+    setDescription,
   } = props;
 
   const { updateMenuResult, updateMenuError } = useSelector(
@@ -42,6 +44,7 @@ const EditMenu = (props) => {
       price: data.reme_price,
       type: data.reme_type,
       stats: data.reme_status,
+      description: data.reme_description
     };
 
     setIsUpdateMenu(true);
@@ -63,6 +66,7 @@ const EditMenu = (props) => {
               resetField("reme_price");
               resetField("reme_type");
               resetField("reme_status");
+              resetField("reme_description")
               handleCloseEditMenu(false);
             })
           : Swal.fire("Gagal", updateMenuError, "error");
@@ -154,6 +158,21 @@ const EditMenu = (props) => {
                 <option value="Empty">Empty</option>
               </Form.Select>
             </Col>
+          </Form.Group>
+          <Form.Group as={Row} className="mb-3">
+            <Form.Label column sm="6" htmlFor="formMenuDesc">
+              Menu Description
+            </Form.Label>
+            <Form.Control type="hidden" value={menuDescription} />
+            <Form.Control
+              as="textarea"
+              id="formMenuDesc"
+              {...register("reme_description")}
+              value={menuDescription}
+              onChange={(e) => setDescription(e.target.value)}
+              maxLength={255}
+              rows={5}
+            />
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>

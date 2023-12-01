@@ -24,10 +24,10 @@ const Resto = () => {
     <div classNama="container">
       <h1>Resto</h1>
       <ol className="breadcrumb mb-4">
-        <li className="breadcrumb-item active">Resto</li>
+        <li className="breadcrumb-item active">Menu</li>
       </ol>
-      <div className="content-utama-hotel">
-        <div className="content-hotel">
+      <div className="content-utama-resto">
+        <div className="content-resto">
           <GetResto
             getMenuResult={getMenuResult}
             getMenuLoading={getMenuLoading}

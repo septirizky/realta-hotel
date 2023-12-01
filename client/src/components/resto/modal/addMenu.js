@@ -31,6 +31,7 @@ const AddMenu = (props) => {
       price: data.reme_price,
       stats: data.reme_status,
       type: data.reme_type,
+      description: data.reme_description
     };
     setIsAddMenu(true);
     dispatch(add_Menu(dataJson));
@@ -50,6 +51,7 @@ const AddMenu = (props) => {
               resetField("reme_price");
               resetField("reme_status");
               resetField("reme_type");
+              resetField("reme_description");
               
               handleCloseAddMenu(false);
             })
@@ -121,8 +123,18 @@ const AddMenu = (props) => {
               </Form.Select>
             </Col>
           </Form.Group>
-
-          
+          <Form.Group as={Row} className="mb-3">
+            <Form.Label column sm="6" htmlFor="formMenuDesc">
+              Menu Description
+            </Form.Label>
+            <Form.Control
+              as="textarea"
+              id="formMenuDesc"
+              maxLength={255}
+              {...register("reme_description")}
+              rows={5}
+            />
+          </Form.Group>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseAddMenu}>

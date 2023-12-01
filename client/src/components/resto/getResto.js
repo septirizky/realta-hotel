@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import AddMenu from "./modal/addMenu";
 import EditMenu from "./modal/editMenu";
 import DeleteMenu from "./modal/deleteMenu";
+// import UploadPhoto from "./modal/uploadPhoto.js";
 
 const GetResto = (props) => {
   const { getMenuResult, getMenuLoading, getMenuError } = props;
@@ -15,12 +16,15 @@ const GetResto = (props) => {
   const [showModalAddMenu, setShowModalAddMenu] = useState(false);
   const [showModalEditMenu, setShowModalEditMenu] = useState(false);
   const [showModalDeleteMenu, setShowModalDeleteMenu] = useState(false);
+  // const [showModalUploadPhoto, setShowModalUploadPhoto] = useState (false)
 
   const [menuId, setMenuId] = useState();
   const [menuName, setMenuName] = useState("");
   const [menuPrice, setPrice] = useState("");
   const [menuType, setType] = useState("");
   const [menuStatus, setStatus] = useState("");
+  const [menuDescription, setDescription] = useState("");
+  // const [menuPhotoName, setPhotoName] = useState("");
 
   const [search, setSearch] = useState("");
 
@@ -32,15 +36,27 @@ const GetResto = (props) => {
     resetField("reme_price");
     resetField("reme_type");
     resetField("reme_status");
+    resetField("reme_description");
     setShowModalAddMenu(false);
   };
 
-  const showEditMenu = (menuId, menuName, menuPrice, menuType, menuStatus) => {
+  // const showUploadPhoto = () => {
+  //   setShowModalUploadPhoto(true);
+  // };
+  // const closeUploadPhoto = () => {
+  //   resetField("remp_thumbnail_filename");
+  //   resetField("remp_prime");
+  //   resetField("remp_reme_id");
+  //   setShowModalUploadPhoto(false);
+  // };
+
+  const showEditMenu = (menuId, menuName, menuPrice, menuType, menuStatus, menuDescription) => {
     setMenuId(menuId);
     setMenuName(menuName);
     setPrice(menuPrice);
     setType(menuType);
     setStatus(menuStatus);
+    setDescription(menuDescription);
     setShowModalEditMenu(true);
   };
   const closeEditMenu = () => {
@@ -49,6 +65,7 @@ const GetResto = (props) => {
     resetField("reme_price");
     resetField("reme_type");
     resetField("reme_status");
+    resetField("reme_description");
     setShowModalEditMenu(false);
   };
 
@@ -165,11 +182,13 @@ const GetResto = (props) => {
         menuPrice={menuPrice}
         menuType={menuType}
         menuStatus={menuStatus}
+        menuDescription={menuDescription}
         setMenuId={setMenuId}
         setMenuName={setMenuName}
         setPrice={setPrice}
         setType={setType}
         setStatus={setStatus}
+        setDescription={setDescription}
       />
 
       <DeleteMenu

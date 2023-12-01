@@ -4,23 +4,13 @@ import { sequelize } from "../../model/init-models.js";
 import {Op} from "sequelize"
 import fs from 'fs'
 
-// const getRestoMenu = async (req, res) => {
-//   try {
-//     const { keyword } = req.body;
-//     const result = await models.resto_menus.findAll({where: {
-//       reme_name: {
-//         [Op.iLike]: %${keyword ? keyword : ""}%,
-//       },
-//     },});
-//     // return res.status(200).json({ data: result, message: "Berhasil" });
-//   } catch (error) {
-//     return res.status(500).json({ message: error.message });
-//   }
-// };
  const getRestoMenu = async (req, res) => {
   try {
     const { keyword } = req.body;
     const result = await models.resto_menus.findAll({
+      order:[
+        ['reme_id','ASC'],
+      ],
       where: {
         reme_name: {
           [Op.iLike]:`%${keyword ? keyword : ""}%`,

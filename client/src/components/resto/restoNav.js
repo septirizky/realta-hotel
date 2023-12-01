@@ -45,10 +45,10 @@ export const RestoNav = () => {
                     <div className="sb-sidenav-menu">
                         <div className="nav">
                             <div className="sb-sidenav-menu-heading text-warning">Menu</div>
-                            <Link to='/resto' id='nav_dept'
-                                  className={`nav-link ${pathname.pathname === '/resto' ? "active" : ""}`}>
+                            <Link to='/resto/menu' id='nav_dept'
+                                  className={`nav-link ${pathname.pathname === '/resto/menu' ? "active" : ""}`}>
                                 <div className="sb-nav-link-icon"><BsPeople size='26'/></div>
-                                Resto
+                                Resto Menu
                             </Link>
                             <Link to='/hr/employee'
                                   className={`nav-link ${pathname.pathname === '/hr/employee' ? "active" : ""}`}
