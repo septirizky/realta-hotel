@@ -11,6 +11,7 @@ import {TiTimes} from "react-icons/ti";
 import Swal from "sweetalert2";
 import {useForm} from "react-hook-form";
 import {FaTasks} from "react-icons/fa";
+import {Link} from "react-router-dom";
 
 export const WorkOrder = () => {
     const [searchForm, setSearchForm] = useState({
@@ -198,10 +199,8 @@ export const WorkOrder = () => {
                                                     <PiDotsThreeOutlineVerticalDuotone size='24'/>
                                                 </button>
                                                 <ul className="dropdown-menu">
-                                                    <li>
-                                                        <a className="dropdown-item custom-hover-yellow"
-                                                           href='#'><FaTasks size='16'/> Work Order Detail</a>
-                                                    </li>
+                                                        <Link to={"/hr/work-order/"+value.woro_id}className="dropdown-item custom-hover-yellow"
+                                                              href='#'><FaTasks size='16'/> Work Order Detail</Link>
                                                     <li>
                                                         <a className="dropdown-item custom-hover-yellow" href='#'
                                                            onClick={() => {

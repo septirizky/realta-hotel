@@ -533,7 +533,7 @@ export const getWorkOrderDetail = async (req, res) => {
                 ]
             }
         )
-        return res.status(200).json(result);
+        return res.status(426).json(result);
     } catch (error) {
         return res.status(500).json({message: error.message});
     }

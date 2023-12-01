@@ -42,6 +42,7 @@ import Cart from "./components/purchase/order/cart";
 import DetailOrder from "./components/purchase/order/detailorder";
 import {Sidebar} from "primereact/sidebar";
 import {HotelSidebar} from "./components/hotel/hotelSidebar";
+import {WorkOrderDetail} from "./components/hr/WorkOrderDetail";
 
 function App() {
     return (
@@ -58,6 +59,7 @@ function App() {
                     <Route path='/hr/department' index element={<Department/>}/>
                     <Route path='/hr/employee' index element={<Employee/>}/>
                     <Route path='/hr/work-order' index element={<WorkOrder/>}/>
+                    <Route path='/hr/work-order/:id' index element={<WorkOrderDetail/>}/>
                 </Route>
                 <Route path='/resto' element={<RestoNav/>}>
                     <Route path="/resto" index element={<Resto/>}/>
@@ -75,7 +77,6 @@ function App() {
                     <Route path="/master/priceitems" element={<PriceItems/>}/>
                     <Route path="/master/cagro" element={<CategoryGroup/>}/>
                 </Route>
-                <Route path="/" index element={<Dashboard/>}/>
                 <Route path="/hotel" element={<HotelSidebar/>}>
                     <Route index element={<Hotel/>}/>
                     <Route path="/hotel/facilities/:hotel_id" element={<Facilities/>}/>

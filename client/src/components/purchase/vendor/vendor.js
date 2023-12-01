@@ -58,7 +58,7 @@ const Vendor = () => {
     setEdit(true);
 
     console.log(id, "23dd");
-    const response = await axios.get(`http://localhost:4001/vendorbyId/${id}`);
+    const response = await axios.get(`http://localhost:4000/vendorbyId/${id}`);
     const data = await response.data.data;
     console.log(data, "123");
     setVendor(data.vendor_name);
@@ -86,7 +86,7 @@ const Vendor = () => {
       if (result.isConfirmed) {
         axios({
           method: "POST",
-          url: `http://localhost:4001/insertvendor`,
+          url: `http://localhost:4000/insertvendor`,
           timeout: 12000,
           data: {
             vendor_name,
@@ -144,7 +144,7 @@ const Vendor = () => {
         if (result.isConfirmed) {
           await axios({
             method: "DELETE",
-            url: `http://localhost:4001/deletevendor/${id}`,
+            url: `http://localhost:4000/deletevendor/${id}`,
           });
 
           Swal.fire("Deleted!", "Your file has been deleted.", "success");
@@ -171,7 +171,7 @@ const Vendor = () => {
       if (result.isConfirmed) {
         axios({
           method: "POST",
-          url: `http://localhost:4001/updatevendor`,
+          url: `http://localhost:4000/updatevendor`,
           timeout: 12000,
           data: {
             vendor_name,

@@ -60,7 +60,7 @@ const AddVendorProduct = () => {
       if (result.isConfirmed) {
         axios({
           method: "POST",
-          url: `http://localhost:4001/insertstockvendorproduct`,
+          url: `http://localhost:4000/insertstockvendorproduct`,
           timeout: 12000,
           data: {
             vepro_qty_stocked: qty,
