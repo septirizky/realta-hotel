@@ -34,7 +34,7 @@ const ModalAddAccounts = (props) => {
       (state)=>state.paymentReducers
     )
 
-    const userId = 1
+    const userId = 2
 
     const tambahUserAccount = (data)=>{
       const date = data.expyear.split("-");
@@ -52,7 +52,7 @@ const ModalAddAccounts = (props) => {
         if(addUserAccountResult){
             Swal.fire({
                 title: addUserAccountResult,
-                text: 'Bank Berhasil Ditambah!',
+                text: 'User Account Berhasil Ditambah!',
                 icon: 'success'
             }).then(()=>{
               handleCloseModalAddAccount(false)
@@ -77,7 +77,7 @@ const ModalAddAccounts = (props) => {
     return (
         <Modal show={showModalAccounts} onHide={handleCloseModalAddAccount}>
         <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
+          <Modal.Title>Add Account</Modal.Title>
         </Modal.Header>
         <form onSubmit={handleSubmit(tambahUserAccount)}>
         <Modal.Body>

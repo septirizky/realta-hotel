@@ -55,7 +55,7 @@ const ModalEditBank = (props) => {
     return (
         <Modal show={showModalBank} onHide={handleCloseEditBank}>
         <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
+          <Modal.Title>Edit Bank</Modal.Title>
         </Modal.Header>
         <form onSubmit={handleSubmit(editBank)}>
         <Modal.Body>

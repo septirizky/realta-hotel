@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserAccount, getUserAccountExclude, topUp } from '../../../actions/paymentAction';
 import Swal from 'sweetalert2'
@@ -48,6 +49,7 @@ const TopUp = () => {
             targetAccountNumber: saldoTarget.split(',')[2],
             userId:userId
         }
+        console.log(data)
         Swal.fire({
             title: "Confirm Transfer?",
             text: `Apakah Kamu Yakin Ingin Melakukan Transfer Dari ${data.sourceAccountNumber} Ke ${data.targetAccountNumber}`,
@@ -94,7 +96,8 @@ const TopUp = () => {
 
     return (
         <>
-            <div className='row'>    
+            <div className='row'>  
+            <h1 className='mb-4 ms-3'>Top Up</h1>  
                 <div className='col-6 border-end border-dark border-3'>
                     <h1 className='text-center mb-5'>Source</h1>
                     <div className='row g-3 align-items-center p-5'>

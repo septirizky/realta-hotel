@@ -10,7 +10,7 @@ import Bank from "./components/payment/bank/bank";
 import PaymentGateaway from "./components/payment/paymentGateaway/paymentGateaway";
 import Accounts from "./components/payment/accounts/accounts";
 import TopUp from "./components/payment/topUp/topUp";
-import Transaction from "./components/transaction/transaction";
+import Transaction from "./components/payment/transaction/transaction";
 
 function App() {
   return (

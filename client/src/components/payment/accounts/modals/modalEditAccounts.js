@@ -53,7 +53,7 @@ const ModalEditAccounts = (props) => {
         if(updateUserAccountResult){
             Swal.fire({
                 title: updateUserAccountResult,
-                text: 'Bank Berhasil Diubah!',
+                text: 'User Accounts Berhasil Diubah!',
                 icon: 'success'
             }).then(()=>{
               handleCloseEditAccount(false)

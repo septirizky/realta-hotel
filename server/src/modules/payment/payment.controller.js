@@ -376,13 +376,11 @@ export const getTransactionDetail = async(req,res)=>{
 export const getTransactionSearch = async(req,res)=>{
     try {
         const {trx_num,type} = req.body;
-    if (trx_num && type === null) {
-        const result = await models.payment_transaction.findAll()
-        return res.status(201).json({data:result, message:`Data Ditemukan`})
-    } else {
-        const result = await models.payment_transaction.findAll({
+        let result = '';
+    if (trx_num && type) {
+        result = await models.payment_transaction.findAll({
             where: {
-                [Op.or]:{
+                [Op.and]:{
                     patr_trx_number: {[Op.like]:`${trx_num}%`},
                     patr_type:type
                 }
@@ -390,14 +388,35 @@ export const getTransactionSearch = async(req,res)=>{
                 ['patr_id', 'ASC'],
             ]}
         )
-            if(result=== null){
-                return res.status(402).json({ message:'Data Tidak Ditemukan'})
-
-            } else{
-                return res.status(200).json(result)
-
-            }
+    }else if(type){
+        result = await models.payment_transaction.findAll({
+            where: {      
+                 patr_type:type
+            },order: [
+                ['patr_id', 'ASC'],
+            ]}
+        )
     }
+    else if(trx_num){
+        result = await models.payment_transaction.findAll({
+            where: {      
+                patr_trx_number: {[Op.like]:`%${trx_num}%`}
+            },order: [
+                ['patr_id', 'ASC'],
+            ]}
+        )
+    }
+    else {
+        result = await models.payment_transaction.findAll()
+    }
+    
+    if(result[0]){
+        return res.status(201).json({data:result, message:`Data Ditemukan`})
+    }else{
+        return res.status(406).json({message:`Data Tidak Ditemukan`})
+
+    }
+    
 
         
     } catch (error) {
@@ -427,10 +446,10 @@ export const getUserAccountExclude = async(req,res)=>{
 export const topUp = async(req,res)=>{
     try {
         const {source_id, target_id, saldo,saldoSource, saldoTarget, sourceAccountNumber, targetAccountNumber,userId} = req.body
-        
-        if(saldoSource < saldo){
+        console.log(req.body)
+        if(+saldo > +saldoSource ){
             return res.status(500).json({message:'Maaf Saldo Anda Kurang'})
-       }else if (saldoSource>= saldo){
+       }else{
         const newSourceSaldo = +saldoSource - +saldo;
         const newTargetSaldo = +saldoTarget + +saldo;
 
@@ -477,14 +496,3 @@ export const topUp = async(req,res)=>{
     }
 }
 
-export const testApi = async(req,res)=>{
-    try {
-        const tgl = new Date().toISOString().split('T')[0].split("-");
-        const random = Math.floor(Math.random()* 9000 + 1000)
-
-        const trx = `TP#${random}-${tgl[0]+tgl[1]+tgl[2]}`
-        return res.status(200).json({trx})
-    } catch (error) {
-        return res.status(404).json(json.error)
-    }
-}

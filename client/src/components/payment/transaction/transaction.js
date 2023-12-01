@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { getTransaction } from '../../actions/paymentAction';
+import {format} from 'date-fns'
+import { getTransaction } from '../../../actions/paymentAction';
 
 const Transaction = () => {
     const dispatch = useDispatch();
@@ -39,6 +40,7 @@ const Transaction = () => {
     return (
         <>
             <div className='row'>
+            <h1 className='mb-3 ms-3'>Transaction   </h1>
                 <div className='col-3 justify-content-end text-end '>
                     <span className='fs-4'>Search</span>
                 </div>
@@ -94,7 +96,11 @@ const Transaction = () => {
                                 return(
                                 <tr key={trx.patr_id}>
                                     <th scope="row">{trx.patr_trx_number}</th>
-                                        <td className='text-center'>{trx.patr_modified_date}</td>
+                                        <td className='text-center'>
+                                        {format(
+                                            new Date(trx.patr_modified_date),
+                                            'ii LLL YYY'
+                                        )}</td>
                                         <td className='text-center'>{trx.patr_debet}</td>
                                         <td className='text-center'>{trx.patr_credit}</td>
                                         <td className='text-center'>{trx.patr_note}</td>
@@ -111,27 +117,15 @@ const Transaction = () => {
                         )
                         :getTransactionLoading?(
                             <div class="spinner-border" role="status">
+                                <td colSpan={12}>
                                 <span class="visually-hidden">Loading...</span>
+                                </td>
                             </div>
                         ):(
-                            <tr>{getTransactionError ? getTransactionError : "data Kosong"}</tr>
+                            <td colspan='12' className='text-center fs-3'>{getTransactionError ? getTransactionError : "Data Kosong"}</td>
                         )
 
                     }
-                        {/* <tr>
-                            <th scope="row" className='text-start'>1</th>
-                                <td className='text-center'>1</td>
-                                <td className='text-center'>2</td>
-                                <td className='text-center'>3</td>
-                                <td className='text-center'>4</td>
-                                <td className='text-center'>5</td>
-                                <td className='text-center'>6</td>
-                                <td className='text-center'>6</td>
-                                <td className='text-center'>6</td>
-                                <td className='text-center'>6</td>
-                                <td className='text-center'>6</td>
-                                
-                        </tr>                 */}
                     </tbody>
                     </table>
             </div>

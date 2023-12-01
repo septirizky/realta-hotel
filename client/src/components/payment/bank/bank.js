@@ -72,6 +72,8 @@ const Bank = () => {
             <div className='row'>
                 <div className='col-12 col-lg-12 col-sm-12 col-md-12 '>
 
+                <h1 className='mb-4 ms-3'>Bank</h1>
+
                 <div className="row align-items-center mb-2">
                     <div className="col-4 col-sm-2 ms-lg-3">
                         <label className="col-form-label">Search Bank</label>
@@ -129,10 +131,12 @@ const Bank = () => {
                             )
                             :getBankLoading?(
                                 <div class="spinner-border" role="status">
-                                    <span class="visually-hidden">Loading...</span>
+                                    <td colSpan={4} className='text-center fs-3'>
+                                        <span class="visually-hidden">Loading...</span>
+                                    </td>
                                 </div>
                             ):(
-                                <tr>{getBankError ? getBankError : "data Kosong"}</tr>
+                                <td colSpan={4} className='text-center fs-3'>{getBankError ? getBankError : "data Kosong"}</td>
                             )
 
                         }

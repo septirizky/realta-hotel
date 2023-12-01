@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { addPaymentGateaway, createBank, createUserAccount, deleteBank, deletePaymentGateaway, getAllBank, getBankId, getPaymentGateaway, getPaymentGateawayById, getTransaction, getTransactionDetail, getTransactionPagination, getTransactionSearch, getUserAccount, getUserAccountById, getUserAccountExclude, payment, searchBank, searchPaymentGateaway, testApi, topUp, updateBank, updatePaymentGateaway, updateUserAccount } from "./payment.controller.js";
+import { addPaymentGateaway, createBank, createUserAccount, deleteBank, deletePaymentGateaway, getAllBank, getBankId, getPaymentGateaway, getPaymentGateawayById, getTransaction, getTransactionDetail, getTransactionPagination, getTransactionSearch, getUserAccount, getUserAccountById, getUserAccountExclude, payment, searchBank, searchPaymentGateaway, topUp, updateBank, updatePaymentGateaway, updateUserAccount } from "./payment.controller.js";
 
 
 const paymentRoutes = Router();
@@ -43,6 +43,6 @@ paymentRoutes.post('/getTransactionSearch', getTransactionSearch)
 
 paymentRoutes.get('/getUserAccountExclude/:usac_user_id',getUserAccountExclude)
 paymentRoutes.post('/topUp/transfer/',topUp)
-paymentRoutes.post('/testapi',testApi)
+
 
 export default paymentRoutes;

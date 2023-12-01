@@ -73,6 +73,8 @@ const PaymentGateaway = () => {
             <div className='row'>
                 <div className='col-12 col-lg-12 col-sm-12 col-md-12 '>
 
+                <h1 className='mb-4 ms-3'>Payment Gateaway</h1>
+
                 <div className="row align-items-center mb-2">
                     <div className="col-4 col-sm-2 ms-lg-3">
                         <label className="col-form-label">Search Bank</label>
@@ -127,9 +129,9 @@ const PaymentGateaway = () => {
                                 )
                             )
                             :getPaymentGateawayLoading?(
-                                <tr>Loading...</tr>
+                                <td colSpan={4} className='text-center fs-3'>Loading...</td>
                             ):(
-                                <tr>{getPaymentGateawayError ? getPaymentGateawayError : "data Kosong"}</tr>
+                                <td colSpan={4} className='text-center fs-3'>{getPaymentGateawayError ? getPaymentGateawayError : "data Kosong"}</td>
                             )
                         }
                     </tbody>

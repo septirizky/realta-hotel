@@ -81,7 +81,7 @@ const Accounts = () => {
             <div className='row'>
                 <div className='col-12 col-lg-12 col-sm-12 col-md-12 '>
 
-
+                <h1 className='mb-4 ms-3'>User Accounts</h1>
                 <table className="table w-100">
                     <thead>
                         <tr>
@@ -130,7 +130,7 @@ const Accounts = () => {
                             :getUserAccountLoading?(
                                 <tr>Loading...</tr>
                             ):(
-                                <tr>{getUserAccountError ? getUserAccountError : "data Kosong"}</tr>
+                                <td colSpan={4} className='text-center fs-3'>{getUserAccountError ? getUserAccountError : "data Kosong"}</td>
                             )
 
                         }

@@ -45,13 +45,13 @@ export const getBank = (bank_name)=>{
             })
         })
         .catch((err)=>{
-            // console.log('3. Error',err)
+            console.log('3. Error',err)
             dispatch({
                 type: GET_BANK,
                 payload: {
                     loading: false,
                     data: false,
-                    errorMessage: err.message
+                    errorMessage: err.response.data.message
                 }
             })
         })
@@ -174,7 +174,7 @@ export const getPaymentGateaway = (paga_code)=>{
                 payload:{
                     loading :false,
                     data:false,
-                    errorMessage:error.message
+                    errorMessage:error.response.data.message
                 }
             })
         })
@@ -489,7 +489,7 @@ export const getTransaction = (data)=>{
                 type:GET_TRANSACTION,
                 payload:{
                     loading:false,
-                    data:result.data,
+                    data:result.data.data,
                     errorMessage:false
                 }
             })
