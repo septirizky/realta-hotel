@@ -6,7 +6,7 @@ import { Sidebar } from "./components/hotel/sidebar";
 import { Dashboard } from "./components/dashboard";
 import Hotel from "./components/hotel/hotel";
 import Facilities from "./components/hotel/facilities";
-
+import FacilityHistory from "./components/hotel/facilityHistory";
 
 function App() {
   return (
@@ -16,6 +16,7 @@ function App() {
         <Route path="/hotel" element={<Sidebar />}>
           <Route index element={<Hotel />} />
           <Route path="/hotel/facilities/:hotel_id" element={<Facilities />} />
+          <Route path="/hotel/photo" element={<FacilityHistory />} />
         </Route>
       </Routes>
     </BrowserRouter>
