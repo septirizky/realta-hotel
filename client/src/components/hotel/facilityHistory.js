@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { getFacilityHistory } from "../../actions/facilityHistoryAction";
 import { format } from "date-fns";
+import { getFacilityHistory } from "../../actions/facilitiesAction";
 
 const FacilityHistory = () => {
   const { getFaciHisResult, getFaciHisLoading, getFaciHisError } = useSelector(
