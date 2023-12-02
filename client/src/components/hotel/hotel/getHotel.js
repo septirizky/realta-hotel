@@ -7,6 +7,8 @@ import AddHotel from "./modal/addHotel";
 import EditHotel from "./modal/editHotel";
 import DeleteHotel from "./modal/deleteHotel";
 import SwitchStatus from "./modal/switchStatus";
+import { format } from "date-fns";
+import GetStarRating from "../rating";
 
 const GetHotel = (props) => {
   const { getHotelResult, getHotelLoading, getHotelError, getCityResult } =
@@ -135,10 +137,10 @@ const GetHotel = (props) => {
                       {hotel_name}
                     </Link>
                   </td>
-                  <td>{hotel_rating_star}</td>
+                  <td>{GetStarRating(hotel_rating_star)}</td>
                   <td>{hotel_phonenumber}</td>
                   <td>{hotel_status}</td>
-                  <td>{hotel_modified_date}</td>
+                  <td>{format(new Date(hotel_modified_date), "ii LLL YYY")}</td>
                   <td>
                     <div className="dropdown">
                       <BsThreeDotsVertical
@@ -181,13 +183,6 @@ const GetHotel = (props) => {
                             </button>
                           </a>
                         </li>
-                        {/* <li>
-                          <a className="dropdown-item" href="#">
-                            <Link to={"/hotel/facilities/" + hotel_id}>
-                              Facilities
-                            </Link>
-                          </a>
-                        </li> */}
                         <li>
                           <a className="dropdown-item" href="#">
                             <button
