@@ -16,7 +16,7 @@ function App() {
         <Route path="/hotel" element={<Sidebar />}>
           <Route index element={<Hotel />} />
           <Route path="/hotel/facilities/:hotel_id" element={<Facilities />} />
-          <Route path="/hotel/photo" element={<FacilityHistory />} />
+          <Route path="/hotel/facility_history" element={<FacilityHistory />} />
         </Route>
       </Routes>
     </BrowserRouter>
