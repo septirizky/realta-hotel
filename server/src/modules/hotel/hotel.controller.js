@@ -32,34 +32,6 @@ export const city = async (req, res) => {
   }
 };
 
-export const hotelPhoto = async (req, res) => {
-  try {
-    if (req.file) {
-      const { thuname, primary, faci_id } = req.body;
-      const url = `${req.protocol}://${req.get("host")}/photo/${
-        req.file.filename
-      }`;
-      const result = await models.facility_photos.create(
-        {
-          fapho_thumbnail_filename: thuname,
-          fapho_photo_filename: req.file.filename,
-          fapho_primary: primary,
-          fapho_url: url,
-          fapho_faci_id: faci_id,
-        },
-        { returning: true }
-      );
-      return res
-        .status(200)
-        .json({ data: result, message: "berhasil upload foto" });
-    } else {
-      return res.status(400).json({ message: "Upload foto terlebih dahulu" });
-    }
-  } catch (error) {
-    return res.status(500).json({ message: error.message });
-  }
-};
-
 export const hotel = async (req, res) => {
   try {
     const { keyword } = req.body;
@@ -85,7 +57,15 @@ export const hotel = async (req, res) => {
 
 export const hotelAdd = async (req, res) => {
   try {
-    const { name, description, phonenumber, status, address, city } = req.body;
+    const {
+      name,
+      description,
+      phonenumber,
+      status,
+      address,
+      city,
+      ratingstar,
+    } = req.body;
 
     const addr = await models.address.create(
       {
@@ -101,6 +81,7 @@ export const hotelAdd = async (req, res) => {
       hotel_phonenumber: phonenumber,
       hotel_status: status,
       hotel_modified_date: new Date(),
+      hotel_rating_star: ratingstar,
       hotel_addr_id: addr.dataValues.addr_id,
     });
     return res
@@ -114,8 +95,16 @@ export const hotelAdd = async (req, res) => {
 export const hotelUpdate = async (req, res) => {
   try {
     const { hotel_id } = req.params;
-    const { name, description, phonenumber, status, address, addr_id, city } =
-      req.body;
+    const {
+      name,
+      description,
+      phonenumber,
+      status,
+      address,
+      addr_id,
+      city,
+      ratingstar,
+    } = req.body;
 
     const addr = await models.address.update(
       {
@@ -132,6 +121,7 @@ export const hotelUpdate = async (req, res) => {
         hotel_phonenumber: phonenumber,
         hotel_status: status,
         hotel_modified_date: new Date(),
+        hotel_rating_star: ratingstar,
       },
       { where: { hotel_id: hotel_id }, returning: true }
     );
@@ -244,8 +234,23 @@ export const facilitiesUpdate = async (req, res) => {
       cagro_id,
       hotel_id,
     } = req.body;
+    const data = await models.facilities.findOne({
+      where: { faci_id: req.params.faci_id },
+      returning: true,
+    });
 
-    const result = await models.facilities.update(
+    const result = await models.facility_price_history.create({
+      faph_low_price: data.faci_low_price,
+      faph_high_price: data.faci_high_price,
+      faph_rate_price: data.faci_rate_price,
+      faph_discount: data.faci_discount,
+      faph_tax_rate: data.faci_tax_rate,
+      faph_startdate: data.faci_startdate,
+      faph_enddate: data.faci_enddate,
+      faph_faci_id: data.faci_id,
+    });
+
+    const result2 = await models.facilities.update(
       {
         faci_name: name,
         faci_room_number: room_number,
@@ -266,7 +271,7 @@ export const facilitiesUpdate = async (req, res) => {
     );
     return res
       .status(200)
-      .json({ data: result, message: "berhasil update facilities" });
+      .json({ data: result2, message: "berhasil update facilities" });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -299,6 +304,88 @@ export const category = async (req, res) => {
     return res
       .status(200)
       .json({ data: result, message: "berhasil tampil facilities" });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const getPhoto = async (req, res) => {
+  try {
+    const { faci_id } = req.params;
+    const result = await models.facility_photos.findAll(
+      { where: { fapho_faci_id: faci_id }, returning: true },
+      {
+        include: {
+          model: models.facilities,
+          as: "fapho_faci",
+          required: true,
+        },
+      }
+    );
+    return res
+      .status(200)
+      .json({ data: result, message: "berhasil tampil facilities photo" });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const uploadFaciPhoto = async (req, res) => {
+  try {
+    const { primary, faci_id } = req.body;
+    let result;
+    req.files.map(async (photo, index) => {
+      const url = `${req.protocol}://${req.get("host")}/uploads/${
+        req.files[index].filename
+      }`;
+      result = await models.facility_photos.create(
+        {
+          fapho_thumbnail_filename: photo.path,
+          fapho_photo_filename: photo.filename,
+          fapho_primary: primary,
+          fapho_url: url,
+          fapho_faci_id: faci_id,
+        },
+        { returning: true }
+      );
+    });
+    return res
+      .status(200)
+      .json({ data: result, message: "berhasil upload photo" });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const photoDelete = async (req, res) => {
+  try {
+    const { fapho_id } = req.params;
+    const result = await models.facility_photos.destroy(
+      {
+        where: { fapho_id: fapho_id },
+      },
+      {
+        include: {
+          model: models.hotels,
+          as: "facility_photos",
+          required: true,
+        },
+      }
+    );
+    return res
+      .status(200)
+      .json({ data: result, message: "berhasil hapus facilities" });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const facilityHistory = async (req, res) => {
+  try {
+    const result = await models.facility_price_history.findAll();
+    return res
+      .status(200)
+      .json({ data: result, message: "berhasil tampil facility history" });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
