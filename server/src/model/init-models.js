@@ -1,73 +1,74 @@
-import _sequelize, {Sequelize} from "sequelize";
+import _sequelize, { Sequelize } from "sequelize";
+import _address from "./address.js";
+import _bank from "./bank.js";
+import _booking_order_detail from "./booking_order_detail.js";
+import _booking_order_detail_extra from "./booking_order_detail_extra.js";
+import _booking_orders from "./booking_orders.js";
+import _category_group from "./category_group.js";
+import _city from "./city.js";
+import _country from "./country.js";
+import _department from "./department.js";
+import _employee from "./employee.js";
+import _employee_department_history from "./employee_department_history.js";
+import _employee_pay_history from "./employee_pay_history.js";
+import _entity from "./entity.js";
+import _facilities from "./facilities.js";
+import _facility_photos from "./facility_photos.js";
+import _facility_price_history from "./facility_price_history.js";
+import _hotel_reviews from "./hotel_reviews.js";
+import _hotels from "./hotels.js";
+import _job_role from "./job_role.js";
+import _joinahotel from "./joinahotel.js";
+import _joinmenu from "./joinmenu.js";
+import _members from "./members.js";
+import _order_menu_detail from "./order_menu_detail.js";
+import _order_menus from "./order_menus.js";
+import _payment_gateway from "./payment_gateway.js";
+import _payment_transaction from "./payment_transaction.js";
+import _policy from "./policy.js";
+import _policy_category_group from "./policy_category_group.js";
+import _price_items from "./price_items.js";
+import _provinces from "./provinces.js";
+import _purchase_order_detail from "./purchase_order_detail.js";
+import _purchase_order_header from "./purchase_order_header.js";
+import _regions from "./regions.js";
+import _resto_menu_photos from "./resto_menu_photos.js";
+import _resto_menus from "./resto_menus.js";
+import _roles from "./roles.js";
+import _service_task from "./service_task.js";
+import _shift from "./shift.js";
+import _special_offer_coupons from "./special_offer_coupons.js";
+import _special_offers from "./special_offers.js";
+import _stock_detail from "./stock_detail.js";
+import _stock_photo from "./stock_photo.js";
+import _stocks from "./stocks.js";
+import _user_accounts from "./user_accounts.js";
+import _user_bonus_points from "./user_bonus_points.js";
+import _user_breakfast from "./user_breakfast.js";
+import _user_members from "./user_members.js";
+import _user_password from "./user_password.js";
+import _user_profiles from "./user_profiles.js";
+import _user_roles from "./user_roles.js";
+import _users from "./users.js";
+import _vendor from "./vendor.js";
+import _vendor_product from "./vendor_product.js";
+import _work_order_detail from "./work_order_detail.js";
+import _work_orders from "./work_orders.js";
 const DataTypes = _sequelize.DataTypes;
-import _address from  "./address.js";
-import _bank from  "./bank.js";
-import _booking_order_detail from  "./booking_order_detail.js";
-import _booking_order_detail_extra from  "./booking_order_detail_extra.js";
-import _booking_orders from  "./booking_orders.js";
-import _category_group from  "./category_group.js";
-import _city from  "./city.js";
-import _country from  "./country.js";
-import _department from  "./department.js";
-import _employee from  "./employee.js";
-import _employee_department_history from  "./employee_department_history.js";
-import _employee_pay_history from  "./employee_pay_history.js";
-import _entity from  "./entity.js";
-import _facilities from  "./facilities.js";
-import _facility_photos from  "./facility_photos.js";
-import _facility_price_history from  "./facility_price_history.js";
-import _hotel_reviews from  "./hotel_reviews.js";
-import _hotels from  "./hotels.js";
-import _job_role from  "./job_role.js";
-import _joinahotel from  "./joinahotel.js";
-import _joinmenu from  "./joinmenu.js";
-import _members from  "./members.js";
-import _order_menu_detail from  "./order_menu_detail.js";
-import _order_menus from  "./order_menus.js";
-import _payment_gateway from  "./payment_gateway.js";
-import _payment_transaction from  "./payment_transaction.js";
-import _policy from  "./policy.js";
-import _policy_category_group from  "./policy_category_group.js";
-import _price_items from  "./price_items.js";
-import _provinces from  "./provinces.js";
-import _purchase_order_detail from  "./purchase_order_detail.js";
-import _purchase_order_header from  "./purchase_order_header.js";
-import _regions from  "./regions.js";
-import _resto_menu_photos from  "./resto_menu_photos.js";
-import _resto_menus from  "./resto_menus.js";
-import _roles from  "./roles.js";
-import _service_task from  "./service_task.js";
-import _shift from  "./shift.js";
-import _special_offer_coupons from  "./special_offer_coupons.js";
-import _special_offers from  "./special_offers.js";
-import _stock_detail from  "./stock_detail.js";
-import _stock_photo from  "./stock_photo.js";
-import _stocks from  "./stocks.js";
-import _user_accounts from  "./user_accounts.js";
-import _user_bonus_points from  "./user_bonus_points.js";
-import _user_breakfast from  "./user_breakfast.js";
-import _user_members from  "./user_members.js";
-import _user_password from  "./user_password.js";
-import _user_profiles from  "./user_profiles.js";
-import _user_roles from  "./user_roles.js";
-import _users from  "./users.js";
-import _vendor from  "./vendor.js";
-import _vendor_product from  "./vendor_product.js";
-import _work_order_detail from  "./work_order_detail.js";
-import _work_orders from  "./work_orders.js";
+
 const sequelize = new Sequelize(
-    process.env.DB_NAME,
-    process.env.DB_USER,
-    process.env.DB_PASS,
-    {
-      dialect: "postgres",
-      pool:{
-        max:5,
-        min: 0,
-        acquire: 30000,
-        idle:10000
-      }
+  process.env.DB_NAME,
+  process.env.DB_USER,
+  process.env.DB_PASS,
+  {
+    dialect: "postgres",
+    pool:{
+      max:5,
+      min: 0,
+      acquire: 30000,
+      idle:10000
     }
+  }
 );
 function initModels(sequelize) {
   const address = _address.init(sequelize, DataTypes);
@@ -138,10 +139,12 @@ function initModels(sequelize) {
   booking_order_detail.hasMany(user_breakfast, { as: "user_breakfasts", foreignKey: "usbr_borde_id"});
   booking_order_detail.belongsTo(booking_orders, { as: "borde_boor", foreignKey: "borde_boor_id"});
   booking_orders.hasMany(booking_order_detail, { as: "booking_order_details", foreignKey: "borde_boor_id"});
-  booking_order_detail.belongsTo(facilities, { as: "borde_faci", foreignKey: "borde_faci_id"});
+  booking_order_detail.belongsTo(facilities, { as: "facilities", foreignKey: "borde_faci_id"});
   facilities.hasMany(booking_order_detail, { as: "booking_order_details", foreignKey: "borde_faci_id"});
   booking_orders.belongsTo(hotels, { as: "boor_hotel", foreignKey: "boor_hotel_id"});
   hotels.hasMany(booking_orders, { as: "booking_orders", foreignKey: "boor_hotel_id"});
+  booking_order_detail_extra.belongsTo(price_items, { as: "boex_prit", foreignKey: "boex_prit_id"});
+  price_items.hasMany(booking_order_detail_extra, { as: "booking_order_detail_extras", foreignKey: "boex_prit_id"});
   special_offer_coupons.belongsTo(special_offers, { as: "soco_spof", foreignKey: "soco_spof_id"});
   special_offers.hasMany(special_offer_coupons, { as: "special_offer_coupons", foreignKey: "soco_spof_id"});
   booking_orders.belongsTo(users, { as: "boor_user", foreignKey: "boor_user_id"});
@@ -166,10 +169,8 @@ function initModels(sequelize) {
   department.hasMany(employee_department_history, { as: "employee_department_histories", foreignKey: "edhi_dept_id"});
   employee.belongsTo(employee, { as: "emp_emp", foreignKey: "emp_emp_id"});
   employee.hasMany(employee, { as: "employees", foreignKey: "emp_emp_id"});
-  employee_department_history.belongsTo(employee, { as: "edhi_emp", foreignKey: "edhi_emp_id"});
-  employee.hasMany(employee_department_history, { as: "employee_department_histories", foreignKey: "edhi_emp_id"});
   employee_pay_history.belongsTo(employee, { as: "ephi_emp", foreignKey: "ephi_emp_id"});
-  employee.hasMany(employee_pay_history, { as: "employee_pay_histories", foreignKey: "ephi_emp_id"});
+  employee.hasOne(employee_pay_history, { as: "employee_pay_history", foreignKey: "ephi_emp_id"});
   work_order_detail.belongsTo(employee, { as: "wode_emp", foreignKey: "wode_emp_id"});
   employee.hasMany(work_order_detail, { as: "work_order_details", foreignKey: "wode_emp_id"});
   work_order_detail.belongsTo(facilities, { as: "wode_faci", foreignKey: "wode_faci_id"});
@@ -186,22 +187,22 @@ function initModels(sequelize) {
   work_orders.hasMany(work_order_detail, { as: "work_order_details", foreignKey: "wode_woro_id"});
   policy_category_group.belongsTo(category_group, { as: "poca_cagro", foreignKey: "poca_cagro_id"});
   category_group.hasMany(policy_category_group, { as: "policy_category_groups", foreignKey: "poca_cagro_id"});
+  address.belongsTo(city, { as: "addr_city", foreignKey: "addr_city_id"});
+  city.hasMany(address, { as: "addresses", foreignKey: "addr_city_id"});
   provinces.belongsTo(country, { as: "prov_country", foreignKey: "prov_country_id"});
   country.hasMany(provinces, { as: "provinces", foreignKey: "prov_country_id"});
   policy_category_group.belongsTo(policy, { as: "poca_poli", foreignKey: "poca_poli_id"});
   policy.hasMany(policy_category_group, { as: "policy_category_groups", foreignKey: "poca_poli_id"});
-  address.belongsTo(provinces, { as: "addr_prov", foreignKey: "addr_prov_id"});
-  provinces.hasMany(address, { as: "addresses", foreignKey: "addr_prov_id"});
   city.belongsTo(provinces, { as: "city_province", foreignKey: "city_province_id"});
   provinces.hasMany(city, { as: "cities", foreignKey: "city_province_id"});
   country.belongsTo(regions, { as: "country_region", foreignKey: "country_region_id"});
   regions.hasMany(country, { as: "countries", foreignKey: "country_region_id"});
+  user_accounts.belongsTo(bank, { as: "usac_entity", foreignKey: "usac_entity_id"});
+  bank.hasOne(user_accounts, { as: "user_account", foreignKey: "usac_entity_id"});
   bank.belongsTo(entity, { as: "bank_entity", foreignKey: "bank_entity_id"});
   entity.hasOne(bank, { as: "bank", foreignKey: "bank_entity_id"});
   payment_gateway.belongsTo(entity, { as: "paga_entity", foreignKey: "paga_entity_id"});
   entity.hasOne(payment_gateway, { as: "payment_gateway", foreignKey: "paga_entity_id"});
-  user_accounts.belongsTo(entity, { as: "usac_entity", foreignKey: "usac_entity_id"});
-  entity.hasMany(user_accounts, { as: "user_accounts", foreignKey: "usac_entity_id"});
   user_accounts.belongsTo(users, { as: "usac_user", foreignKey: "usac_user_id"});
   users.hasMany(user_accounts, { as: "user_accounts", foreignKey: "usac_user_id"});
   purchase_order_header.belongsTo(employee, { as: "pohe_emp", foreignKey: "pohe_emp_id"});
@@ -311,6 +312,7 @@ function initModels(sequelize) {
     work_orders,
   };
 }
+
 const model = initModels(sequelize);
 export default model;
 export { sequelize };

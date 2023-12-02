@@ -1,17 +1,18 @@
-import model from '../../../model/init-models.js';
+import { Op } from "sequelize";
+import model from "../../../model/init-models.js";
 
 export const getAllBookingOrders = async (req, res) => {
   try {
     const result = await model.booking_orders.findAll({
       include: {
         model: model.booking_order_detail,
-        as: 'booking_order_details',
+        as: "booking_order_details",
         required: true,
       },
     });
 
     res.status(200).json({
-      message: 'Berhasil menampilkan data booking orders',
+      message: "Berhasil menampilkan data booking orders",
       data: result,
     });
   } catch (error) {
@@ -24,12 +25,12 @@ export const getAllBookingDetailExtra = async (req, res) => {
     const result = await model.booking_order_detail_extra.findAll({
       include: {
         model: model.price_items,
-        as: 'boex_prit',
+        as: "boex_prit",
       },
     });
 
     res.status(200).json({
-      message: 'Berhasil menampilkan data booking orders detail extra',
+      message: "Berhasil menampilkan data booking orders detail extra",
       data: result,
     });
   } catch (error) {
@@ -74,23 +75,23 @@ export const getBookingOrderById = async (req, res) => {
       include: [
         {
           model: model.booking_order_detail_extra,
-          as: 'booking_order_detail_extras',
+          as: "booking_order_detail_extras",
           include: {
             model: model.price_items,
-            as: 'boex_prit',
+            as: "boex_prit",
           },
         },
         {
           model: model.special_offer_coupons,
-          as: 'special_offer_coupons',
+          as: "special_offer_coupons",
           include: {
             model: model.special_offers,
-            as: 'soco_spof',
+            as: "soco_spof",
           },
         },
         {
           model: model.facilities,
-          as: 'facilities',
+          as: "facilities",
         },
       ],
       where: {
@@ -103,7 +104,7 @@ export const getBookingOrderById = async (req, res) => {
           message: `Data booking dengan id ${id} tidak ditemukan`,
         })
       : res.status(200).json({
-          message: 'Berhasil menampilkan data booking',
+          message: "Berhasil menampilkan data booking",
           data: { boor: result, borde: bordeBoex },
         });
   } catch (error) {
@@ -149,7 +150,7 @@ export const createBookingOrder = async (req, res) => {
       boor_type,
       boor_cardnumber,
       boor_member_type,
-      boor_status: 'BOOKING',
+      boor_status: "BOOKING",
       boor_user_id,
       boor_hotel_id,
     });
@@ -159,12 +160,12 @@ export const createBookingOrder = async (req, res) => {
     let bodate = `${date.getFullYear()}${date.getMonth() + 1}${date.getDate()}`;
 
     let customBoorId = insertBookingOrder.boor_id;
-    if (insertBookingOrder.boor_id.length == 1) {
-      customBoorId = `00${insertBookingOrder}`;
+    if (insertBookingOrder.boor_id.toString().length == 1) {
+      customBoorId = `00${insertBookingOrder.boor_id}`;
     }
 
-    if (insertBookingOrder.boor_id.length == 2) {
-      customBoorId = `0${insertBookingOrder}`;
+    if (+insertBookingOrder.boor_id.toString().length == 2) {
+      customBoorId = `0${insertBookingOrder.boor_id}`;
     }
 
     const boor_order_number = `BO-${bodate}-${customBoorId}`;
@@ -275,7 +276,7 @@ export const createBookingOrder = async (req, res) => {
     });
 
     res.status(200).json({
-      message: 'Berhasil menambah data booking',
+      message: "Berhasil menambah data booking",
       data: {
         booking_order: insertedBookingOrder,
         booking_order_detail: insertedBookingDetail,
@@ -396,7 +397,7 @@ export const createBookingOrderDetailExtra = async (req, res) => {
     );
 
     res.status(200).json({
-      message: 'Berhasil menambah item extra',
+      message: "Berhasil menambah item extra",
       data: result,
     });
   } catch (error) {
@@ -463,7 +464,8 @@ export const deleteBookingOrderDetailExtra = async (req, res) => {
     // update db borde
     const updateBorde = await model.booking_order_detail.update(
       {
-        borde_extra: +borde.borde_extra + +result.boex_subtotal,
+        // borde_extra: +borde.borde_extra + +boex.boex_subtotal,
+        borde_extra: +borde.borde_extra - +boex.boex_subtotal,
         borde_tax: newBordeTax,
         borde_subtotal: Math.round(+newBordeSubTotalNoTax * 100) / 100,
         borde_subtotal_with_tax:
@@ -515,7 +517,7 @@ export const deleteBookingOrderDetailExtra = async (req, res) => {
     });
 
     res.status(200).json({
-      message: 'Berhasil menghapus item extra',
+      message: "Berhasil menghapus item extra",
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -689,7 +691,7 @@ export const applyDiscount = async (req, res) => {
     );
 
     res.status(200).json({
-      message: 'Berhasil menambahkan diskon',
+      message: "Berhasil menambahkan diskon",
     });
   } catch (error) {
     console.log(error);
@@ -699,27 +701,71 @@ export const applyDiscount = async (req, res) => {
 
 export const getAllHotel = async (req, res) => {
   try {
+    let { hotelName, minRatePrice, maxRatePrice } = req.query;
+
     const result = await model.hotels.findAll({
       include: [
         {
           model: model.facilities,
-          as: 'facilities',
+          as: "facilities",
           include: {
             model: model.facility_photos,
-            as: 'facility_photos',
+            as: "facility_photos",
             // required: true,
           },
         },
         {
           model: model.address,
-          as: 'hotel_addr',
+          as: "hotel_addr",
         },
       ],
     });
 
+    if (!hotelName) {
+      hotelName = "";
+    }
+    if (!minRatePrice) {
+      minRatePrice = 0;
+    }
+    if (!maxRatePrice) {
+      maxRatePrice = 9999999999;
+    }
+
+    const resultFiltered = await model.hotels.findAll({
+      include: [
+        {
+          model: model.facilities,
+          as: "facilities",
+          where: {
+            faci_rate_price: {
+              [Op.between]: [minRatePrice, maxRatePrice],
+            },
+          },
+          include: {
+            model: model.facility_photos,
+            as: "facility_photos",
+            // required: true,
+          },
+        },
+        {
+          model: model.address,
+          as: "hotel_addr",
+        },
+      ],
+      where: {
+        [Op.and]: [
+          {
+            hotel_name: {
+              [Op.iLike]: "%" + hotelName + "%",
+            },
+          },
+        ],
+      },
+    });
+
     res.status(200).json({
-      message: 'Berhasil menampilkan data hotel',
-      data: result,
+      message: "Berhasil menampilkan data hotel",
+      data: resultFiltered,
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -734,20 +780,20 @@ export const getAllHotelById = async (req, res) => {
       include: [
         {
           model: model.facilities,
-          as: 'facilities',
+          as: "facilities",
           include: {
             model: model.facility_photos,
-            as: 'facility_photos',
+            as: "facility_photos",
             // required: true,
           },
         },
         {
           model: model.hotel_reviews,
-          as: 'hotel_reviews',
+          as: "hotel_reviews",
         },
         {
           model: model.address,
-          as: 'hotel_addr',
+          as: "hotel_addr",
         },
       ],
       where: {
@@ -760,7 +806,7 @@ export const getAllHotelById = async (req, res) => {
           message: `Data hotel dengan id ${id} tidak ditemukan`,
         })
       : res.status(200).json({
-          message: 'Berhasil menampilkan data hotel',
+          message: "Berhasil menampilkan data hotel",
           data: result,
         });
   } catch (error) {
@@ -802,7 +848,7 @@ export const updateBookingOrder = async (req, res) => {
     );
 
     res.status(200).json({
-      message: 'Berhasil mengubah data booking order',
+      message: "Berhasil mengubah data booking order",
       data: updateBoor[1][0],
     });
   } catch (error) {
@@ -815,9 +861,143 @@ export const getAllPriceItems = async (req, res) => {
     const result = await model.price_items.findAll();
 
     res.status(200).json({
-      message: 'Berhasil menampilkan data extra items',
+      message: "Berhasil menampilkan data extra items",
       data: result,
     });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+export const createBookingPayment = async (req, res) => {
+  try {
+    const { patr_order_number, patr_user_id } = req.body;
+
+    const boor = await model.booking_orders.findOne({
+      where: {
+        boor_order_number: patr_order_number,
+      },
+    });
+
+    if (!boor) {
+      return res.status(404).json({
+        message: `Booking dengan id ${patr_order_number} tidak ditemukan`,
+      });
+    }
+
+    // insert payment
+    const insertPayment = await model.payment_transaction.create(
+      {
+        patr_order_number,
+        patr_user_id,
+        patr_trx_number: "null",
+        patr_debet: 0,
+        patr_credit: 0,
+        patr_type: "TRB",
+        patr_note: "null",
+        patr_source_id: 0,
+        patr_target_id: 0,
+        patr_trx_number_ref: "null",
+      },
+      {
+        returning: true,
+      }
+    );
+
+    // update and generate patr_trx_number
+    let date = new Date();
+    let patrDate = `${date.getFullYear()}${
+      date.getMonth() + 1
+    }${date.getDate()}`;
+
+    let customTrxId = insertPayment.patr_id;
+    if (insertPayment.patr_id.toString().length == 1) {
+      customTrxId = `000${insertPayment.patr_id}`;
+    }
+
+    if (+insertPayment.patr_id.toString().length == 2) {
+      customTrxId = `00${insertPayment.patr_id}`;
+    }
+
+    if (+insertPayment.patr_id.toString().length == 3) {
+      customTrxId = `0${insertPayment.patr_id}`;
+    }
+
+    const patr_trx_number = `TRX#${patrDate}-${customTrxId}`;
+
+    const updatePaymentNumber = await model.payment_transaction.update(
+      {
+        patr_trx_number: patr_trx_number,
+      },
+      {
+        where: {
+          patr_id: insertPayment.patr_id,
+        },
+        returning: true,
+      }
+    );
+
+    res.status(200).json({
+      message: "Berhasil menambah data booking payment",
+      data: updatePaymentNumber[1][0],
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+export const getBookingInvoice = async (req, res) => {
+  try {
+    const { bookingOrderNumber } = req.params;
+
+    const payment = await model.payment_transaction.findOne({
+      where: {
+        patr_order_number: bookingOrderNumber,
+      },
+    });
+
+    const boor = await model.booking_orders.findOne({
+      where: {
+        boor_order_number: bookingOrderNumber,
+      },
+    });
+
+    const bordeBoex = await model.booking_order_detail.findAll({
+      include: [
+        {
+          model: model.booking_order_detail_extra,
+          as: "booking_order_detail_extras",
+          include: {
+            model: model.price_items,
+            as: "boex_prit",
+          },
+        },
+        {
+          model: model.special_offer_coupons,
+          as: "special_offer_coupons",
+          include: {
+            model: model.special_offers,
+            as: "soco_spof",
+          },
+        },
+        {
+          model: model.facilities,
+          as: "facilities",
+        },
+      ],
+      where: {
+        borde_boor_id: +boor.boor_id,
+      },
+    });
+
+    payment === null
+      ? res.status(404).json({
+          message: `Data booking dengan id ${bookingOrderNumber} tidak ditemukan`,
+        })
+      : res.status(200).json({
+          message: "Berhasil menampilkan data booking invoice",
+          data: { payment: payment, boor: boor, borde: bordeBoex },
+        });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

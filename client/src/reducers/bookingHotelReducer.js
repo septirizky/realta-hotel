@@ -1,13 +1,17 @@
 import {
-  GET_LIST_B_HOTEL_BY_ID,
-  ADD_BOOKING,
-  GET_BOOKING_DETAIL,
-  GET_SPECIAL_OFFER,
   ADD_APPLY_COUPON,
-  GET_LIST_B_PRICE_ITEMS,
   ADD_BOEX,
+  ADD_BOOKING,
+  ADD_BOOKING_PAYMENT,
+  DELETE_BOEX,
+  GET_BOOKING_DETAIL,
+  GET_BOOKING_PAYMENT_BY_BOOR_NUMBER,
+  GET_LIST_B_HOTEL,
+  GET_LIST_B_HOTEL_BY_ID,
+  GET_LIST_B_PRICE_ITEMS,
+  GET_SPECIAL_OFFER,
   UPDATE_BOOKING_ORDER,
-} from '../actions/bookingHotelAction';
+} from "../actions/bookingHotelAction";
 
 const initialState = {
   getDetailHotelResult: false,
@@ -34,10 +38,29 @@ const initialState = {
   updateBookingOrderResult: false,
   updateBookingOrderLoading: false,
   updateBookingOrderError: false,
+  addBookingPaymentResult: false,
+  addBookingPaymentLoading: false,
+  addBookingPaymentError: false,
+  getBookingPaymentByBoorNumberResult: false,
+  getBookingPaymentByBoorNumberLoading: false,
+  getBookingPaymentByBoorNumberError: false,
+  deleteBoexResult: false,
+  deleteBoexLoading: false,
+  deleteBoexError: false,
+  getListBHotelResult: false,
+  getListBHotelLoading: false,
+  getListBHotelError: false,
 };
 
 const BookingHotelReducer = (state = initialState, action) => {
   switch (action.type) {
+    case GET_LIST_B_HOTEL:
+      return {
+        ...state,
+        getListBHotelResult: action.payload.data,
+        getListBHotelLoading: action.payload.loading,
+        getListBHotelError: action.payload.error,
+      };
     case GET_LIST_B_HOTEL_BY_ID:
       return {
         ...state,
@@ -93,6 +116,27 @@ const BookingHotelReducer = (state = initialState, action) => {
         updateBookingOrderResult: action.payload.data,
         updateBookingOrderLoading: action.payload.loading,
         updateBookingOrderError: action.payload.error,
+      };
+    case ADD_BOOKING_PAYMENT:
+      return {
+        ...state,
+        addBookingPaymentResult: action.payload.data,
+        addBookingPaymentLoading: action.payload.loading,
+        addBookingPaymentError: action.payload.error,
+      };
+    case GET_BOOKING_PAYMENT_BY_BOOR_NUMBER:
+      return {
+        ...state,
+        getBookingPaymentByBoorNumberResult: action.payload.data,
+        getBookingPaymentByBoorNumberLoading: action.payload.loading,
+        getBookingPaymentByBoorNumberError: action.payload.error,
+      };
+    case DELETE_BOEX:
+      return {
+        ...state,
+        deleteBoexResult: action.payload.data,
+        deleteBoexLoading: action.payload.loading,
+        deleteBoexError: action.payload.error,
       };
     default:
       return state;

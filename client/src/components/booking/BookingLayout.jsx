@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import React from "react";
+import { Link, Outlet } from "react-router-dom";
 
 const BookingLayout = () => {
   return (
@@ -32,7 +32,7 @@ const BookingLayout = () => {
             </ul>
             <div className="d-flex">
               <button className="btn btn-primary" type="button">
-                Login
+                Ajip
               </button>
             </div>
           </div>

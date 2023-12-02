@@ -1,25 +1,25 @@
-import React, { useEffect, useState } from 'react';
-import { NumericFormat } from 'react-number-format';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState } from "react";
+import { NumericFormat } from "react-number-format";
+import { useDispatch, useSelector } from "react-redux";
 // Import Swiper React components
-import { Swiper, SwiperSlide } from 'swiper/react';
-import './styles/hoteldetail.css';
+import { Swiper, SwiperSlide } from "swiper/react";
+import "./styles/hoteldetail.css";
 
 // Import Swiper styles
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 
 // import required modules
-import { format } from 'date-fns';
-import { CiWarning } from 'react-icons/ci';
-import { FaCar, FaShoppingCart, FaStar } from 'react-icons/fa';
-import { useNavigate, useParams } from 'react-router-dom';
-import { Navigation, Pagination } from 'swiper/modules';
+import { format } from "date-fns";
+import { CiWarning } from "react-icons/ci";
+import { FaCar, FaShoppingCart, FaStar } from "react-icons/fa";
+import { useNavigate, useParams } from "react-router-dom";
+import { Navigation, Pagination } from "swiper/modules";
 import {
   createBooking,
   getListBHotelById,
-} from '../../actions/bookingHotelAction';
+} from "../../actions/bookingHotelAction";
 const HotelDetail = () => {
   let { id } = useParams();
   const navigate = useNavigate();
@@ -49,12 +49,12 @@ const HotelDetail = () => {
     booking_order: {
       boor_user_id: 1,
       boor_hotel_id: +id,
-      boor_pay_type: 'D',
-      boor_is_paid: 'DP',
-      boor_type: 'I',
+      boor_pay_type: "D",
+      boor_is_paid: "DP",
+      boor_type: "I",
       boor_cardnumber: null,
-      boor_member_type: 'VIP',
-      boor_status: 'BOOKING',
+      boor_member_type: "VIP",
+      boor_status: "BOOKING",
     },
     booking_order_detail: [],
   });
@@ -62,13 +62,13 @@ const HotelDetail = () => {
   const [roomName, setRoomName] = useState(null);
   const [faciId, setFaciId] = useState(null);
 
-  const [checkIn, setCheckIn] = useState('');
-  const [checkOut, setCheckOut] = useState('');
-  const [adults, setAdults] = useState('');
-  const [kids, setKids] = useState('');
-  const [price, setPrice] = useState('');
-  const [tax, setTax] = useState('');
-  const [diskonRoom, setDiskonRoom] = useState('');
+  const [checkIn, setCheckIn] = useState("");
+  const [checkOut, setCheckOut] = useState("");
+  const [adults, setAdults] = useState("");
+  const [kids, setKids] = useState("");
+  const [price, setPrice] = useState("");
+  const [tax, setTax] = useState("");
+  const [diskonRoom, setDiskonRoom] = useState("");
   const [disabledRoom, setDisabledRoom] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
 
@@ -82,7 +82,8 @@ const HotelDetail = () => {
       borde_checkout: checkOut,
       borde_adults: +adults,
       borde_kids: +kids,
-      borde_price: price - (price * diskonRoom) / 100,
+      // borde_price: price - (price * diskonRoom) / 100,
+      borde_price: price,
       borde_extra: 0,
       borde_discount: 0,
       borde_tax_persen: tax,
@@ -99,8 +100,6 @@ const HotelDetail = () => {
     dispatch(createBooking(boor));
   };
 
-  console.log('boor: ', boor);
-  console.log('boor l', boorLength);
   return (
     <div className="mb-5">
       {getDetailHotelResult ? (
@@ -303,8 +302,8 @@ const HotelDetail = () => {
                                 <button
                                   className={
                                     disabledRoom.includes(facility.faci_id)
-                                      ? 'button-hotel-room-book-disabled'
-                                      : 'button-hotel-room-book'
+                                      ? "button-hotel-room-book-disabled"
+                                      : "button-hotel-room-book"
                                   }
                                   data-bs-toggle="modal"
                                   data-bs-target="#exampleModal2"
@@ -324,8 +323,8 @@ const HotelDetail = () => {
                                   )}
                                 >
                                   {disabledRoom.includes(facility.faci_id)
-                                    ? 'Selected'
-                                    : 'Book Now'}
+                                    ? "Selected"
+                                    : "Book Now"}
                                 </button>
                               </div>
                             </div>
@@ -348,7 +347,7 @@ const HotelDetail = () => {
                           <FaStar className="hotel-review-rating-icon" />
                         </div>
                         <div className="hotel-review-rating-count">
-                          (335 Ratings){' '}
+                          (335 Ratings){" "}
                           <span className="text-success">Good</span>
                         </div>
                       </div>
@@ -356,7 +355,7 @@ const HotelDetail = () => {
                     <div className="col-md-8">
                       <div className="hotel-rating-persentage row align-items-center  mb-2">
                         <div className="col-sm-1 d-flex align-items-center p-0">
-                          <span className="mr-1" style={{ fontSize: '18px' }}>
+                          <span className="mr-1" style={{ fontSize: "18px" }}>
                             5
                           </span>
                           <FaStar className="text-warning" />
@@ -371,14 +370,14 @@ const HotelDetail = () => {
                         >
                           <div
                             className="progress-bar bg-warning"
-                            style={{ width: '90%' }}
+                            style={{ width: "90%" }}
                           ></div>
                         </div>
                         <div className="col-sm-1">90%</div>
                       </div>
                       <div className="hotel-rating-persentage row align-items-center  mb-2">
                         <div className="col-sm-1 d-flex align-items-center p-0">
-                          <span className="mr-1" style={{ fontSize: '18px' }}>
+                          <span className="mr-1" style={{ fontSize: "18px" }}>
                             4
                           </span>
                           <FaStar className="text-warning" />
@@ -393,14 +392,14 @@ const HotelDetail = () => {
                         >
                           <div
                             className="progress-bar bg-warning"
-                            style={{ width: '80%' }}
+                            style={{ width: "80%" }}
                           ></div>
                         </div>
                         <div className="col-sm-1">80%</div>
                       </div>
                       <div className="hotel-rating-persentage row align-items-center  mb-2">
                         <div className="col-sm-1 d-flex align-items-center p-0">
-                          <span className="mr-1" style={{ fontSize: '18px' }}>
+                          <span className="mr-1" style={{ fontSize: "18px" }}>
                             3
                           </span>
                           <FaStar className="text-warning" />
@@ -415,14 +414,14 @@ const HotelDetail = () => {
                         >
                           <div
                             className="progress-bar bg-warning"
-                            style={{ width: '25%' }}
+                            style={{ width: "25%" }}
                           ></div>
                         </div>
                         <div className="col-sm-1">25%</div>
                       </div>
                       <div className="hotel-rating-persentage row align-items-center  mb-2">
                         <div className="col-sm-1 d-flex align-items-center p-0">
-                          <span className="mr-1" style={{ fontSize: '18px' }}>
+                          <span className="mr-1" style={{ fontSize: "18px" }}>
                             2
                           </span>
                           <FaStar className="text-warning" />
@@ -437,14 +436,14 @@ const HotelDetail = () => {
                         >
                           <div
                             className="progress-bar bg-warning"
-                            style={{ width: '10%' }}
+                            style={{ width: "10%" }}
                           ></div>
                         </div>
                         <div className="col-sm-1">10%</div>
                       </div>
                       <div className="hotel-rating-persentage row align-items-center  mb-2">
                         <div className="col-sm-1 d-flex align-items-center p-0">
-                          <span className="mr-1" style={{ fontSize: '18px' }}>
+                          <span className="mr-1" style={{ fontSize: "18px" }}>
                             1
                           </span>
                           <FaStar className="text-warning" />
@@ -459,7 +458,7 @@ const HotelDetail = () => {
                         >
                           <div
                             className="progress-bar bg-warning"
-                            style={{ width: '3%' }}
+                            style={{ width: "3%" }}
                           ></div>
                         </div>
                         <div className="col-sm-1">3%</div>
@@ -471,7 +470,7 @@ const HotelDetail = () => {
                       <h5 className="mb-2">Ajip Rosidi 4 Jan 2023</h5>
                       <div
                         className="hotel-rating-star text-center mb-2"
-                        style={{ width: '70px' }}
+                        style={{ width: "70px" }}
                       >
                         <span>3.9</span>
                         <FaStar className="hotel-rating-icon" />
@@ -488,7 +487,7 @@ const HotelDetail = () => {
                       <h5 className="mb-2">Ajip Rosidi 4 Jan 2023</h5>
                       <div
                         className="hotel-rating-star text-center mb-2"
-                        style={{ width: '70px' }}
+                        style={{ width: "70px" }}
                       >
                         <span>3.9</span>
                         <FaStar className="hotel-rating-icon" />
@@ -501,7 +500,7 @@ const HotelDetail = () => {
                       <h5 className="mb-2">Ajip Rosidi 4 Jan 2023</h5>
                       <div
                         className="hotel-rating-star text-center mb-2"
-                        style={{ width: '70px' }}
+                        style={{ width: "70px" }}
                       >
                         <span>3.9</span>
                         <FaStar className="hotel-rating-icon" />
@@ -660,13 +659,13 @@ const HotelDetail = () => {
                             <span>
                               {format(
                                 new Date(item.borde_checkin),
-                                'E, i LLL YYY'
-                              )}{' '}
+                                "E, i LLL YYY"
+                              )}{" "}
                               {` - `}
                               {format(
                                 new Date(item.borde_checkout),
-                                'E, i LLL YYY'
-                              )}{' '}
+                                "E, i LLL YYY"
+                              )}{" "}
                             </span>
                             {/* <span className="ms-3">1 Room, 2 Guest</span> */}
                             <span className="ms-3">
@@ -739,10 +738,10 @@ const HotelDetail = () => {
                       </div> */}
                       <div className="d-flex align-items-center justify-content-between">
                         <div>
-                          Total Price{' '}
+                          Total Price{" "}
                           <span
                             className="text-success fw-bold"
-                            style={{ fontSize: '12px' }}
+                            style={{ fontSize: "12px" }}
                           >
                             {/* {'(tax included)'} */}
                           </span>
@@ -763,7 +762,7 @@ const HotelDetail = () => {
                     {/* <Link to={`/booking/hotel/create/1`}> */}
                     <button
                       className={`button-list-hotel-filter ${
-                        boorLength < 1 && 'button-disabled'
+                        boorLength < 1 && "button-disabled"
                       }`}
                       type="button"
                       disabled={boorLength < 1}
@@ -779,14 +778,14 @@ const HotelDetail = () => {
           </div>
         </>
       ) : getDetailHotelLoading ? (
-        'Loading ...'
+        "Loading ..."
       ) : getDetailHotelError ? (
         getDetailHotelError.response.status === 404 ? (
           <div className="d-flex align-items-center justify-content-center vh-100">
             <div className="text-center">
               <h1 className="display-1 fw-bold">404</h1>
               <p className="fs-3">
-                {' '}
+                {" "}
                 <span className="text-yellow">Opps!</span> Hotel Not Found.
               </p>
               <p className="lead">
@@ -840,7 +839,7 @@ const HotelDetail = () => {
           getDetailHotelError.message
         )
       ) : (
-        ''
+        ""
       )}
       <div className="mt-5 2">
         <div
@@ -857,7 +856,7 @@ const HotelDetail = () => {
             >
               <div className="modal-header">
                 <h1 className="modal-title fs-5" id="exampleModalLabel">
-                  Add Booking for{' '}
+                  Add Booking for{" "}
                   <span className="text-yellow fw-bold">{roomName}</span>
                 </h1>
                 <button

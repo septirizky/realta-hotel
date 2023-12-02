@@ -12,11 +12,10 @@ export default class job_role extends Model {
     },
     joro_name: {
       type: DataTypes.STRING(55),
-      allowNull: false,
-      unique: "job_role_joro_name_unique"
+      allowNull: false
     },
     joro_modified_date: {
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
       allowNull: false
     }
   }, {
@@ -25,13 +24,6 @@ export default class job_role extends Model {
     schema: 'hr',
     timestamps: false,
     indexes: [
-      {
-        name: "job_role_joro_name_unique",
-        unique: true,
-        fields: [
-          { name: "joro_name" },
-        ]
-      },
       {
         name: "job_role_pkey",
         unique: true,
