@@ -15,11 +15,11 @@ export default class booking_order_detail_extra extends Model {
       allowNull: false
     },
     boex_qty: {
-      type: DataTypes.SMALLINT,
+      type: DataTypes.INTEGER,
       allowNull: false
     },
     boex_subtotal: {
-      type: DataTypes.SMALLINT,
+      type: DataTypes.DECIMAL,
       allowNull: false
     },
     boex_measure_unit: {

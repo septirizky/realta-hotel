@@ -202,6 +202,14 @@ function initModels(sequelize) {
     as: "booking_order_details",
     foreignKey: "borde_boor_id",
   });
+  booking_order_detail.belongsTo(facilities, {
+    as: "borde_faci",
+    foreignKey: "borde_faci_id",
+  });
+  facilities.hasMany(booking_order_detail, {
+    as: "booking_order_details",
+    foreignKey: "borde_faci_id",
+  });
   booking_orders.belongsTo(hotels, {
     as: "boor_hotel",
     foreignKey: "boor_hotel_id",
@@ -390,14 +398,6 @@ function initModels(sequelize) {
     as: "countries",
     foreignKey: "country_region_id",
   });
-  user_accounts.belongsTo(bank, {
-    as: "usac_entity",
-    foreignKey: "usac_entity_id",
-  });
-  bank.hasOne(user_accounts, {
-    as: "user_account",
-    foreignKey: "usac_entity_id",
-  });
   bank.belongsTo(entity, { as: "bank_entity", foreignKey: "bank_entity_id" });
   entity.hasOne(bank, { as: "bank", foreignKey: "bank_entity_id" });
   payment_gateway.belongsTo(entity, {
@@ -407,6 +407,22 @@ function initModels(sequelize) {
   entity.hasOne(payment_gateway, {
     as: "payment_gateway",
     foreignKey: "paga_entity_id",
+  });
+  user_accounts.belongsTo(entity, {
+    as: "usac_entity",
+    foreignKey: "usac_entity_id",
+  });
+  entity.hasMany(user_accounts, {
+    as: "user_accounts",
+    foreignKey: "usac_entity_id",
+  });
+  payment_transaction.belongsTo(users, {
+    as: "patr_user",
+    foreignKey: "patr_user_id",
+  });
+  users.hasMany(payment_transaction, {
+    as: "payment_transactions",
+    foreignKey: "patr_user_id",
   });
   user_accounts.belongsTo(users, {
     as: "usac_user",

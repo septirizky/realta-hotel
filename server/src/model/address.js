@@ -29,7 +29,7 @@ export default class address extends Model {
     },
     addr_city_id: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
       references: {
         model: 'city',
         key: 'city_id'

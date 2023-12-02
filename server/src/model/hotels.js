@@ -27,7 +27,7 @@ export default class hotels extends Model {
       allowNull: false
     },
     hotel_modified_date: {
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
       allowNull: true,
       defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
     },

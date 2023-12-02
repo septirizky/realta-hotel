@@ -19,11 +19,11 @@ export default class facility_price_history extends Model {
       }
     },
     faph_startdate: {
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
       allowNull: false
     },
     faph_enddate: {
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
       allowNull: false
     },
     faph_low_price: {
