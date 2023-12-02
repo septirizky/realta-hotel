@@ -12,7 +12,8 @@ const ModalEditAccounts = (props) => {
         handleSubmit,
         UserAccount,
         setUserAccount,
-        reset
+        reset,
+        userId
     } = props;
     
     const dispatch = useDispatch();
@@ -46,7 +47,6 @@ const ModalEditAccounts = (props) => {
 
     }
 
-    const userId = 1;
     useEffect(() => {
       setExp(UserAccount.expyear + '-' + UserAccount.expmonth)
       if(isEdit){
@@ -116,7 +116,7 @@ const ModalEditAccounts = (props) => {
                       getBankResult ?(
                           getBankResult.map((bank)=>{
                                 return(
-                                    <option value={bank.bank_entity_id}>{bank.bank_name}</option>
+                                    <option key={bank.bank_entity_id} value={bank.bank_entity_id}>{bank.bank_name}</option>
                                       
                                   )
                                 }
@@ -131,7 +131,7 @@ const ModalEditAccounts = (props) => {
                             getPaymentGateawayResult ?(
                               getPaymentGateawayResult.map((paga)=>{
                                     return(
-                                        <option value={paga.paga_entity_id}>{paga.paga_name}</option>
+                                        <option key={paga.paga_entity_id} value={paga.paga_entity_id}>{paga.paga_name}</option>
                                           
                                       )
                                     }

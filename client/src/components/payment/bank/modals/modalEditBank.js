@@ -13,7 +13,8 @@ const ModalEditBank = (props) => {
         Bank,
         setBank,
         resetField,
-        Keyword
+        Keyword,
+        
     } = props
 
     const dispatch = useDispatch();
@@ -64,13 +65,13 @@ const ModalEditBank = (props) => {
                   <label  className="col-form-label">Bank Code</label>
               </div>
               <div className="col-6">                                               
-                  <input type="text" value={Bank.bank_code} id="bankcode" className="form-control" onChange={(e)=>setBank({...Bank,bank_code:e.target.value})} required/>
+                  <input type="text" value={Bank.bank_code} id="bank_code" className="form-control" onChange={(e)=>setBank({...Bank,bank_code:e.target.value})} required/>
               </div>
               <div className="col-4">
                   <label className="col-form-label">Bank Name</label>
               </div>
               <div className="col-6">
-                  <input value={Bank.bank_name} type="text" id="bankcode" className="form-control" onChange={(e)=>setBank({...Bank,bank_name:e.target.value})} required/>
+                  <input value={Bank.bank_name} type="text" id="bank_name" className="form-control" onChange={(e)=>setBank({...Bank,bank_name:e.target.value})} required/>
               </div>
           </div>
           

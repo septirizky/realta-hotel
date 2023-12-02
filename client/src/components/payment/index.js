@@ -24,13 +24,12 @@ const Payment = () => {
 
     }, [burgerActive]);
     return (
-        <div>   
-            <body className="sb-nav-fixed">
+     
+            <div className="sb-nav-fixed">
             <nav className="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+            <div className="navbar-brand ps-3" href="#"><MdApartment size='26' className='text-warning'/> Realta Hotel</div>
             <button className={`btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0 yellow-hover ${burgerActive?"yellow-button":""}`} id="sidebarToggle" href="#!"
                 onClick={(e) => sidebarToggler(e)}><RxHamburgerMenu size='26'/></button>        
-            <div className="navbar-brand ps-3" href="#"><MdApartment size='26' className='text-warning'/> Realta Hotel</div>
-            
             <div className='d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0'>
             </div>
             <ul className="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
@@ -97,10 +96,10 @@ const Payment = () => {
                 </footer>
             </div>
         </div>
-        </body>
+            
+            </div>
 
-              
-        </div>
+  
     );
 }
 

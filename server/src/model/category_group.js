@@ -22,11 +22,11 @@ export default class category_group extends Model {
     },
     cagro_icon: {
       type: DataTypes.STRING(255),
-      allowNull: false
+      allowNull: true
     },
     cagro_icon_url: {
       type: DataTypes.STRING(255),
-      allowNull: false
+      allowNull: true
     },
     createdat: {
       type: DataTypes.DATE,
@@ -37,6 +37,10 @@ export default class category_group extends Model {
       type: DataTypes.DATE,
       allowNull: true,
       defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
+    },
+    cagro_description: {
+      type: DataTypes.STRING(255),
+      allowNull: true
     }
   }, {
     sequelize,

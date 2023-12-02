@@ -22,7 +22,7 @@ export default class price_items extends Model {
     },
     prit_description: {
       type: DataTypes.STRING(255),
-      allowNull: false
+      allowNull: true
     },
     prit_type: {
       type: DataTypes.STRING(15),
@@ -42,6 +42,14 @@ export default class price_items extends Model {
       type: DataTypes.DATE,
       allowNull: true,
       defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
+    },
+    prit_icon: {
+      type: DataTypes.STRING(255),
+      allowNull: false
+    },
+    prit_icon_url: {
+      type: DataTypes.STRING(255),
+      allowNull: false
     }
   }, {
     sequelize,

@@ -29,7 +29,7 @@ export default class payment_transaction extends Model {
     },
     patr_note: {
       type: DataTypes.STRING(255),
-      allowNull: true
+      allowNull: false
     },
     patr_modified_date: {
       type: DataTypes.DATEONLY,
@@ -55,7 +55,11 @@ export default class payment_transaction extends Model {
     },
     patr_user_id: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
+      references: {
+        model: 'users',
+        key: 'user_id'
+      }
     }
   }, {
     sequelize,

@@ -14,6 +14,7 @@ import Transaction from "./components/payment/transaction/transaction";
 
 function App() {
   return (
+
       <BrowserRouter>
           <Routes>
               <Route path='/' element={<TempNav/>}>
@@ -21,7 +22,7 @@ function App() {
                   <Route path='/hr' element={<Hr/>}/>
                   <Route path="/payment" element={<Payment/>}>
                         <Route index element={<Bank/>}/>
-                        <Route path="/payment/paymentgateaway"index element={<PaymentGateaway/>}/>
+                        <Route path="/payment/paymentgateaway"index element={<PaymentGateaway/>} key={'payment-gateaway'}/>
                         <Route path="/payment/accounts"index element={<Accounts/>}/>
                         <Route path="/payment/top-up"index element={<TopUp/>}/>
                         <Route path="/payment/transaction"index element={<Transaction/>}/>
@@ -29,6 +30,7 @@ function App() {
               </Route>
           </Routes>
       </BrowserRouter>
+
   );
 }
 

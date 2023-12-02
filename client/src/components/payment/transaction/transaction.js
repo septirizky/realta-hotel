@@ -38,7 +38,7 @@ const Transaction = () => {
 
     
     return (
-        <>
+        <div>
             <div className='row'>
             <h1 className='mb-3 ms-3'>Transaction   </h1>
                 <div className='col-3 justify-content-end text-end '>
@@ -73,7 +73,7 @@ const Transaction = () => {
             </div>
 
             <div className='p-4'>
-            <table className="table w-100">
+            <table className="table table-striped w-100 align-middle ">
                     <thead>
                         <tr className='text-center'>
                         <th scope="col">Transaction Number</th>
@@ -89,19 +89,19 @@ const Transaction = () => {
                         <th scope="col">User</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody className=''>
                     {
                         getTransactionResult ?(
                             getTransactionResult.map((trx)=>{
                                 return(
-                                <tr key={trx.patr_id}>
+                                <tr key={trx.patr_id} className='' >
                                     <th scope="row">{trx.patr_trx_number}</th>
                                         <td className='text-center'>
                                         {format(
                                             new Date(trx.patr_modified_date),
                                             'ii LLL YYY'
                                         )}</td>
-                                        <td className='text-center'>{trx.patr_debet}</td>
+                                        <td className='text-center p-3'>{trx.patr_debet}</td>
                                         <td className='text-center'>{trx.patr_credit}</td>
                                         <td className='text-center'>{trx.patr_note}</td>
                                         <td className='text-center'>{trx.patr_order_number}</td>
@@ -116,20 +116,24 @@ const Transaction = () => {
                             )
                         )
                         :getTransactionLoading?(
-                            <div class="spinner-border" role="status">
+                            <tr>
                                 <td colSpan={12}>
-                                <span class="visually-hidden">Loading...</span>
+                                    <div className="spinner-border" role="status">
+                                    <span className="visually-hidden">Loading...</span>
+                                    </div>
                                 </td>
-                            </div>
+                            </tr>
                         ):(
-                            <td colspan='12' className='text-center fs-3'>{getTransactionError ? getTransactionError : "Data Kosong"}</td>
+                            <tr>
+                            <td colSpan={12} className='text-center fs-3'>{getTransactionError ? getTransactionError : "Data Kosong"}</td>
+                            </tr>
                         )
 
                     }
                     </tbody>
                     </table>
             </div>
-        </>
+        </div>
     );
 }
 

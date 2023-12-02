@@ -11,8 +11,8 @@ const ModalAddAccounts = (props) => {
         handleCloseModalAddAccount,
         register,
         handleSubmit,
-        resetField,
-        reset
+        userId,
+        reset,
     } = props;
     
     const dispatch = useDispatch();
@@ -34,7 +34,6 @@ const ModalAddAccounts = (props) => {
       (state)=>state.paymentReducers
     )
 
-    const userId = 2
 
     const tambahUserAccount = (data)=>{
       const date = data.expyear.split("-");
@@ -75,25 +74,28 @@ const ModalAddAccounts = (props) => {
     }, [dispatch,addUserAccountResult,addUserAccountError]);
 
     return (
-        <Modal show={showModalAccounts} onHide={handleCloseModalAddAccount}>
+        <Modal show={showModalAccounts} onHide={handleCloseModalAddAccount} >
         <Modal.Header closeButton>
           <Modal.Title>Add Account</Modal.Title>
         </Modal.Header>
         <form onSubmit={handleSubmit(tambahUserAccount)}>
         <Modal.Body>
           <div className="row g-3 align-items-center">
+              
               <div className="col-6">
                   <label  className="col-form-label">Account Number</label>
               </div>
               <div className="col-6">                                               
                   <input type="text" {...register('account_number')} id="account_number" className="form-control" required/>
               </div>
+
               <div className="col-6">
                   <label className="col-form-label">Saldo</label>
               </div>
               <div className="col-6">
                   <input {...register('saldo')} type="text" id="saldo" className="form-control" required/>
               </div>
+              
               <div className="col-6">
                   <label className="col-form-label">Type</label>
               </div>
@@ -116,7 +118,7 @@ const ModalAddAccounts = (props) => {
                           getBankResult.map((bank)=>{
                                 return(
                                   
-                                    <option value={bank.bank_entity_id}>{bank.bank_name}</option>
+                                    <option key={bank.bank_entity_id} value={bank.bank_entity_id}>{bank.bank_name}</option>
                                       
                                   )
                                 }
@@ -132,7 +134,7 @@ const ModalAddAccounts = (props) => {
                               getPaymentGateawayResult.map((paga)=>{
                                 // console.log(paga)
                                     return(
-                                        <option value={paga.paga_entity_id}>{paga.paga_name}</option>
+                                        <option key={paga.paga_entity_id} value={paga.paga_entity_id}>{paga.paga_name}</option>
                                           
                                       )
                                     }

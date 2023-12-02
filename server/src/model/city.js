@@ -1,38 +1,26 @@
 import _sequelize from 'sequelize';
 const { Model, Sequelize } = _sequelize;
 
-export default class address extends Model {
+export default class city extends Model {
   static init(sequelize, DataTypes) {
   return super.init({
-    addr_id: {
+    city_id: {
       autoIncrement: true,
       autoIncrementIdentity: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    addr_line_1: {
-      type: DataTypes.STRING(225),
+    city_name: {
+      type: DataTypes.STRING(128),
       allowNull: false
     },
-    addr_line_2: {
-      type: DataTypes.STRING(225),
-      allowNull: true
-    },
-    addr_postal_code: {
-      type: DataTypes.STRING(5),
-      allowNull: true
-    },
-    addr_spatial_location: {
-      type: DataTypes.STRING(225),
-      allowNull: true
-    },
-    addr_city_id: {
+    city_province_id: {
       type: DataTypes.INTEGER,
       allowNull: true,
       references: {
-        model: 'city',
-        key: 'city_id'
+        model: 'provinces',
+        key: 'prov_id'
       }
     },
     createdat: {
@@ -47,21 +35,15 @@ export default class address extends Model {
     }
   }, {
     sequelize,
-    tableName: 'address',
+    tableName: 'city',
     schema: 'master',
     timestamps: false,
     indexes: [
       {
-        name: "address_pkey",
+        name: "city_pkey",
         unique: true,
         fields: [
-          { name: "addr_id" },
-        ]
-      },
-      {
-        name: "fki_addr_city_id_fkey",
-        fields: [
-          { name: "addr_city_id" },
+          { name: "city_id" },
         ]
       },
     ]

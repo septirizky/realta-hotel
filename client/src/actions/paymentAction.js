@@ -34,7 +34,7 @@ export const getBank = (bank_name)=>{
             timeout: 120000
         })
         .then((res)=>{
-            // console.log(res.data)
+            // // console.log(res.data)
             dispatch({
                 type: GET_BANK,
                 payload: {
@@ -45,7 +45,7 @@ export const getBank = (bank_name)=>{
             })
         })
         .catch((err)=>{
-            console.log('3. Error',err)
+            // console.log('3. Error',err)
             dispatch({
                 type: GET_BANK,
                 payload: {
@@ -75,7 +75,7 @@ export const AddBank = (data)=>{
             data: data
         })
         .then((result)=>{
-            // console.log(result)
+            // // console.log(result)
             dispatch({
                 type:ADD_BANK,
                 payload: {
@@ -86,7 +86,7 @@ export const AddBank = (data)=>{
             })
         })
         .catch((error)=>{
-            // console.log(error.response.data.message)
+            // // console.log(error.response.data.message)
             dispatch({
                 type:ADD_BANK,
                  payload: {
@@ -157,7 +157,7 @@ export const getPaymentGateaway = (paga_code)=>{
             timeout:12000
         })
         .then((result)=>{
-            // console.log(result.data.data)
+            // // console.log(result.data.data)
             dispatch({
                 type:GET_PAYMENTGATEAWAY,
                 payload:{
@@ -168,7 +168,7 @@ export const getPaymentGateaway = (paga_code)=>{
             })
         })
         .catch((error)=>{
-            console.log(error)
+            // // console.log(error)
             dispatch({
                 type:GET_PAYMENTGATEAWAY,
                 payload:{
@@ -237,7 +237,7 @@ export const updatePaymentGateaway = (data)=>{
             timeout:12000
         })
         .then((result)=>{
-            // console.log(result)
+            // // console.log(result)
             dispatch({
                 type:UPDATE_PAYMENTGATEAWAY,
                 payload:{
@@ -248,7 +248,7 @@ export const updatePaymentGateaway = (data)=>{
             })
         })
         .catch((error)=>{
-            // console.log(error)
+            // // console.log(error)
             dispatch({
                 type:UPDATE_PAYMENTGATEAWAY,
                 payload:{
@@ -277,7 +277,7 @@ export const getUserAccount = (usac_user_id)=>{
             timeout:12000,
         })
         .then((result)=>{
-            // console.log(result.data.data)
+            // // console.log(result.data.data)
             dispatch({
                 type:GET_USER_ACCOUNT,
                 payload:{
@@ -288,7 +288,7 @@ export const getUserAccount = (usac_user_id)=>{
             })
         })
         .catch((error)=>{
-            // console.log(error.message)
+            // // console.log(error.message)
             dispatch({
                 type:GET_USER_ACCOUNT,
                 payload:{
@@ -317,7 +317,7 @@ export const getUserAccountExclude = (usac_user_id)=>{
             timeout:12000,
         })
         .then((result)=>{
-            // console.log(result)
+            // // console.log(result)
             dispatch({
                 type:GET_USER_ACCOUNT_EXCLUDE,
                 payload:{
@@ -328,7 +328,7 @@ export const getUserAccountExclude = (usac_user_id)=>{
             })
         })
         .catch((error)=>{
-            // console.log(error.message)
+            // // console.log(error.message)
             dispatch({
                 type:GET_USER_ACCOUNT_EXCLUDE,
                 payload:{
@@ -358,7 +358,7 @@ export const addUserAccount = (data)=>{
             timeout:12000
         })
         .then((result)=>{
-            console.log(result.data.message)
+            // // console.log(result.data.message)
             dispatch({
                 type:ADD_USER_ACCOUNT,
                 payload:{
@@ -369,7 +369,7 @@ export const addUserAccount = (data)=>{
             })
         })
         .catch((error)=>{
-            console.log(error)
+            // // console.log(error)
             dispatch({
                 type:ADD_USER_ACCOUNT,
                 payload:{
@@ -399,7 +399,7 @@ export const updateUserAccount = (data)=>{
             timeout:12000
         })
         .then((result)=>{
-            // console.log(result)
+            // // console.log(result)
             dispatch({
                 type:UPDATE_USER_ACCOUNT,
                 payload:{
@@ -410,7 +410,7 @@ export const updateUserAccount = (data)=>{
             })
         })
         .catch((error)=>{
-            console.log(error)
+            // // console.log(error)
             dispatch({
                 type:UPDATE_USER_ACCOUNT,
                 payload:{
@@ -440,7 +440,7 @@ export const topUp = (data)=>{
             data:data
         })
         .then((result)=>{
-            console.log(result)
+            // // console.log(result)
             dispatch({
                 type:TOP_UP,
                 payload:{
@@ -451,7 +451,7 @@ export const topUp = (data)=>{
             })
         })
         .catch((error)=>{
-            console.log(error.response.data.message)
+            // console.log(error.response.data.message)
             dispatch({
                 type:TOP_UP,
                 payload:{
@@ -466,7 +466,7 @@ export const topUp = (data)=>{
 
 export const getTransaction = (data)=>{
     return async(dispatch)=>{
-        console.log(data)
+        // console.log(data)
         dispatch({
             type:GET_TRANSACTION,
             payload:{
@@ -484,7 +484,7 @@ export const getTransaction = (data)=>{
         })
 
         .then((result)=>{
-            console.log(result)
+            // console.log(result)
             dispatch({
                 type:GET_TRANSACTION,
                 payload:{
@@ -495,7 +495,7 @@ export const getTransaction = (data)=>{
             })
         })
         .catch((error)=>{
-            console.log(error)
+            // console.log(error)
             dispatch({
                 type:GET_TRANSACTION,
                 payload:{

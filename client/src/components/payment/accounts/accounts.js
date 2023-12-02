@@ -104,8 +104,8 @@ const Accounts = () => {
                             getUserAccountResult ?(
                                 getUserAccountResult.map((usac,index)=>{
                                     return(
-                                        <tr>
-                                        <th scope="row">{index+1}</th>
+                                        <tr key={usac.usac_id}>
+                                            <th scope="row" key={usac.usac_entity_id}>{index+1}</th>
                                             <td>{usac.usac_account_number}</td>
                                             <td>{usac.usac_entity.bank ? usac.usac_entity.bank.bank_name :usac.usac_entity.payment_gateway.paga_name }</td>
                                             <td>{formatRupiah(usac.usac_saldo)}</td>
@@ -128,9 +128,15 @@ const Accounts = () => {
                                 )
                             )
                             :getUserAccountLoading?(
-                                <tr>Loading...</tr>
+                                <tr colSpan={4} className='text-center fs-3'>
+                                    <td>
+                                    Loading...
+                                    </td>
+                                </tr>
                             ):(
+                                <tr>
                                 <td colSpan={4} className='text-center fs-3'>{getUserAccountError ? getUserAccountError : "data Kosong"}</td>
+                                </tr>
                             )
 
                         }
@@ -150,6 +156,8 @@ const Accounts = () => {
                 handleSubmit = {handleSubmit}
                 resetField = {resetField}
                 reset = {reset}
+                userId = {userId}
+
             />
 
             <ModalEditAccounts
@@ -160,6 +168,7 @@ const Accounts = () => {
                 reset={reset}
                 UserAccount = {UserAccount}
                 setUserAccount = {setUserAccount}
+                userId = {userId}
             />
 
         </>

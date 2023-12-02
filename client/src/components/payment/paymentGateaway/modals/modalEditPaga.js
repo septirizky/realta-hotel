@@ -60,7 +60,7 @@ const ModalEditPaga = (props) => {
 
 
     return (
-        <Modal show={showModalPaga} onHide={handleCloseEditPaga}>
+        <Modal show={showModalPaga} onHide={handleCloseEditPaga} key={Paga.paga_entity_id}>
             <Modal.Header closeButton>
               <Modal.Title>Edit Payment Gateaway</Modal.Title>
             </Modal.Header>
