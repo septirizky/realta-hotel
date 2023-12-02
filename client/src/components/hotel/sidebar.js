@@ -2,7 +2,7 @@ import { Link, Outlet, useLocation } from "react-router-dom";
 import "./css/styles.css";
 import { BsPersonCircle } from "react-icons/bs";
 import { RiHotelLine, RiHotelBedLine } from "react-icons/ri";
-import { MdApartment, MdOutlineHotelClass } from "react-icons/md";
+import { MdApartment, MdHistory } from "react-icons/md";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { useEffect, useState } from "react";
 
@@ -105,16 +105,18 @@ export const Sidebar = () => {
                   Facilities
                 </Link>
                 <Link
-                  to="/hotel/review"
+                  to="/hotel/facility_history"
                   className={`nav-link ${
-                    pathname.pathname === "/hotel/review" ? "active" : ""
+                    pathname.pathname === "/hotel/facility_history"
+                      ? "active"
+                      : ""
                   }`}
                   href=""
                 >
                   <div className="sb-nav-link-icon">
-                    <MdOutlineHotelClass size="26" />
+                    <MdHistory size="26" />
                   </div>
-                  Review
+                  History
                 </Link>
               </div>
             </div>
