@@ -4,6 +4,7 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import AddFacilities from "./modal/addFacilities";
 import EditFacilities from "./modal/editFacilities";
 import DeleteFacilities from "./modal/deleteFacilities";
+import Upload from "./modal/upload";
 
 const GetFacilities = (props) => {
   const {
@@ -23,11 +24,14 @@ const GetFacilities = (props) => {
     }).format(number);
   };
 
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit, reset, setValue } = useForm();
 
+  const [showModalAddPhoto, setShowModalAddPhoto] = useState(false);
   const [showModalAddFaci, setShowModalAddFaci] = useState(false);
   const [showModalEditFaci, setShowModalEditFaci] = useState(false);
   const [showModalDeleteFaci, setShowModalDeleteFaci] = useState(false);
+
+  const [faciId, setfaciId] = useState("");
 
   const [facility, setFacility] = useState({
     faciId: "",
@@ -45,6 +49,14 @@ const GetFacilities = (props) => {
     rate_price: "",
     hotel_id: "",
   });
+
+  const showAddPhoto = () => {
+    setShowModalAddPhoto(true);
+  };
+  const closeAddPhoto = () => {
+    reset();
+    setShowModalAddPhoto(false);
+  };
 
   const showAddFaci = () => {
     setShowModalAddFaci(true);
@@ -68,7 +80,6 @@ const GetFacilities = (props) => {
     faci_enddate,
     faci_description
   ) => {
-    // const hasil =
     setFacility({
       faciId: faci_id,
       name: faci_name,
@@ -82,7 +93,6 @@ const GetFacilities = (props) => {
       startdate: faci_startdate,
       enddate: faci_enddate,
       description: faci_description,
-      // rate_price: "",
       hotel_id: params_hotel_id,
     });
     setShowModalEditFaci(true);
@@ -99,7 +109,6 @@ const GetFacilities = (props) => {
     });
     setShowModalDeleteFaci(true);
   };
-
   const closeDeleteFaci = () => {
     setShowModalDeleteFaci(false);
   };
@@ -210,7 +219,16 @@ const GetFacilities = (props) => {
                         </li>
                         <li>
                           <a className="dropdown-item" href="#">
-                            Price History
+                            <button
+                              type="button"
+                              className="button-delete-transparan"
+                              onClick={(e) => {
+                                setfaciId(faci_id);
+                                showAddPhoto();
+                              }}
+                            >
+                              Upload
+                            </button>
                           </a>
                         </li>
                       </ul>
@@ -226,6 +244,15 @@ const GetFacilities = (props) => {
           )}
         </tbody>
       </table>
+      <Upload
+        showModalPhoto={showModalAddPhoto}
+        handleCloseAddPhoto={closeAddPhoto}
+        register={register}
+        handleSubmit={handleSubmit}
+        reset={reset}
+        params_faci_id={faciId}
+        setValue={setValue}
+      />
       <AddFacilities
         showModalFaci={showModalAddFaci}
         handleCloseAddFaci={closeAddFaci}
