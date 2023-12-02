@@ -4,6 +4,10 @@ import {
   UPDATE_FACI,
   DELETE_FACI,
   GET_CATEGORY,
+  ADD_PHOTO,
+  GET_PHOTO,
+  DELETE_PHOTO,
+  GET_FACIHIS,
 } from "../../actions/facilitiesAction";
 import {
   GET_CITY,
@@ -53,6 +57,22 @@ const initialState = {
   getCategoryResult: false,
   getCategoryLoading: false,
   getCategoryError: false,
+
+  getPhotoResult: false,
+  getPhotoLoading: false,
+  getPhotoError: false,
+
+  addPhotoResult: false,
+  addPhotoLoading: false,
+  addPhotoError: false,
+
+  deletePhotoResult: false,
+  deletePhotoLoading: false,
+  deletePhotoError: false,
+
+  getFaciHisResult: false,
+  getFaciHisLoading: false,
+  getFaciHisError: false,
 };
 
 const hotel = (state = initialState, action) => {
@@ -135,6 +155,44 @@ const hotel = (state = initialState, action) => {
         getCategoryResult: action.payload.data,
         getCategoryLoading: action.payload.loading,
         getCategoryError: action.payload.errorMessage,
+      };
+
+    case GET_PHOTO:
+      return {
+        ...state,
+        getPhotoResult: action.payload.data,
+        getPhotoLoading: action.payload.loading,
+        getPhotoError: action.payload.errorMessage,
+      };
+
+    case ADD_PHOTO:
+      return {
+        ...state,
+        addPhotoResult: action.payload.data,
+        addPhotoLoading: action.payload.loading,
+        addPhotoError: action.payload.errorMessage,
+      };
+
+    case DELETE_PHOTO:
+      return {
+        ...state,
+        deletePhotoResult: action.payload.data,
+        deletePhotoLoading: action.payload.loading,
+        deletePhotoError: action.payload.errorMessage,
+      };
+
+    case GET_FACIHIS:
+      return {
+        ...state,
+        getFaciHisResult: action.payload.data,
+        getFaciHisLoading: action.payload.loading,
+        getFaciHisError: action.payload.errorMessage,
+      };
+      return {
+        ...state,
+        addFaciHisResult: action.payload.data,
+        addFaciHisLoading: action.payload.loading,
+        addFaciHisError: action.payload.errorMessage,
       };
 
     default:
