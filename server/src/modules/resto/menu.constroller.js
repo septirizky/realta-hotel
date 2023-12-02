@@ -115,36 +115,69 @@ const getMenuPhoto = async (req, res) => {
   }
 };
 
-const createMenuPhoto = async(req,res) => {
+export const createMenuPhoto = async (req, res) => {
   try {
-    if(req.file) {
-      const {thuname,primary,reme_id} = req.body
-      const url = `${req.protocol}://${req.get('host')}/photoes/${req.file.filename}`;
-      const result = await models.resto_menu_photos.create(
+    const {primary,reme_id} = req.body
+    let result;
+    req.files.map(async (photo, index) => {
+      const url = `${req.protocol}://${req.get("host")}/uploads/${
+        req.files[index].filename
+      }`;
+      result = await models.resto_menu_photos.create(
         {
-          remp_thumbnail_filename : thuname,
-          remp_photo_filename:req.file.filename,
+          // remp_thumbnail_filename: photo.path,
+          // remp_photo_filename:photo.filename,
+          // remp_prime: primary,
+          // remp_url: url,
+          // remp_reme_id: reme_id,
+
+          remp_thumbnail_filename : photo.path,
+          remp_photo_filename:photo.filename,
           remp_prime : primary,
           remp_url : url,
           remp_reme_id : reme_id
         },
-        {returning : true}
+        { returning: true }
       );
-      res.send(err(result,200,'sukses'));
-    }
-    else {
-      res.send(err(400,'Upload Foto Terlebih Dahulu'))
-    }
+    });
+    return res
+      .status(200)
+      .json({ data: result, message: "berhasil upload photo" });
   } catch (error) {
-    res.send(err(400, error.message))
+    return res.status(500).json({ message: error.message });
   }
-}
+};
+
+// const createMenuPhoto = async(req,res) => {
+//   try {
+//     if(req.file) {
+//       const {thuname,primary,reme_id} = req.body
+//       const url = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
+//       const result = await models.resto_menu_photos.create(
+//         {
+//           remp_thumbnail_filename : thuname,
+//           remp_photo_filename:req.file.filename,
+//           remp_prime : primary,
+//           remp_url : url,
+//           remp_reme_id : reme_id
+//         },
+//         {returning : true}
+//       );
+//       res.send(err(result,200,'sukses'));
+//     }
+//     else {
+//       res.send(err(400,'Upload Foto Terlebih Dahulu'))
+//     }
+//   } catch (error) {
+//     res.send(err(400, error.message))
+//   }
+// }
 
 const deleteMenuPhoto = async (req,res)=>{
   try {
     const {remp_id} = req.params;
     const image = req.params.image;
-    const url = `./src/public/photoes/${image}`
+    const url = `./src/public/uploads/${image}`
     fs.unlinkSync(url)
     const result = await models.resto_menu_photos.destroy({
       where:{
@@ -164,7 +197,7 @@ const addMenuPhoto = async(req,res) => {
     if(req.file) {
       const {remp_id} = req.params
       const {thuname,primary,reme_id} = req.body
-      const path = `./src/public/photoes/${req.body.image}`;
+      const path = `./src/public/uploads/${req.body.image}`;
       fs.unlinkSync(path)
       const url = `${req.protocol}://${req.get('host')}/photoes/${req.file.filename}`;
       // fs.unlinkSync(url)

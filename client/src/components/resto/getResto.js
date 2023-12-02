@@ -6,17 +6,17 @@ import { Link } from "react-router-dom";
 import AddMenu from "./modal/addMenu";
 import EditMenu from "./modal/editMenu";
 import DeleteMenu from "./modal/deleteMenu";
-// import UploadPhoto from "./modal/uploadPhoto.js";
+import Upload from "./modal/uploadPhoto.js";
 
 const GetResto = (props) => {
   const { getMenuResult, getMenuLoading, getMenuError } = props;
 
-  const { register, resetField, handleSubmit } = useForm();
+  const { register, resetField, handleSubmit, reset, setValue } = useForm();
 
   const [showModalAddMenu, setShowModalAddMenu] = useState(false);
   const [showModalEditMenu, setShowModalEditMenu] = useState(false);
   const [showModalDeleteMenu, setShowModalDeleteMenu] = useState(false);
-  // const [showModalUploadPhoto, setShowModalUploadPhoto] = useState (false)
+  const [showModalAddPhoto, setShowModalAddPhoto] = useState (false)
 
   const [menuId, setMenuId] = useState();
   const [menuName, setMenuName] = useState("");
@@ -40,15 +40,13 @@ const GetResto = (props) => {
     setShowModalAddMenu(false);
   };
 
-  // const showUploadPhoto = () => {
-  //   setShowModalUploadPhoto(true);
-  // };
-  // const closeUploadPhoto = () => {
-  //   resetField("remp_thumbnail_filename");
-  //   resetField("remp_prime");
-  //   resetField("remp_reme_id");
-  //   setShowModalUploadPhoto(false);
-  // };
+  const showAddPhoto = () => {
+    setShowModalAddPhoto(true);
+  };
+  const closeAddPhoto = () => {
+    reset()
+    setShowModalAddPhoto(false);
+  };
 
   const showEditMenu = (menuId, menuName, menuPrice, menuType, menuStatus, menuDescription) => {
     setMenuId(menuId);
@@ -143,6 +141,21 @@ const GetResto = (props) => {
                           <a className="dropdown-item" href="#">
                             <button
                               type="button"
+                              className="button-update-transparan"
+                              onClick={() =>{
+                                setMenuId(reme_id);
+                                showAddPhoto()
+                                }
+                              }
+                            >
+                              Upload Photo
+                            </button>
+                          </a>
+                        </li>
+                        <li>
+                          <a className="dropdown-item" href="#">
+                            <button
+                              type="button"
                               className="button-delete-transparan"
                               onClick={() => showDeleteMenu(reme_name, reme_id)}
                             >
@@ -197,6 +210,16 @@ const GetResto = (props) => {
         menuId={menuId}
         menuName={menuName}
         handleSubmit={handleSubmit}
+      />
+
+<Upload
+        showModalPhoto={showModalAddPhoto}
+        handleCloseAddPhoto={closeAddPhoto}
+        register={register}
+        handleSubmit={handleSubmit}
+        reset={reset}
+        params_reme_id={menuId}
+        setValue={setValue}
       />
     </div>
   );

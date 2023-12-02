@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getMenuDetail } from "../../actions/restoaction";
 // import { getMenu } from "../../actions/restoaction";
 import GetMenuDetail from "./getMenudetail";
-// import GetResto from "./getResto";
+import {Link} from "react-router-dom"
 
 const MenuDetail = () => {
   const {
@@ -27,6 +27,7 @@ const MenuDetail = () => {
       </ol>
       <div className="content-utama-resto">
         <div className="content-resto">
+          <Link to="/resto">Menu</Link>
           <GetMenuDetail
             getMenuDetailResult={getMenuDetailResult}
             getMenuDetailLoading={getMenuDetailLoading}

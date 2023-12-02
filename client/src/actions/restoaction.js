@@ -177,50 +177,51 @@ export const delete_Menu = (reme_id) => {
   };
 };
 
-// export const ADD_PHOTO = "ADD_PHOTO";
-// export const add_Photo = (data) => {
-//   return (dispatch) => {
-//     //loading
-//     dispatch({
-//       type: ADD_PHOTO,
-//       payload: {
-//         loading: true,
-//         data: false,
-//         errorMessage: false,
-//       },
-//     });
-//     //getAPI
-//      axios({
-//       method: "POST",
-//       url: "http://localhost:4000/resto/photo",
-//       data:data
-//       // timeout: 120000,
-//     })
-//       .then((response) => {
-//          console.log('3. Berhasil Dapet Data : ', response.data.data);
-//         //berhasil get API
-//         dispatch({
-//           type: ADD_PHOTO,
-//           payload: {
-//             loading: false,
-//             data: response.data.data,
-//             errorMessage: false,
-//           },
-//         });
-//       })
-//       .catch((error) => {
-//         //gagal ADD API
-//         dispatch({
-//           type: ADD_PHOTO,
-//           payload: {
-//             loading: false,
-//             data: false,
-//             errorMessage: error.message,
-//           },
-//         });
-//       });
-//   };
-// };
+export const ADD_PHOTO = "ADD_PHOTO";
+export const add_Photo = (data) => {
+  return (dispatch) => {
+    //loading
+    dispatch({
+      type: ADD_PHOTO,
+      payload: {
+        loading: true,
+        data: false,
+        errorMessage: false,
+      },
+    });
+    //getAPI
+     axios({
+      method: "POST",
+      url: "http://localhost:4000/resto/photo",
+      data:data
+      // timeout: 120000,
+    })
+      .then((response) => {
+         console.log('3. Berhasil Dapet Data : ', response.data.message);
+        
+        //berhasil get API
+        dispatch({
+          type: ADD_PHOTO,
+          payload: {
+            loading: false,
+            data: response.data.message,
+            errorMessage: false,
+          },
+        });
+      })
+      .catch((error) => {
+        //gagal ADD API
+        dispatch({
+          type: ADD_PHOTO,
+          payload: {
+            loading: false,
+            data: false,
+            errorMessage: error.message,
+          },
+        });
+      });
+  };
+};
 
 export const GET_MENUDETAIL = "GET_MENUDETAIL";
 
