@@ -1,32 +1,21 @@
-import React , { useState } from 'react';
+import React , { useState,useEffect } from 'react';
 import {BiPlus} from "react-icons/bi";
 import {TiTimes} from "react-icons/ti";
 import Swal from "sweetalert2";
-import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import {
-  MDBCol,
-  MDBContainer,
-  MDBRow,
-  MDBCard,
-  MDBCardText,
-  MDBCardBody,
-  MDBCardImage,
-  MDBBtn,
-  MDBBreadcrumb,
-  MDBBreadcrumbItem,
- 
-} from 'mdb-react-ui-kit';
-
-
+import {  useNavigate } from "react-router-dom";
+import jwtDecode from 'jwt-decode';
+import Cookies from 'js-cookie';
+import { InsProfile, ChaPassword } from '../../actions/usersAction';
+import {MDBCol,MDBContainer,MDBRow,MDBCard,MDBCardText,MDBCardBody,MDBCardImage,MDBBtn,MDBBreadcrumb,MDBBreadcrumbItem,
+        } from 'mdb-react-ui-kit';
+        
 
 export default function ProfilePage() {
-  // const { getProfileResult, getProfileLoading, getProfileError } = useSelector(
-  //   (state) => state.UsersReducers
-  // );
 
+  
   const [formEmp, setFormEmp] = useState('')
+  const navigate = useNavigate()
   const [activeTab, setActiveTab] = useState('bonus');
     const handleTabChange = (tab) => {
       setActiveTab(tab)};
@@ -45,120 +34,102 @@ export default function ProfilePage() {
   const [jobtitle,setjobtitle] = useState('')
   const [gender,setgender] = useState('')
   const [maritalstatus,setmaritalstatus] = useState('')
+  const [prestige,setprestige]= useState('')
  
   const [currentpassword,setcurrentpassword] = useState('')
   const [newpassword,setnewpassword] = useState('')
   const [retypepassword,setretypepassword] = useState('')
 
-  const insertdata =async(e)=>{
-    try {
-      Swal.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes",
-      }).then(async (result) => {
-        if (result.isConfirmed) {
-          const requestData = {
-            user_full_name: username,
-            user_type: type,
-            user_company_name: company,
-            user_email: email,
-            user_phone_number: handphone,
-            uspro_national_id: nationalid,
-            uspro_birt_date: birthdate,
-            uspro_job_title: jobtitle,
-            uspro_marital_status: maritalstatus,
-            uspro_gender: gender
+  const dispatch = useDispatch()
+
+  const token = Cookies.get('token')?jwtDecode(Cookies.get('token')):'';
+  // const decode = jwtDecode();
+  useEffect(()=>{
+    if(token){
+      setusername(token.existingUser[0].user_full_name)
+      setemail(token.existingUser[0].user_email)
+      settype(token.existingUser[0].user_type)
+      setcompany(token.existingUser[0].user_company_name)
+      sethandphone(token.existingUser[0].user_phone_number)
+      // setroletype(token.existingUser.user_phone_number)
+      // setnationalid(token.existingUser.user_phone_number)
+      // setbirthdate(token.existingUser.user_phone_number)
+      // setjobtitle(token.existingUser.user_phone_number)
+      // setgender(token.existingUser.user_phone_number)
+      // setmaritalstatus(token.existingUser.user_phone_number)
+      // setprestige(token.existingUser.user_phone_number)
+    console.log(token)}
+  },[])
+
+const insertdata = async(e)=>{
+  e.preventDefault();
+        const data = {
+          username,email,type,company,handphone,roletype,nationalid,birthdate,jobtitle,gender,maritalstatus
+        };
+        dispatch(InsProfile(data))
+      .then((result) => {
+          Swal.fire('Succes');
+        })
+        .catch((error) => {
+          console.log(error.message);
+          Swal.fire('Error', 'Failed to save profile data', 'error');
+        });
+}
+  
+  ///buat pass
+  const changePassword = async(e)=>{
+    e.preventDefault();
+      const data = {
+            currentpassword,newpassword,retypepassword
           };
-
-          const response = await axios.post('http://localhost:2112/users/insert', requestData, {
-            timeout: 12000,
+          dispatch(ChaPassword(data))
+        .then((result) => {
+            Swal.fire('Succes');
+  
+          })
+          .catch((error) => {
+            console.log(error.message);
+            Swal.fire('Error', 'Failed to save password', 'error');
           });
-
-          if (response.data && response.data.message === 'Success') {
-            Swal.fire('Success');
-          } else {
-          }
         }
-      });
-    } catch (error) {
-      console.log(error.message || 'An error occurred');
-    }
-  };
 
-  //     then(async (result) => {
+
+  /////link buat mencet tombol atas nya
+  const home = (Link)=>{
+    window.location.href=Link
+  }
+ 
+
+  // const insertdata =async(e)=>{
+  //   try {
+  //     Swal.fire({
+  //       title: "Are you sure?",
+  //       text: "You won't be able to revert this!",
+  //       icon: "warning",
+  //       showCancelButton: true,
+  //       confirmButtonColor: "#3085d6",
+  //       cancelButtonColor: "#d33",
+  //       confirmButtonText: "Yes",
+  //     }).then(async (result) => {
   //       if (result.isConfirmed) {
-  //         axios({
-  //           method: "POST",
-  //           url: `http://localhost:2112/users/insert`,
+  //         const requestData = {
+  //           user_full_name: username,
+  //           user_type: type,
+  //         };
+  //         const response = await axios.post('http://localhost:2112/users/insert', requestData, {
   //           timeout: 12000,
-  //           data: {
-  //             user_full_name,
-  //             user_type,
-  //             user_company_name,
-  //             user_email,
-  //             user_phone_number,
-  //             uspro_national_id,
-  //             uspro_birt_date,
-  //             uspro_job_title,
-  //             uspro_marital_status,
-  //             uspro_gender,
-  //             uspro_user_id,
-  //             usro_user_id, 
-  //             usro_role_id
-  //           },
-  //         })
+  //         });
 
-  //           .then((result) => {
-  //           console.log("aman")
-  //             Swal.fire("success");
-
-  //           })
-  //           .catch((error) => {                  
-  //           });
+  //         if (response.data && response.data.message === 'Success') {
+  //           Swal.fire('Success');
+  //         } else {
+  //         }
   //       }
   //     });
   //   } catch (error) {
-  //     console.log(error.massage)
+  //     console.log(error.message || 'An error occurred');
   //   }
-  // }
-
-
-  const changePassword =async(e)=>{
-    try {
-      Swal.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes",
-      }).then(async (result) => {
-        if (result.isConfirmed) {
-          const requestData = {
-            
-          };
-
-          const response = await axios.patch('http://localhost:2112/users/change-password/:id', requestData, {
-            timeout: 12000,
-          });
-
-          if (response.data && response.data.message === 'Success') {
-            Swal.fire('Success');
-          } else {
-          }
-        }
-      });
-    } catch (error) {
-      console.log(error.message || 'An error occurred');
-    }
-  };
-
+  // };
 
   return (
     <section>
@@ -167,10 +138,14 @@ export default function ProfilePage() {
           <MDBCol>
             <MDBBreadcrumb className="bg-light rounded-3 p-3 mb-4">
               <MDBBreadcrumbItem>
-                <a href='#'>Home</a>
+                <a href='#'
+                onClick={() => home('/')}
+                >Home</a>
               </MDBBreadcrumbItem>
               <MDBBreadcrumbItem>
-                <a href="#">User</a>
+                <a href="#"
+                onClick={() => home('/')}
+                >User</a>
               </MDBBreadcrumbItem>
               <MDBBreadcrumbItem active>User Profile</MDBBreadcrumbItem>
             </MDBBreadcrumb>
@@ -200,10 +175,7 @@ export default function ProfilePage() {
                         <MDBCardText>Full Name</MDBCardText>
                       </MDBCol>
                       <MDBCol sm="9">
-                        <MDBCardText className="text-muted">
-                        
-                          Johnatan Smith
-                        </MDBCardText>
+                        {username?(<MDBCardText className="text-muted">{username ? username : "Johnatan Smith"}</MDBCardText>):("-")}
                       </MDBCol>
                     </MDBRow>
                     <hr />
@@ -212,7 +184,7 @@ export default function ProfilePage() {
                         <MDBCardText>Prestige</MDBCardText>
                       </MDBCol>
                       <MDBCol sm="9">
-                        <MDBCardText className="text-muted">example@example.com</MDBCardText>
+                        {prestige?(<MDBCardText className="text-muted">{prestige ? prestige : "Gold Member"}example@example.com</MDBCardText>):("-")}
                       </MDBCol>
                     </MDBRow>
                     <hr />
@@ -221,7 +193,7 @@ export default function ProfilePage() {
                         <MDBCardText>Type</MDBCardText>
                       </MDBCol>
                       <MDBCol sm="9">
-                        <MDBCardText className="text-muted">(097) 234-5678</MDBCardText>
+                        {type?(<MDBCardText className="text-muted">{type ? type : "Travel Agent"}</MDBCardText>):("-")}
                       </MDBCol>
                     </MDBRow>
                     <hr />
@@ -230,7 +202,7 @@ export default function ProfilePage() {
                         <MDBCardText>Email</MDBCardText>
                       </MDBCol>
                       <MDBCol sm="9">
-                        <MDBCardText className="text-muted">(097) 234-5678</MDBCardText>
+                        {email?(<MDBCardText className="text-muted">{email}</MDBCardText>):("-")}
                       </MDBCol>
                     </MDBRow>
                     <hr />
@@ -239,7 +211,7 @@ export default function ProfilePage() {
                         <MDBCardText>Phone Number</MDBCardText>
                       </MDBCol>
                       <MDBCol sm="6">
-                        <MDBCardText className="text-muted">Bay Area, San Francisco, CA</MDBCardText>
+                        {handphone?(<MDBCardText className="text-muted">{handphone ? handphone : "082269764383"}</MDBCardText>):("-")}
                       </MDBCol>
                       <MDBCol sm="3" className='float-end' >
                       <div class="d-flex justify-content-end">
@@ -273,9 +245,9 @@ export default function ProfilePage() {
                                             <div className="form-floating">
                                                 <input type="text" value={username} onChange={(e) => setusername(e.target.value)}
                                                        className="form-control text-dark" placeholder='16 digit'
-                                                       id="National"
+                                                       id="Username"
                                                        required/>
-                                                <label htmlFor="National">Username</label>
+                                                <label htmlFor="Username">Username</label>
                                             </div>
                                         </div>
                                         <div className='col'>
@@ -283,7 +255,7 @@ export default function ProfilePage() {
                                                 <input type="text" value={email} onChange={(e) => setemail(e.target.value)}
                                                        className="form-control text-dark" id="dept"
                                                        placeholder="name@example.com" required/>
-                                                <label htmlFor="dept">Email</label>
+                                                <label htmlFor="Email">Email</label>
                                             </div>
                                         </div>
                                     </div>
@@ -296,15 +268,15 @@ export default function ProfilePage() {
                                                     <option value="C">Corporate</option>
                                                     <option value="I">Individual</option>
                                                 </select>
-                                                <label htmlFor="addEmp">Type</label>
+                                                <label htmlFor="Type">Type</label>
                                             </div>
                                         </div>
                                         <div className='col'>
                                             <div className="form-floating">
                                                 <input type="text" value={company} onChange={(e) => setcompany(e.target.value)}
-                                                       className="form-control text-dark" id="dept"
+                                                       className="form-control text-dark" id="Company"
                                                        placeholder="name@example.com" required/>
-                                                <label htmlFor="dept">Company</label>
+                                                <label htmlFor="Company">Company</label>
                                             </div>
                                         </div>
                                     </div>
@@ -313,13 +285,13 @@ export default function ProfilePage() {
                                             <div className="form-floating">
                                                 <input type="text" value={handphone} onChange={(e) => sethandphone(e.target.value)}
                                                        className="form-control text-dark" id="dept"
-                                                       placeholder="name@example.com" required/>
+                                                       placeholder="32 digit" required/>
                                                 <label htmlFor="dept">Handphone</label>
                                             </div>
                                         </div>
                                         <div className='col'>
                                             <div className="form-floating">
-                                                <select className="form-select" id="addEmp" 
+                                                <select className="form-select" disabled  id="Role Type" 
                                                        value={roletype} onChange={(e) => setroletype(e.target.value)}
                                                         aria-label="Floating label select example">
                                                     <option value="1">Guest</option>
@@ -328,7 +300,7 @@ export default function ProfilePage() {
                                                     <option value="4">Admin</option>
                                                     <option value="25">Staff</option>
                                                 </select>
-                                                <label htmlFor="addEmp">Role Type</label>
+                                                <label htmlFor="Role Type">Role Type</label>
                                             </div>
                                         </div>
                                     </div>
@@ -365,9 +337,9 @@ export default function ProfilePage() {
                                             <div className="form-floating">
                                                 <input type="date" 
                                                        value={birthdate} onChange={(e) => setbirthdate(e.target.value)}
-                                                       className="form-control text-dark" id="addEmp"
+                                                       className="form-control text-dark" id="Birth Date"
                                                        placeholder="name@example.com" required/>
-                                                <label htmlFor="addEmp">Birth Date</label>
+                                                <label htmlFor="Birth Date">Birth Date</label>
                                             </div>
                                         </div>
                             </div>
@@ -377,33 +349,33 @@ export default function ProfilePage() {
                                                 <input type="text" 
                                                        value={jobtitle} onChange={(e) => setjobtitle(e.target.value)}
                                                        className="form-control text-dark" placeholder='16 digit'
-                                                       id="National"
+                                                       id="Job Title"
                                                        required/>
-                                                <label htmlFor="National">Job Title</label>
+                                                <label htmlFor="Job Title">Job Title</label>
                                             </div>
                                         </div> 
                               </div>
                             <div className='row mb-4'>
                             <div className='col'>
                                             <div className="form-floating">
-                                                <select className="form-select" id="addEmp" 
+                                                <select className="form-select" id="Gender" 
                                                    value={gender} onChange={(e) => setgender(e.target.value)}
                                                         aria-label="Floating label select example">
                                                     <option value="M">Male</option>
                                                     <option value="F">Female</option>
                                                 </select>
-                                                <label htmlFor="addEmp">Gender</label>
+                                                <label htmlFor="Gender">Gender</label>
                                             </div>
                                         </div>
                                         <div className='col'>
                                             <div className="form-floating">
-                                                <select className="form-select" id="addEmp"
+                                                <select className="form-select" id="Marital Status"
                                                     value={maritalstatus} onChange={(e) => setmaritalstatus(e.target.value)}
                                                         aria-label="Floating label select example">
                                                     <option value="S">Single</option>
                                                     <option value="M">Married</option>
                                                 </select>
-                                                <label htmlFor="addEmp">Marital Status</label>
+                                                <label htmlFor="Marital Status">Marital Status</label>
                                             </div>
                                         </div>
                                     </div>
@@ -428,7 +400,7 @@ export default function ProfilePage() {
 
 
 
-          <MDBCol lg="12">
+          {roletype === "1"?(<MDBCol lg="12">
             <MDBCard className="mb-4">
               <MDBCardBody>
               <h6>Security</h6>
@@ -438,7 +410,7 @@ export default function ProfilePage() {
                     <MDBCardText>Change Password</MDBCardText>
                   </MDBCol>
                   <MDBCol sm="7">
-                    <MDBCardText className="text-muted">(097) 234-5678</MDBCardText>
+                    {newpassword?(<MDBCardText className="text-muted">**********</MDBCardText>):("-")}
                   </MDBCol>
                   <MDBCol sm="2">
                   <div class="d-flex justify-content-end">
@@ -497,7 +469,7 @@ export default function ProfilePage() {
                     </div>
               </MDBCardBody>
             </MDBCard>
-          </MDBCol>
+          </MDBCol>):("")}
 
 
 {/*                          Table 3                          */}

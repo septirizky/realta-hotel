@@ -7,6 +7,8 @@ import phone_icon from "./Image/phone.png"
 import Swal from "sweetalert2";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from 'react-redux';
+import { RegUsers } from '../../actions/usersAction';
 
 const SignupEmployee = () => {
 
@@ -17,46 +19,64 @@ const SignupEmployee = () => {
     const [password, setPassword]=useState("");
     const [confirmPassword, setConfirmPassword]=useState("");
     const [phone_number, setPhoneNumber]=useState("");
-    const handleRegister = async (e) => {
-        console.log(username, email, password, confirmPassword, phone_number)
-        e.preventDefault();
-    
-        try {
-          Swal.fire({
-            title: "Are you sure?",
-            text: "You won't be able to revert this!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, Save It!",
-          }).then(async (result) => {
-            if (result.isConfirmed) {
-              await axios
-                .post(`http://localhost:2112/users/signupEmployee`, {
-                    username: username,
-                    email: email, 
-                    password: password, 
-                    confirmPassword: confirmPassword, 
-                    phone_number: phone_number,
-                })
-    
-                .then((result) => {
-                console.log("aman")
-                  Swal.fire("success");
-                  navigate("/signin");//////menuju ke
+    const dispatch = useDispatch()
 
-                })
-                .catch((error) => {
-                  //assign validation on state
-                  
-                });
-            }
-          });
-        } catch (err) {
-        console.log(err.massage)  
-        }
+    const handleRegister = async (e) => {
+      e.preventDefault();
+      const data = {
+        username,email,password,confirmPassword,phone_number
       };
+      dispatch(RegUsers(data))
+    .then((result) => {
+        Swal.fire('Register Berhasil!');
+        navigate('/signemployee');
+
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+    }
+
+    // const handleRegister = async (e) => {
+    //     console.log(username, email, password, confirmPassword, phone_number)
+    //     e.preventDefault();
+    
+    //     try {
+    //       Swal.fire({
+    //         title: "Are you sure?",
+    //         text: "You won't be able to revert this!",
+    //         icon: "warning",
+    //         showCancelButton: true,
+    //         confirmButtonColor: "#3085d6",
+    //         cancelButtonColor: "#d33",
+    //         confirmButtonText: "Yes, Save It!",
+    //       }).then(async (result) => {
+    //         if (result.isConfirmed) {
+    //           await axios
+    //             .post(`http://localhost:2112/users/signupEmployee`, {
+    //                 username: username,
+    //                 email: email, 
+    //                 password: password, 
+    //                 confirmPassword: confirmPassword, 
+    //                 phone_number: phone_number,
+    //             })
+    
+    //             .then((result) => {
+    //             console.log("aman")
+    //               Swal.fire("success");
+    //               navigate("/signin");//////menuju ke
+
+    //             })
+    //             .catch((error) => {
+    //               //assign validation on state
+                  
+    //             });
+    //         }
+    //       });
+    //     } catch (err) {
+    //     console.log(err.massage)  
+    //     }
+    //   };
 
     return (
         <div className='container123'>

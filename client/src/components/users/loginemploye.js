@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import "./css/singupEmployee.css";
 import user_icon from "./Image/person.png";
 import email_icon from "./Image/email.png";
@@ -8,54 +8,60 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+
 import { Link } from "react-router-dom";
+import {useDispatch,useSelector} from "react-redux";
+import { LogUsers } from '../../actions/usersAction';
+
+
 
 const SigninEmployee = () => {
     const [action,setAction]=useState("Sign In")
     const [email, setEmail]=useState("");
     const [password, setPassword]=useState("");
     const navigate = useNavigate()
-    const handleLogin = async (e) => {
-        console.log(email,password)
+    const [islogin,setislogin]=useState(false)
+    const dispatch = useDispatch()
+
+    
+    const { loading,data,errorMessage } = useSelector(
+        (state) => state.UserReducer
+      );
+
+    const handleLogin = async(e)=>{
         e.preventDefault();
-    
-        try {
-          Swal.fire({
-            title: "Are you sure?",
-            text: "You won't be able to revert this!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, Save It!",
-          }).then(async (result) => {
-            if (result.isConfirmed) {
-              await axios
-                .post(`http://localhost:2112/users/signin`, {
-                  email: email, 
-                  password: password,
-                })
-    
-                .then((result) => {
-                console.log(result.data.token,"ss")
-                  Swal.fire("success");
-                  navigate("/home");//////menuju ke
-                  const token = result.data.token;
-                  
-                 // console.log(access_token);
-                 localStorage.setItem("token", token);
+        const data = {
+          email,
+          password,
+        };
+        setislogin(true)
+        dispatch(LogUsers(data))
+        
+    //   .then((result) => {
+    //       Swal.fire('Login Berhasil!');
+          
+    //       const token = result.token;
+    //         localStorage.setItem("token", token);
+    //         Cookies.set("token", token);
+    //         navigate('/user/Profile/');
+    //     })
+    //     .catch((error) => {
+    //       console.log(error.message);
+    //     });
+  }
+
+  useEffect(()=>{
+    if(islogin){
+        Swal.fire('Login Berhasil!');
+              const token = data.token;
+                localStorage.setItem("token", token);
                 Cookies.set("token", token);
-                })
-                .catch((error) => {
-                  //assign validation on state
-                  
-                });
-            }
-          });
-        } catch (err) {
-        console.log(err.massage)  
-        }
-      };
+                navigate('/Home');
+        console.log(islogin)
+    }
+  },[data]
+  )
+
 
     return (
         <div className='container123'>

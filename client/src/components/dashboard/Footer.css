@@ -1,7 +1,7 @@
 .footer-container {
     display: flex;
     justify-content: space-between;
-    background-image: url('../Image/hotel3.jpg'); /* Ganti dengan path gambar yang sesuai */
+    background-image: url('./Image/hotel3.jpg'); /* Ganti dengan path gambar yang sesuai */
     background-size: cover;
     color: #fff;
     padding: 20px;
