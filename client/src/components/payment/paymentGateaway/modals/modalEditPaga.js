@@ -37,7 +37,7 @@ const ModalEditPaga = (props) => {
         if(updatePaymentGateawayResult){
             Swal.fire({
                 title: updatePaymentGateawayResult,
-                text: 'Bank Berhasil Diubah!',
+                text: 'Payment Gateaway Berhasil Diubah!',
                 icon: 'success'
             })
             .then(()=>{
@@ -60,9 +60,9 @@ const ModalEditPaga = (props) => {
 
 
     return (
-        <Modal show={showModalPaga} onHide={handleCloseEditPaga}>
+        <Modal show={showModalPaga} onHide={handleCloseEditPaga} key={Paga.paga_entity_id}>
             <Modal.Header closeButton>
-              <Modal.Title>Modal heading</Modal.Title>
+              <Modal.Title>Edit Payment Gateaway</Modal.Title>
             </Modal.Header>
             <form onSubmit={handleSubmit(editPaga)}>
             <Modal.Body>

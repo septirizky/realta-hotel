@@ -8,7 +8,8 @@ import { ADD_BANK,
     ADD_USER_ACCOUNT,
     UPDATE_USER_ACCOUNT,
     GET_USER_ACCOUNT_EXCLUDE,
-    TOP_UP
+    TOP_UP,
+    GET_TRANSACTION
 } from "../actions/paymentAction"
 
 const initialState = {
@@ -57,7 +58,9 @@ const initialState = {
     topUpLoading:false,
     topUpError:false,
 
-
+    getTransactionResult:false,
+    getTransactionLoading:false,
+    getTransactionError:false,
 }
 
 export const paymentReducers = (state = initialState, action)=>{
@@ -162,6 +165,14 @@ export const paymentReducers = (state = initialState, action)=>{
             }
         }
 
+        case GET_TRANSACTION:{
+            return{
+                ...state,
+                getTransactionResult:action.payload.data,
+                getTransactionLoading:action.payload.loading,
+                getBankError: action.payload.errorMessage
+            }
+        }
         default: 
             return state
     }

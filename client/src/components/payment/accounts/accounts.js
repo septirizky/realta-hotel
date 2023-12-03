@@ -81,7 +81,7 @@ const Accounts = () => {
             <div className='row'>
                 <div className='col-12 col-lg-12 col-sm-12 col-md-12 '>
 
-
+                <h1 className='mb-4 ms-3'>User Accounts</h1>
                 <table className="table w-100">
                     <thead>
                         <tr>
@@ -104,14 +104,13 @@ const Accounts = () => {
                             getUserAccountResult ?(
                                 getUserAccountResult.map((usac,index)=>{
                                     return(
-                                        <tr>
-                                        <th scope="row">{index+1}</th>
+                                        <tr key={usac.usac_id}>
+                                            <th scope="row" key={usac.usac_entity_id}>{index+1}</th>
                                             <td>{usac.usac_account_number}</td>
                                             <td>{usac.usac_entity.bank ? usac.usac_entity.bank.bank_name :usac.usac_entity.payment_gateway.paga_name }</td>
                                             <td>{formatRupiah(usac.usac_saldo)}</td>
                                             <td>{usac.usac_type}</td>
-                                            <td><button className='btn ms-3' onClick={()=>{
-                                               
+                                            <td><button className='btn ms-3' onClick={()=>{   
                                                 showEditAccount(
                                                     usac.usac_id,
                                                     usac.usac_account_number,
@@ -129,9 +128,15 @@ const Accounts = () => {
                                 )
                             )
                             :getUserAccountLoading?(
-                                <tr>Loading...</tr>
+                                <tr colSpan={4} className='text-center fs-3'>
+                                    <td>
+                                    Loading...
+                                    </td>
+                                </tr>
                             ):(
-                                <tr>{getUserAccountError ? getUserAccountError : "data Kosong"}</tr>
+                                <tr>
+                                <td colSpan={4} className='text-center fs-3'>{getUserAccountError ? getUserAccountError : "data Kosong"}</td>
+                                </tr>
                             )
 
                         }
@@ -151,6 +156,8 @@ const Accounts = () => {
                 handleSubmit = {handleSubmit}
                 resetField = {resetField}
                 reset = {reset}
+                userId = {userId}
+
             />
 
             <ModalEditAccounts
@@ -161,6 +168,7 @@ const Accounts = () => {
                 reset={reset}
                 UserAccount = {UserAccount}
                 setUserAccount = {setUserAccount}
+                userId = {userId}
             />
 
         </>

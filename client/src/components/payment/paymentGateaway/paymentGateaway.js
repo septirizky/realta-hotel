@@ -73,6 +73,8 @@ const PaymentGateaway = () => {
             <div className='row'>
                 <div className='col-12 col-lg-12 col-sm-12 col-md-12 '>
 
+                <h1 className='mb-4 ms-3'>Payment Gateaway</h1>
+
                 <div className="row align-items-center mb-2">
                     <div className="col-4 col-sm-2 ms-lg-3">
                         <label className="col-form-label">Search Bank</label>
@@ -90,7 +92,7 @@ const PaymentGateaway = () => {
                     </div>
                     </div>
                     </div>
-                <table className="table w-100">
+                <table className="table table-striped w-100">
                     <thead>
                         <tr>
 
@@ -111,7 +113,7 @@ const PaymentGateaway = () => {
                                 getPaymentGateawayResult.map((paga,index)=>{
                                     return(
                                     <tr key={paga.paga_entity_id}>
-                                        <th scope="row">{index+1}</th>
+                                            <th scope="row">{index+1}</th>
                                             <td>{paga.paga_code}</td>
                                             <td>{paga.paga_name}</td>
                                             <td><button className='btn ms-3' onClick={()=>{
@@ -127,9 +129,13 @@ const PaymentGateaway = () => {
                                 )
                             )
                             :getPaymentGateawayLoading?(
-                                <tr>Loading...</tr>
+                                <tr>
+                                    <td colSpan={4} className='text-center fs-3'>Loading...</td>
+                                </tr>
                             ):(
-                                <tr>{getPaymentGateawayError ? getPaymentGateawayError : "data Kosong"}</tr>
+                                <tr>
+                                    <td colSpan={4} className='text-center fs-3'>{getPaymentGateawayError ? getPaymentGateawayError : "data Kosong"}</td>
+                                </tr>
                             )
                         }
                     </tbody>

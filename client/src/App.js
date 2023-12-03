@@ -43,6 +43,7 @@ import ProfilePage from "./components/users/myProfile";
 import SignupGuest from "./components/users/signupGuest";
 import {Employee} from "./components/hr/Employee";
 import FacilityHistory from "./components/hotel/facilityHistory";
+import Transaction from "./components/payment/transaction/transaction";
 
 function App() {
     return (
@@ -54,6 +55,7 @@ function App() {
                     <Route path="/payment/paymentgateaway" index element={<PaymentGateaway/>}/>
                     <Route path="/payment/accounts" index element={<Accounts/>}/>
                     <Route path="/payment/top-up" index element={<TopUp/>}/>
+                    <Route path="/payment/transaction"index element={<Transaction/>}/>
                 </Route>
                 <Route path='/hr' element={<HrNav/>}>
                     <Route path='/hr/department' index element={<Department/>}/>

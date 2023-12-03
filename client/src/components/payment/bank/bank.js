@@ -68,9 +68,11 @@ const Bank = () => {
     }, [dispatch,Keyword]);
 
     return (
-        <>
-            <div className='row'>
+        <div>
+            
                 <div className='col-12 col-lg-12 col-sm-12 col-md-12 '>
+
+                <h1 className='mb-4 ms-3'>Bank</h1>
 
                 <div className="row align-items-center mb-2">
                     <div className="col-4 col-sm-2 ms-lg-3">
@@ -91,7 +93,7 @@ const Bank = () => {
                         
                     </div>
                     </div>
-                <table className="table w-100">
+                <table className="table table-striped w-100">
                     <thead>
                         <tr>
 
@@ -128,19 +130,22 @@ const Bank = () => {
                                 )
                             )
                             :getBankLoading?(
-                                <div class="spinner-border" role="status">
-                                    <span class="visually-hidden">Loading...</span>
-                                </div>
+                                <tr>
+                                    <td colSpan={4} className='text-center fs-3'>
+                                        <div className="spinner-border" role="status">
+                                        <span className="visually-hidden">Loading...</span>
+                                        </div>
+                                    </td>
+                                </tr>
                             ):(
-                                <tr>{getBankError ? getBankError : "data Kosong"}</tr>
+                                <tr>
+                                <td colSpan={4} className='text-center fs-3'>{getBankError ? getBankError : "data Kosong"}</td>
+                                </tr>
                             )
 
                         }
                     </tbody>
                     </table> 
-
-
-                </div>
             </div>
 
             <ModalAddBank
@@ -161,8 +166,9 @@ const Bank = () => {
                 setBank = {setBank}
                 resetField={resetField}
                 Keyword = {Keyword}
+                key = {Bank.bank_entity_id}
             />
-        </>
+        </div>
         
     );
 }

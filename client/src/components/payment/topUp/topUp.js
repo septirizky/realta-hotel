@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserAccount, getUserAccountExclude, topUp } from '../../../actions/paymentAction';
 import Swal from 'sweetalert2'
@@ -48,6 +49,7 @@ const TopUp = () => {
             targetAccountNumber: saldoTarget.split(',')[2],
             userId:userId
         }
+        console.log(data)
         Swal.fire({
             title: "Confirm Transfer?",
             text: `Apakah Kamu Yakin Ingin Melakukan Transfer Dari ${data.sourceAccountNumber} Ke ${data.targetAccountNumber}`,
@@ -93,13 +95,14 @@ const TopUp = () => {
     
 
     return (
-        <>
-            <div className='row'>    
+        <form onSubmit={handleSubmit(tranfer)}>
+            <div className='row'>  
+            <h1 className='mb-4 ms-3'>Top Up</h1>  
                 <div className='col-6 border-end border-dark border-3'>
                     <h1 className='text-center mb-5'>Source</h1>
                     <div className='row g-3 align-items-center p-5'>
                         <div className="col-5 ">
-                            <label  className="col-form-label">Source Name</label>
+                            <label className="col-form-label">Source Name</label>
                         </div>
                         <div className="col-7">                                               
                             <input type="text" id="source_name" className="form-control rounded-pill"/>
@@ -109,19 +112,21 @@ const TopUp = () => {
                         </div>
                         <div className="col-7">                                               
                         <select className="form-select rounded-pill" value={saldoSource} onChange={(e)=>setsaldoSource(e.target.value)} required>
-                            <option value={'0'}>Pilih Akun anda</option>
+                            <option  value=''>Pilih Akun anda</option>
                             {
                                 getUserAccountResult ?(
                                     getUserAccountResult.map((user)=>{
                                         // console.log(user)
                                           return(
-                                              <option value={user.usac_saldo +','+ user.usac_id+','+user.usac_account_number}>{user.usac_account_number}</option>
+                                              <option key={user.usac_id} value={user.usac_saldo +','+ user.usac_id+','+user.usac_account_number}>
+                                                {`${user.usac_entity.bank? user.usac_entity.bank.bank_name : user.usac_entity.payment_gateway.paga_name} - ${user.usac_account_number}`}
+                                            </option>
                                             )
                                           }
                                           )
                                       )
                                       :getUserAccountLoading?(
-                                          <option>Loading...</option>
+                                          <option>{getUserAccountLoading}</option>
                                       ):(
                                           <option>{getUserAccountError ? getUserAccountError : "data Kosong"}</option>
                                       )
@@ -134,14 +139,13 @@ const TopUp = () => {
                             <label  className="col-form-label">Current Saldo</label>
                         </div>
                         <div className="col-7">                                               
-                        <input type="text" id="current_saldo" placeholder={formatRupiah(saldoSource.split(',')[0])} className="form-control border-0 bg-white text-center fs-4" disabled/>
+                        <input type="text" id="current_saldo_source" placeholder={formatRupiah(saldoSource.split(',')[0])} className="form-control border-0 bg-white text-center fs-4" disabled/>
                         <hr className='mt-1 border-bottom border-black'/>
                         </div>
 
                     </div>
                     
                 </div>
-
 
                 <div className='col-6 mb-4'>
                     <h1 className='text-center mb-5'>Target</h1>
@@ -150,26 +154,26 @@ const TopUp = () => {
                             <label  className="col-form-label">Target Name</label>
                         </div>
                         <div className="col-7">                                               
-                            <input type="text" id="source_name" className="form-control rounded-pill" required/>
+                            <input type="text" id="target_name" className="form-control rounded-pill"/>
                         </div>
                         <div className="col-5">
                             <label className="col-form-label">Account</label>
                         </div>
                         <div className="col-7">                                               
                         <select className="form-select rounded-pill" value={saldoTarget} onChange={(e)=>setsaldoTarget(e.target.value)} required>
-                        <option value='0'>Pilih Akun anda</option>
+                        <option value=''>Pilih Akun anda</option>
                         {
                                 getUserAccountExcludeResult ?(
                                     getUserAccountExcludeResult.map((target)=>{
                                         // console.log(user)
                                           return(
-                                              <option value={target.usac_saldo +','+ target.usac_id+','+target.usac_account_number}>{target.usac_account_number}</option>
+                                              <option key={target.usac_id} value={target.usac_saldo +','+ target.usac_id+','+target.usac_account_number}>{target.usac_account_number}</option>
                                             )
                                           }
                                           )
                                       )
                                       :getUserAccountExcludeLoading?(
-                                          <option>Loading...</option>
+                                          <option>{getUserAccountExcludeLoading}</option>
                                       ):(
                                           <option>{getUserAccountExcludeError ? getUserAccountExcludeError : "data Kosong"}</option>
                                       )
@@ -182,7 +186,7 @@ const TopUp = () => {
                             <label className="col-form-label">Current Saldo</label>
                         </div>
                         <div className="col-7">                                               
-                        <input type="text" id="current_saldo" placeholder={formatRupiah(saldoTarget.split(',')[0])}className="form-control border-0 bg-white text-center fs-4" disabled/>
+                        <input type="text" id="current_saldo_target" placeholder={formatRupiah(saldoTarget.split(',')[0])}className="form-control border-0 bg-white text-center fs-4" disabled/>
                         <hr className='mt-1 border-bottom border-black'/>
                         </div>
 
@@ -190,20 +194,20 @@ const TopUp = () => {
                    
                 </div>
                 <div className='col-6'>
-                    <div className='row'>    
-                        <div className='col-6 text-center'>
-                        <form onSubmit={handleSubmit(tranfer)}>
-                        <button type="submit" class="btn btn-primary w-75">Transfer</button>
-                        </form>
+                   
+                        <div className='row'>    
+                            <div className='col-6 text-center'>
+                            <button type="submit" className="btn btn-primary w-75">Transfer</button>
+                            </div>
+                            <div className='col-5'>
+                                <input type="text" required value={saldo} id="saldo"className="form-control border-black" onChange={(e)=>setsaldo(e.target.value)} />
+                            </div>
                         </div>
-                        <div className='col-5'>
-                            <input type="text" value={saldo} id="saldo"className="form-control border-black" onChange={(e)=>setsaldo(e.target.value)} required/>
-                        </div>
-                    </div>
+                    
                 </div>
                 
-            </div>    
-        </>
+            </div>
+            </form>    
     );
 }
 

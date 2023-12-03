@@ -31,7 +31,7 @@ const ModalAddPaga = (props) => {
             if(addPagaResult){
                 Swal.fire({
                     title: addPagaResult,
-                    text: 'Bank Berhasil Ditambah!',
+                    text: 'Payment Gateaway Berhasil Ditambah!',
                     icon: 'success'
                 }).then(()=>{
                   handleCloseAddPaga(false)
@@ -53,7 +53,7 @@ const ModalAddPaga = (props) => {
     return (
         <Modal show={showModalPaga} onHide={handleCloseAddPaga}>
             <Modal.Header closeButton>
-              <Modal.Title>Modal heading</Modal.Title>
+              <Modal.Title>Add Payment Gateway</Modal.Title>
             </Modal.Header>
             <form onSubmit={handleSubmit(submitAdd)}>
             <Modal.Body>
