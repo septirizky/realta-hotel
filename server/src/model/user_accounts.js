@@ -5,13 +5,11 @@ export default class user_accounts extends Model {
   static init(sequelize, DataTypes) {
   return super.init({
     usac_entity_id: {
-      autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
-      primaryKey: true,
       references: {
-        model: 'bank',
-        key: 'bank_entity_id'
+        model: 'entity',
+        key: 'entity_id'
       }
     },
     usac_user_id: {
@@ -48,6 +46,12 @@ export default class user_accounts extends Model {
       type: DataTypes.DATE,
       allowNull: true,
       defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
+    },
+    usac_id: {
+      autoIncrement: true,
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true
     }
   }, {
     sequelize,
@@ -59,7 +63,7 @@ export default class user_accounts extends Model {
         name: "user_accounts_pkey",
         unique: true,
         fields: [
-          { name: "usac_entity_id" },
+          { name: "usac_id" },
         ]
       },
       {

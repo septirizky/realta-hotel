@@ -1,27 +1,31 @@
-import {Router} from "express";
+import { Router } from "express";
 import {
-  category,
-  city,
-  facilities,
-  facilitiesAdd,
-  facilitiesDelete,
-  facilitiesUpdate,
-  getAllFacilities,
   hotel,
   hotelAdd,
-  hotelDelete,
-  hotelPhoto,
   hotelUpdate,
+  hotelDelete,
+  facilities,
+  facilitiesAdd,
+  facilitiesUpdate,
+  facilitiesDelete,
+  city,
+  category,
+  getPhoto,
+  uploadFaciPhoto,
+  photoDelete,
+  facilityHistory,
 } from "./hotel.controller.js";
 import multer from "multer";
+import path from "path";
+
+const hotelRouters = Router();
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "./src/modules/hotel/photo"); // Direktori tempat file akan disimpan
+    cb(null, "./src/public/uploads"); // Direktori tempat file akan disimpan
   },
   filename: (req, file, cb) => {
-    const ext = file.originalname.split(".").pop();
-    const new_name = Math.round(Math.random() * 1e9) + "." + ext;
+    const new_name = `${Date.now() + path.extname(file.originalname)}`;
     cb(null, new_name);
   },
 });
@@ -34,7 +38,7 @@ const fileFilter = (req, file, cb) => {
   ) {
     // Terima file dengan tipe MIME 'image/jpeg' atau 'image/png'
     console.log(req.headers["content-length"]);
-    if (req.headers["content-length"] < 190000) {
+    if (req.headers["content-length"] < 19000000) {
       cb(null, true);
     } else {
       cb("Ukuran terlalu besar", false);
@@ -52,14 +56,6 @@ const fileFilter = (req, file, cb) => {
 
 const upload = multer({ storage: storage, fileFilter: fileFilter });
 
-const hotelRouters = Router();
-
-hotelRouters.post(
-  "/hotel/facilities/facility_photos",
-  upload.single("file"),
-  hotelPhoto
-);
-
 hotelRouters.post("/hotel", hotel);
 hotelRouters.post("/hotel/add", hotelAdd);
 hotelRouters.put("/hotel/:hotel_id", hotelUpdate);
@@ -68,8 +64,17 @@ hotelRouters.delete("/hotel/:hotel_id", hotelDelete);
 hotelRouters.get("/city", city);
 hotelRouters.get("/category", category);
 
+hotelRouters.get("/hotel/facilities/photo/:faci_id", getPhoto);
+hotelRouters.post(
+  "/hotel/facilities/photo",
+  upload.any("files"),
+  uploadFaciPhoto
+);
+hotelRouters.delete("/hotel/facilities/photo/:fapho_id", photoDelete);
+
+hotelRouters.get("/hotel/facilities/facility_history", facilityHistory);
+
 hotelRouters.get("/hotel/facilities/:hotel_id", facilities);
-hotelRouters.get("/hotel/facilities", getAllFacilities);
 hotelRouters.post("/hotel/facilities", facilitiesAdd);
 hotelRouters.put("/hotel/facilities/:faci_id", facilitiesUpdate);
 hotelRouters.delete("/hotel/facilities/:faci_id", facilitiesDelete);

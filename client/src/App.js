@@ -42,6 +42,7 @@ import {NavbarComponent} from "./components/users/tempNav";
 import ProfilePage from "./components/users/myProfile";
 import SignupGuest from "./components/users/signupGuest";
 import {Employee} from "./components/hr/Employee";
+import FacilityHistory from "./components/hotel/facilityHistory";
 
 function App() {
     return (
@@ -79,6 +80,7 @@ function App() {
                 <Route path="/hotel" element={<HotelSidebar/>}>
                     <Route index element={<Hotel/>}/>
                     <Route path="/hotel/facilities/:hotel_id" element={<Facilities/>}/>
+                    <Route path="/hotel/facility_history" element={<FacilityHistory />} />
                 </Route>
                 <Route path="/booking/hotel" element={<BookingLayout/>}>
                     <Route index element={<ListHotel/>}/>
