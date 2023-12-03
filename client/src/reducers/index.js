@@ -8,6 +8,8 @@ import restoReducer from "./restoreducer";
 import BookingHotelReducer from './bookingHotelReducer';
 import PurchaseReducer from "./purchaseReducer";
 import handleCart from "./cartpurchase";
+import UsersReducer from "./usersReducers";
+
 
 export default combineReducers({
     // masukan reducer baru
@@ -19,4 +21,5 @@ export default combineReducers({
     BookingHotelReducer,
     PurchaseReducer,
     handleCart,
+    UsersReducer
 })

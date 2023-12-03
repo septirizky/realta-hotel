@@ -53,13 +53,13 @@ export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const user = await users.findOne({ where: { user_email: email } });
+    const user = await users.findAll({ where: { user_email: email } });
     console.log(user)
-    if (!user) {
+    if (!user || user.length ===0) {
       return res.status(400).json({ message: 'Invalid' });
     }
 
-    const userPassword = await user_password.findOne({ where: { uspa_user_id: user.user_id } });
+    const userPassword = await user_password.findOne({ where: { uspa_user_id: user[0].user_id } });
     console.log(userPassword)
     if (!userPassword || !userPassword.uspa_passwordhash) {
       return res.status(400).json({ message: 'Password not found or empty' });
@@ -71,9 +71,8 @@ export const loginUser = async (req, res) => {
     }
 
     const token = jwt.sign(
-      { user},
-      process.env.SECRET_KEY,
-      { expiresIn: '1h' }
+      { user },
+      process.env.SECRET_KEY
     );
 
     res.status(200).json( {token} );
@@ -169,7 +168,7 @@ export const signupGuest = async (req, res) => {
     const { phone_number } = req.body;
     console.log(phone_number)
     const getUser=await users.count({ where:{
-      user_full_name:{[Op.like]:'guest%'} }
+      user_full_name:{[Op.like]:'guest%'}, }
     })
     const user_id = getUser + 1;
 
@@ -177,7 +176,13 @@ export const signupGuest = async (req, res) => {
       
       user_phone_number: phone_number,
       user_full_name : `guest${+ user_id}`
+    },{
+      returning: true
     });
+    const roles= await user_roles.create({
+      usro_user_id: newUser.dataValues.user_id,
+      usro_role_id:1
+    })
     
       
     res.status(201).json({ message: 'Guest signed up successfully' });
@@ -187,17 +192,31 @@ export const signupGuest = async (req, res) => {
   }
 };
 
+/////////////////login
 export const loginGuest = async (req, res) => {
   try {
     const { phone_number } = req.body;
 
-    const existingUser = await users.findOne({ where: { user_phone_number: phone_number } });
-
+    const existingUser = await users.findAll(
+      { 
+        where: {
+         user_phone_number: phone_number 
+        },
+      include:[
+        {
+            model: user_roles,
+            as: 'user_roles',
+        }
+    ]
+    });
+    console.log(phone_number)
     if (!existingUser) {
       return res.status(401).json({ message: 'Guest not found.' });
     }
 
-    const token = jwt.sign({ user_id: existingUser.user_id }, process.env.SECRET_KEY, { expiresIn: '1h' });
+    const token = jwt.sign(
+      { existingUser}, 
+      process.env.SECRET_KEY);
 
     res.status(200).json({ token });
   } catch (error) {
@@ -233,8 +252,8 @@ export const sendPasswordResetEmail = async (req, res) => {
 };
 
 
-/////// insert profile 
-export const insertProfile = async (req, res) => {
+//////////////////////////udpate data
+export const updateProfile1 = async (req, res) => {
   try {
     const {
       user_full_name,
@@ -247,42 +266,125 @@ export const insertProfile = async (req, res) => {
       uspro_job_title,
       uspro_marital_status,
       uspro_gender,
-      usro_role_id 
+      usro_role_id,
     } = req.body;
 
-    const insertUsers = await users.create({
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1]; // Mendapatkan token dari header
+
+    if (!token) {
+      return res.status(401).json({ message: 'Token tidak ditemukan.' });
+    }
+
+    jwt.verify(token, 'secretkey', async (err, decoded) => {
+      if (err) {
+        return res.status(403).json({ message: 'Token tidak valid.' });
+      }
+      try {
+        const userId = decoded.userId;
+        await users.update(
+          {
+            user_full_name,
+            user_type,
+            user_company_name,
+            user_email,
+            user_phone_number,
+            user_modified_date: new Date(),
+          },
+          { where: { user_id: userId } }
+        );
+
+        await user_profiles.update(
+          {
+            uspro_national_id,
+            uspro_birt_date,
+            uspro_job_title,
+            uspro_marital_status,
+            uspro_gender,
+          },
+          { where: { uspro_user_id: userId } }
+        );
+        // Misalnya, jika Anda ingin memperbarui peran pengguna
+        await user_roles.update(
+          {
+            usro_role_id,
+          },
+          { where: { usro_user_id: userId } }
+        );
+
+        const token = jwt.sign(
+          {
+            id: checkUsername.id,
+            nama: checkUsername.nama,
+            username: checkUsername.username,
+            image: checkUsername.image,
+            createdat: checkUsername.createdat,
+          },
+          process.env.SECRET_KEY,
+          {
+            expiresIn: '30d',
+          }
+        );
+        res.status(200).json({ message: 'Profil berhasil diperbarui.', token});
+      } catch (error) {
+        res.status(500).json({ message: `Terjadi kesalahan: ${error.message}` });
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ message: `Terjadi kesalahan: ${error.message}` });
+  }
+};
+
+
+
+export const updateProfile = async (req, res) => {
+  try {
+    const {
       user_full_name,
       user_type,
       user_company_name,
       user_email,
       user_phone_number,
-      user_modified_date: new Date(), 
-    });
-
-    const newUserProfile = await user_profiles.create({
       uspro_national_id,
       uspro_birt_date,
       uspro_job_title,
       uspro_marital_status,
       uspro_gender,
-      uspro_user_id : insertUsers.user_id,
-    });
-    const newUserRole = await user_roles.create({
-      usro_user_id : insertUsers.user_id,
-      usro_role_id,
-    });
-    
+    } = req.body;
 
-    const responData={
-      insertUsers,
-      newUserProfile,
-      newUserRole
+    const token = req.headers.authorization;
+    if (!token) {
+      return res.status(401).json({ message: 'Unauthorized. Token not provided.' });
     }
-    res.status(200).json({ data: responData, message: 'Success' });
-  } catch (error) {
 
-    res.status(500).json({ message: `Error occurred: ${error.message}` });
-  }
+    jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
+        if (err) {
+          return res.status(401).json({ message: 'Unauthorized. Invalid token' });
+        }
+
+        const userId = decoded.user_id; 
+        const existingUser = await users.findByPk(userId);
+
+        if (!existingUser) {
+          return res.status(404).json({ message: 'User not found' });
+        }
+        existingUser.user_full_name = user_full_name || existingUser.user_full_name;
+        existingUser.user_type = user_type || existingUser.user_type;
+        existingUser.user_company_name = user_company_name || existingUser.user_company_name;
+        existingUser.user_email = user_email || existingUser.user_email;
+        existingUser.user_phone_number = user_phone_number || existingUser.user_phone_number;
+        existingUser.uspro_national_id = uspro_national_id || existingUser.uspro_national_id;
+        existingUser.uspro_birt_date = uspro_birt_date || existingUser.uspro_birt_date;
+        existingUser.uspro_job_title = uspro_job_title || existingUser.uspro_job_title;
+        existingUser.uspro_marital_status = uspro_marital_status || existingUser.uspro_marital_status;
+        existingUser.uspro_gender = uspro_gender || existingUser.uspro_gender;
+
+        await existingUser.save();
+        res.status(200).json({ message: 'Profile updated successfully' });
+      });
+    } catch (error) {
+      res.status(500).json({ message: `Error occurred: ${error.message}` });
+    }
 };
 
 /////////////////////////////untuk ganti password
@@ -322,3 +424,54 @@ export const changePassword = async (req, res) => {
     return res.status(500).json({ message: 'Error updating password' });
   }
 };
+
+
+// ///////////////update
+export const editGuest = async (req, res) => {
+  const { userId } = req.params;
+  const updatedUserData = req.body.userData;
+  const updatedUserProfileData = req.body.userProfileData;
+  const updatedUserRoleData = req.body.userRoleData;
+
+  try {
+    await users.update(
+      {
+        user_full_name: updatedUserData.user_full_name,
+        user_type: updatedUserData.user_type,
+        user_company_name: updatedUserData.user_company_name,
+        user_email: updatedUserData.user_email,
+        user_phone_number: updatedUserData.user_phone_number,
+        user_modified_date: new Date(),
+      },
+      { where: { user_id: userId } }
+    );
+
+    // Perbarui data profil pengguna
+    await user_profiles.update(
+      {
+        uspro_national_id: updatedUserProfileData.uspro_national_id,
+        uspro_birt_date: updatedUserProfileData.uspro_birt_date,
+        uspro_job_title: updatedUserProfileData.uspro_job_title,
+        uspro_marital_status: updatedUserProfileData.uspro_marital_status,
+        uspro_gender: updatedUserProfileData.uspro_gender,
+      },
+      { where: { uspro_user_id: userId } }
+    );
+
+    if (updatedUserRoleData) {
+      await user_roles.update(
+        {
+          usro_role_id: updatedUserRoleData.usro_role_id,
+        },
+        { where: { usro_user_id: userId } }
+      );
+    }
+
+    const refreshToken = jwt.sign({ userId }, 'SECRET_KEY', { expiresIn: '7d' });
+
+    res.status(200).json({ message: 'Pengguna berhasil diubah', refreshToken });
+  } catch (error) {
+    res.status(500).json({ message: 'Terjadi kesalahan saat mengedit pengguna', error });
+  }
+};
+

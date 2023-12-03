@@ -8,8 +8,9 @@ import { registerUser,
     signupGuest,
     sendPasswordResetEmail,
     loginGuest,
-    insertProfile,
-    changePassword
+    changePassword,
+    editGuest
+    
  } from './users.controllers.js';
 import { validateSignin,validateSignupEmployee,validateSignupGuest } from './users.validations.js';
 
@@ -20,7 +21,7 @@ usersRouters.post("/", (req, res) => {
     });
   });
 
-usersRouters.post("/users/signupEmployee", registerUser);
+usersRouters.post("/users/signupUser", registerUser);
 usersRouters.post("/users/signin" ,loginUser );
 usersRouters.post("/users/signupGuest",signupGuest);
 usersRouters.post('/users/loginGuest', loginGuest);
@@ -29,8 +30,9 @@ usersRouters.get('/users/:id', getUserById);
 usersRouters.delete('/users/:id', deleteuserById);
 usersRouters.put('/users/:id',updateUserById)
 usersRouters.post('/send-password-reset-email', sendPasswordResetEmail)
-usersRouters.post('/users/insert',insertProfile)
 usersRouters.patch('/users/change-password/:id', changePassword)
+usersRouters.put('/editGuest/:userId', editGuest)
+
 
 ///untuk reset pass
 usersRouters.post('/users/resetpassword/',sendPasswordResetEmail)

@@ -1,0 +1,362 @@
+/* Navbar */
+.navbar {
+    padding: 5px 10px;
+    background-color: #000000;
+  }
+  
+  /* Navbar Brand */
+  .nav-link-custom {
+    color: rgb(148, 116, 1) !important; /* Warna teks kuning */
+    font-weight: bold;}
+
+  .navbar-brand {
+    margin-right: 800px; /* Logo di sebelah kiri */
+  }
+  
+  /* Nav Links */
+  .navbar .nav-link {
+    margin: 0 10px; /* Jarak antar link */
+  }
+  
+  /* Adjusting the Navbar Toggle Button on smaller screens */
+  .navbar-toggler {
+    border: none; /* Hapus border */
+  }
+  
+  /* Navbar Toggler Icon */
+  .navbar-toggler-icon {
+    background-color: #000; /* Warna ikon toggler */
+  }
+  
+  /* Navbar Dropdown */
+  .dropdown-menu {
+    background-color: #fff; /* Warna dropdown */
+  }
+  
+  /* Navbar Dropdown Link */
+  .dropdown-item {
+    color: #000; /* Warna teks dropdown */
+  }
+  
+  /* Navbar Dropdown Link on Hover */
+  .dropdown-item:hover {
+    background-color: #f8f9fa; /* Warna latar belakang saat dihover */
+    color: #000; /* Warna teks saat dihover */
+  }
+  
+  .logo {
+    margin-left: 50%;
+    width: 30%;
+    
+  }
+  
+  .nav-links .nav-link {
+    margin-left: 20px; /* Berikan jarak antar link */
+  }
+
+
+  /*------ header ------*/
+  .head_container {
+    max-width: 90%;
+    margin: auto;
+  }
+  .home .image img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .home .text {
+    max-width: 50%;
+    color: white;
+    margin: 20% 0 0 10%;
+  }
+  
+  .home h1 {
+    font-size: 80px;
+    font-weight: 400;
+  }
+  
+  .home p {
+    font-weight: 400;
+    line-height: 25px;
+    font-family: sans-serif;
+    font-size: 17px;
+    margin: 50px 0 0 50px;
+  }
+  
+  .buttonmore {
+    padding: 10px 20px;
+    background: none;
+    outline: none;
+    border: 2px solid transparent;
+    border-radius: 50px;
+    color: white;
+    margin-top: 20px;
+  }
+  
+  .home button {
+    margin-left: 50px;
+  }
+  
+  .home .image_item {
+    position: absolute;
+    top: 20%;
+    right: 20%;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+  }
+  
+  .home .image_item img {
+    width: 140px;
+    height: 94px;
+    margin: 10px;
+    transition: 0.5s;
+  }
+  
+  .home .image_item img.active {
+    border: 2px solid white;
+  }
+  
+  .home .box .text {
+    position: relative;
+  }
+  
+  .home .box .text::after {
+    position: absolute;
+    content: 'H';
+    font-size: 500px;
+    top: -120%;
+    font-weight: bold;
+    opacity: 0.1;
+  }
+
+  /* --------book------ */
+
+  /* -------  About us ----- */
+  .top {
+    margin-top: 10%;
+  }
+  
+  .mtop {
+    margin-top: 5%;
+  }
+  
+  .left {
+    margin-top: 20px;
+    margin-left: 25%;
+    float: left; 
+  }
+  
+  .right {
+    margin-top: 45px;
+    margin-right: 10%;
+    float:right; 
+    width: 40%;
+  }
+  .konter:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+  .about {
+    margin-bottom: 50px;
+  }
+  
+  .about .img {
+    position: relative;
+  }
+  
+  .about .image1 {
+    width: 310px;
+    height: 450px;
+  }
+  
+  .about .image2 {
+    width: 400px;
+    height: 220px;
+    position: absolute;
+    bottom: 0px;
+    z-index: 2;
+    right: 30%;
+  }
+  
+  .kepala {
+    position: relative;
+  }
+  
+  .kepala::after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    content: '';
+    width: 100px;
+    height: 4px;
+    background: #C1B086;
+  }
+  
+  .kepala h5 {
+    font-weight: 400;
+    letter-spacing: 2px;
+    padding-top: 20px;
+    color: #5f5f5f;
+  }
+  
+  .kepala h2 {
+    font-size: 30px;
+    font-weight: 400;
+    margin: 20px 0 40px 0;
+    color: #222222;
+  }
+  
+  .kepala p {
+    margin-bottom: 20px;
+    line-height: 25px;
+    color: #5f5f5f;
+    margin: 0 0 20px 50px;
+  }
+  
+  .kepala .btn1 {
+    margin: 50px 0 20px 50px;
+  }
+  
+  .btn1 {
+    background: #C1B086;
+    color: white;
+  }
+  
+  /*--------------about--------*/
+  /*--------------wrapper--------*/
+  .konter:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+  .wrapper {
+    background-image: url("./Image/ami.jpg"); /* Pastikan path gambar sesuai dengan struktur proyek Anda */
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
+    height: 480px;
+    position: relative;
+  }
+  
+  .wrapper .text {
+    
+    width: 48%;
+    height: 10px; /* Ubah tinggi ke 100% agar elemen memiliki tinggi maksimum */
+    position: absolute; 
+    top: 0px;
+    right:20px; 
+    color: white;
+    font-size: 24px;
+    text-align: center; /* Mengatur teks agar terletak di tengah */
+    padding: 30px;
+  }
+  
+  .wrapper .content {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 20px; /* Mengubah grid-row-gap ke grid-gap */
+    margin-top: 20px; /* Tambahkan margin atas */
+  }
+  
+  .wrapper h5 {
+    font-weight: 400;
+    margin-bottom: 10px; /* Tambahkan margin bawah untuk h5 */
+  }
+  
+  .wrapper p {
+    margin: 0; /* Reset margin */
+    line-height: 1.5; /* Ubah line-height agar lebih mudah dibaca */
+  }
+  
+  .wrapper i {
+    margin-right: 5px; /* Ubah margin untuk elemen ikon */
+  }
+  .wrapper .cover-box {
+    position:relative;
+    padding: 10px;
+    top: 0;
+    right: 0;
+    bottom: -100%;
+    left: 0;
+    background-color: #14b1ff; /* Warna biru */
+    z-index: 5; /* Memastikan kotak biru berada di atas teks */
+    opacity: 0.7; /* Mengatur transparansi kotak agar konten di bawahnya masih terlihat */
+  }
+/*--------------wrapper--------*/
+/*--------------room--------*/
+
+.flex1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 350px;
+}
+
+.room .grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  justify-content: center;
+  margin-left: 350px;
+  max-width: 1200px; /* Membatasi lebar maksimum grid */
+  width: 100%;
+}
+
+.room img {
+  width: 100%; /* Mengubah lebar gambar agar sesuai dengan ukuran parentnya */
+  height: auto; /* Menyesuaikan tinggi secara proporsional */
+  display: block; /* Menghapus ruang kosong di bawah gambar */
+  border-radius: 5px; /* Menambah border radius pada gambar */
+}
+
+.room .box {
+  box-shadow: 0 13px 43px 0 rgba(37, 46, 89, 0.1); /* Penyesuaian shadow */
+  border-radius: 8px; /* Menambah border radius pada box */
+  overflow: hidden; /* Mengatasi gambar yang mungkin melewati batas box */
+}
+
+.room .text {
+  padding: 20px;
+  text-align: center; /* Pusatkan teks dalam .text */
+}
+.room h3 {
+  font-weight: 500; /* Sesuaikan ketebalan font */
+  margin-bottom: 10px;
+}
+
+.room p span {
+  font-size: 14px; /* Sesuaikan ukuran font span */
+  color: grey;
+}
+
+.room p {
+  font-size: 18px; /* Sesuaikan ukuran font paragraf */
+  margin: 10px 0; /* Beri sedikit jarak antara paragraf */
+}
+
+.buttonviewall {
+  position: absolute;
+  top: -50px; /* Sesuaikan nilai top agar tombol berada di atas kotak room */
+  left: 50%; /* Menempatkan tombol di tengah secara horizontal */
+  transform: translateX(-50%); /* Menggeser tombol ke kiri sejauh 50% dari lebar tombol itu sendiri */
+}
+
+.btn2 {
+  padding: 10px 50px;
+  font-size: 20;
+  background-color: #3f9cc1;
+  
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 330px;
+}
+/*--------------room--------*/

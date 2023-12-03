@@ -4,8 +4,30 @@ import { BsPersonCircle } from "react-icons/bs";
 import { MdApartment } from "react-icons/md";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 export const NavbarComponent = () => {
+
+  const navigate = useNavigate();
+  const onLogout = () => {
+    Swal.fire({
+      title: 'Are you sure?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, I want to logout!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        navigate('/Home');
+      } else if (result.isDenied) {
+        Swal.fire('Cancel logout', '', 'info');
+      }
+    });
+  };
+
+  
   const pathname = useLocation();
   const [burgerActive, setBurgerActive] = useState(false);
   const sidebarToggler = (event) => {
@@ -18,6 +40,11 @@ export const NavbarComponent = () => {
     );
   };
   useEffect(() => {}, [burgerActive]);
+
+
+
+
+
   return (
     <body className="sb-nav-fixed" style={{ backgroundColor: '#eee' }}>
       <nav className="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -52,7 +79,8 @@ export const NavbarComponent = () => {
               aria-labelledby="navbarDropdown"
             >
               <li>
-                <a className="dropdown-item" href="#!">
+                <a className="dropdown-item" href="#!" 
+                >
                   Profile
                 </a>
               </li>
@@ -60,8 +88,9 @@ export const NavbarComponent = () => {
                 <hr className="dropdown-divider" />
               </li>
               <li>
-                <a className="dropdown-item" href="#!">
-                  Logout
+                <a className="dropdown-item" href="#!"
+                onClick={onLogout}
+                >Logout
                 </a>
               </li>
             </ul>
@@ -78,7 +107,7 @@ export const NavbarComponent = () => {
               <div className="nav">
                 <div className="sb-sidenav-menu-heading text-warning">Menu</div>
                 <Link
-                  to="/vendor"
+                  to="/user/Profile"
                   id="nav_dept"
                   className={`nav-link ${
                     pathname.pathname === "/hr/department" ? "active" : ""
