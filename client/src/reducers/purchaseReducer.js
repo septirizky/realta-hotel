@@ -10,7 +10,7 @@ import {
   GET_PURCHASE,
   GET_GALLERY,
   DELETE_ORDER,
-  ADDSTATUS_ORDER,
+  ADDSTATUS_ORDER, GET_HOTELID
 } from "../actions/purchaseAction";
 
 const initialState = {
@@ -53,6 +53,10 @@ const initialState = {
   getHotelResult: false,
   getHotelLoading: false,
   getHotelError: false,
+
+  getHotelIdResult: false,
+  getHotelIdLoading: false,
+  getHotelIdError: false,
 
   getGalleryResult: false,
   getGallleryLoading: false,
@@ -132,6 +136,13 @@ const PurchaseReducer = (state = initialState, action) => {
         getHotelResult: action.payload.data,
         getHotelLoading: action.payload.loading,
         getHotelError: action.payload.errorMessage,
+      };
+    case GET_HOTELID:
+      return {
+        ...state,
+        getHotelIdResult: action.payload.data,
+        getHotelIdLoading: action.payload.loading,
+        getHotelIdError: action.payload.errorMessage,
       };
     case GET_GALLERY:
       return {

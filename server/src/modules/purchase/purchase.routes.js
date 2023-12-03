@@ -80,7 +80,7 @@ purchaseRouters.delete(
 );
 //hotel
 purchaseRouters.get("/listhotel", purchase.listhotel);
-
+purchaseRouters.get("/listhotelId/:id", purchase.listhotelbyId);
 //gallery
 purchaseRouters.get("/listgallery", purchase.listgallery);
 purchaseRouters.get("/listgalleryphoto", purchase.listgalleryphoto);

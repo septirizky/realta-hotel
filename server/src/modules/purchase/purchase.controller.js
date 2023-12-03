@@ -168,8 +168,11 @@ const insertstock = async (req, res) => {
       stock_scrap,
       stock_size,
       stock_color,
+      stod_notes,
+      stod_status,
+      stod_barcode_number,
     } = req.body;
-    const result = await models.stocks.create({
+    const insertstocks = await models.stocks.create({
       stock_name: stock_name,
       stock_description: stock_description,
       stock_quantity: stock_quantity,
@@ -179,6 +182,16 @@ const insertstock = async (req, res) => {
       stock_size: stock_size,
       stock_color: stock_color,
     });
+
+    let insertstockdetail = "";
+    insertstockdetail = await models.stock_detail.create({
+      stod_stock_id: insertstocks.dataValues.stock_id,
+      stod_barcode_number: stod_barcode_number,
+      stod_status: stod_status,
+      stod_notes: stod_notes,
+    });
+
+    const result = { insertstocks, insertstockdetail };
     res.status(201).json({ data: result, message: "Success" });
   } catch (error) {
     res.status(400).json({ message: error.message });
@@ -295,14 +308,36 @@ const pictstockphoto = async (req, res) => {
 
 const detailinfostock = async (req, res) => {
   try {
-    const query = `select purchase.stock_detail.stod_barcode_number,purchase.stock_detail.stod_status,purchase.stock_detail.stod_id,
-                    purchase.stock_detail.stod_notes,purchase.purchase_order_header.pohe_number,
-                    hotel.facilities.faci_room_number from purchase.stock_detail join  purchase.purchase_order_header
-                    on purchase.stock_detail.stod_pohe_id=purchase.purchase_order_header.pohe_id
-                    join hotel.facilities on hotel.facilities.faci_id=purchase.stock_detail.stod_faci_id
-                    join purchase.stocks on purchase.stocks.stock_id=purchase.stock_detail.stod_stock_id where purchase.stock_detail.stod_stock_id=${req.params.id}`;
-    const result = await sequelize.query(query);
-    res.status(201).json({ data: result[0], message: "Success" });
+    const query = `select * from purchase.stock_detail join purchase.stocks on
+                  purchase.stocks.stock_id=purchase.stock_detail.stod_stock_id
+                  where purchase.stock_detail.stod_stock_id=${req.params.id}`;
+    const resultt = await sequelize.query(query);
+    let result = "";
+    resultt[0].map(async (hotel) => {
+      console.log(hotel.stod_faci_id, "567");
+      if (hotel.stod_faci_id === null) {
+        const query = `select * from purchase.stock_detail join purchase.stocks on
+                  purchase.stocks.stock_id=purchase.stock_detail.stod_stock_id
+                  where purchase.stock_detail.stod_stock_id=${req.params.id}`;
+        result = await sequelize.query(query);
+        res.status(201).json({ data: result[0], message: "Success" });
+      } else if (hotel.stod_faci_id) {
+        const query = `select * from purchase.stock_detail join purchase.stocks on
+                  purchase.stocks.stock_id=purchase.stock_detail.stod_stock_id
+                  join hotel.facilities on hotel.facilities.faci_id=purchase.stock_detail.stod_faci_id
+                  where purchase.stock_detail.stod_stock_id=${req.params.id}`;
+        result = await sequelize.query(query);
+        res.status(201).json({ data: result[0], message: "Success" });
+      } else {
+        const query = `select * from purchase.stock_detail join purchase.stocks on
+                  purchase.stocks.stock_id=purchase.stock_detail.stod_stock_id
+                  join hotel.facilities on hotel.facilities.faci_id=purchase.stock_detail.stod_faci_id join purchase.purchase_order_header on
+                  purchase.purchase_order_header.pohe_id=purchase.stock_detail.stod_pohe_id
+                  where purchase.stock_detail.stod_stock_id=${req.params.id}`;
+        result = await sequelize.query(query);
+        res.status(201).json({ data: result[0], message: "Success" });
+      }
+    });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
@@ -356,6 +391,20 @@ const listhotel = async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 };
+const listhotelbyId = async (req, res) => {
+  try {
+    const result = await models.facilities.findOne({
+      where: { faci_id: req.params.id },
+    });
+    res.status(201).json({
+      data: result,
+      message: " Success",
+    });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
 const listdetailorder = async (req, res) => {
   try {
     const query = `select  distinct * from  purchase.purchase_order_header join purchase.vendor
@@ -387,8 +436,9 @@ const listdetailorderById = async (req, res) => {
 const listpurchasing = async (req, res) => {
   try {
     const query = `select * from  purchase.purchase_order_header join purchase.vendor
-                on purchase.purchase_order_header.pohe_vendor_id=purchase.vendor.vendor_entity_id
-`;
+                on purchase.purchase_order_header.pohe_vendor_id=purchase.vendor.vendor_entity_id 
+                join purchase.purchase_order_detail 
+                on purchase.purchase_order_detail.pode_pohe_id=purchase.purchase_order_header.pohe_id`;
     const result = await sequelize.query(query);
     console.log(result[0]);
     res.status(201).json({ data: result[0], message: "Success" });
@@ -572,6 +622,7 @@ export default {
   pictstockphoto,
   stockbyId,
   listhotel,
+  listhotelbyId,
   stockdetailbyId,
   listgallery,
   listgalleryphoto,

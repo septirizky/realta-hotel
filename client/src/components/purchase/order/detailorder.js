@@ -67,7 +67,7 @@ const DetailOrder = () => {
   const [receive, setReceive] = useState("");
   const [rejected, setRejected] = useState("");
   const [idBy, setId] = useState("");
-
+  const [idstock, setStockId] = useState("");
   const [edit, setEdit] = useState(false);
   const handleEditC = () => setEdit(false);
   const editDetail = async (e) => {
@@ -87,7 +87,7 @@ const DetailOrder = () => {
           url: `http://localhost:4001/updatepurchasedetail/${idBy}`,
           timeout: 12000,
           data: {
-            pode_stock_id: stock,
+            pode_stock_id: idstock,
             pode_order_qty: order_qty,
             pode_received_qty: receive,
             pode_rejected_qty: rejected,
@@ -99,6 +99,7 @@ const DetailOrder = () => {
               text: "Update Succes",
             });
             setEdit(false);
+            dispatch(GetOrder(id));
           } else {
             Swal.fire({
               icon: "warning",
@@ -120,6 +121,7 @@ const DetailOrder = () => {
       `http://localhost:4001/listorderdetailbyId/${id}`
     );
     const data = await response.data.data;
+    console.log(data, "89");
     data.map((detail) => {
       console.log(data);
       setStock(detail.stock_name);
@@ -127,6 +129,7 @@ const DetailOrder = () => {
       setReceive(detail.pode_received_qty);
       setRejected(detail.pode_rejected_qty);
       setId(detail.pode_id);
+      setStockId(detail.pode_stock_id);
     });
   };
   return (
@@ -148,6 +151,7 @@ const DetailOrder = () => {
           </MDBCol>
         </MDBRow>
         <MDBBreadcrumb className="bg-light rounded-3 p-3 mb-4">
+          
           <div className="w-100">
             <table className="table">
               <thead>
@@ -166,7 +170,7 @@ const DetailOrder = () => {
                   getOrderResult.map((vendor, index) => (
                     <tr key={index}>
                       <td>{vendor.stock_name}</td>
-                      <td>{vendor.stock_quantity}</td>
+                      <td>{vendor.pode_order_qty}</td>
                       <td>{vendor.pode_price}</td>
                       <td>{vendor.pode_received_qty}</td>
                       <td>{vendor.pode_rejected_qty}</td>
@@ -200,7 +204,7 @@ const DetailOrder = () => {
             </table>
             <Modal show={edit} onHide={handleEditC}>
               <Modal.Header closeButton>
-                <Modal.Title>Add/Edit Vendor Product</Modal.Title>
+                <Modal.Title>Edit Order</Modal.Title>
               </Modal.Header>
               <Modal.Body>
                 <Form id="create-course-form">
@@ -214,6 +218,7 @@ const DetailOrder = () => {
                       value={stock}
                       onChange={(e) => setStock(e.target.value)}
                       autoFocus
+                      readonly
                     />
                   </Form.Group>
                   <Form.Group controlId="formBasicSelect">

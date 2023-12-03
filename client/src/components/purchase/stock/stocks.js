@@ -28,13 +28,14 @@ const Stock = () => {
   const [scrap, setScrap] = useState("");
   const [size, setSize] = useState("");
   const [color, setColor] = useState("");
+  const [note, setNote] = useState("");
   const [file, setFile] = useState([]);
   const [imagephoto, setFileStock] = useState([]);
   const [stock_id, setStockId] = useState();
   const { getStockResult, getStockLoading, getStockError } = useSelector(
     (state) => state.PurchaseReducer
   );
-
+  console.log(getStockResult, "wer");
   const handleChange = (e) => {
     let images = [];
     let imagefile = [];
@@ -106,7 +107,19 @@ const Stock = () => {
 
   const insertstock = (event) => {
     event.preventDefault();
-    console.log(stock_name, desc, point, qty, used, scrap, color, size);
+    const barcode = "BA" + new Date().valueOf();
+    console.log(
+      stock_name,
+      desc,
+      point,
+      qty,
+      used,
+      scrap,
+      color,
+      size,
+      note,
+      barcode
+    );
     Swal.fire({
       title: "Are you sure?",
       icon: "warning",
@@ -129,6 +142,9 @@ const Stock = () => {
             stock_scrap: scrap,
             stock_size: size,
             stock_color: color,
+            stod_notes: note,
+            stod_status: 1,
+            stod_barcode_number: barcode,
           },
         }).then((response) => {
           if (response.data.data !== 400) {
@@ -440,6 +456,13 @@ const Stock = () => {
                       onChange={(e) => setColor(e.target.value)}
                     ></Form.Control>
                   </Form.Group>
+                  <Form.Group controlId="formBasicSelect">
+                    <Form.Label>Notes</Form.Label>
+                    <Form.Control
+                      value={note}
+                      onChange={(e) => setNote(e.target.value)}
+                    ></Form.Control>
+                  </Form.Group>
                 </Form>
               </Modal.Body>
               <Modal.Footer>
@@ -538,6 +561,13 @@ const Stock = () => {
                     <Form.Control
                       value={color}
                       onChange={(e) => setColor(e.target.value)}
+                    ></Form.Control>
+                  </Form.Group>
+                  <Form.Group controlId="formBasicSelect">
+                    <Form.Label>Notes</Form.Label>
+                    <Form.Control
+                      value={note}
+                      onChange={(e) => setNote(e.target.value)}
                     ></Form.Control>
                   </Form.Group>
                 </Form>
