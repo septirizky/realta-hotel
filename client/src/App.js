@@ -1,9 +1,9 @@
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.js";
 import "./App.css";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { Dashboard } from "./components/dashboard";
-import { TempNav } from "./components/master/layout/tempNav";
+import {BrowserRouter, Route, Routes} from "react-router-dom";
+import {Dashboard} from "./components/dashboard";
+import {TempNav} from "./components/master/layout/tempNav";
 import Master from "./components/master";
 import LocationsMaster from "./components/master/locations";
 import Policy from "./components/master/policy";
@@ -39,7 +39,6 @@ import {Department} from "./components/hr/Department";
 import {HrNav} from "./components/hr/HrNav";
 import {WorkOrder} from "./components/hr/WorkOrder";
 import {NavbarComponent} from "./components/users/tempNav";
-import ProfilePage from "./components/users/myProfile";
 import SignupGuest from "./components/users/signupGuest";
 import {Employee} from "./components/hr/Employee";
 import FacilityHistory from "./components/hotel/facilityHistory";
@@ -47,14 +46,13 @@ import Transaction from "./components/payment/transaction/transaction";
 import MenuDetail from "./components/resto/menudetail";
 
 
-import { LogRegUser } from "./components/users/LogRegUser.js";
-import { LogRegGuest } from "./components/users/LogRegGuest.js";
+import {LogRegUser} from "./components/users/LogRegUser.js";
+import {LogRegGuest} from "./components/users/LogRegGuest.js";
 import SignupEmployee from "./components/users/signupEmployee.js"
 import SigninEmployee from "./components/users/loginemploye.js";
-import SignupGuest from "./components/users/signupGuest.js";
 import LoginGuest from "./components/users/loginGuest.js";
 import ProfilePage from "./components/users/myProfile.js";
-import { Dashboard } from "./components/dashboard/index.js";
+import {Footer} from "./components/dashboard/tempFoot";
 
 
 function MainLayout() {
@@ -84,8 +82,7 @@ function App() {
                     <Route path='/hr/work-order' element={<WorkOrder/>}/>
                     <Route path='/hr/work-order/:id/:name/:date' element={<WorkOrderDetail/>}/>
                 </Route>
-                <Route path='/resto' element={<RestoNav/>}>
-                    <Route path="/resto" index element={<Resto/>}/>
+                    <Route path="/" index element={<Resto/>}/>
                     <Route path='/resto' element={<RestoNav/>}>
                         <Route path="/resto" index element={<Resto/>} />
                         {/* <Route path="/resto/menu" index element={<MenuDetail/>} /> */}
@@ -96,7 +93,6 @@ function App() {
                         {/* <Route path="/resto/menu" index element={<MenuDetail/>} /> */}
                         {/* <Route path='/resto/menu' element={<Menu/>}/> */}
                     </Route>
-                </Route>
                 <Route path="/Home" element={<MainLayout />} />
                 <Route path="/" element={<NavbarComponent />}>
                     <Route path="/user/Profile/" index element={<ProfilePage />} />
