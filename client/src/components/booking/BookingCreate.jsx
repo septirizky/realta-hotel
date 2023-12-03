@@ -1,21 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import './styles/bookingcreate.css';
+import React, { useEffect, useState } from "react";
+import "./styles/bookingcreate.css";
 
-import { FaPlus, FaTimes } from 'react-icons/fa';
-import { MdArrowBackIos } from 'react-icons/md';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { format } from "date-fns";
+import { FaPlus, FaTimes } from "react-icons/fa";
+import { MdArrowBackIos } from "react-icons/md";
+import { NumericFormat } from "react-number-format";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import Swal from "sweetalert2";
 import {
   createApplyCoupon,
   createBoex,
+  createBookingPayment,
+  deleteBookingExtra,
   getBookingDetail,
   getListPriceItems,
   getListSpecialOffer,
   updateBookingOrder,
-} from '../../actions/bookingHotelAction';
-import { NumericFormat } from 'react-number-format';
-import { format } from 'date-fns';
-import Swal from 'sweetalert2';
+} from "../../actions/bookingHotelAction";
 
 const BookingCreate = () => {
   const dispatch = useDispatch();
@@ -34,7 +36,9 @@ const BookingCreate = () => {
     // getListPriceItemsLoading,
     // getListPriceItemsError,
     addBoexResult,
+    deleteBoexResult,
     updateBookingOrderResult,
+    addBookingPaymentResult,
   } = useSelector((state) => state.BookingHotelReducer);
 
   useEffect(() => {
@@ -61,8 +65,14 @@ const BookingCreate = () => {
     }
   }, [addBoexResult, dispatch, id]);
 
-  const [socoSpofId, setSocoSpofId] = useState('');
-  const [socoBordeId, setSocoBordeId] = useState('');
+  useEffect(() => {
+    if (deleteBoexResult) {
+      dispatch(getBookingDetail(id));
+    }
+  }, [deleteBoexResult, dispatch, id]);
+
+  const [socoSpofId, setSocoSpofId] = useState("");
+  const [socoBordeId, setSocoBordeId] = useState("");
 
   const handleSubmitCoupon = (e) => {
     e.preventDefault();
@@ -76,7 +86,7 @@ const BookingCreate = () => {
   };
 
   const [boexBordeId, setBoexBordeId] = useState(null);
-  const [boexBordeName, setBoexBordeName] = useState('');
+  const [boexBordeName, setBoexBordeName] = useState("");
   const [pritDetail, setPritDetail] = useState(null);
   const [boexQty, setBoexQty] = useState(null);
 
@@ -96,20 +106,36 @@ const BookingCreate = () => {
         boex_prit_id: pritDetail.prit_id,
         boex_price: +pritDetail.prit_price,
         boex_qty: boexQty,
-        boex_measure_unit: 'buah',
+        boex_measure_unit: "buah",
       })
     );
   };
 
-  const [paymentType, setPaymentType] = useState('');
-  const [cardNumber, setCardNumber] = useState('');
+  const handleDeleteBoex = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(deleteBookingExtra(id));
+      }
+    });
+  };
+
+  const [paymentType, setPaymentType] = useState("");
+  const [cardNumber, setCardNumber] = useState("");
 
   const handleSubmitPay = (e) => {
     if (!cardNumber || !paymentType) {
       Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'Please input your payment type and account payment',
+        icon: "error",
+        title: "Oops...",
+        text: "Please input your payment type and account payment",
       });
       return;
     }
@@ -122,14 +148,20 @@ const BookingCreate = () => {
         boor_pay_type: paymentType,
       })
     );
-    setPaymentType('');
-    setCardNumber('');
+    dispatch(
+      createBookingPayment({
+        patr_order_number: booking && booking.boor.boor_order_number,
+        patr_user_id: booking && booking.boor.boor_user_id,
+      })
+    );
+    setPaymentType("");
+    setCardNumber("");
   };
 
   useEffect(() => {
     if (updateBookingOrderResult) {
       navigate(
-        `/booking/hotel/invoice/${updateBookingOrderResult.data.boor_id}`
+        `/booking/hotel/invoice/${updateBookingOrderResult.data.boor_order_number}`
       );
     }
   }, [updateBookingOrderResult, navigate]);
@@ -241,7 +273,13 @@ const BookingCreate = () => {
                                     />
                                   </td>
                                   <td>
-                                    <button className="btn btn-sm btn-danger rounded-0">
+                                    <button
+                                      className="btn btn-sm btn-danger rounded-0"
+                                      type="button"
+                                      onClick={() =>
+                                        handleDeleteBoex(boex.boex_id)
+                                      }
+                                    >
                                       <FaTimes /> Delete
                                     </button>
                                   </td>
@@ -250,7 +288,7 @@ const BookingCreate = () => {
                             })}
                           <tr>
                             <td colSpan={3} className="text-start fw-bold">
-                              Total:{' '}
+                              Total:{" "}
                               <NumericFormat
                                 value={totalPrice}
                                 displayType="text"
@@ -317,12 +355,12 @@ const BookingCreate = () => {
                     <li className="list-group-item text-center" key={index}>
                       <p>
                         <span>
-                          {format(new Date(item.borde_checkin), 'E, i LLL YYY')}{' '}
+                          {format(new Date(item.borde_checkin), "E, i LLL YYY")}{" "}
                           {` - `}
                           {format(
                             new Date(item.borde_checkout),
-                            'E, i LLL YYY'
-                          )}{' '}
+                            "E, i LLL YYY"
+                          )}{" "}
                         </span>
                         {/* <span className="ms-3">1 Room, 2 Guest</span> */}
                         <span className="ms-3">
@@ -364,7 +402,7 @@ const BookingCreate = () => {
                       {/* <p className="mb-1 text-success">Include Tax</p> */}
                       <p
                         className="mb-3 text-danger"
-                        style={{ fontSize: '12px' }}
+                        style={{ fontSize: "12px" }}
                       >
                         Before Tax {item.facilities.faci_tax_rate}%
                       </p>
@@ -415,10 +453,10 @@ const BookingCreate = () => {
                   </div>
                   <div className="d-flex align-items-center justify-content-between">
                     <div>
-                      Total Price{' '}
+                      Total Price{" "}
                       <span
                         className="text-success fw-bold"
-                        style={{ fontSize: '12px' }}
+                        style={{ fontSize: "12px" }}
                       >
                         {/* {'(tax included)'} */}
                       </span>
@@ -702,7 +740,7 @@ const BookingCreate = () => {
               >
                 <div className="modal-header">
                   <h1 className="modal-title fs-5" id="exampleModalLabel">
-                    Add Extra Item for{' '}
+                    Add Extra Item for{" "}
                     <span className="text-yellow">{boexBordeName}</span>
                   </h1>
                   <button
@@ -751,7 +789,7 @@ const BookingCreate = () => {
                         <tr>
                           <td className="p-1">Price</td>
                           <td className="p-1">
-                            :{' '}
+                            :{" "}
                             <NumericFormat
                               value={pritDetail ? pritDetail.prit_price : 0}
                               displayType="text"
@@ -768,7 +806,7 @@ const BookingCreate = () => {
                           </td>
                         </tr>
                         <tr>
-                          <td className="p-1" style={{ verticalAlign: 'top' }}>
+                          <td className="p-1" style={{ verticalAlign: "top" }}>
                             Description
                           </td>
                           <td className="p-1">

@@ -22,7 +22,7 @@ export default class payment_gateway extends Model {
     paga_name: {
       type: DataTypes.STRING(55),
       allowNull: true,
-      unique: "payment_gateway_paga_name"
+      unique: "payment_gateway_paga_code_paga_name_key"
     },
     paga_modified_date: {
       type: DataTypes.DATE,
@@ -36,24 +36,10 @@ export default class payment_gateway extends Model {
     timestamps: false,
     indexes: [
       {
-        name: "payment_gateway_paga_code",
-        unique: true,
-        fields: [
-          { name: "paga_code" },
-        ]
-      },
-      {
         name: "payment_gateway_paga_code_paga_name_key",
         unique: true,
         fields: [
           { name: "paga_code" },
-          { name: "paga_name" },
-        ]
-      },
-      {
-        name: "payment_gateway_paga_name",
-        unique: true,
-        fields: [
           { name: "paga_name" },
         ]
       },

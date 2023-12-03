@@ -1,19 +1,23 @@
-import axios from 'axios';
-import Swal from 'sweetalert2';
+import axios from "axios";
+import Swal from "sweetalert2";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
-export const GET_LIST_B_HOTEL = 'GET_LIST_B_HOTEL';
-export const GET_LIST_B_HOTEL_BY_ID = 'GET_LIST_B_HOTEL_BY_ID';
-export const ADD_BOOKING = 'ADD_BOOKING';
-export const GET_BOOKING_DETAIL = 'GET_BOOKING_DETAIL';
-export const GET_SPECIAL_OFFER = 'GET_SPECIAL_OFFER';
-export const ADD_APPLY_COUPON = 'ADD_APPLY_COUPON';
-export const GET_LIST_B_PRICE_ITEMS = 'GET_LIST_B_PRICE_ITEMS';
-export const ADD_BOEX = 'ADD_BOEX';
-export const UPDATE_BOOKING_ORDER = 'UPDATE_BOOKING_ORDER';
+export const GET_LIST_B_HOTEL = "GET_LIST_B_HOTEL";
+export const GET_LIST_B_HOTEL_BY_ID = "GET_LIST_B_HOTEL_BY_ID";
+export const ADD_BOOKING = "ADD_BOOKING";
+export const GET_BOOKING_DETAIL = "GET_BOOKING_DETAIL";
+export const GET_SPECIAL_OFFER = "GET_SPECIAL_OFFER";
+export const ADD_APPLY_COUPON = "ADD_APPLY_COUPON";
+export const GET_LIST_B_PRICE_ITEMS = "GET_LIST_B_PRICE_ITEMS";
+export const ADD_BOEX = "ADD_BOEX";
+export const UPDATE_BOOKING_ORDER = "UPDATE_BOOKING_ORDER";
+export const ADD_BOOKING_PAYMENT = "ADD_BOOKING_PAYMENT";
+export const GET_BOOKING_PAYMENT_BY_BOOR_NUMBER =
+  "GET_BOOKING_PAYMENT_BY_BOOR_NUMBER";
+export const DELETE_BOEX = "DELETE_BOEX";
 
-export const getListBHotel = () => {
+export const getListBHotel = (params) => {
   return (dispatch) => {
     dispatch({
       type: GET_LIST_B_HOTEL,
@@ -24,15 +28,40 @@ export const getListBHotel = () => {
       },
     });
 
+    let url = `${SERVER_URL}/booking/hotel?`;
+
+    console.log("params: ", params);
+
+    if (params.hotelName) {
+      url = url.concat(`&hotelName=${params.hotelName}`);
+    }
+    if (params.minRatePrice) {
+      url = url.concat(`&minRatePrice=${params.minRatePrice}`);
+    }
+    if (params.maxRatePrice) {
+      url = url.concat(`&maxRatePrice=${params.maxRatePrice}`);
+    }
+
+    // params.maxRatePrice !== undefined
+    //   ? (url = url.concat(`&maxRatePrice=${params.maxRatePrice}`))
+    //   : "";
+    // params.isFree !== undefined
+    //   ? (url = url.concat(`&isFree=${params.isFree}`))
+    //   : "";
+    // params.hotelName !== undefined
+    //   ? (url = url.concat(`&hotelName=${params.hotelName}`))
+    //   : "";
+
     // get api
     axios({
-      method: 'GET',
-      url: `${SERVER_URL}/booking/hotel`,
+      method: "GET",
+      // url: `${SERVER_URL}/booking/hotel`,
+      url: url,
       timeout: 120000,
     })
       .then((response) => {
         //berhasil get api
-
+        // console.log('response: ', response)
         dispatch({
           type: GET_LIST_B_HOTEL,
           payload: {
@@ -69,7 +98,7 @@ export const getListBHotelById = (id) => {
 
     // get api
     axios({
-      method: 'GET',
+      method: "GET",
       url: `${SERVER_URL}/booking/hotel/${id}`,
       timeout: 120000,
     })
@@ -86,7 +115,7 @@ export const getListBHotelById = (id) => {
       })
       .catch((error) => {
         //gagal get api
-        console.log('error: ', error);
+        console.log("error: ", error);
         dispatch({
           type: GET_LIST_B_HOTEL_BY_ID,
           payload: {
@@ -111,14 +140,14 @@ export const createBooking = (data) => {
     });
 
     axios({
-      method: 'POST',
+      method: "POST",
       url: `${SERVER_URL}/booking/booking-orders/create`,
       timeout: 120000,
       data: data,
     })
       .then((response) => {
-        Swal.fire('Berhasil menambah data');
-        console.log('response: ', response.data);
+        Swal.fire("Berhasil menambah data");
+        console.log("response: ", response.data);
         dispatch({
           type: ADD_BOOKING,
           payload: {
@@ -129,7 +158,7 @@ export const createBooking = (data) => {
         });
       })
       .catch((error) => {
-        console.log('error: ', error);
+        console.log("error: ", error);
         dispatch({
           type: ADD_BOOKING,
           payload: {
@@ -155,13 +184,13 @@ export const getBookingDetail = (id) => {
 
     // get api
     axios({
-      method: 'GET',
+      method: "GET",
       url: `${SERVER_URL}/booking/booking-orders/detail/${id}`,
       timeout: 120000,
     })
       .then((response) => {
         //berhasil get api
-        console.log('response: ', response.data);
+        console.log("response: ", response.data);
         dispatch({
           type: GET_BOOKING_DETAIL,
           payload: {
@@ -173,7 +202,7 @@ export const getBookingDetail = (id) => {
       })
       .catch((error) => {
         //gagal get api
-        console.log('error: ', error);
+        console.log("error: ", error);
         dispatch({
           type: GET_BOOKING_DETAIL,
           payload: {
@@ -199,7 +228,7 @@ export const getListSpecialOffer = () => {
 
     // get api
     axios({
-      method: 'GET',
+      method: "GET",
       url: `${SERVER_URL}/booking/special-offer`,
       timeout: 120000,
     })
@@ -241,13 +270,13 @@ export const createApplyCoupon = (data) => {
     });
 
     axios({
-      method: 'POST',
+      method: "POST",
       url: `${SERVER_URL}/booking/booking-orders/apply-discount`,
       timeout: 120000,
       data: data,
     })
       .then((response) => {
-        Swal.fire('Coupon Applied!');
+        Swal.fire("Coupon Applied!");
         dispatch({
           type: ADD_APPLY_COUPON,
           payload: {
@@ -258,10 +287,10 @@ export const createApplyCoupon = (data) => {
         });
       })
       .catch((error) => {
-        console.log('error: ', error);
+        console.log("error: ", error);
         Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
+          icon: "error",
+          title: "Oops...",
           text: error.response.data.message,
         });
         dispatch({
@@ -289,7 +318,7 @@ export const getListPriceItems = () => {
 
     // get api
     axios({
-      method: 'GET',
+      method: "GET",
       url: `${SERVER_URL}/booking/price-items`,
       timeout: 120000,
     })
@@ -331,13 +360,13 @@ export const createBoex = (data) => {
     });
 
     axios({
-      method: 'POST',
+      method: "POST",
       url: `${SERVER_URL}/booking/booking-orders/extra/create`,
       timeout: 120000,
       data: data,
     })
       .then((response) => {
-        Swal.fire('Item Added!');
+        Swal.fire("Item Added!");
         dispatch({
           type: ADD_BOEX,
           payload: {
@@ -348,10 +377,10 @@ export const createBoex = (data) => {
         });
       })
       .catch((error) => {
-        console.log('error: ', error);
+        console.log("error: ", error);
         Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
+          icon: "error",
+          title: "Oops...",
           text: error.response.data.message,
         });
         dispatch({
@@ -378,13 +407,13 @@ export const updateBookingOrder = (id, data) => {
     });
 
     axios({
-      method: 'PUT',
+      method: "PUT",
       url: `${SERVER_URL}/booking/booking-orders/update/${id}`,
       timeout: 120000,
       data: data,
     })
       .then((response) => {
-        Swal.fire('Booking Saved!');
+        Swal.fire("Booking Saved!");
         dispatch({
           type: UPDATE_BOOKING_ORDER,
           payload: {
@@ -395,14 +424,157 @@ export const updateBookingOrder = (id, data) => {
         });
       })
       .catch((error) => {
-        console.log('error: ', error);
+        console.log("error: ", error);
         Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
+          icon: "error",
+          title: "Oops...",
           text: error.response.data.message,
         });
         dispatch({
           type: UPDATE_BOOKING_ORDER,
+          payload: {
+            loading: false,
+            data: false,
+            error: error,
+          },
+        });
+      });
+  };
+};
+
+export const createBookingPayment = (data) => {
+  return (dispatch) => {
+    dispatch({
+      type: ADD_BOOKING_PAYMENT,
+      payload: {
+        loading: true,
+        data: false,
+        error: false,
+      },
+    });
+
+    axios({
+      method: "POST",
+      url: `${SERVER_URL}/booking/payment`,
+      timeout: 120000,
+      data: data,
+    })
+      .then((response) => {
+        Swal.fire("Payment added!");
+        dispatch({
+          type: ADD_BOOKING_PAYMENT,
+          payload: {
+            loading: false,
+            data: response.data,
+            error: false,
+          },
+        });
+      })
+      .catch((error) => {
+        console.log("error: ", error);
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: error.response.data.message,
+        });
+        dispatch({
+          type: ADD_BOOKING_PAYMENT,
+          payload: {
+            loading: false,
+            data: false,
+            error: error,
+          },
+        });
+      });
+  };
+};
+
+export const getBookingPaymentByBoorNumber = (id) => {
+  return (dispatch) => {
+    dispatch({
+      type: GET_BOOKING_PAYMENT_BY_BOOR_NUMBER,
+      payload: {
+        loading: true,
+        data: false,
+        error: false,
+      },
+    });
+
+    // get api
+    axios({
+      method: "GET",
+      url: `${SERVER_URL}/booking/invoice/${id}`,
+      timeout: 120000,
+    })
+      .then((response) => {
+        //berhasil get api
+        dispatch({
+          type: GET_BOOKING_PAYMENT_BY_BOOR_NUMBER,
+          payload: {
+            loading: false,
+            data: response.data,
+            error: false,
+          },
+        });
+      })
+      .catch((error) => {
+        //gagal get api
+        console.log("error: ", error);
+        dispatch({
+          type: GET_BOOKING_PAYMENT_BY_BOOR_NUMBER,
+          payload: {
+            loading: false,
+            data: false,
+            error: error,
+          },
+        });
+      });
+  };
+};
+
+export const deleteBookingExtra = (id) => {
+  return (dispatch) => {
+    dispatch({
+      type: DELETE_BOEX,
+      payload: {
+        loading: true,
+        data: false,
+        error: false,
+      },
+    });
+
+    // get api
+    axios({
+      method: "DELETE",
+      url: `${SERVER_URL}/booking/booking-orders/extra/delete/${id}`,
+      timeout: 120000,
+    })
+      .then((response) => {
+        //berhasil get api
+        Swal.fire({
+          title: "Deleted!",
+          text: "Extra item has been deleted.",
+          icon: "success",
+        });
+        dispatch({
+          type: DELETE_BOEX,
+          payload: {
+            loading: false,
+            data: response.data,
+            error: false,
+          },
+        });
+      })
+      .catch((error) => {
+        //gagal get api
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: error.response.data.message,
+        });
+        console.log("error: ", error);
+        dispatch({
+          type: DELETE_BOEX,
           payload: {
             loading: false,
             data: false,

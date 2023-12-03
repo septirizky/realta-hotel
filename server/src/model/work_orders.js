@@ -11,7 +11,7 @@ export default class work_orders extends Model {
       primaryKey: true
     },
     woro_start_date: {
-      type: DataTypes.DATEONLY,
+      type: DataTypes.DATE,
       allowNull: false
     },
     woro_status: {

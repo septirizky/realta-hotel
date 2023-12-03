@@ -18,7 +18,7 @@ export default class service_task extends Model {
     },
     seta_seq: {
       type: DataTypes.SMALLINT,
-      allowNull: false
+      allowNull: true
     },
     createdat: {
       type: DataTypes.DATE,

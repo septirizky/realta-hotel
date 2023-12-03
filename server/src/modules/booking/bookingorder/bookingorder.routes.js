@@ -3,12 +3,14 @@ import {
   applyDiscount,
   createBookingOrder,
   createBookingOrderDetailExtra,
+  createBookingPayment,
   deleteBookingOrderDetailExtra,
   getAllBookingDetailExtra,
   getAllBookingOrders,
   getAllHotel,
   getAllHotelById,
   getAllPriceItems,
+  getBookingInvoice,
   getBookingOrderById,
   updateBookingOrder,
 } from './bookingorder.controller.js';
@@ -46,9 +48,22 @@ bookingOrderRoutes.get(
   getAllBookingDetailExtra
 );
 
+// create payment-transaction
+bookingOrderRoutes.post(
+  '/booking/payment',
+  createBookingPayment
+);
+
+// get invoice (payment relation with booking orders)
+bookingOrderRoutes.get(
+  '/booking/invoice/:bookingOrderNumber',
+  getBookingInvoice
+);
+
 // realtion
 bookingOrderRoutes.get('/booking/hotel', getAllHotel);
 bookingOrderRoutes.get('/booking/hotel/:id', getAllHotelById);
 bookingOrderRoutes.get('/booking/price-items', getAllPriceItems);
+
 
 export default bookingOrderRoutes;
