@@ -91,7 +91,7 @@ const HotelDetail = () => {
       roomName,
     });
     setBoorLength(boorLength + 1);
-    setTotalPrice(totalPrice + (price - (price * diskonRoom) / 100));
+    setTotalPrice(totalPrice + price);
     disabledRoom.push(faciId);
   };
 
@@ -167,7 +167,33 @@ const HotelDetail = () => {
               modules={[Pagination, Navigation]}
               className="hotel-detail-slider"
             >
+              {hotel.facilities[0].facility_photos[0] ? (
+                hotel.facilities[0].facility_photos.map((item) => (
+                  <SwiperSlide>
+                    <img
+                      alt="slid-img"
+                      src={item.fapho_url}
+                      className="hotel-slider-img"
+                    />
+                  </SwiperSlide>
+                ))
+              ) : (
+                <SwiperSlide>
+                  <img
+                    alt="slid-img"
+                    src="https://source.unsplash.com/person-in-swimming-pool-during-daytime-rlwE8f8anOc"
+                    className="hotel-slider-img"
+                  />
+                </SwiperSlide>
+              )}
               <SwiperSlide>
+                <img
+                  alt="slid-img"
+                  src="https://source.unsplash.com/person-in-swimming-pool-during-daytime-rlwE8f8anOc"
+                  className="hotel-slider-img"
+                />
+              </SwiperSlide>
+              {/* <SwiperSlide>
                 <img
                   alt="slid-img"
                   src="https://source.unsplash.com/person-in-swimming-pool-during-daytime-rlwE8f8anOc"
@@ -194,14 +220,7 @@ const HotelDetail = () => {
                   src="https://source.unsplash.com/person-in-swimming-pool-during-daytime-rlwE8f8anOc"
                   className="hotel-slider-img"
                 />
-              </SwiperSlide>
-              <SwiperSlide>
-                <img
-                  alt="slid-img"
-                  src="https://source.unsplash.com/person-in-swimming-pool-during-daytime-rlwE8f8anOc"
-                  className="hotel-slider-img"
-                />
-              </SwiperSlide>
+              </SwiperSlide> */}
             </Swiper>
           </div>
           <div className="hotel-detail-description container">
@@ -266,7 +285,11 @@ const HotelDetail = () => {
                               <div className="col-md-5">
                                 <img
                                   alt="room-img"
-                                  src="https://source.unsplash.com/person-in-swimming-pool-during-daytime-rlwE8f8anOc"
+                                  src={
+                                    facility.facility_photos[0]
+                                      ? facility.facility_photos[0].fapho_url
+                                      : "https://source.unsplash.com/person-in-swimming-pool-during-daytime-rlwE8f8anOc"
+                                  }
                                   className="hotel-room-img"
                                 />
                               </div>
@@ -318,7 +341,12 @@ const HotelDetail = () => {
                                   data-bs-target="#exampleModal2"
                                   onClick={() => {
                                     setRoomName(facility.faci_name);
-                                    setPrice(facility.faci_rate_price);
+                                    setPrice(
+                                      facility.faci_rate_price -
+                                        (facility.faci_rate_price *
+                                          facility.faci_discount) /
+                                          100
+                                    );
                                     setTax(facility.faci_tax_rate);
                                     setFaciId(facility.faci_id);
                                     setDiskonRoom(
@@ -671,7 +699,7 @@ const HotelDetail = () => {
               </div>
               <div className="col-md-5">
                 <div className="card rounded-0">
-                  {boorLength > 0 ? (
+                  {/* {boorLength > 0 ? (
                     <div className="card-body">
                       <div className="d-flex align-items-center justify-content-center">
                         <h5 className="card-title">Login to see lower price</h5>
@@ -686,7 +714,12 @@ const HotelDetail = () => {
                         <h5 className="card-title">Your booking list</h5>
                       </div>
                     </div>
-                  )}
+                  )} */}
+                  <div className="card-body">
+                    <div className="d-flex align-items-center justify-content-center">
+                      <h5 className="card-title">Your Booking List</h5>
+                    </div>
+                  </div>
                   <ul className="list-group list-group-flush">
                     {boorLength > 0 &&
                       boor.booking_order_detail.map((item, index) => (
@@ -711,10 +744,7 @@ const HotelDetail = () => {
                           <div className="hotel-price m-0 mb-3">
                             <div>
                               <NumericFormat
-                                value={
-                                  item.borde_price -
-                                  (item.borde_price * item.diskonRoom) / 100
-                                }
+                                value={item.borde_price}
                                 displayType="text"
                                 thousandSeparator="."
                                 decimalSeparator=","
