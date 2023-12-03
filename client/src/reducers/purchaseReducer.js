@@ -9,6 +9,8 @@ import {
   GET_HOTEL,
   GET_PURCHASE,
   GET_GALLERY,
+  DELETE_ORDER,
+  ADDSTATUS_ORDER,
 } from "../actions/purchaseAction";
 
 const initialState = {
@@ -35,6 +37,14 @@ const initialState = {
   getOrderResult: false,
   getOrderLoading: false,
   getOrderError: false,
+
+  deleteheaderResult: false,
+  deleteheaderLoading: false,
+  deleteheaderError: false,
+
+  addstatusheaderResult: false,
+  addstatusheaderLoading: false,
+  addstatusheaderError: false,
 
   getPurchaseResult: false,
   getPurchaseLoading: false,
@@ -94,6 +104,20 @@ const PurchaseReducer = (state = initialState, action) => {
         getOrderResult: action.payload.data,
         getOrderLoading: action.payload.loading,
         getOrderError: action.payload.errorMessage,
+      };
+    case DELETE_ORDER:
+      return {
+        ...state,
+        deleteheaderResult: action.payload.data,
+        deleteheaderLoading: action.payload.loading,
+        deleteheaderError: action.payload.errorMessage,
+      };
+    case ADDSTATUS_ORDER:
+      return {
+        ...state,
+        addstatusheaderResult: action.payload.data,
+        addstatusheaderLoading: action.payload.loading,
+        addstatusheaderError: action.payload.errorMessage,
       };
     case GET_PURCHASE:
       return {

@@ -239,8 +239,9 @@ const uploadstockphoto = async (req, res) => {
     const { spho_primary, spho_url, spho_stock_id } = req.body;
     // const { files } =;
     console.log(req.files);
+    let result = "";
     req.files.map(async (photo) => {
-      const result = await models.stock_photo.create({
+      result = await models.stock_photo.create({
         spho_thumbnail_filename: photo.path,
         spho_photo_filename: photo.originalname,
         spho_primary: spho_primary,
@@ -387,8 +388,7 @@ const listpurchasing = async (req, res) => {
   try {
     const query = `select * from  purchase.purchase_order_header join purchase.vendor
                 on purchase.purchase_order_header.pohe_vendor_id=purchase.vendor.vendor_entity_id
-                join purchase.purchase_order_detail 
-                on purchase.purchase_order_detail.pode_pohe_id=purchase.purchase_order_header.pohe_id`;
+`;
     const result = await sequelize.query(query);
     console.log(result[0]);
     res.status(201).json({ data: result[0], message: "Success" });
@@ -415,8 +415,9 @@ const listgalleryphoto = async (req, res) => {
   try {
     const query = `select purchase.stock_photo.spho_stock_id, * from purchase.stocks 
                     join purchase.stock_photo on purchase.stocks.stock_id=purchase.stock_photo.spho_stock_id
-                    join purchase.vendor_product on purchase.stocks.stock_id=purchase.vendor_product.vepro_stock_id
-                    join purchase.vendor on purchase.vendor.vendor_entity_id=purchase.vendor_product.vepro_vendor_id `;
+                  join purchase.vendor_product on purchase.vendor_product.vepro_stock_id=purchase.stocks.stock_id
+                    join purchase.vendor on purchase.vendor.vendor_entity_id=purchase.vendor_product.vepro_vendor_id
+                    `;
 
     const result = await sequelize.query(query);
     res.status(201).json({ data: result[0], message: "Success" });
@@ -427,73 +428,40 @@ const listgalleryphoto = async (req, res) => {
 
 const insertpurchaseorder = async (req, res) => {
   try {
-    // const {
-    //   pohe_number,
-    //   pohe_status,
-    //   pohe_order_date,
-    //   pohe_subtotal,
-    //   pohe_tax,
-    //   pohe_total_amount,
-    //   pohe_refund,
-    //   pohe_arrival_date,
-    //   pohe_pay_type,
-    //   pohe_vendor_id,
-    //   pohe_emp_id,
-    //   pode_order_qty,
-    //   pode_price,
-    //   pode_line_total,
-    //   pode_received_qty,
-    //   pode_rejected_qty,
-    //   pode_stocked_qty,
-    //   pode_modified_date,
-    //   pode_stock_id,
-    //   pode_pohe_id,
-    // } = req.body;
-    // const insertpurchaseheader = await models.purchase_order_header.create({
-    //   pohe_number: pohe_number,
-    //   pohe_status: pohe_status,
-    //   pohe_order_date: pohe_order_date,
-    //   pohe_subtotal: pohe_subtotal,
-    //   pohe_tax: pohe_tax,
-    //   pohe_total_amount: pohe_total_amount,
-    //   pohe_refund: pohe_refund,
-    //   pohe_arrival_date: pohe_arrival_date,
-    //   pohe_pay_type: pohe_pay_type,
-    //   pohe_vendor_id: pohe_vendor_id,
-    //   pohe_emp_id: pohe_emp_id,
-    // });
-    // const insertpurchasedetail = await models.purchase_order_detail.create({
-    //   pode_order_qty: pode_order_qty,
-    //   pode_price: pode_price,
-    //   pode_line_total: pode_line_total,
-    //   pode_received_qty: pode_received_qty,
-    //   pode_rejected_qty: pode_rejected_qty,
-    //   pode_stocked_qty: pode_stocked_qty,
-    //   pode_modified_date: pode_modified_date,
-    //   pode_stock_id: pode_stock_id,
-    //   pode_pohe_id: pode_pohe_id,
-    // });
     const insertpurchaseheader = await models.purchase_order_header.bulkCreate(
       req.body.orderheader,
       { returning: true }
     );
     const { orderdetail } = req.body;
-    orderdetail.map(async (map) => {
-      insertpurchaseheader.map(async (order) => {
-        const insertpurchasedetail = await models.purchase_order_detail.create({
-          pode_order_qty: map.pode_order_qty,
-          pode_price: map.pode_price,
-          pode_line_total: map.pode_line_total,
-          pode_received_qty: map.pode_received_qty,
-          pode_rejected_qty: map.pode_rejected_qty,
-          pode_stocked_qty: map.pode_stocked_qty,
-          pode_modified_date: map.pode_modified_date,
-          pode_stock_id: map.pode_stock_id,
-          pode_pohe_id: order.pohe_id,
-        });
+    const data = await Promise.all(
+      orderdetail.map(async (e) => {
+        let detail = insertpurchaseheader.find(
+          (element) => element.length === e.length
+        );
+        if (detail.pohe_id) {
+          e.pohe_id = detail.pohe_id;
+        }
+        return e;
+      })
+    );
+    let insertpurchasedetail = "";
+    console.log(data);
+    data.map(async (map) => {
+      insertpurchasedetail = await models.purchase_order_detail.create({
+        pode_order_qty: map.pode_order_qty,
+        pode_price: map.pode_price,
+        pode_line_total: map.pode_line_total,
+        pode_received_qty: map.pode_received_qty,
+        pode_rejected_qty: map.pode_rejected_qty,
+        pode_stocked_qty: map.pode_stocked_qty,
+        pode_modified_date: map.pode_modified_date,
+        pode_stock_id: map.pode_stock_id,
+        pode_pohe_id: map.pohe_id,
       });
     });
-    res.status(201).json({ message: "Success" });
+
+    const result = { insertpurchaseheader, insertpurchasedetail };
+    res.status(201).json({ data: result, message: "Success" });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
@@ -503,9 +471,9 @@ const updatestatuspurchase = async (req, res) => {
   try {
     const result = await models.purchase_order_header.update(
       {
-        pohe_status: req.body.pohe_status,
+        pohe_status: req.body.status,
       },
-      { where: { pohe_id: req.body.pohe_id }, returning: true }
+      { where: { pohe_id: req.params.id } }
     );
     res.status(201).json({ data: result, message: "Update Success" });
   } catch (error) {
@@ -513,15 +481,23 @@ const updatestatuspurchase = async (req, res) => {
   }
 };
 
-const deletepurchasestock = async (req, res) => {
+const statuspurchasebyId = async (req, res) => {
+  try {
+    const result = await models.purchase_order_header.findOne({
+      where: { pohe_id: req.params.id },
+    });
+    res.status(201).json({ data: result, message: "Success" });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+const deletepurchaseheader = async (req, res) => {
   try {
     const deletpurchaseheader = await models.purchase_order_header.destroy({
-      where: { pohe_id: req.body.pohe_id },
+      where: { pohe_id: req.params.id },
     });
-    const deletepurchasedetail = await models.purchase_order_detail.destroy({
-      where: { pode_pohe_id: req.body.pohe_id },
-    });
-    const result = { deletpurchaseheader, deletepurchasedetail };
+    const result = { deletpurchaseheader };
     res.status(201).json({ data: result, message: "Success" });
   } catch (error) {
     res.status(400).json({ message: error.message });
@@ -554,7 +530,7 @@ const updatepurchaseorderdetail = async (req, res) => {
         pode_received_qty: pode_received_qty,
         pode_rejected_qty: pode_rejected_qty,
       },
-      { where: { pode_pohe_id: req.params.pode_id } }
+      { where: { pode_id: req.params.id } }
     );
     const updatestockdetail = await models.stock_detail.update(
       {
@@ -589,9 +565,10 @@ export default {
   listpurchasing,
   insertpurchaseorder,
   updatestatuspurchase,
-  deletepurchasestock,
+  deletepurchaseheader,
   updatepurchaseorderdetail,
   deletepurchasestockdetail,
+  statuspurchasebyId,
   pictstockphoto,
   stockbyId,
   listhotel,

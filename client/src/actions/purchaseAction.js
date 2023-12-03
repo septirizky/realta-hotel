@@ -10,6 +10,8 @@ export const GET_STOCK = "GET_STOCK";
 export const GET_STOCKDETAIL = "GET_STOCKDETAIL";
 
 export const GET_ORDER = "GET_ORDER";
+export const DELETE_ORDER = "DELETE_ORDER";
+export const ADDSTATUS_ORDER = "ADDSTATUS_ORDER";
 export const GET_PURCHASE = "GET_PURCHASE";
 export const GET_GALLERY = "GET_GALLERY";
 
@@ -306,6 +308,84 @@ export const GetOrder = (id) => {
       .catch((e) => {
         dispatch({
           type: GET_ORDER,
+          payload: {
+            loading: false,
+            data: false,
+            errorMessage: e.response.data.message,
+          },
+        });
+      });
+  };
+};
+export const Deleteorderheader = (id) => {
+  return async (dispatch) => {
+    dispatch({
+      type: DELETE_ORDER,
+      payload: {
+        loading: true,
+        data: false,
+        errorMessage: false,
+      },
+    });
+    await axios({
+      method: "DELETE",
+      url: `http://localhost:4001/deletepurchaseheader/${id}`,
+      timeout: 120000,
+    })
+      .then((res) => {
+        console.log(res.data);
+        dispatch({
+          type: DELETE_ORDER,
+          payload: {
+            loading: false,
+            data: res.data.data,
+            errorMessage: false,
+          },
+        });
+      })
+      .catch((e) => {
+        dispatch({
+          type: DELETE_ORDER,
+          payload: {
+            loading: false,
+            data: false,
+            errorMessage: e.response.data.message,
+          },
+        });
+      });
+  };
+};
+export const PostStatusHeader = (status, id) => {
+  // console.log(status, id, "345");
+  return async (dispatch) => {
+    dispatch({
+      type: ADDSTATUS_ORDER,
+      payload: {
+        loading: true,
+        data: false,
+        errorMessage: false,
+      },
+    });
+    await axios({
+      method: "POST",
+      url: `http://localhost:4001/updatestatuspurchase/${id}`,
+      timeout: 120000,
+      data: { status },
+    })
+      .then((res) => {
+        console.log(res.data, "rrrr");
+        dispatch({
+          type: ADDSTATUS_ORDER,
+          payload: {
+            loading: false,
+            data: res.data.data,
+            errorMessage: false,
+          },
+        });
+      })
+      .catch((e) => {
+        dispatch({
+          type: ADDSTATUS_ORDER,
           payload: {
             loading: false,
             data: false,
