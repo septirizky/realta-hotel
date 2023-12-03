@@ -1,6 +1,10 @@
 /* eslint-disable eqeqeq */
 import React, { useEffect, useState } from "react";
-import { GetStockDetail, GetHotel } from "../../../actions/purchaseAction";
+import {
+  GetStockDetail,
+  GetHotel,
+  GetHotelbyId,
+} from "../../../actions/purchaseAction";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import axios from "axios";
@@ -20,6 +24,7 @@ const StockDetail = () => {
   const [status, setStatus] = useState("");
   const [used, setUsed] = useState("");
   const [idstock, setId] = useState("");
+  const [faciid, setFaciId] = useState("");
   const { id } = useParams();
   let active = "";
 
@@ -39,6 +44,7 @@ const StockDetail = () => {
   }, [dispatch, id]);
 
   //modal edit
+
   const [edit, setEdit] = useState(false);
   const handleEditC = () => setEdit(false);
   const editStock = async (id) => {

@@ -16,6 +16,7 @@ export const GET_PURCHASE = "GET_PURCHASE";
 export const GET_GALLERY = "GET_GALLERY";
 
 export const GET_HOTEL = "GET_HOTEL";
+export const GET_HOTELID = "GET_HOTELID";
 
 export const ADDITEM = "ADDITEM";
 export const DELITEM = "DELITEM";
@@ -432,6 +433,44 @@ export const GetHotel = () => {
       .catch((e) => {
         dispatch({
           type: GET_HOTEL,
+          payload: {
+            loading: false,
+            data: false,
+            errorMessage: e.response.data.message,
+          },
+        });
+      });
+  };
+};
+export const GetHotelbyId = (id) => {
+  return async (dispatch) => {
+    dispatch({
+      type: GET_HOTELID,
+      payload: {
+        loading: true,
+        data: false,
+        errorMessage: false,
+      },
+    });
+    await axios({
+      method: "GET",
+      url: `http://localhost:4001/listhotelId/${id}`,
+      timeout: 120000,
+    })
+      .then((res) => {
+        console.log(res.data);
+        dispatch({
+          type: GET_HOTELID,
+          payload: {
+            loading: false,
+            data: res.data.data,
+            errorMessage: false,
+          },
+        });
+      })
+      .catch((e) => {
+        dispatch({
+          type: GET_HOTELID,
           payload: {
             loading: false,
             data: false,
