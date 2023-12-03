@@ -44,6 +44,10 @@ import SignupGuest from "./components/users/signupGuest";
 import {Employee} from "./components/hr/Employee";
 import FacilityHistory from "./components/hotel/facilityHistory";
 import Transaction from "./components/payment/transaction/transaction";
+import MenuDetail from "./components/resto/menudetail";
+
+
+
 
 function App() {
     return (
@@ -65,6 +69,16 @@ function App() {
                 </Route>
                 <Route path='/resto' element={<RestoNav/>}>
                     <Route path="/resto" index element={<Resto/>}/>
+                    <Route path='/resto' element={<RestoNav/>}>
+                        <Route path="/resto" index element={<Resto/>} />
+                        {/* <Route path="/resto/menu" index element={<MenuDetail/>} /> */}
+                        {/* <Route path='/resto/menu' element={<Menu/>}/> */}
+                    </Route>
+                    <Route path='/resto/menu' element={<RestoNav/>}>
+                        <Route path="/resto/menu" index element={<MenuDetail/>} />
+                        {/* <Route path="/resto/menu" index element={<MenuDetail/>} /> */}
+                        {/* <Route path='/resto/menu' element={<Menu/>}/> */}
+                    </Route>
                 </Route>
                 <Route path="/" element={<NavbarComponent/>}>
                     <Route path="/profile" index element={<ProfilePage/>}/>

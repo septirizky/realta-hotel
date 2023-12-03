@@ -12,7 +12,6 @@ const __dirname = path.dirname(__filename);
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static('public'));
 
 app.use("/assets", express.static("src/assets"));
 
