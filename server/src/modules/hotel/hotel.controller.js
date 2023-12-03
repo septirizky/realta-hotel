@@ -174,6 +174,31 @@ export const facilities = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+export const facilitiesAll = async (req, res) => {
+  try {
+    const { hotel_id } = req.params;
+    const result = await models.facilities.findAll(
+      {
+        include: {
+          model: models.hotels,
+          as: "faci_hotel",
+          required: true,
+          attributes: ["hotel_name", "hotel_phonenumber", "hotel_rating_star"],
+          include: {
+            model: models.address,
+            as: "hotel_addr",
+            attributes: ["addr_line_1"],
+          },
+        },
+      }
+    );
+    return res
+      .status(200)
+      .json({ data: result, message: "berhasil tampil facilities" });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
 export const getAllFacilities = async (req, res) => {
   try {
     const result = await models.facilities.findAll(

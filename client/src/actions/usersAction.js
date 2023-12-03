@@ -23,7 +23,7 @@ export const RegUsers = (data) => {
         })
         await axios({
             method: "POST",
-            url: "http://localhost:2112/users/signupUser",
+            url: "http://localhost:4000/users/signupUser",
             data : data,
             timeout: 120000
         }).then((res) => {
@@ -60,7 +60,7 @@ export const LogUsers = (data) => {
         })
         await axios({
             method: "POST",
-            url: "http://localhost:2112/users/signin",
+            url: "http://localhost:4000/users/signin",
             data : data,
             timeout: 120000
         }).then((res) => {
@@ -97,7 +97,7 @@ export const RegGuest = (data) => {
         })
         await axios({
             method: "POST",
-            url: "http://localhost:2112/users/signupGuest",
+            url: "http://localhost:4000/users/signupGuest",
             data : data,
             timeout: 120000
         }).then((res) => {
@@ -134,7 +134,7 @@ export const LogGuest = (data) => {
         })
         await axios({
             method: "POST",
-            url: "http://localhost:2112/users/loginGuest",
+            url: "http://localhost:4000/users/loginGuest",
             data : data,
             timeout: 120000
         }).then((res) => {
@@ -171,7 +171,7 @@ export const GetUsers = (data) => {
         })
         await axios({
             method: "GET",
-            url: "http://localhost:2112/users/",
+            url: "http://localhost:4000/users/",
             data : data,
             timeout: 120000
         }).then((res) => {
@@ -209,7 +209,7 @@ export const DelUsers = (id) => {
         })
         await axios({
             method: "DELETE",
-            url: "http://localhost:2112/users/"+id,
+            url: "http://localhost:4000/users/"+id,
             timeout: 120000
         }).then((res) => {
             dispatch({
@@ -245,7 +245,7 @@ export const UpdUsers = (id,data) => {
         })
         await axios({
             method: "DELETE",
-            url: "http://localhost:2112/users/"+id,
+            url: "http://localhost:4000/users/"+id,
             data : data,
             timeout: 120000
         }).then((res) => {
@@ -282,7 +282,7 @@ export const InsProfile = (data) => {
         })
         await axios({
             method: "POST",
-            url: "http://localhost:2112/users/insert/+id",
+            url: "http://localhost:4000/users/insert/+id",
             data : data,
             timeout: 120000
         }).then((res) => {
@@ -319,7 +319,7 @@ export const ChaPassword = (id,data) => {
         })
         await axios({
             method: "PATCH",
-            url: "http://localhost:2112/users/change-password/"+id,
+            url: "http://localhost:4000/users/change-password/"+id,
             data: data,
             timeout: 120000
         }).then((res) => {

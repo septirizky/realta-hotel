@@ -129,7 +129,7 @@ const GetFacilities = (props) => {
             <th className="align-border-right">
               <button
                 type="button"
-                className="button-transparan"
+                className="btn btn-warning text-white"
                 onClick={showAddFaci}
               >
                 Add

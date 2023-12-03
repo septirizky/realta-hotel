@@ -13,7 +13,7 @@ import {
   getPhoto,
   uploadFaciPhoto,
   photoDelete,
-  facilityHistory,
+  facilityHistory, facilitiesAll,
 } from "./hotel.controller.js";
 import multer from "multer";
 import path from "path";
@@ -75,6 +75,7 @@ hotelRouters.delete("/hotel/facilities/photo/:fapho_id", photoDelete);
 hotelRouters.get("/hotel/facilities/facility_history", facilityHistory);
 
 hotelRouters.get("/hotel/facilities/:hotel_id", facilities);
+hotelRouters.get("/hotel/facilities", facilitiesAll);
 hotelRouters.post("/hotel/facilities", facilitiesAdd);
 hotelRouters.put("/hotel/facilities/:faci_id", facilitiesUpdate);
 hotelRouters.delete("/hotel/facilities/:faci_id", facilitiesDelete);
