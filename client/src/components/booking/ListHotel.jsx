@@ -14,6 +14,7 @@ import "swiper/css/thumbs";
 // import { FreeMode, Navigation, Thumbs } from 'swiper/modules';
 
 import { FaCar, FaShoppingCart, FaStar } from "react-icons/fa";
+import { NumericFormat } from "react-number-format";
 import { useDispatch, useSelector } from "react-redux";
 import { getListBHotel } from "../../actions/bookingHotelAction";
 
@@ -66,6 +67,14 @@ const ListHotel = () => {
     });
   };
 
+  const [adults, setAdults] = useState(1);
+  const [kids, setKids] = useState(0);
+
+  // const handlePerson = (e) => {
+  //   e.preventDefault()
+
+  // }
+
   console.log("getListBHotelResult: ", getListBHotelResult);
   console.log("filter:", filter);
 
@@ -100,12 +109,27 @@ const ListHotel = () => {
           </div>
           <div className="col-md-2">
             <label htmlFor="">Person</label>
-            <input
+            {/* <input
               type="text"
               className="form-control"
               value="2 Adults, 1 Children"
               disabled
-            />
+            /> */}
+            <div
+              className="form-control d-flex align-items-center"
+              style={{ height: "48px", cursor: "pointer" }}
+              data-bs-toggle="modal"
+              data-bs-target="#exampleModal2"
+            >
+              <span>
+                {adults} {adults > 1 ? "Adults" : "Adult"}
+              </span>
+              {kids > 0 && <span className="me-1">, </span>}
+              <span>
+                {kids < 2 && kids > 0 && `${kids} Kid`}{" "}
+                {kids > 1 && `${kids} Kids`}{" "}
+              </span>
+            </div>
             <label></label>
           </div>
           <div className="col-md-2">
@@ -118,7 +142,21 @@ const ListHotel = () => {
           <div className="row">
             <div className="d-flex justify-content-between mb-3">
               <h4>Filter</h4>
-              <button className="btn btn-danger">Clear All</button>
+              <button
+                type="button"
+                className="btn btn-danger"
+                onClick={() => {
+                  setFilter({
+                    hotelName: undefined,
+                    minRateprice: undefined,
+                    maxRatePrice: undefined,
+                  });
+                  setFilterMinPrice(undefined);
+                  setFilterMaxPrice(undefined);
+                }}
+              >
+                Clear All
+              </button>
             </div>
             <form action="">
               <div className="mb-3">
@@ -165,7 +203,7 @@ const ListHotel = () => {
                   </label>
                 </div>
               </div>
-              <button className="button-list-hotel-filter">Save Filter</button>
+              {/* <button className="button-list-hotel-filter">Save Filter</button> */}
             </form>
           </div>
         </div>
@@ -343,11 +381,28 @@ const ListHotel = () => {
                           </div>
                           <div className="hotel-price">
                             <div>
-                              Rp. 350.000
+                              <NumericFormat
+                                value={
+                                  hotel.facilities[0].faci_rate_price -
+                                  (hotel.facilities[0].faci_rate_price *
+                                    hotel.facilities[0].faci_discount) /
+                                    100
+                                }
+                                displayType="text"
+                                thousandSeparator="."
+                                decimalSeparator=","
+                                prefix="Rp "
+                              />
                               <span className="hotel-price-per">/day</span>
                             </div>
                             <span className="hotel-price-undiscount">
-                              Rp. 550.000
+                              <NumericFormat
+                                value={hotel.facilities[0].faci_rate_price}
+                                displayType="text"
+                                thousandSeparator="."
+                                decimalSeparator=","
+                                prefix="Rp "
+                              />
                             </span>
                             <span className="hotel-price-discount-value">
                               10% off
@@ -358,11 +413,11 @@ const ListHotel = () => {
                           </p>
                           <div className="hotel-rating">
                             <div className="hotel-rating-star">
-                              <span>3.9</span>
+                              <span>4.5</span>
                               <FaStar className="hotel-rating-icon" />
                             </div>
                             <div className="hotel-rating-count">
-                              (335 Ratings){" "}
+                              (5 Ratings){" "}
                               <span className="text-success">Good</span>
                             </div>
                           </div>
@@ -377,12 +432,12 @@ const ListHotel = () => {
                             </div>
                           </div>
                           <div className="hotel-default-room">
-                            Indonesia Standar Double
+                            {hotel.facilities[0].faci_name}
                           </div>
                         </div>
                         <div className="hotel-body-bottom">
                           <Link
-                            to={`/booking/hotel/1`}
+                            to={`/booking/hotel/${hotel.hotel_id}`}
                             className="hotel-view-details-button"
                           >
                             View Details
@@ -399,6 +454,62 @@ const ListHotel = () => {
               <p>{getListBHotelError ? getListBHotelError : "Data Kosong"}</p>
             )}
           </div>
+        </div>
+      </div>
+
+      <div
+        className="modal fade"
+        id="exampleModal2"
+        tabIndex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog modal-dialog-scrollable">
+          <form
+            className="modal-content rounded-0"
+            // onSubmit={(e) => addFacilities(e)}
+          >
+            <div className="modal-header">
+              <h1 className="modal-title fs-5" id="exampleModalLabel">
+                Person
+              </h1>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div className="modal-body">
+              <div className="form-group">
+                <label className="col-form-label">Adult(s):</label>
+                <input
+                  type="number"
+                  className="form-control rounded-0"
+                  onChange={(e) => setAdults(+e.target.value)}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label className="col-form-label">Kid(s):</label>
+                <input
+                  type="number"
+                  className="form-control rounded-0"
+                  onChange={(e) => setKids(+e.target.value)}
+                  required
+                />
+              </div>
+            </div>
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="button-hotel-room-book"
+                data-bs-dismiss="modal"
+              >
+                Add
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>

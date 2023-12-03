@@ -64,8 +64,8 @@ const HotelDetail = () => {
 
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
-  const [adults, setAdults] = useState("");
-  const [kids, setKids] = useState("");
+  const [adults, setAdults] = useState(1);
+  const [kids, setKids] = useState(0);
   const [price, setPrice] = useState("");
   const [tax, setTax] = useState("");
   const [diskonRoom, setDiskonRoom] = useState("");
@@ -131,12 +131,21 @@ const HotelDetail = () => {
                 </div>
                 <div className="col-md-2">
                   <label htmlFor="">Person</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    value="2 Adults, 1 Children"
-                    disabled
-                  />
+                  <div
+                    className="form-control d-flex align-items-center"
+                    style={{ height: "48px", cursor: "pointer" }}
+                    data-bs-toggle="modal"
+                    data-bs-target="#exampleModal2"
+                  >
+                    <span>
+                      {adults} {adults > 1 ? "Adults" : "Adult"}
+                    </span>
+                    {kids > 0 && <span className="me-1">, </span>}
+                    <span>
+                      {kids < 2 && kids > 0 && `${kids} Kid`}{" "}
+                      {kids > 1 && `${kids} Kids`}{" "}
+                    </span>
+                  </div>
                   <label></label>
                 </div>
                 <div className="col-md-2">
@@ -209,11 +218,11 @@ const HotelDetail = () => {
                   <div className="col-md-6">
                     <div className="hotel-rating mt-2">
                       <div className="hotel-rating-star">
-                        <span>5</span>
+                        <span>4.5</span>
                         <FaStar className="hotel-rating-icon" />
                       </div>
                       <div className="hotel-rating-count">
-                        (1 Ratings) <span className="text-success">Good</span>
+                        (5 Ratings) <span className="text-success">Good</span>
                       </div>
                     </div>
                   </div>
@@ -342,13 +351,12 @@ const HotelDetail = () => {
                       <div className="hotel-review-rating mt-2 d-flex justify-content-center align-items-center h-75">
                         <div className="hotel-review-rating-star">
                           <span className="hotel-review-rating-rating">
-                            3.9
+                            4.5
                           </span>
                           <FaStar className="hotel-review-rating-icon" />
                         </div>
                         <div className="hotel-review-rating-count">
-                          (335 Ratings){" "}
-                          <span className="text-success">Good</span>
+                          (5 Ratings) <span className="text-success">Good</span>
                         </div>
                       </div>
                     </div>
@@ -386,50 +394,6 @@ const HotelDetail = () => {
                           className="progress col-sm-10 p-0"
                           role="progressbar"
                           aria-label="Success example"
-                          aria-valuenow="80"
-                          aria-valuemin="0"
-                          aria-valuemax="100"
-                        >
-                          <div
-                            className="progress-bar bg-warning"
-                            style={{ width: "80%" }}
-                          ></div>
-                        </div>
-                        <div className="col-sm-1">80%</div>
-                      </div>
-                      <div className="hotel-rating-persentage row align-items-center  mb-2">
-                        <div className="col-sm-1 d-flex align-items-center p-0">
-                          <span className="mr-1" style={{ fontSize: "18px" }}>
-                            3
-                          </span>
-                          <FaStar className="text-warning" />
-                        </div>
-                        <div
-                          className="progress col-sm-10 p-0"
-                          role="progressbar"
-                          aria-label="Success example"
-                          aria-valuenow="25"
-                          aria-valuemin="0"
-                          aria-valuemax="100"
-                        >
-                          <div
-                            className="progress-bar bg-warning"
-                            style={{ width: "25%" }}
-                          ></div>
-                        </div>
-                        <div className="col-sm-1">25%</div>
-                      </div>
-                      <div className="hotel-rating-persentage row align-items-center  mb-2">
-                        <div className="col-sm-1 d-flex align-items-center p-0">
-                          <span className="mr-1" style={{ fontSize: "18px" }}>
-                            2
-                          </span>
-                          <FaStar className="text-warning" />
-                        </div>
-                        <div
-                          className="progress col-sm-10 p-0"
-                          role="progressbar"
-                          aria-label="Success example"
                           aria-valuenow="10"
                           aria-valuemin="0"
                           aria-valuemax="100"
@@ -444,7 +408,7 @@ const HotelDetail = () => {
                       <div className="hotel-rating-persentage row align-items-center  mb-2">
                         <div className="col-sm-1 d-flex align-items-center p-0">
                           <span className="mr-1" style={{ fontSize: "18px" }}>
-                            1
+                            0
                           </span>
                           <FaStar className="text-warning" />
                         </div>
@@ -452,16 +416,60 @@ const HotelDetail = () => {
                           className="progress col-sm-10 p-0"
                           role="progressbar"
                           aria-label="Success example"
-                          aria-valuenow="3"
+                          aria-valuenow="25"
                           aria-valuemin="0"
                           aria-valuemax="100"
                         >
                           <div
                             className="progress-bar bg-warning"
-                            style={{ width: "3%" }}
+                            style={{ width: "0%" }}
                           ></div>
                         </div>
-                        <div className="col-sm-1">3%</div>
+                        <div className="col-sm-1">0%</div>
+                      </div>
+                      <div className="hotel-rating-persentage row align-items-center  mb-2">
+                        <div className="col-sm-1 d-flex align-items-center p-0">
+                          <span className="mr-1" style={{ fontSize: "18px" }}>
+                            0
+                          </span>
+                          <FaStar className="text-warning" />
+                        </div>
+                        <div
+                          className="progress col-sm-10 p-0"
+                          role="progressbar"
+                          aria-label="Success example"
+                          aria-valuenow="0"
+                          aria-valuemin="0"
+                          aria-valuemax="100"
+                        >
+                          <div
+                            className="progress-bar bg-warning"
+                            style={{ width: "0%" }}
+                          ></div>
+                        </div>
+                        <div className="col-sm-1">0%</div>
+                      </div>
+                      <div className="hotel-rating-persentage row align-items-center  mb-2">
+                        <div className="col-sm-1 d-flex align-items-center p-0">
+                          <span className="mr-1" style={{ fontSize: "18px" }}>
+                            0
+                          </span>
+                          <FaStar className="text-warning" />
+                        </div>
+                        <div
+                          className="progress col-sm-10 p-0"
+                          role="progressbar"
+                          aria-label="Success example"
+                          aria-valuenow="0"
+                          aria-valuemin="0"
+                          aria-valuemax="100"
+                        >
+                          <div
+                            className="progress-bar bg-warning"
+                            style={{ width: "0%" }}
+                          ></div>
+                        </div>
+                        <div className="col-sm-1">0%</div>
                       </div>
                     </div>
                   </div>
@@ -472,7 +480,7 @@ const HotelDetail = () => {
                         className="hotel-rating-star text-center mb-2"
                         style={{ width: "70px" }}
                       >
-                        <span>3.9</span>
+                        <span>5</span>
                         <FaStar className="hotel-rating-icon" />
                       </div>
                       <p>
@@ -484,12 +492,12 @@ const HotelDetail = () => {
                       </p>
                     </div>
                     <div className="review-item col-md-9">
-                      <h5 className="mb-2">Ajip Rosidi 4 Jan 2023</h5>
+                      <h5 className="mb-2">John Doe 4 Jan 2023</h5>
                       <div
                         className="hotel-rating-star text-center mb-2"
                         style={{ width: "70px" }}
                       >
-                        <span>3.9</span>
+                        <span>5</span>
                         <FaStar className="hotel-rating-icon" />
                       </div>
                       <p>
@@ -497,12 +505,40 @@ const HotelDetail = () => {
                       </p>
                     </div>
                     <div className="review-item col-md-9">
-                      <h5 className="mb-2">Ajip Rosidi 4 Jan 2023</h5>
+                      <h5 className="mb-2">Doe John 4 Jan 2023</h5>
                       <div
                         className="hotel-rating-star text-center mb-2"
                         style={{ width: "70px" }}
                       >
-                        <span>3.9</span>
+                        <span>5</span>
+                        <FaStar className="hotel-rating-icon" />
+                      </div>
+                      <p>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                        Molestiae, repudiandae. Quia eum, temporibus sit
+                        repudiandae dolorum illo repellendus error
+                      </p>
+                    </div>
+                    <div className="review-item col-md-9">
+                      <h5 className="mb-2">John Doe 4 Jan 2023</h5>
+                      <div
+                        className="hotel-rating-star text-center mb-2"
+                        style={{ width: "70px" }}
+                      >
+                        <span>5</span>
+                        <FaStar className="hotel-rating-icon" />
+                      </div>
+                      <p>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                      </p>
+                    </div>
+                    <div className="review-item col-md-9">
+                      <h5 className="mb-2">Doe John 4 Jan 2023</h5>
+                      <div
+                        className="hotel-rating-star text-center mb-2"
+                        style={{ width: "70px" }}
+                      >
+                        <span>5</span>
                         <FaStar className="hotel-rating-icon" />
                       </div>
                       <p>
@@ -706,36 +742,7 @@ const HotelDetail = () => {
                           <h5>{item.roomName}</h5>
                         </li>
                       ))}
-                    {/* <li className="list-group-item text-center">
-                      <p>
-                        <span>Friday, 10 Feb - Sat, 11 Feb</span>
-                        <span className="ms-3">1 Room, 2 Guest</span>
-                      </p>
-                      <div className="hotel-price m-0 mb-3">
-                        <div>Rp. 350.000</div>
-                        <span className="hotel-price-undiscount">
-                          Rp. 550.000
-                        </span>
-                        <span className="hotel-price-discount-value">
-                          10% off
-                        </span>
-                      </div>
-                      <p className="mb-1 text-success">Include Tax</p>
-                      <h5>Indonesia Standar Double</h5>
-                    </li> */}
-                    {/* <li className="list-group-item">
-                      <div className="d-flex align-items-center justify-content-between">
-                        <button className="button-hotel-book">
-                          Apply Coupon
-                        </button>
-                        <div className="fs-3">Rp. -50.000</div>
-                      </div>
-                    </li> */}
                     <li className="list-group-item">
-                      {/* <div className="d-flex align-items-center justify-content-between">
-                        <div>Your Savings</div>
-                        <div className="fs-5">Rp. -50.000</div>
-                      </div> */}
                       <div className="d-flex align-items-center justify-content-between">
                         <div>
                           Total Price{" "}
@@ -759,7 +766,6 @@ const HotelDetail = () => {
                     </li>
                   </ul>
                   <div className="card-body">
-                    {/* <Link to={`/booking/hotel/create/1`}> */}
                     <button
                       className={`button-list-hotel-filter ${
                         boorLength < 1 && "button-disabled"
