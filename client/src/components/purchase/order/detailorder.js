@@ -42,7 +42,6 @@ const DetailOrder = () => {
     try {
       Swal.fire({
         title: "Are you sure?",
-        text: "You won't be able to revert this!",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
@@ -72,6 +71,7 @@ const DetailOrder = () => {
   const [edit, setEdit] = useState(false);
   const handleEditC = () => setEdit(false);
   const editDetail = async (e) => {
+    console.log(idBy);
     e.preventDefault();
     Swal.fire({
       title: "Are you sure?",
@@ -84,14 +84,13 @@ const DetailOrder = () => {
       if (result.isConfirmed) {
         axios({
           method: "POST",
-          url: `http://localhost:4001/updatevendor`,
+          url: `http://localhost:4001/updatepurchasedetail/${idBy}`,
           timeout: 12000,
           data: {
-            stock,
-            order_qty,
-            receive,
-            rejected,
-            idBy,
+            pode_stock_id: stock,
+            pode_order_qty: order_qty,
+            pode_received_qty: receive,
+            pode_rejected_qty: rejected,
           },
         }).then((response) => {
           if (response.data.data !== 400) {
@@ -120,13 +119,15 @@ const DetailOrder = () => {
     const response = await axios.get(
       `http://localhost:4001/listorderdetailbyId/${id}`
     );
-    const data = await response.data;
-
-    setStock(data.stock_name);
-    setQty(data.pode_order_qty);
-    setReceive(data.pode_received_qty);
-    setRejected(data.pode_rejected_qty);
-    setId(data.pode_id);
+    const data = await response.data.data;
+    data.map((detail) => {
+      console.log(data);
+      setStock(detail.stock_name);
+      setQty(detail.pode_order_qty);
+      setReceive(detail.pode_received_qty);
+      setRejected(detail.pode_rejected_qty);
+      setId(detail.pode_id);
+    });
   };
   return (
     <section style={{ backgroundColor: "#eee" }}>

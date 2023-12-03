@@ -60,10 +60,17 @@ purchaseRouters.delete(
 purchaseRouters.get("/listpurchase", purchase.listpurchasing);
 purchaseRouters.get("/listorderdetail/:id", purchase.listdetailorder);
 purchaseRouters.get("/listorderdetailbyId/:id", purchase.listdetailorderById);
-purchaseRouters.post("/updatestatuspurchase", purchase.updatestatuspurchase);
-purchaseRouters.delete("/deletepurchaseorder", purchase.deletepurchasestock);
+purchaseRouters.get("/statusorderbyId/:id", purchase.statuspurchasebyId);
 purchaseRouters.post(
-  "/updatepurchasedetail",
+  "/updatestatuspurchase/:id",
+  purchase.updatestatuspurchase
+);
+purchaseRouters.delete(
+  "/deletepurchaseheader/:id",
+  purchase.deletepurchaseheader
+);
+purchaseRouters.post(
+  "/updatepurchasedetail/:id",
   purchase.updatepurchaseorderdetail
 );
 purchaseRouters.post("/insertorder", purchase.insertpurchaseorder);

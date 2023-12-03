@@ -565,12 +565,14 @@ const Stock = () => {
                       onChange={handleChange}
                     />
                   </div>
+
                   {file && (
                     <div>
                       {file.map((img, i) => {
                         return (
                           <img
-                            className="preview"
+                            className="preview "
+                            width="400"
                             src={img}
                             alt={"image-" + i}
                             key={i}

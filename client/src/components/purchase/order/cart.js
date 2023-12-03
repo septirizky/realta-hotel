@@ -1,6 +1,6 @@
 /* eslint-disable no-const-assign */
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import axios from "axios";
 
@@ -77,6 +77,7 @@ const Cart = () => {
       });
       // return orderheader & orderdetail;
     });
+    const navigate = useNavigate();
     const inputdata = (event) => {
       event.preventDefault();
       console.log(orderheader, orderdetail, "90");
@@ -99,23 +100,13 @@ const Cart = () => {
               Swal.fire({
                 icon: "success",
               });
-              // setEdit(false);
-              // dispatch(GetStock());
-              // setStock("");
-              // setDesc("");
-              // setPoint("");
-              // setQty("");
-              // setUsed("");
-              // setScrap("");
-              // setSize("");
-              // setColor("");
+              navigate("/");
             } else {
               Swal.fire({
                 icon: "warning",
                 text: response.data.code,
               });
             }
-            // setShow(false);
           });
         }
       });

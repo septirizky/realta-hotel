@@ -231,7 +231,7 @@ const Vendor = () => {
             {" "}
             <>
               {" "}
-              <table className="table" id="example">
+              <table className="table">
                 <thead>
                   <tr>
                     <th className="col-md-1">VENDOR</th>
