@@ -295,14 +295,6 @@ export const Employee = () => {
                                                             size='16'/> Edit</a>
                                                     </li>
                                                     <li>
-                                                        <a className="dropdown-item custom-hover-yellow"
-                                                           href='#'><MdHistory size='16'/> Salary History</a>
-                                                    </li>
-                                                    <li>
-                                                        <a className="dropdown-item custom-hover-yellow"
-                                                           href='#'><MdHistory size='16'/> Department History</a>
-                                                    </li>
-                                                    <li>
                                                         <a className="dropdown-item custom-hover-yellow text-danger"
                                                            onClick={(e) => deleteEmp(value.emp_id, e, value.emp_fullname, value.emp_photo)}
                                                            href='#'><FiTrash size='16'/> Delete</a>

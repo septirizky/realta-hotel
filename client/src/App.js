@@ -56,13 +56,14 @@ import {Footer} from "./components/dashboard/tempFoot";
 
 
 function MainLayout() {
-  return (
-    <div>
-      <Dashboard />
-      <Footer />
-    </div>
-  );
+    return (
+        <div>
+            <Dashboard/>
+            <Footer/>
+        </div>
+    );
 }
+
 function App() {
 
     return (
@@ -74,7 +75,7 @@ function App() {
                     <Route path="/payment/paymentgateaway" index element={<PaymentGateaway/>}/>
                     <Route path="/payment/accounts" index element={<Accounts/>}/>
                     <Route path="/payment/top-up" index element={<TopUp/>}/>
-                    <Route path="/payment/transaction"index element={<Transaction/>}/>
+                    <Route path="/payment/transaction" index element={<Transaction/>}/>
                 </Route>
                 <Route path='/hr' element={<HrNav/>}>
                     <Route path='/hr/department' index element={<Department/>}/>
@@ -82,20 +83,20 @@ function App() {
                     <Route path='/hr/work-order' element={<WorkOrder/>}/>
                     <Route path='/hr/work-order/:id/:name/:date' element={<WorkOrderDetail/>}/>
                 </Route>
-                    <Route path="/" index element={<Resto/>}/>
-                    <Route path='/resto' element={<RestoNav/>}>
-                        <Route path="/resto" index element={<Resto/>} />
-                        {/* <Route path="/resto/menu" index element={<MenuDetail/>} /> */}
-                        {/* <Route path='/resto/menu' element={<Menu/>}/> */}
-                    </Route>
-                    <Route path='/resto/menu' element={<RestoNav/>}>
-                        <Route path="/resto/menu" index element={<MenuDetail/>} />
-                        {/* <Route path="/resto/menu" index element={<MenuDetail/>} /> */}
-                        {/* <Route path='/resto/menu' element={<Menu/>}/> */}
-                    </Route>
-                <Route path="/Home" element={<MainLayout />} />
-                <Route path="/" element={<NavbarComponent />}>
-                    <Route path="/user/Profile/" index element={<ProfilePage />} />
+                <Route path="/" index element={<Resto/>}/>
+                <Route path='/resto' element={<RestoNav/>}>
+                    <Route path="/resto" index element={<Resto/>}/>
+                    {/* <Route path="/resto/menu" index element={<MenuDetail/>} /> */}
+                    {/* <Route path='/resto/menu' element={<Menu/>}/> */}
+                </Route>
+                <Route path='/resto/menu' element={<RestoNav/>}>
+                    <Route path="/resto/menu" index element={<MenuDetail/>}/>
+                    {/* <Route path="/resto/menu" index element={<MenuDetail/>} /> */}
+                    {/* <Route path='/resto/menu' element={<Menu/>}/> */}
+                </Route>
+                <Route path="/Home" element={<MainLayout/>}/>
+                <Route path="/" element={<NavbarComponent/>}>
+                    <Route path="/user/Profile/" index element={<ProfilePage/>}/>
                 </Route>
                 <Route path="/signupguest" element={<SignupGuest/>}></Route>
                 <Route path="/signemployee" element={<SigninEmployee/>}></Route>
@@ -115,7 +116,7 @@ function App() {
                 <Route path="/hotel" element={<HotelSidebar/>}>
                     <Route index element={<Hotel/>}/>
                     <Route path="/hotel/facilities/:hotel_id" element={<Facilities/>}/>
-                    <Route path="/hotel/facility_history" element={<FacilityHistory />} />
+                    <Route path="/hotel/facility_history" element={<FacilityHistory/>}/>
                 </Route>
                 <Route path="/booking/hotel" element={<BookingLayout/>}>
                     <Route index element={<ListHotel/>}/>
