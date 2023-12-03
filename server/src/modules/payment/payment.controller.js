@@ -472,7 +472,7 @@ export const topUp = async(req,res)=>{
             const tgl = new Date().toISOString().split('T')[0].split("-");
             const random = Math.floor(Math.random()* 9000 + 1000)
     
-            const trx = `TP#${random}-${tgl[0]+tgl[1]+tgl[2]}`
+            const trx = `TRX#${random}-${tgl[0]+tgl[1]+tgl[2]}`
 
             const transaction = await models.payment_transaction.create({
                 patr_trx_number : trx,
