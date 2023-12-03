@@ -369,7 +369,11 @@ const ListHotel = () => {
                 </> */}
                         <img
                           alt="slid-img"
-                          src="https://source.unsplash.com/person-in-swimming-pool-during-daytime-rlwE8f8anOc"
+                          src={
+                            hotel.facilities[0].facility_photos[0]
+                              ? hotel.facilities[0].facility_photos[0].fapho_url
+                              : "https://source.unsplash.com/person-in-swimming-pool-during-daytime-rlwE8f8anOc"
+                          }
                           className="hotel-img"
                         />
                       </div>
