@@ -146,6 +146,8 @@ function initModels(sequelize) {
   special_offers.hasMany(special_offer_coupons, { as: "special_offer_coupons", foreignKey: "soco_spof_id"});
   booking_orders.belongsTo(users, { as: "boor_user", foreignKey: "boor_user_id"});
   users.hasMany(booking_orders, { as: "booking_orders", foreignKey: "boor_user_id"});
+  hotels.belongsTo(address, { as: "hotel_addr", foreignKey: "hotel_addr_id"});
+  address.hasMany(hotels, { as: "hotels", foreignKey: "hotel_addr_id"});
   facilities.belongsTo(category_group, { as: "faci_cagro", foreignKey: "faci_cagro_id"});
   category_group.hasMany(facilities, { as: "facilities", foreignKey: "faci_cagro_id"});
   facility_photos.belongsTo(facilities, { as: "fapho_faci", foreignKey: "fapho_faci_id"});
@@ -184,12 +186,12 @@ function initModels(sequelize) {
   work_orders.hasMany(work_order_detail, { as: "work_order_details", foreignKey: "wode_woro_id"});
   policy_category_group.belongsTo(category_group, { as: "poca_cagro", foreignKey: "poca_cagro_id"});
   category_group.hasMany(policy_category_group, { as: "policy_category_groups", foreignKey: "poca_cagro_id"});
+  address.belongsTo(city, { as: "addr_city", foreignKey: "addr_city_id"});
+  city.hasMany(address, { as: "addresses", foreignKey: "addr_city_id"});
   provinces.belongsTo(country, { as: "prov_country", foreignKey: "prov_country_id"});
   country.hasMany(provinces, { as: "provinces", foreignKey: "prov_country_id"});
   policy_category_group.belongsTo(policy, { as: "poca_poli", foreignKey: "poca_poli_id"});
   policy.hasMany(policy_category_group, { as: "policy_category_groups", foreignKey: "poca_poli_id"});
-  address.belongsTo(provinces, { as: "addr_prov", foreignKey: "addr_prov_id"});
-  provinces.hasMany(address, { as: "addresses", foreignKey: "addr_prov_id"});
   city.belongsTo(provinces, { as: "city_province", foreignKey: "city_province_id"});
   provinces.hasMany(city, { as: "cities", foreignKey: "city_province_id"});
   country.belongsTo(regions, { as: "country_region", foreignKey: "country_region_id"});

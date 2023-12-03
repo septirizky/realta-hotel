@@ -33,7 +33,11 @@ export default class hotels extends Model {
     },
     hotel_addr_id: {
       type: DataTypes.INTEGER,
-      allowNull: true
+      allowNull: true,
+      references: {
+        model: 'address',
+        key: 'addr_id'
+      }
     },
     hotel_status: {
       type: DataTypes.STRING,
@@ -45,6 +49,12 @@ export default class hotels extends Model {
     schema: 'hotel',
     timestamps: false,
     indexes: [
+      {
+        name: "fki_hotels_hotel_addr_id_f_key",
+        fields: [
+          { name: "hotel_addr_id" },
+        ]
+      },
       {
         name: "hotels_pkey",
         unique: true,
