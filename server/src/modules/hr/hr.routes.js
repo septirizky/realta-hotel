@@ -2,7 +2,6 @@ import {Router} from "express";
 import {
     createDepartment,
     createEmployee,
-    // createEmployeePayHistory,
     createJobRole,
     createShift,
     createWorkOrder,
@@ -87,7 +86,7 @@ hrRouters.delete('/work-orders/:id', deleteWorkOrder)
 /*
  * Work Order Detail
  */
-hrRouters.get('/work-order-detail', getWorkOrderDetail)
+hrRouters.get('/work-order-detail/:id', getWorkOrderDetail)
 hrRouters.post('/work-order-detail', createWorkOrderDetail)
 hrRouters.put('/work-order-detail/:id', updateWorkOrderDetail)
 hrRouters.delete('/work-order-detail/:id', deleteWorkOrderDetail)

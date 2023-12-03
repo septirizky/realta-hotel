@@ -1,12 +1,9 @@
 import {BiPlus} from "react-icons/bi";
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {DeleteEmployee, DeleteWorkOrder, GetWorkOrder, PostWorkOrder, PutWorkOrder} from "../../actions/hrAction";
-import reducers from "../../reducers";
-import HrReducer from "../../reducers/hrReducer";
+import {DeleteWorkOrder, GetWorkOrder, PostWorkOrder, PutWorkOrder} from "../../actions/hrAction";
 import {PiDotsThreeOutlineVerticalDuotone} from "react-icons/pi";
 import {FiEdit, FiTrash} from "react-icons/fi";
-import {MdHistory} from "react-icons/md";
 import {TiTimes} from "react-icons/ti";
 import Swal from "sweetalert2";
 import {useForm} from "react-hook-form";
@@ -117,7 +114,7 @@ export const WorkOrder = () => {
             <h1>Work Order</h1>
             <nav className='bread-separator' aria-label="breadcrumb">
                 <ol className="breadcrumb">
-                    <li className="breadcrumb-item active" aria-current="page">WorkOrder</li>
+                    <li className="breadcrumb-item active" aria-current="page">Work Order</li>
                 </ol>
             </nav>
             <div className='row mb-4 justify-content-between'>
@@ -173,6 +170,7 @@ export const WorkOrder = () => {
                 <caption>Jumlah data : {getWorkOrderResult ? getWorkOrderResult.length : ''}</caption>
                 <thead>
                 <tr>
+                    <th>#</th>
                     <th scope="col">Work Order Date</th>
                     <th scope="col">Status</th>
                     <th scope="col">Created By</th>
@@ -189,8 +187,11 @@ export const WorkOrder = () => {
                                 let workOrderDate = new Date(value.woro_start_date)
                                 return (
                                     <tr key={index}>
+                                        <td>{index+1}</td>
                                         <td scope="row">{(workOrderDate.getDate().toString().split('').length === 1 ? '0' + workOrderDate.getDate() : workOrderDate.getDate()) + " " + months[workOrderDate.getMonth()] + " " + workOrderDate.getFullYear()}</td>
-                                        <td>{value.woro_status}</td>
+                                        <td>{value.woro_status === "OPEN"? (
+                                            <span className="badge bg-success">OPEN</span>) : value.woro_status === "CLOSED" ? (
+                                            <span className="badge bg-danger">CLOSED</span>):(<span className="badge bg-black">CANCELLED</span>)}</td>
                                         <td>{value.woro_user.user_full_name}</td>
                                         <td className='text-end pe-4'>
                                             <div className="dropstart">
@@ -199,7 +200,7 @@ export const WorkOrder = () => {
                                                     <PiDotsThreeOutlineVerticalDuotone size='24'/>
                                                 </button>
                                                 <ul className="dropdown-menu">
-                                                        <Link to={"/hr/work-order/"+value.woro_id}className="dropdown-item custom-hover-yellow"
+                                                        <Link to={"/hr/work-order/"+value.woro_id+"/"+value.woro_user.user_full_name+"/"+value.woro_start_date} className="dropdown-item custom-hover-yellow"
                                                               href='#'><FaTasks size='16'/> Work Order Detail</Link>
                                                     <li>
                                                         <a className="dropdown-item custom-hover-yellow" href='#'

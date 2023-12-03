@@ -217,7 +217,7 @@ export const updateEmployee = async (req, res) => {
             edhi_modified_date: new Date(),
             edhi_dept_id: req.body.edhi_dept_id,
             edhi_shift_id: req.body.edhi_shift_id,
-        },{
+        }, {
             where: {
                 edhi_emp_id: req.params.id
             }
@@ -414,7 +414,7 @@ export const deleteShift = async (req, res) => {
 export const getWorkOrder = async (req, res) => {
     try {
         let result = '';
-        if (req.body.startDate && req.body.endDate){
+        if (req.body.startDate && req.body.endDate) {
             console.log(req.body.startDate.split(' ')[0])
             result = await models.work_orders.findAll({
                 where: {
@@ -423,7 +423,7 @@ export const getWorkOrder = async (req, res) => {
                             [Op.lte]: req.body.endDate.split(' ')[0],
                             [Op.gte]: req.body.startDate.split(' ')[0],
                         },
-                        woro_status: req.body.workOrderStatus?req.body.workOrderStatus:["OPEN","CLOSED","CANCELLED"]
+                        woro_status: req.body.workOrderStatus ? req.body.workOrderStatus : ["OPEN", "CLOSED", "CANCELLED"]
                     }
                 },
                 order: [
@@ -441,7 +441,7 @@ export const getWorkOrder = async (req, res) => {
         } else {
             result = await models.work_orders.findAll({
                 where: {
-                    woro_status: req.body.workOrderStatus?req.body.workOrderStatus:["OPEN","CLOSED","CANCELLED"]
+                    woro_status: req.body.workOrderStatus ? req.body.workOrderStatus : ["OPEN", "CLOSED", "CANCELLED"]
                 },
                 order: [
                     ["woro_start_date", "DESC"],
@@ -513,6 +513,9 @@ export const deleteWorkOrder = async (req, res) => {
 export const getWorkOrderDetail = async (req, res) => {
     try {
         const result = await models.work_order_detail.findAll({
+                where: {
+                    wode_woro_id: req.params.id
+                },
                 include: [
                     {
                         model: facilities,
@@ -533,7 +536,7 @@ export const getWorkOrderDetail = async (req, res) => {
                 ]
             }
         )
-        return res.status(426).json(result);
+        return res.status(200).json(result);
     } catch (error) {
         return res.status(500).json({message: error.message});
     }
@@ -582,7 +585,6 @@ export const updateWorkOrderDetail = async (req, res) => {
             wode_emp_id,
             wode_seta_id,
             wode_faci_id,
-            wode_woro_id
         } = req.body
         const update = await models.work_order_detail.update({
             wode_task_name: wode_task_name,
@@ -592,8 +594,7 @@ export const updateWorkOrderDetail = async (req, res) => {
             wode_notes: wode_notes,
             wode_emp_id: wode_emp_id,
             wode_seta_id: wode_seta_id,
-            wode_faci_id: wode_faci_id,
-            wode_woro_id: wode_woro_id
+            wode_faci_id: wode_faci_id
         }, {
             where: {wode_id: req.params.id},
             returning: true

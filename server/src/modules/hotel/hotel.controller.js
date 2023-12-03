@@ -184,6 +184,20 @@ export const facilities = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+export const getAllFacilities = async (req, res) => {
+  try {
+    const result = await models.facilities.findAll(
+        {
+          attributes: ["faci_id", "faci_name"]
+        }
+    );
+    return res
+      .status(200)
+      .json({ data: result, message: "berhasil tampil facilities" });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
 
 export const facilitiesAdd = async (req, res) => {
   try {

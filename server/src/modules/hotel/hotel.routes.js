@@ -1,16 +1,17 @@
-import { Router } from "express";
+import {Router} from "express";
 import {
+  category,
   city,
-  hotel,
-  hotelAdd,
-  hotelUpdate,
-  hotelDelete,
-  hotelPhoto,
   facilities,
   facilitiesAdd,
-  facilitiesUpdate,
   facilitiesDelete,
-  category,
+  facilitiesUpdate,
+  getAllFacilities,
+  hotel,
+  hotelAdd,
+  hotelDelete,
+  hotelPhoto,
+  hotelUpdate,
 } from "./hotel.controller.js";
 import multer from "multer";
 
@@ -68,6 +69,7 @@ hotelRouters.get("/city", city);
 hotelRouters.get("/category", category);
 
 hotelRouters.get("/hotel/facilities/:hotel_id", facilities);
+hotelRouters.get("/hotel/facilities", getAllFacilities);
 hotelRouters.post("/hotel/facilities", facilitiesAdd);
 hotelRouters.put("/hotel/facilities/:faci_id", facilitiesUpdate);
 hotelRouters.delete("/hotel/facilities/:faci_id", facilitiesDelete);

@@ -19,7 +19,7 @@ export const HrNav = () => {
 
     }, [burgerActive]);
     return (
-        <body className="sb-nav-fixed">
+        <div className="sb-nav-fixed">
         <nav className="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <a className="navbar-brand ps-3" href="#"><MdApartment size='26' className='text-warning'/> Realta Hotel</a>
             <button
@@ -60,7 +60,7 @@ export const HrNav = () => {
                                 Employee
                             </Link>
                             <Link to='/hr/work-order'
-                                  className={`nav-link ${pathname.pathname === '/hr/work-order' ? "active" : ""}`}
+                                  className={`nav-link ${pathname.pathname === '/hr/work-order' ? "active" : pathname.pathname.split('/')[2] === 'work-order'? "active" : ""}`}
                                   href="">
                                 <div className="sb-nav-link-icon"><BsListCheck size='26'/></div>
                                 Work Order
@@ -82,6 +82,6 @@ export const HrNav = () => {
                 </footer>
             </div>
         </div>
-        </body>
+        </div>
     )
 }

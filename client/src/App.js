@@ -33,9 +33,15 @@ import Products from "./components/purchase/order/gallery";
 import StockDetail from "./components/purchase/stock/detailStock";
 import Cart from "./components/purchase/order/cart";
 import DetailOrder from "./components/purchase/order/detailorder";
-import {Sidebar} from "primereact/sidebar";
 import {HotelSidebar} from "./components/hotel/hotelSidebar";
 import {WorkOrderDetail} from "./components/hr/WorkOrderDetail";
+import {Department} from "./components/hr/Department";
+import {HrNav} from "./components/hr/HrNav";
+import {WorkOrder} from "./components/hr/WorkOrder";
+import {NavbarComponent} from "./components/users/tempNav";
+import ProfilePage from "./components/users/myProfile";
+import SignupGuest from "./components/users/signupGuest";
+import {Employee} from "./components/hr/Employee";
 
 function App() {
     return (
@@ -50,9 +56,9 @@ function App() {
                 </Route>
                 <Route path='/hr' element={<HrNav/>}>
                     <Route path='/hr/department' index element={<Department/>}/>
-                    <Route path='/hr/employee' index element={<Employee/>}/>
-                    <Route path='/hr/work-order' index element={<WorkOrder/>}/>
-                    <Route path='/hr/work-order/:id' index element={<WorkOrderDetail/>}/>
+                    <Route path='/hr/employee' element={<Employee/>}/>
+                    <Route path='/hr/work-order' element={<WorkOrder/>}/>
+                    <Route path='/hr/work-order/:id/:name/:date' element={<WorkOrderDetail/>}/>
                 </Route>
                 <Route path='/resto' element={<RestoNav/>}>
                     <Route path="/resto" index element={<Resto/>}/>
@@ -97,21 +103,6 @@ function App() {
             </Routes>
         </BrowserRouter>
     );
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<TempNav />}>
-          <Route index element={<Dashboard />} />
-          <Route path="/master" element={<Master />} />
-          <Route path="/master/locations" element={<LocationsMaster />} />
-          <Route path="/master/policy" element={<Policy />} />
-          <Route path="/master/seta" element={<ServiceTask />} />
-          <Route path="/master/priceitems" element={<PriceItems />} />
-          <Route path="/master/cagro" element={<CategoryGroup />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
-  );
 }
 
 export default App;

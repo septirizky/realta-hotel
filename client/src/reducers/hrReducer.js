@@ -1,11 +1,11 @@
 import {
     DELETE_DEPARTMENT,
-    DELETE_EMPLOYEE, DELETE_WORK_ORDER,
+    DELETE_EMPLOYEE, DELETE_WORK_ORDER, DELETE_WORK_ORDER_DETAIL,
     GET_DEPARTMENT,
-    GET_EMPLOYEE,
-    GET_JOB_ROLE,
-    GET_SHIFT, GET_WORK_ORDER,
-    POST_DEPARTMENT, POST_EMPLOYEE, POST_WORK_ORDER, PUT_WORK_ORDER,
+    GET_EMPLOYEE, GET_FACILITIES,
+    GET_JOB_ROLE, GET_SERVICE_TASK,
+    GET_SHIFT, GET_WORK_ORDER, GET_WORK_ORDER_DETAIL,
+    POST_DEPARTMENT, POST_EMPLOYEE, POST_WORK_ORDER, POST_WORK_ORDER_DETAIL, PUT_WORK_ORDER, PUT_WORK_ORDER_DETAIL,
     UPDATE_DEPARTMENT, UPDATE_EMPLOYEE
 } from "../actions/hrAction";
 
@@ -61,6 +61,39 @@ const initialState = {
     getShiftResult: false,
     getShiftLoading: false,
     getShiftError: false,
+
+    /*
+     * Service Task
+    */
+    getServiceTaskResult: false,
+    getServiceTaskLoading: false,
+    getServiceTaskError: false,
+
+    /*
+     * Facilities
+    */
+    getFacilitiesResult: false,
+    getFacilitiesLoading: false,
+    getFacilitiesError: false,
+
+    /*
+     * Work Order Detail
+    */
+    getWorkOrderDetailResult: false,
+    getWorkOrderDetailLoading: false,
+    getWorkOrderDetailError: false,
+
+    postWorkOrderDetailResult: false,
+    postWorkOrderDetailLoading: false,
+    postWorkOrderDetailError: false,
+
+    putWorkOrderDetailResult: false,
+    putWorkOrderDetailLoading: false,
+    putWorkOrderDetailError: false,
+
+    deleteWorkOrderDetailResult: false,
+    deleteWorkOrderDetailLoading: false,
+    deleteWorkOrderDetailError: false,
 
     /*
      * Work Order
@@ -180,6 +213,48 @@ const HrReducer = (state = initialState, action) => {
                 deleteWorkOrderResult: action.payload.data,
                 deleteWorkOrderLoading: action.payload.loading,
                 deleteWorkOrderError: action.payload.errorMessage,
+            }
+        case GET_SERVICE_TASK:
+            return {
+                ...state,
+                getServiceTaskResult: action.payload.data,
+                getServiceTaskLoading: action.payload.loading,
+                getServiceTaskError: action.payload.errorMessage,
+            }
+        case GET_WORK_ORDER_DETAIL:
+            return {
+                ...state,
+                getWorkOrderDetailResult: action.payload.data,
+                getWorkOrderDetailLoading: action.payload.loading,
+                getWorkOrderDetailError: action.payload.errorMessage,
+            }
+        case POST_WORK_ORDER_DETAIL:
+            return {
+                ...state,
+                postWorkOrderDetailResult: action.payload.data,
+                postWorkOrderDetailLoading: action.payload.loading,
+                postWorkOrderDetailError: action.payload.errorMessage,
+            }
+        case PUT_WORK_ORDER_DETAIL:
+            return {
+                ...state,
+                putWorkOrderDetailResult: action.payload.data,
+                putWorkOrderDetailLoading: action.payload.loading,
+                putWorkOrderDetailError: action.payload.errorMessage,
+            }
+            case DELETE_WORK_ORDER_DETAIL:
+            return {
+                ...state,
+                deleteWorkOrderDetailResult: action.payload.data,
+                deleteWorkOrderDetailLoading: action.payload.loading,
+                deleteWorkOrderDetailError: action.payload.errorMessage,
+            }
+        case GET_FACILITIES:
+            return {
+                ...state,
+                getFacilitiesResult: action.payload.data,
+                getFacilitiesLoading: action.payload.loading,
+                getFacilitiesError: action.payload.errorMessage,
             }
         default:
             return state

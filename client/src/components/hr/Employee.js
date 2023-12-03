@@ -151,7 +151,7 @@ export const Employee = () => {
                     setImage("https://via.placeholder.com/100")
                 }
             })
-        } else if (isPutEmp){
+        } else if (isPutEmp) {
             let timerInterval
             Swal.fire({
                 title: 'Update Employee success',
@@ -350,7 +350,10 @@ export const Employee = () => {
                                             <div className='col'>
                                                 <div className="form-floating">
                                                     <input
-                                                        type="number" {...register('emp_national_id', {required: true})}
+                                                        type="number" {...register('emp_national_id', {
+                                                        required: true,
+                                                        maxLength:16
+                                                    })}
                                                         className="form-control text-dark" placeholder='16 digit'
                                                         id="National"
                                                         required/>
@@ -497,7 +500,7 @@ export const Employee = () => {
                                 <div className='row mb-4'>
                                     <div className='col'>
                                         <div className="form-floating">
-                                            <input type="number" {...register('ephi_rate_salary', {required: true})}
+                                            <input type="number" {...register('ephi_rate_salary', {required: true, maxLength: 16})}
                                                    className="form-control text-dark" placeholder='16 digit'
                                                    id="National"
                                             />
@@ -611,8 +614,9 @@ export const Employee = () => {
                                     <div className='col-sm-9'>
                                         <div className='row mb-4'>
                                             <div className='col'>
-                                                    <input type='text' {...register2('emp_id', {required: true})} hidden/>
-                                                    <input type='text' {...register2('emp_photo', {required: true})} hidden/>
+                                                <input type='text' {...register2('emp_id', {required: true})} hidden/>
+                                                <input type='text' {...register2('emp_photo', {required: true})}
+                                                       hidden/>
                                                 <div className="form-floating">
                                                     <input
                                                         type="number" {...register2('emp_national_id', {required: true})}
@@ -751,7 +755,8 @@ export const Employee = () => {
                                                  src={imageEdit} alt=''/>
                                         </div>
                                         <div className='mt-3'>
-                                            <input type="file" className="form-control text-dark" id="addEmp" {...register2('dummy')}
+                                            <input type="file" className="form-control text-dark"
+                                                   id="addEmp" {...register2('dummy')}
                                                    onChange={(e) => {
                                                        setImageSaveEdit(e.target.files[0])
                                                        setImageEdit(e.target.files[0] ? URL.createObjectURL(e.target.files[0]) : "https://via.placeholder.com/100")
