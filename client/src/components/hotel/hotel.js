@@ -24,7 +24,7 @@ const Hotel = () => {
   }, [dispatch, addHotelResult, updateHotelResult, deleteHotelResult, search]);
 
   return (
-    <div classNama="container">
+    <div className="container-fluid">
       <h1>Hotel</h1>
       <ol className="breadcrumb mb-4">
         <li className="breadcrumb-item active">Hotel</li>
