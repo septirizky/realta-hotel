@@ -18,6 +18,7 @@ import { FaSwimmingPool, FaDumbbell, FaSpa, FaShip, FaSurprise, FaMicrophone, Fa
 import { Link,Navigate } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import {Footer} from "./tempFoot";
 
 
 export const Dashboard = () => {
@@ -46,12 +47,12 @@ export const Dashboard = () => {
     <div className='d-flex flex-column mb-3'>
       <div className="p-2">
      <Navbar bg="dark" variant="dark" expand="lg">
-      <Navbar.Brand href="#home" className="mr-auto">
+      <Navbar.Brand href="#home" className="mr-auto ms-4">
         <img src={LogoHotel} alt="Logo" className="logo" />
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
-        <Nav className="ml-auto nav-links">
+        <Nav className="ml-auto nav-links w-100 d-flex justify-content-end">
           <Nav.Link href="#home" className="nav-link-custom">Home</Nav.Link>
           <Nav.Link href="#rooms" className="nav-link-custom">Rooms</Nav.Link>
           <Nav.Link href="#resto" className="nav-link-custom">Resto</Nav.Link>
@@ -61,13 +62,13 @@ export const Dashboard = () => {
 
         </Nav>
         <Nav>
-          <NavDropdown title={<BsFillPersonFill color="#ffff" />} id="basic-nav-dropdown">
+          <NavDropdown title={<BsFillPersonFill color="#ffff" />} id="basic-nav-dropdown" drop="start">
             {!token ? (
                 <NavDropdown.Item onClick={Login}>Log In</NavDropdown.Item>
 
             ) : (
               <>
-                <NavDropdown.Item><Link to={"http://localhost:3001/user/Profile"}>Profile</Link></NavDropdown.Item>
+                <NavDropdown.Item><Link to={"/user/Profile"}>Profile</Link></NavDropdown.Item>
                 <NavDropdown.Item onClick={Logout}>Logout</NavDropdown.Item>
               </>
             )}
@@ -223,6 +224,7 @@ export const Dashboard = () => {
 
       {/* ------------------rooms---------------- */}
     {/* ------- */}
+      <Footer />
   </div>
 );
 };

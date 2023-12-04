@@ -3,7 +3,7 @@ import './Footer.css'
 
 export const Footer = () => {
   return (
-    <footer className="footer-container">
+    <footer className="footer-container mt-5 shadow-lg">
       <div className="footer-left">
         <h3>Contact Us</h3>
         <p>Phone: +62822-6976-4383</p>
