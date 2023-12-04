@@ -5,7 +5,6 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import { addPhoto } from "../../../../actions/facilitiesAction";
 
 const Upload = (props) => {
@@ -24,10 +23,6 @@ const Upload = (props) => {
   );
 
   const dispatch = useDispatch();
-
-  // const handleChange = (e) => {
-  //   setFile(e.target.files);
-  // };
 
   const [isAddPhoto, setIsAddPhoto] = useState(false);
 
@@ -67,29 +62,32 @@ const Upload = (props) => {
   return (
     <Modal show={showModalPhoto} onHide={handleCloseAddPhoto}>
       <Modal.Header closeButton>
-        <Modal.Title>Add Photo</Modal.Title>
+        <Modal.Title>Upload Photo</Modal.Title>
       </Modal.Header>
       <Form onSubmit={handleSubmit(handleUpload)} className="px-2">
         <Modal.Body>
           <Form.Group as={Row} className="mb-3">
-            {/* <Form.Label column sm="4" htmlFor="formPhotoName">
-              Photo Name
-            </Form.Label> */}
-            <Col sm="6">
-              <Form.Control
-                type="file"
-                multiple
-                id="formPhotoName"
-                {...register("fapho_photo_filename")}
-              />
-            </Col>
+            <Form.Control
+              type="file"
+              multiple
+              id="formPhotoName"
+              {...register("fapho_photo_filename")}
+            />
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseAddPhoto}>
+          <Button
+            variant="secondary"
+            className="btn btn-dark"
+            onClick={handleCloseAddPhoto}
+          >
             Cancel
           </Button>
-          <Button variant="success" type="submit">
+          <Button
+            variant="success"
+            type="submit"
+            className="btn custom-btn-yellow"
+          >
             Save
           </Button>
         </Modal.Footer>

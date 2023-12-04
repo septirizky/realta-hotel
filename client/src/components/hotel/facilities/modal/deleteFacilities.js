@@ -56,11 +56,19 @@ const DeleteFacilities = (props) => {
           Are you sure want delete {facility.name}?
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseDeleteFaci}>
+          <Button
+            variant="secondary"
+            className="btn btn-dark"
+            onClick={handleCloseDeleteFaci}
+          >
             Cancel
           </Button>
-          <Button variant="danger" type="submit">
-            Delete
+          <Button
+            variant="success"
+            type="submit"
+            className="btn custom-btn-yellow"
+          >
+            Save
           </Button>
         </Modal.Footer>
       </Form>

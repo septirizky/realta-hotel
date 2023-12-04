@@ -52,11 +52,19 @@ const DeleteHotel = (props) => {
           Are you sure want delete {hotel.name}?
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseDeleteHotel}>
+          <Button
+            variant="secondary"
+            className="btn btn-dark"
+            onClick={handleCloseDeleteHotel}
+          >
             Cancel
           </Button>
-          <Button variant="danger" type="submit">
-            Delete
+          <Button
+            variant="success"
+            type="submit"
+            className="btn custom-btn-yellow"
+          >
+            Save
           </Button>
         </Modal.Footer>
       </Form>

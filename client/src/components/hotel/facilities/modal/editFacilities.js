@@ -268,10 +268,18 @@ const EditFacilities = (props) => {
           </Container>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseEditFaci}>
+          <Button
+            variant="secondary"
+            className="btn btn-dark"
+            onClick={handleCloseEditFaci}
+          >
             Cancel
           </Button>
-          <Button variant="success" type="submit">
+          <Button
+            variant="success"
+            type="submit"
+            className="btn custom-btn-yellow"
+          >
             Save
           </Button>
         </Modal.Footer>
