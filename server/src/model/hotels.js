@@ -50,12 +50,6 @@ export default class hotels extends Model {
     timestamps: false,
     indexes: [
       {
-        name: "fki_hotels_hotel_addr_id_f_key",
-        fields: [
-          { name: "hotel_addr_id" },
-        ]
-      },
-      {
         name: "hotels_pkey",
         unique: true,
         fields: [

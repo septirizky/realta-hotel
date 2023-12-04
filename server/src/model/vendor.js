@@ -35,7 +35,7 @@ export default class vendor extends Model {
       allowNull: true
     },
     vendro_modified_date: {
-      type: DataTypes.DATEONLY,
+      type: DataTypes.DATE,
       allowNull: true
     }
   }, {

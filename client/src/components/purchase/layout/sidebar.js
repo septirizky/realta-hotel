@@ -140,7 +140,7 @@ export const PurchaseLayout = () => {
           </nav>
         </div>
         <div id="layoutSidenav_content">
-          <main className="p-4">
+          <main className="">
             <Outlet />
           </main>
           <footer className="py-4 bg-light mt-auto">

@@ -63,7 +63,7 @@ const Stock = () => {
       if (result.isConfirmed) {
         axios({
           method: "POST",
-          url: `http://localhost:4001/uploadstockphoto`,
+          url: `http://localhost:4000/uploadstockphoto`,
           timeout: 12000,
           data: {
             spho_primary,
@@ -131,7 +131,7 @@ const Stock = () => {
       if (result.isConfirmed) {
         axios({
           method: "POST",
-          url: `http://localhost:4001/insertstocks`,
+          url: `http://localhost:4000/insertstocks`,
           timeout: 12000,
           data: {
             stock_name: stock_name,
@@ -188,7 +188,7 @@ const Stock = () => {
   const editStock = async (id) => {
     try {
       setEdit(true);
-      const response = await axios.get(`http://localhost:4001/stockbyId/${id}`);
+      const response = await axios.get(`http://localhost:4000/stockbyId/${id}`);
       const data = await response.data.data;
       console.log(data, "123");
       setStock(data.stock_name);
@@ -220,7 +220,7 @@ const Stock = () => {
       if (result.isConfirmed) {
         axios({
           method: "POST",
-          url: `http://localhost:4001/updatestocks/${id}`,
+          url: `http://localhost:4000/updatestocks/${id}`,
           timeout: 12000,
           data: {
             stock_name: stock_name,
@@ -273,7 +273,7 @@ const Stock = () => {
         if (result.isConfirmed) {
           await axios({
             method: "DELETE",
-            url: `http://localhost:4001/deletestocks/${id}`,
+            url: `http://localhost:4000/deletestocks/${id}`,
           });
           dispatch(GetStock());
           Swal.fire("Deleted!", "Your file has been deleted.", "success");

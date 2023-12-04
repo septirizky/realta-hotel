@@ -11,7 +11,7 @@ export default class stock_photo extends Model {
       primaryKey: true
     },
     spho_thumbnail_filename: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.STRING(1000),
       allowNull: true
     },
     spho_photo_filename: {

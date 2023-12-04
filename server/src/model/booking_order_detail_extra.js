@@ -36,7 +36,11 @@ export default class booking_order_detail_extra extends Model {
     },
     boex_prit_id: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
+      references: {
+        model: 'price_items',
+        key: 'prit_id'
+      }
     }
   }, {
     sequelize,

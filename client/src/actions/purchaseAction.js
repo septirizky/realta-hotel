@@ -330,7 +330,7 @@ export const Deleteorderheader = (id) => {
     });
     await axios({
       method: "DELETE",
-      url: `http://localhost:4001/deletepurchaseheader/${id}`,
+      url: `http://localhost:4000/deletepurchaseheader/${id}`,
       timeout: 120000,
     })
       .then((res) => {
@@ -369,7 +369,7 @@ export const PostStatusHeader = (status, id) => {
     });
     await axios({
       method: "POST",
-      url: `http://localhost:4001/updatestatuspurchase/${id}`,
+      url: `http://localhost:4000/updatestatuspurchase/${id}`,
       timeout: 120000,
       data: { status },
     })
@@ -445,7 +445,7 @@ export const GetHotelbyId = (id) => {
     });
     await axios({
       method: "GET",
-      url: `http://localhost:4001/listhotelId/${id}`,
+      url: `http://localhost:4000/listhotelId/${id}`,
       timeout: 120000,
     })
       .then((res) => {

@@ -19,7 +19,7 @@ export default class purchase_order_detail extends Model {
       allowNull: true
     },
     pode_line_total: {
-      type: DataTypes.DECIMAL(19,4),
+      type: DataTypes.DECIMAL,
       allowNull: true
     },
     pode_received_qty: {
@@ -48,7 +48,7 @@ export default class purchase_order_detail extends Model {
     },
     pode_pohe_id: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
       references: {
         model: 'purchase_order_header',
         key: 'pohe_id'

@@ -38,7 +38,6 @@ export const registerUser = async (req, res) => {
       uspa_passwordhash: passwordHash,
       uspa_passwordsalt: salt.substring(0,10),////ini tu utk membatasi genSalt nya,kalau tidak ada bakal error karena akan melebihi 10
     });
-    console.log()
 
     res.status(201).json({ message: 'User registered successfully' });
   } catch (error) {
@@ -54,13 +53,13 @@ export const loginUser = async (req, res) => {
     const { email, password } = req.body;
 
     const user = await users.findAll({ where: { user_email: email } });
-    console.log(user)
+    // console.log(user)
     if (!user || user.length ===0) {
       return res.status(400).json({ message: 'Invalid' });
     }
 
     const userPassword = await user_password.findOne({ where: { uspa_user_id: user[0].user_id } });
-    console.log(userPassword)
+    // console.log(userPassword)
     if (!userPassword || !userPassword.uspa_passwordhash) {
       return res.status(400).json({ message: 'Password not found or empty' });
     }
@@ -77,8 +76,8 @@ export const loginUser = async (req, res) => {
 
     res.status(200).json( {token} );
   } catch (error) {
-    console.error(error); 
-    res.status(500).json({ message: 'Error logging in' });
+    // console.log(error);
+    res.status(500).json(error);
   }
 };
 

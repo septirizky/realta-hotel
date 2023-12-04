@@ -39,7 +39,6 @@ import {Department} from "./components/hr/Department";
 import {HrNav} from "./components/hr/HrNav";
 import {WorkOrder} from "./components/hr/WorkOrder";
 import {NavbarComponent} from "./components/users/tempNav";
-import SignupGuest from "./components/users/signupGuest";
 import {Employee} from "./components/hr/Employee";
 import FacilityHistory from "./components/hotel/facilityHistory";
 import Transaction from "./components/payment/transaction/transaction";
@@ -48,9 +47,6 @@ import MenuDetail from "./components/resto/menudetail";
 
 import {LogRegUser} from "./components/users/LogRegUser.js";
 import {LogRegGuest} from "./components/users/LogRegGuest.js";
-import SignupEmployee from "./components/users/signupEmployee.js"
-import SigninEmployee from "./components/users/loginemploye.js";
-import LoginGuest from "./components/users/loginGuest.js";
 import ProfilePage from "./components/users/myProfile.js";
 import {Footer} from "./components/dashboard/tempFoot";
 
@@ -94,14 +90,14 @@ function App() {
                     {/* <Route path="/resto/menu" index element={<MenuDetail/>} /> */}
                     {/* <Route path='/resto/menu' element={<Menu/>}/> */}
                 </Route>
-                <Route path="/Home" element={<MainLayout/>}/>
+                {/*<Route path="/Home" element={<MainLayout/>}/>*/}
                 <Route path="/" element={<NavbarComponent/>}>
                     <Route path="/user/Profile/" index element={<ProfilePage/>}/>
                 </Route>
-                <Route path="/signupguest" element={<SignupGuest/>}></Route>
-                <Route path="/signemployee" element={<SigninEmployee/>}></Route>
-                <Route path="/signin" element={<LoginGuest/>}></Route>
-                <Route path="/signupemployee" element={<SignupEmployee/>}></Route>
+                {/*<Route path="/signupguest" element={<SignupGuest/>}></Route>*/}
+                {/*<Route path="/signemployee" element={<SigninEmployee/>}></Route>*/}
+                {/*<Route path="/signin" element={<LoginGuest/>}></Route>*/}
+                {/*<Route path="/signupemployee" element={<SignupEmployee/>}></Route>*/}
                 <Route path="/logreguser" element={<LogRegUser/>}></Route>
                 <Route path="/logregguest" element={<LogRegGuest/>}></Route>
                 <Route path="/" element={<TempNav/>}>
@@ -125,7 +121,7 @@ function App() {
                     <Route path="invoice/:id" element={<BookingInvoice/>}/>
                 </Route>
                 <Route path="/" element={<PurchaseLayout/>}>
-                    <Route index element={<Products/>}/>
+                    <Route path="/purchase" index element={<Products/>}/>
                     <Route path="/vendor" index element={<Vendor/>}/>
                     <Route
                         path="/vendor/:id/addproduct"

@@ -51,7 +51,7 @@ const StockDetail = () => {
     try {
       setEdit(true);
       const response = await axios.get(
-        `http://localhost:4001/detailinfostockbyid/${id}`
+        `http://localhost:4000/detailinfostockbyid/${id}`
       );
       const data = await response.data.data;
       console.log(data, "detail");
@@ -76,7 +76,7 @@ const StockDetail = () => {
       if (result.isConfirmed) {
         axios({
           method: "POST",
-          url: `http://localhost:4001/updatestockdetail/${idstock}`,
+          url: `http://localhost:4000/updatestockdetail/${idstock}`,
           timeout: 12000,
           data: {
             stod_status: status,
