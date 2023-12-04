@@ -62,7 +62,7 @@ const sequelize = new Sequelize(
   process.env.DB_PASS,
   {
     dialect: "postgres",
-    port: "5433",
+    port: process.env.DB_PORT,
     pool: {
       max: 5,
       min: 0,
