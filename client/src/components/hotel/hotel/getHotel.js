@@ -11,6 +11,7 @@ import DeleteHotel from "./modal/deleteHotel";
 import SwitchStatus from "./modal/switchStatus";
 import { format } from "date-fns";
 import GetStarRating from "../rating";
+import Facilities from "../facilities";
 
 const GetHotel = (props) => {
   const {

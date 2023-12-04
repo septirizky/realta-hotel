@@ -124,7 +124,7 @@ const GetFacilities = (props) => {
             onClick={showAddFaci}
           >
             <BiPlus size="26" />
-            Add Hotel
+            Add Facilities
           </button>
         </div>
       </div>
