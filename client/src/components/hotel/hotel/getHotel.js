@@ -2,17 +2,26 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { Link } from "react-router-dom";
-import Search from "../search";
+import { BiPlus } from "react-icons/bi";
+import { FiEdit, FiTrash } from "react-icons/fi";
+import { HiOutlineSwitchHorizontal } from "react-icons/hi";
 import AddHotel from "./modal/addHotel";
 import EditHotel from "./modal/editHotel";
 import DeleteHotel from "./modal/deleteHotel";
 import SwitchStatus from "./modal/switchStatus";
 import { format } from "date-fns";
 import GetStarRating from "../rating";
+import Facilities from "../facilities";
 
 const GetHotel = (props) => {
-  const { getHotelResult, getHotelLoading, getHotelError, getCityResult } =
-    props;
+  const {
+    getHotelResult,
+    getHotelLoading,
+    getHotelError,
+    getCityResult,
+    search,
+    setSearch,
+  } = props;
 
   const { register, handleSubmit, reset } = useForm();
 
@@ -20,8 +29,6 @@ const GetHotel = (props) => {
   const [showModalEditHotel, setShowModalEditHotel] = useState(false);
   const [showModalDeleteHotel, setShowModalDeleteHotel] = useState(false);
   const [showModalSwitchStatus, setShowModalSwitchStatus] = useState(false);
-
-  const [search, setSearch] = useState("");
 
   const [hotel, setHotel] = useState({
     hotelId: "",
@@ -94,8 +101,33 @@ const GetHotel = (props) => {
   };
   return (
     <div>
-      <Search search={search} setSearch={setSearch} />
-      <table className="table table-bordered text-center">
+      <div className="row mb-4 justify-content-between">
+        <div className="col-sm-3 align-content-center mt-2">
+          <button
+            type="button"
+            className="btn custom-btn-yellow"
+            onClick={showAddHotel}
+          >
+            <BiPlus size="26" />
+            Add Hotel
+          </button>
+        </div>
+        <div className="col-sm-3">
+          <div className="form-floating">
+            <input
+              type="text"
+              onChange={(e) => setSearch(e.target.value)}
+              value={search}
+              className="form-control text-dark form-control-sm"
+              id="searchDept"
+              placeholder="name@example.com"
+              required
+            />
+            <label htmlFor="searchDept">Search Hotel</label>
+          </div>
+        </div>
+      </div>
+      <table className="table table-striped table-hover align-middle text-center">
         <thead>
           <tr>
             <th>Id</th>
@@ -104,15 +136,7 @@ const GetHotel = (props) => {
             <th>Phone Number</th>
             <th>Status</th>
             <th>Modified Data</th>
-            <th className="align-border-right">
-              <button
-                type="button"
-                className="btn btn-warning text-white"
-                onClick={showAddHotel}
-              >
-                Add
-              </button>
-            </th>
+            <th className="text-end"></th>
           </tr>
         </thead>
         <tbody>
@@ -149,10 +173,14 @@ const GetHotel = (props) => {
                       />
                       <ul className="dropdown-menu">
                         <li>
-                          <a className="dropdown-item" href="#">
+                          <a
+                            className="dropdown-item custom-hover-yellow"
+                            href="#"
+                          >
+                            <FiEdit size="16" />
                             <button
                               type="button"
-                              className="button-update-transparan"
+                              className="button-update-transparan text-black"
                               onClick={() =>
                                 showEditHotel(
                                   hotel_id,
@@ -171,7 +199,11 @@ const GetHotel = (props) => {
                           </a>
                         </li>
                         <li>
-                          <a className="dropdown-item" href="#">
+                          <a
+                            className="dropdown-item custom-hover-yellow text-danger"
+                            href="#"
+                          >
+                            <FiTrash size="16" />
                             <button
                               type="button"
                               className="button-delete-transparan"
@@ -184,10 +216,14 @@ const GetHotel = (props) => {
                           </a>
                         </li>
                         <li>
-                          <a className="dropdown-item" href="#">
+                          <a
+                            className="dropdown-item custom-hover-yellow"
+                            href="#"
+                          >
+                            <HiOutlineSwitchHorizontal />
                             <button
                               type="button"
-                              className="button-update-transparan"
+                              className="button-update-transparan text-black"
                               onClick={() =>
                                 showSwitchStatus(hotel_id, hotel_status)
                               }

@@ -43,7 +43,7 @@ const EditHotel = (props) => {
               text: updateHotelResult.message,
               confirmButtonText: "OK",
             }).then(() => {
-              reset()
+              reset();
               handleCloseEditHotel(false);
             })
           : Swal.fire("Gagal", updateHotelError, "error");
@@ -160,17 +160,27 @@ const EditHotel = (props) => {
               id="formHotelDesc"
               maxLength={255}
               value={hotel.description}
-              onChange={(e) => setHotel({ ...hotel, description: e.target.value })}
-                required
+              onChange={(e) =>
+                setHotel({ ...hotel, description: e.target.value })
+              }
+              required
               rows={5}
             />
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseEditHotel}>
+          <Button
+            variant="secondary"
+            className="btn btn-dark"
+            onClick={handleCloseEditHotel}
+          >
             Cancel
           </Button>
-          <Button variant="success" type="submit">
+          <Button
+            variant="success"
+            type="submit"
+            className="btn custom-btn-yellow"
+          >
             Save
           </Button>
         </Modal.Footer>

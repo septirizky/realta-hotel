@@ -54,7 +54,7 @@ const SwitchStatus = (props) => {
   return (
     <Modal show={showModalHotel} onHide={handleCloseSwitchStatus}>
       <Modal.Header closeButton>
-        <Modal.Title>Edit Hotel</Modal.Title>
+        <Modal.Title>Switch Status</Modal.Title>
       </Modal.Header>
       <Form onSubmit={handleSubmit(handleUpdateHotel)}>
         <Modal.Body>
@@ -77,10 +77,18 @@ const SwitchStatus = (props) => {
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseSwitchStatus}>
+          <Button
+            variant="secondary"
+            className="btn btn-dark"
+            onClick={handleCloseSwitchStatus}
+          >
             Cancel
           </Button>
-          <Button variant="success" type="submit">
+          <Button
+            variant="success"
+            type="submit"
+            className="btn custom-btn-yellow"
+          >
             Save
           </Button>
         </Modal.Footer>

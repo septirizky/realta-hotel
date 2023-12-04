@@ -1,8 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getCity, getHotel } from "../../actions/hotelAction";
 import GetHotel from "./hotel/getHotel";
-
 
 const Hotel = () => {
   const {
@@ -15,12 +14,14 @@ const Hotel = () => {
     getCityResult,
   } = useSelector((state) => state.HotelReducer);
 
+  const [search, setSearch] = useState("");
+
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getHotel());
+    dispatch(getHotel({ keyword: search }));
     dispatch(getCity());
-  }, [dispatch, addHotelResult, updateHotelResult, deleteHotelResult]);
+  }, [dispatch, addHotelResult, updateHotelResult, deleteHotelResult, search]);
 
   return (
     <div classNama="container">
@@ -35,6 +36,8 @@ const Hotel = () => {
             getHotelLoading={getHotelLoading}
             getHotelError={getHotelError}
             getCityResult={getCityResult}
+            search={search}
+            setSearch={setSearch}
           />
         </div>
       </div>

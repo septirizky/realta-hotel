@@ -8,26 +8,24 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 export const NavbarComponent = () => {
-
   const navigate = useNavigate();
   const onLogout = () => {
     Swal.fire({
-      title: 'Are you sure?',
-      icon: 'warning',
+      title: "Are you sure?",
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, I want to logout!',
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, I want to logout!",
     }).then((result) => {
       if (result.isConfirmed) {
-        navigate('/Home');
+        navigate("/Home");
       } else if (result.isDenied) {
-        Swal.fire('Cancel logout', '', 'info');
+        Swal.fire("Cancel logout", "", "info");
       }
     });
   };
 
-  
   const pathname = useLocation();
   const [burgerActive, setBurgerActive] = useState(false);
   const sidebarToggler = (event) => {
@@ -41,12 +39,8 @@ export const NavbarComponent = () => {
   };
   useEffect(() => {}, [burgerActive]);
 
-
-
-
-
   return (
-    <body className="sb-nav-fixed" style={{ backgroundColor: '#eee' }}>
+    <body className="sb-nav-fixed" style={{ backgroundColor: "#eee" }}>
       <nav className="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <a className="navbar-brand ps-3" href="#">
           <MdApartment size="26" className="text-warning" /> Realta Hotel
@@ -79,8 +73,7 @@ export const NavbarComponent = () => {
               aria-labelledby="navbarDropdown"
             >
               <li>
-                <a className="dropdown-item" href="#!" 
-                >
+                <a className="dropdown-item" href="#!">
                   Profile
                 </a>
               </li>
@@ -88,9 +81,8 @@ export const NavbarComponent = () => {
                 <hr className="dropdown-divider" />
               </li>
               <li>
-                <a className="dropdown-item" href="#!"
-                onClick={onLogout}
-                >Logout
+                <a className="dropdown-item" href="#!" onClick={onLogout}>
+                  Logout
                 </a>
               </li>
             </ul>

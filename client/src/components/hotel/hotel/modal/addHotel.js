@@ -157,10 +157,18 @@ const AddHotel = (props) => {
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseAddHotel}>
+          <Button
+            variant="secondary"
+            className="btn btn-dark"
+            onClick={handleCloseAddHotel}
+          >
             Cancel
           </Button>
-          <Button variant="success" type="submit">
+          <Button
+            variant="success"
+            type="submit"
+            className="btn custom-btn-yellow"
+          >
             Save
           </Button>
         </Modal.Footer>

@@ -37,7 +37,7 @@ const FacilityHistory = () => {
       </nav>
       <div className="content-utama-hotel">
         <div className="content-hotel">
-          <table className="table table-bordered text-center">
+          <table className="table table-striped table-hover align-middle text-center">
             <thead>
               <tr>
                 <th>Id</th>

@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { BiPlus } from "react-icons/bi";
+import { FiEdit, FiTrash, FiUpload } from "react-icons/fi";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import AddFacilities from "./modal/addFacilities";
 import EditFacilities from "./modal/editFacilities";
@@ -114,7 +116,19 @@ const GetFacilities = (props) => {
   };
   return (
     <div>
-      <table className="table table-bordered text-center">
+      <div className="row mb-4 justify-content-between">
+        <div className="col-sm-3 align-content-center mt-2">
+          <button
+            type="button"
+            className="btn custom-btn-yellow"
+            onClick={showAddFaci}
+          >
+            <BiPlus size="26" />
+            Add Facilities
+          </button>
+        </div>
+      </div>
+      <table className="table table-striped table-hover align-middle text-center">
         <thead>
           <tr>
             <th>Id</th>
@@ -126,15 +140,7 @@ const GetFacilities = (props) => {
             <th>Discount</th>
             <th>Rate Price</th>
             <th>Tax</th>
-            <th className="align-border-right">
-              <button
-                type="button"
-                className="btn btn-warning text-white"
-                onClick={showAddFaci}
-              >
-                Add
-              </button>
-            </th>
+            <th className="text-end"></th>
           </tr>
         </thead>
         <tbody>
@@ -181,10 +187,14 @@ const GetFacilities = (props) => {
                       />
                       <ul className="dropdown-menu">
                         <li>
-                          <a className="dropdown-item" href="#">
+                          <a
+                            className="dropdown-item custom-hover-yellow"
+                            href="#"
+                          >
+                            <FiEdit size="16" />
                             <button
                               type="button"
-                              className="button-update-transparan"
+                              className="button-update-transparan text-black"
                               onClick={() =>
                                 showEditFaci(
                                   faci_id,
@@ -207,10 +217,14 @@ const GetFacilities = (props) => {
                           </a>
                         </li>
                         <li>
-                          <a className="dropdown-item" href="#">
+                          <a
+                            className="dropdown-item custom-hover-yellow text-danger"
+                            href="#"
+                          >
+                            <FiTrash size="16" />
                             <button
                               type="button"
-                              className="button-delete-transparan"
+                              className="button-delete-transparan "
                               onClick={() => showDeleteFaci(faci_id, faci_name)}
                             >
                               Delete
@@ -218,10 +232,14 @@ const GetFacilities = (props) => {
                           </a>
                         </li>
                         <li>
-                          <a className="dropdown-item" href="#">
+                          <a
+                            className="dropdown-item custom-hover-yellow"
+                            href="#"
+                          >
+                            <FiUpload />
                             <button
                               type="button"
-                              className="button-delete-transparan"
+                              className="button-delete-transparan text-black"
                               onClick={(e) => {
                                 setfaciId(faci_id);
                                 showAddPhoto();
