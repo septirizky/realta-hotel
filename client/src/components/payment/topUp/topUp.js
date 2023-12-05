@@ -55,7 +55,7 @@ const TopUp = () => {
             text: `Apakah Kamu Yakin Ingin Melakukan Transfer Dari ${data.sourceAccountNumber} Ke ${data.targetAccountNumber}`,
             icon: "warning",
             showCancelButton: true,
-            confirmButtonColor: "#3085d6",
+            confirmButtonColor: "#EBAB2D",
             cancelButtonColor: "#d33",
             confirmButtonText: "Transfer"
           }).then((result) => {

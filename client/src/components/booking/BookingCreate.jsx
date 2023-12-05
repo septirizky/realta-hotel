@@ -152,6 +152,8 @@ const BookingCreate = () => {
       createBookingPayment({
         patr_order_number: booking && booking.boor.boor_order_number,
         patr_user_id: booking && booking.boor.boor_user_id,
+        source_id : cardNumber,
+        price: parseInt((booking.boor.boor_total_amount).split('.')[0])
       })
     );
     setPaymentType("");

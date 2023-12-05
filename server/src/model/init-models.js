@@ -136,7 +136,6 @@ function initModels(sequelize) {
   booking_order_detail.hasMany(user_breakfast, { as: "user_breakfasts", foreignKey: "usbr_borde_id"});
   booking_order_detail.belongsTo(booking_orders, { as: "borde_boor", foreignKey: "borde_boor_id"});
   booking_orders.hasMany(booking_order_detail, { as: "booking_order_details", foreignKey: "borde_boor_id"});
-  booking_order_detail.belongsTo(facilities, { as: "borde_faci", foreignKey: "borde_faci_id"});
   facilities.hasMany(booking_order_detail, { as: "booking_order_details", foreignKey: "borde_faci_id"});
   booking_orders.belongsTo(hotels, { as: "boor_hotel", foreignKey: "boor_hotel_id"});
   hotels.hasMany(booking_orders, { as: "booking_orders", foreignKey: "boor_hotel_id"});
