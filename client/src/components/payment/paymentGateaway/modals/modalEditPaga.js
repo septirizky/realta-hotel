@@ -83,10 +83,10 @@ const ModalEditPaga = (props) => {
               
             </Modal.Body>
             <Modal.Footer>
-              <Button variant="secondary" onClick={handleCloseEditPaga}>
+              <Button className='btn btn-danger' variant="secondary" onClick={handleCloseEditPaga}>
                 Close
               </Button>
-              <Button variant="primary" type='submit'>
+              <Button variant="primary" className='btn btn-warning' type='submit'>
                 Save Changes
               </Button>
             </Modal.Footer>

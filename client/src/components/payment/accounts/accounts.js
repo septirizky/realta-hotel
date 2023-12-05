@@ -92,7 +92,7 @@ const Accounts = () => {
                         <th scope="col">Saldo</th>
                         <th scope="col">Type</th>
                         <th scope="col">
-                            <button type='button' className='btn' onClick={showAddAccount}>
+                            <button type='button' className='btn btn-warning' onClick={showAddAccount}>
                                 <FaPlus className='me-2'/>ADD
                             </button>
                         </th>
@@ -110,7 +110,7 @@ const Accounts = () => {
                                             <td>{usac.usac_entity.bank ? usac.usac_entity.bank.bank_name :usac.usac_entity.payment_gateway.paga_name }</td>
                                             <td>{formatRupiah(usac.usac_saldo)}</td>
                                             <td>{usac.usac_type}</td>
-                                            <td><button className='btn ms-3' onClick={()=>{   
+                                            <td><button className='btn ms-3 btn-warning' onClick={()=>{   
                                                 showEditAccount(
                                                     usac.usac_id,
                                                     usac.usac_account_number,

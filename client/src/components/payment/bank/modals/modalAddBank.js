@@ -76,10 +76,10 @@ const ModalAddBank = (props) => {
               
             </Modal.Body>
             <Modal.Footer>
-              <Button variant="secondary" onClick={handleCloseAddBank}>
+              <Button className='btn btn-danger' variant='secondary' onClick={handleCloseAddBank}>
                 Close
               </Button>
-              <Button variant="primary" type='submit'>
+              <Button className='btn btn-warning' variant="primary" type='submit'>
                 Save Changes
               </Button>
             </Modal.Footer>

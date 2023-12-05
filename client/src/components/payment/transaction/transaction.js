@@ -109,7 +109,7 @@ const Transaction = () => {
                                         <td className='text-center'>{trx.patr_target_id}</td>
                                         <td className='text-center'>{trx.patr_trx_number_ref}</td>
                                         <td className='text-center'>{trx.patr_type}</td>
-                                        <td className='text-center'>{trx.patr_user_id}</td>
+                                        <td className='text-center'>{trx.patr_user.user_full_name}</td>
                                 </tr>
                                 )
                             }

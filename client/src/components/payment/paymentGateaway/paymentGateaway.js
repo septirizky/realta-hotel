@@ -100,7 +100,7 @@ const PaymentGateaway = () => {
                         <th scope="col">Code</th>
                         <th scope="col">Fintech</th>
                         <th scope="col">
-                            <button type='button' className='btn' onClick={showAddPaga}>
+                            <button type='button' className='btn btn-warning' onClick={showAddPaga}>
                                 <FaPlus className='me-2'/>ADD
                             </button>
                         </th>
@@ -116,7 +116,7 @@ const PaymentGateaway = () => {
                                             <th scope="row">{index+1}</th>
                                             <td>{paga.paga_code}</td>
                                             <td>{paga.paga_name}</td>
-                                            <td><button className='btn ms-3' onClick={()=>{
+                                            <td><button className='btn ms-3 btn-warning' onClick={()=>{
                                                 showEditPaga(
                                                     paga.paga_entity_id,
                                                     paga.paga_code,

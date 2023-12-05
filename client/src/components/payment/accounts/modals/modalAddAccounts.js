@@ -160,10 +160,10 @@ const ModalAddAccounts = (props) => {
           
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseModalAddAccount}>
+          <Button className='btn btn-danger' variant="secondary" onClick={handleCloseModalAddAccount}>
             Close
           </Button>
-          <Button variant="primary" type='submit'>
+          <Button className='btn btn-warning' variant="primary" type='submit'>
             Save Changes
           </Button>
         </Modal.Footer>
