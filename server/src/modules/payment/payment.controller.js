@@ -455,12 +455,31 @@ export const getUserAccountExclude = async(req,res)=>{
     try {
         const usac_user_id = req.params.usac_user_id;
 
-        const result = await models.user_accounts.findAll({
-            where:{
-                usac_user_id:{[Op.not]: usac_user_id}
-            }
+        const data1 = await models.user_accounts.findAll({
+            usac_user_id:{[Op.not]: usac_user_id},
+            attributes: ['usac_id','usac_user_id','usac_entity_id', 'usac_account_number','usac_saldo','usac_type','usac_expmonth','usac_expyear'],
+            include : [{
+                model:entity, as:'usac_entity',attributes: ['entity_id'],required:true,
+                include: [{
+                    model:bank, as:'bank', attributes:['bank_name'],required: true,
+                }],
+            }],
+            
         })
-        // console.log(result)
+
+        const data2 = await models.user_accounts.findAll({
+            usac_user_id:{[Op.not]: usac_user_id},
+            attributes: ['usac_id','usac_user_id','usac_entity_id', 'usac_account_number','usac_saldo','usac_type','usac_expmonth','usac_expyear'],
+            include : [{
+                model:entity, as:'usac_entity',attributes: ['entity_id'],required:true,
+                include: [{
+                    model:payment_gateway, as:'payment_gateway', attributes:['paga_name'],required: true,
+                }],
+            }],
+        })
+
+        const result = data1.concat(data2);
+        
         return res.status(200).json(result)
     } catch (error) {
         return res.status(404).json(error.message)

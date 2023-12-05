@@ -17,7 +17,7 @@ const TopUp = () => {
           maximumFractionDigits: 0,
         }).format(number);
       };
-    const { register, resetField, handleSubmit,reset } = useForm();
+    const { handleSubmit} = useForm();
     const {
         getUserAccountResult,
         getUserAccountError,
@@ -39,6 +39,7 @@ const TopUp = () => {
     const [isTransfer, setisTransfer] = useState(false);
 
     const tranfer= ()=>{
+        // console.log(saldoTarget)
         const data = {
             source_id : saldoSource.split(',')[1], 
             target_id : saldoTarget.split(',')[1], 
@@ -49,10 +50,9 @@ const TopUp = () => {
             targetAccountNumber: saldoTarget.split(',')[2],
             userId:userId
         }
-        console.log(data)
         Swal.fire({
             title: "Confirm Transfer?",
-            text: `Apakah Kamu Yakin Ingin Melakukan Transfer Dari ${data.sourceAccountNumber} Ke ${data.targetAccountNumber}`,
+            text: `Apakah Kamu Yakin Ingin Melakukan Transfer Dari ${saldoSource.split(',')[3]} Ke ${saldoTarget.split(',')[3]}`,
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#EBAB2D",
@@ -95,7 +95,8 @@ const TopUp = () => {
     
 
     return (
-        <form onSubmit={handleSubmit(tranfer)}>
+        <div>
+            <form onSubmit={handleSubmit(tranfer)}>
             <div className='row'>  
             <h1 className='mb-4 ms-3'>Top Up</h1>  
                 <div className='col-6 border-end border-dark border-3'>
@@ -118,7 +119,7 @@ const TopUp = () => {
                                     getUserAccountResult.map((user)=>{
                                         // console.log(user)
                                           return(
-                                              <option key={user.usac_id} value={user.usac_saldo +','+ user.usac_id+','+user.usac_account_number}>
+                                              <option key={user.usac_id} value={user.usac_saldo +','+ user.usac_id+','+user.usac_account_number+','+(user.usac_entity.bank? user.usac_entity.bank.bank_name : user.usac_entity.payment_gateway.paga_name)}>
                                                 {`${user.usac_entity.bank? user.usac_entity.bank.bank_name : user.usac_entity.payment_gateway.paga_name} - ${user.usac_account_number}`}
                                             </option>
                                             )
@@ -165,9 +166,10 @@ const TopUp = () => {
                         {
                                 getUserAccountExcludeResult ?(
                                     getUserAccountExcludeResult.map((target)=>{
-                                        // console.log(user)
                                           return(
-                                              <option key={target.usac_id} value={target.usac_saldo +','+ target.usac_id+','+target.usac_account_number}>{target.usac_account_number}</option>
+                                              <option key={target.usac_id} value={target.usac_saldo +','+ target.usac_id+','+target.usac_account_number +','+(target.usac_entity.bank? target.usac_entity.bank.bank_name : target.usac_entity.payment_gateway.paga_name)}>
+                                                 {`${target.usac_entity.bank? target.usac_entity.bank.bank_name : target.usac_entity.payment_gateway.paga_name} - ${target.usac_account_number}`}
+                                              </option>
                                             )
                                           }
                                           )
@@ -178,7 +180,6 @@ const TopUp = () => {
                                           <option>{getUserAccountExcludeError ? getUserAccountExcludeError : "data Kosong"}</option>
                                       )
                             }
-                            {/* <option value=''>1</option> */}
                         </select>
                         </div>
                         <div className='mt-5'></div>
@@ -208,6 +209,7 @@ const TopUp = () => {
                 
             </div>
             </form>    
+        </div>
     );
 }
 
