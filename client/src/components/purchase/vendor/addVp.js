@@ -55,7 +55,7 @@ const AddVendorProduct = () => {
       title: "Are you sure?",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
+      confirmButtonColor: "#EBAB2D",
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes",
     }).then(async (result) => {
@@ -94,17 +94,17 @@ const AddVendorProduct = () => {
   };
 
   return (
-    <section style={{ backgroundColor: "#eee" }}>
-      <h3>Vendor Product</h3>
-      <MDBContainer className="py-2">
-        <MDBBreadcrumb className="rounded-3 p-3 mb-4">
-          <MDBBreadcrumbItem className="mb-3">
+    <section>
+      <MDBContainer fluid className="p-4">
+        <h3>Vendor Product</h3>
+        <MDBBreadcrumb className="rounded-3 p-3 mb-4 bg-white">
+          <MDBBreadcrumbItem>
             <Link to="/Purchase/gallery">Home</Link>
           </MDBBreadcrumbItem>
-          <MDBBreadcrumbItem className="mb-3">
+          <MDBBreadcrumbItem>
             <Link to="/Purchase/vendor">Vendor</Link>
           </MDBBreadcrumbItem>
-          <MDBBreadcrumbItem className="mb-3" active>
+          <MDBBreadcrumbItem active>
             Add Vendor
           </MDBBreadcrumbItem>
         </MDBBreadcrumb>
@@ -112,7 +112,7 @@ const AddVendorProduct = () => {
           <div className="col-sm-3 align-content-center mt-2">
             <button
               type="button"
-              className="btn btn-sm btn-warning"
+              className="btn btn-sm btn-warning text-white"
               onClick={handleShow}
             >
               <BiPlus size="26" /> Add Vendor product
@@ -263,7 +263,7 @@ const AddVendorProduct = () => {
             <Button variant="secondary" onClick={handleClose}>
               Cancel
             </Button>
-            <Button variant="primary" onClick={insertVendorstock}>
+            <Button variant="warning" className="text-white" onClick={insertVendorstock}>
               Save
             </Button>
           </Modal.Footer>

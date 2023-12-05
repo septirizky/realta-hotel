@@ -72,7 +72,7 @@ const Products = () => {
             <div
               id={listuser.stock_id}
               key={listuser.stock_id}
-              className="col-md-3 col-sm-1 col-xs-1 col-1 mb-4"
+              className="col-md-3 col-sm-1 col-xs-1 col-1 mb-4 mt-4"
             >
               <div className="card text-center h-60" key={listuser.stock_id}>
                 <img

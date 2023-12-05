@@ -21,7 +21,7 @@ const Resto = () => {
   }, [dispatch, addMenuResult, updateMenuResult, deleteMenuResult]);
 
   return (
-    <div classNama="container">
+    <div className="container-fluid">
       <h1>Resto</h1>
       <ol className="breadcrumb mb-4">
         <li className="breadcrumb-item active">Menu</li>

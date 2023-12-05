@@ -129,7 +129,7 @@ const Vendor = () => {
         text: "You won't be able to revert this!",
         icon: "warning",
         showCancelButton: true,
-        confirmButtonColor: "#3085d6",
+        confirmButtonColor: "#EBAB2D",
         cancelButtonColor: "#d33",
         confirmButtonText: "Yes, delete it!",
       }).then(async (result) => {
@@ -193,7 +193,7 @@ const Vendor = () => {
       title: "Are you sure?",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
+      confirmButtonColor: "#EBAB2D",
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes",
     }).then(async (result) => {
@@ -236,10 +236,10 @@ const Vendor = () => {
   };
 
   return (
-    <section style={{ backgroundColor: "#eee" }}>
+    <section>
       {" "}
-      <h3>Vendor</h3>
-      <MDBContainer className="py-2">
+      <MDBContainer fluid className="p-4">
+        <h3>Vendor</h3>
         <MDBRow>
           <MDBBreadcrumb className="bg-light rounded-3 p-3 mb-4">
             <MDBBreadcrumbItem>
@@ -251,7 +251,7 @@ const Vendor = () => {
             <div className="col-sm-3 align-content-center mt-2">
               <button
                 type="button"
-                className="btn btn-sm btn-warning"
+                className="btn btn-sm btn-warning text-white"
                 onClick={handleShow}
               >
                 <BiPlus size="26" /> Add Vendor
@@ -431,7 +431,7 @@ const Vendor = () => {
             <Button variant="secondary" onClick={handleClose}>
               Cancel
             </Button>
-            <Button variant="primary" onClick={InsertVendor}>
+            <Button variant="warning" className="text-white" onClick={InsertVendor}>
               Save
             </Button>
           </Modal.Footer>
@@ -515,7 +515,7 @@ const Vendor = () => {
             <Button variant="secondary" onClick={handleEditC}>
               Cancel
             </Button>
-            <Button variant="primary" onClick={editVendor}>
+            <Button variant="warning" className="text-white" onClick={editVendor}>
               Simpan
             </Button>
           </Modal.Footer>

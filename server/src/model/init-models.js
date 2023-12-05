@@ -19,7 +19,6 @@ import _facility_price_history from  "./facility_price_history.js";
 import _hotel_reviews from  "./hotel_reviews.js";
 import _hotels from  "./hotels.js";
 import _job_role from  "./job_role.js";
-import _joinmenu from  "./joinmenu.js";
 import _members from  "./members.js";
 import _order_menu_detail from  "./order_menu_detail.js";
 import _order_menus from  "./order_menus.js";
@@ -88,7 +87,6 @@ function initModels(sequelize) {
   const hotel_reviews = _hotel_reviews.init(sequelize, DataTypes);
   const hotels = _hotels.init(sequelize, DataTypes);
   const job_role = _job_role.init(sequelize, DataTypes);
-  const joinmenu = _joinmenu.init(sequelize, DataTypes);
   const members = _members.init(sequelize, DataTypes);
   const order_menu_detail = _order_menu_detail.init(sequelize, DataTypes);
   const order_menus = _order_menus.init(sequelize, DataTypes);
@@ -136,7 +134,7 @@ function initModels(sequelize) {
   booking_order_detail.hasMany(user_breakfast, { as: "user_breakfasts", foreignKey: "usbr_borde_id"});
   booking_order_detail.belongsTo(booking_orders, { as: "borde_boor", foreignKey: "borde_boor_id"});
   booking_orders.hasMany(booking_order_detail, { as: "booking_order_details", foreignKey: "borde_boor_id"});
-  booking_order_detail.belongsTo(facilities, { as: "borde_faci", foreignKey: "borde_faci_id"});
+  booking_order_detail.belongsTo(facilities, { as: "facilities", foreignKey: "borde_faci_id"});
   facilities.hasMany(booking_order_detail, { as: "booking_order_details", foreignKey: "borde_faci_id"});
   booking_orders.belongsTo(hotels, { as: "boor_hotel", foreignKey: "boor_hotel_id"});
   hotels.hasMany(booking_orders, { as: "booking_orders", foreignKey: "boor_hotel_id"});
@@ -275,7 +273,6 @@ function initModels(sequelize) {
     hotel_reviews,
     hotels,
     job_role,
-    joinmenu,
     members,
     order_menu_detail,
     order_menus,

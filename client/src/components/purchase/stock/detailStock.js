@@ -70,7 +70,7 @@ const StockDetail = () => {
       title: "Are you sure?",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
+      confirmButtonColor: "#EBAB2D",
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes",
     }).then(async (result) => {
@@ -108,8 +108,8 @@ const StockDetail = () => {
 
   return (
     <section style={{ backgroundColor: "#eee" }}>
+      <MDBContainer fluid className="p-4">
       <h3>Detail Stock Barang</h3>
-      <MDBContainer className="py-3">
         <MDBBreadcrumb className="bg-light rounded-3 p-3 mb-4">
           <MDBBreadcrumbItem>
             <a href="/Purchase/gallery">Home</a>
@@ -173,7 +173,7 @@ const StockDetail = () => {
                       <td>{vendor.faci_room_number}</td>
                       <td>
                         <button
-                          className="btn btn-sm btn-warning"
+                          className="btn btn-sm btn-warning text-white"
                           onClick={() => editStock(vendor.stod_id)}
                         >
                           Edit

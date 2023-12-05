@@ -64,7 +64,7 @@ const PurchaseOrder = () => {
       title: "Are you sure?",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
+      confirmButtonColor: "#EBAB2D",
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, delete it!",
     }).then((res) => {
@@ -89,8 +89,8 @@ const PurchaseOrder = () => {
   };
   return (
     <section style={{ backgroundColor: "#eee" }}>
+      <MDBContainer fluid className="p-4">
       <h3>Purchase Order</h3>
-      <MDBContainer className="py-3">
         <MDBBreadcrumb className="bg-light rounded-3 p-3 mb-4">
           <MDBBreadcrumbItem>
             <a href="/Purchase/gallery">Home</a>
@@ -208,7 +208,7 @@ const PurchaseOrder = () => {
             <Button variant="secondary" onClick={handleClose}>
               Cancel
             </Button>
-            <Button variant="primary" onClick={InsertStatus}>
+            <Button variant="warning" className="text-white" onClick={InsertStatus}>
               Save
             </Button>
           </Modal.Footer>

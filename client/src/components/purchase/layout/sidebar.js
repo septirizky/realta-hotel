@@ -95,7 +95,7 @@ export const PurchaseLayout = () => {
                   to="/Purchase/vendor"
                   id="nav_dept"
                   className={`nav-link ${
-                    pathname.pathname === "/hr/department" ? "active" : ""
+                    pathname.pathname === "/Purchase/vendor" ? "active" : ""
                   }`}
                 >
                   <div className="sb-nav-link-icon">
@@ -106,7 +106,7 @@ export const PurchaseLayout = () => {
                 <Link
                   to="/Purchase/stock"
                   className={`nav-link ${
-                    pathname.pathname === "/hr/employee" ? "active" : ""
+                    pathname.pathname === "/Purchase/stock" ? "active" : ""
                   }`}
                   href=""
                 >
@@ -118,7 +118,7 @@ export const PurchaseLayout = () => {
                 <Link
                   to="/Purchase/purchaseorder"
                   className={`nav-link ${
-                    pathname.pathname === "/hr/work-order" ? "active" : ""
+                    pathname.pathname === "/Purchase/purchaseorder" ? "active" : ""
                   }`}
                   href=""
                 >
@@ -144,7 +144,7 @@ export const PurchaseLayout = () => {
             </div>
           </nav>
         </div>
-        <div id="layoutSidenav_content">
+        <div id="layoutSidenav_content" style={{ backgroundColor: "#eee" }}>
           <main className="">
             <Outlet />
           </main>

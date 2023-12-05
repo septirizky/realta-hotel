@@ -58,7 +58,7 @@ const Stock = () => {
       title: "Are you sure?",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
+      confirmButtonColor: "#EBAB2D",
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes",
     }).then(async (result) => {
@@ -126,7 +126,7 @@ const Stock = () => {
       title: "Are you sure?",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
+      confirmButtonColor: "#EBAB2D",
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes",
     }).then(async (result) => {
@@ -215,7 +215,7 @@ const Stock = () => {
       title: "Are you sure?",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
+      confirmButtonColor: "#EBAB2D",
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes",
     }).then(async (result) => {
@@ -268,7 +268,7 @@ const Stock = () => {
         text: "You won't be able to revert this!",
         icon: "warning",
         showCancelButton: true,
-        confirmButtonColor: "#3085d6",
+        confirmButtonColor: "#EBAB2D",
         cancelButtonColor: "#d33",
         confirmButtonText: "Yes, delete it!",
       }).then(async (result) => {
@@ -292,8 +292,8 @@ const Stock = () => {
   };
   return (
     <section style={{ backgroundColor: "#eee" }}>
-      <h3>Stock Barang</h3>
-      <MDBContainer className="py-2">
+      <MDBContainer fluid className="p-4">
+        <h3>Stock Barang</h3>
         <MDBBreadcrumb className="bg-light rounded-3 p-3 mb-4">
           <MDBBreadcrumbItem>
             <a href="/Purchase/gallery">Home</a>
@@ -303,7 +303,7 @@ const Stock = () => {
 
         <div className="row mb-4 justify-content-between">
           <div className="col-sm-3 align-content-center mt-2">
-            <button className="btn btn-sm btn-warning" onClick={handleShow}>
+            <button className="btn btn-sm btn-warning text-white" onClick={handleShow}>
               <BiPlus size="26" /> Add Stock Barang
             </button>
           </div>
@@ -483,7 +483,7 @@ const Stock = () => {
               <Button variant="secondary" onClick={handleClose}>
                 Cancel
               </Button>
-              <Button variant="primary" onClick={insertstock}>
+              <Button variant="warning" className="text-white" onClick={insertstock}>
                 Save
               </Button>
             </Modal.Footer>
@@ -590,7 +590,7 @@ const Stock = () => {
               <Button variant="secondary" onClick={handleEditC}>
                 Cancel
               </Button>
-              <Button variant="primary" onClick={editVendor}>
+              <Button variant="warning" className="text-white" onClick={editVendor}>
                 Simpan
               </Button>
             </Modal.Footer>
@@ -631,7 +631,7 @@ const Stock = () => {
               <Button variant="secondary" onClick={handlePhoto}>
                 Cancel
               </Button>
-              <Button variant="primary" onClick={uploadphoto}>
+              <Button variant="warning" className="text-white" onClick={uploadphoto}>
                 Simpan
               </Button>
             </Modal.Footer>

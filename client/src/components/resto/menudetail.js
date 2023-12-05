@@ -20,11 +20,8 @@ const MenuDetail = () => {
   }, [dispatch]);
 
   return (
-    <div classNama="container">
+    <div className="container-fluid m-2">
       <h1>Resto Menu</h1>
-      <ol className="breadcrumb mb-4">
-        <Link to="/resto" className="breadcrumb-item active">Menu</Link>
-      </ol>
       <div className="content-utama-resto">
         <div className="content-resto">
           <GetMenuDetail

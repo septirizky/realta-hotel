@@ -45,7 +45,7 @@ const DetailOrder = () => {
         title: "Are you sure?",
         icon: "warning",
         showCancelButton: true,
-        confirmButtonColor: "#3085d6",
+        confirmButtonColor: "#EBAB2D",
         cancelButtonColor: "#d33",
         confirmButtonText: "Yes, delete it!",
       }).then(async (result) => {
@@ -78,7 +78,7 @@ const DetailOrder = () => {
       title: "Are you sure?",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
+      confirmButtonColor: "#EBAB2D",
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes",
     }).then(async (result) => {
@@ -135,8 +135,8 @@ const DetailOrder = () => {
   };
   return (
     <section style={{ backgroundColor: "#eee" }}>
+      <MDBContainer fluid className="p-4">
       <h3>Detail Purchase Order</h3>
-      <MDBContainer className="py-5">
         <MDBBreadcrumb className="bg-light rounded-3 p-3 mb-4">
           <MDBBreadcrumbItem>
             <a href="/Purchase/gallery">Home</a>
@@ -191,7 +191,7 @@ const DetailOrder = () => {
                     <td>
                       <button
                         onClick={() => deletehandler(vendor.pode_id)}
-                        className="btn btn-sm btn-warning"
+                        className="btn btn-sm btn-warning me-2 text-white"
                       >
                         <MdDeleteOutline className="me-1" />
                         Delete
@@ -275,7 +275,7 @@ const DetailOrder = () => {
               <Button variant="secondary" onClick={handleEditC}>
                 Cancel
               </Button>
-              <Button variant="primary" onClick={editDetail}>
+              <Button variant="warning" className="text-white" onClick={editDetail}>
                 Simpan
               </Button>
             </Modal.Footer>
