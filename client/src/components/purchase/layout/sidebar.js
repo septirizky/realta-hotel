@@ -2,15 +2,20 @@
 import { Link, Outlet, useLocation } from "react-router-dom";
 import "../css/style.css";
 import { BsPersonCircle } from "react-icons/bs";
+import { FaShop } from "react-icons/fa6";
+import { FaBoxOpen } from "react-icons/fa";
+import { MdOutlineBorderColor } from "react-icons/md";
+import { RiGalleryFill } from "react-icons/ri";
+import { FaCartPlus } from "react-icons/fa";
+import { CgProfile } from "react-icons/cg";
 import { MdApartment } from "react-icons/md";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { IoMdLogOut } from "react-icons/io";
 
 export const PurchaseLayout = () => {
   const state = useSelector((state) => state.handleCart);
-  // const t = cart.toString().split("").map(Number);
-
   console.log(state, "4567");
   const pathname = useLocation();
   const [burgerActive, setBurgerActive] = useState(false);
@@ -60,17 +65,17 @@ export const PurchaseLayout = () => {
             >
               <li>
                 <a className="dropdown-item" href="#!">
-                  Profile
+                  Profile <CgProfile />
                 </a>
               </li>
               <li>
-                <a className="dropdown-item" href="/cart">
-                  Cart ({state.length})
+                <a className="dropdown-item" href="/Purchase/cart">
+                  Cart ({state.length}) <FaCartPlus />
                 </a>
               </li>
               <li>
                 <a className="dropdown-item" href="#!">
-                  Logout
+                  Logout <IoMdLogOut />
                 </a>
               </li>
             </ul>
@@ -87,51 +92,51 @@ export const PurchaseLayout = () => {
               <div className="nav">
                 <div className="sb-sidenav-menu-heading text-warning">Menu</div>
                 <Link
-                  to="/vendor"
+                  to="/Purchase/vendor"
                   id="nav_dept"
                   className={`nav-link ${
                     pathname.pathname === "/hr/department" ? "active" : ""
                   }`}
                 >
                   <div className="sb-nav-link-icon">
-                    {/* <BsPeople size="26" /> */}
+                    <FaShop />
                   </div>
                   Vendor
                 </Link>
                 <Link
-                  to="/stock"
+                  to="/Purchase/stock"
                   className={`nav-link ${
                     pathname.pathname === "/hr/employee" ? "active" : ""
                   }`}
                   href=""
                 >
                   <div className="sb-nav-link-icon">
-                    {/* <BsPerson size="26" /> */}
+                    <FaBoxOpen />
                   </div>
                   Stock
                 </Link>
                 <Link
-                  to="/purchaseorder"
+                  to="/Purchase/purchaseorder"
                   className={`nav-link ${
                     pathname.pathname === "/hr/work-order" ? "active" : ""
                   }`}
                   href=""
                 >
                   <div className="sb-nav-link-icon">
-                    {/* <BsListCheck size="26" /> */}
+                    <MdOutlineBorderColor />
                   </div>
                   Purchase Order
                 </Link>
 
                 <Link
-                  to="/"
+                  to="/Purchase/gallery"
                   className={`nav-link ${
                     pathname.pathname === "/hr/work-order" ? "active" : ""
                   }`}
                   href=""
                 >
                   <div className="sb-nav-link-icon">
-                    {/* <BsListCheck size="26" /> */}
+                    <RiGalleryFill />
                   </div>
                   Galery
                 </Link>

@@ -5,18 +5,8 @@ import {
   MDBCol,
   MDBContainer,
   MDBRow,
-  MDBCard,
-  MDBCardText,
-  MDBCardBody,
-  MDBCardImage,
-  MDBBtn,
   MDBBreadcrumb,
   MDBBreadcrumbItem,
-  MDBProgress,
-  MDBProgressBar,
-  MDBIcon,
-  MDBListGroup,
-  MDBListGroupItem,
 } from "mdb-react-ui-kit";
 import React, { useEffect, useState } from "react";
 import { GetVendor } from "../../../actions/purchaseAction";
@@ -30,6 +20,7 @@ import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import { useNavigate, generatePath } from "react-router-dom";
 import "jquery/dist/jquery.min.js";
+import { BiPlus } from "react-icons/bi";
 import "datatables.net-dt/js/dataTables.dataTables";
 import "datatables.net-dt/css/jquery.dataTables.min.css";
 import $ from "jquery";
@@ -44,6 +35,7 @@ const Vendor = () => {
   const [vendor_register_date, setDate] = useState("");
   const [vendor_priority, setPriority] = useState("");
   const [id, setId] = useState("");
+  const [formKeyword, setFormKeyword] = useState("");
 
   //modal add
   const [show, setShow] = useState(false);
@@ -121,12 +113,12 @@ const Vendor = () => {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(GetVendor());
+    dispatch(GetVendor({ vendor_name: formKeyword }));
   }, [dispatch]);
 
   const navigate = useNavigate();
   const addproduct = async (id) => {
-    navigate(generatePath("/vendor/:id/addproduct", { id: id }));
+    navigate(generatePath("/Purchase/vendor/:id/addproduct", { id: id }));
   };
 
   const deleteHandler = async (id) => {
@@ -158,6 +150,43 @@ const Vendor = () => {
 
   //updatevendor
   const editVendor = async (e) => {
+    if (vendor_name == "") {
+      Swal.fire({
+        icon: "error",
+        title: "Gagal",
+        text: "Vendor Name Kosong",
+      });
+      return false;
+    } else if (status == "") {
+      Swal.fire({
+        icon: "error",
+        title: "Gagal",
+        text: "Status Kosong",
+      });
+      return false;
+    } else if (vendro_weburl == "") {
+      Swal.fire({
+        icon: "error",
+        title: "Gagal",
+        text: "URL Kosong",
+      });
+      return false;
+    } else if (vendor_register_date == "") {
+      Swal.fire({
+        icon: "error",
+        title: "Gagal",
+        text: "Register Date Kosong",
+      });
+      return false;
+    } else if (vendor_priority == "") {
+      Swal.fire({
+        icon: "error",
+        title: "Gagal",
+        text: "Priority Kosong",
+      });
+      return false;
+    }
+
     e.preventDefault();
     console.log(id, "23");
     Swal.fire({
@@ -205,55 +234,67 @@ const Vendor = () => {
       }
     });
   };
-  $(document).ready(function () {
-    setTimeout(function () {
-      $("#example").DataTable();
-    }, 1000);
-  });
 
   return (
     <section style={{ backgroundColor: "#eee" }}>
       {" "}
-      <MDBContainer className="py-5">
+      <h3>Vendor</h3>
+      <MDBContainer className="py-2">
         <MDBRow>
-          <MDBCol>
-            <MDBBreadcrumb className="bg-light rounded-3 p-3 mb-4">
-              <MDBBreadcrumbItem>
-                <a href="/">Home</a>
-              </MDBBreadcrumbItem>
-              <MDBBreadcrumbItem active>Vendor</MDBBreadcrumbItem>
-            </MDBBreadcrumb>
-          </MDBCol>
+          <MDBBreadcrumb className="bg-light rounded-3 p-3 mb-4">
+            <MDBBreadcrumbItem>
+              <a href="/Purchase/gallery">Home</a>
+            </MDBBreadcrumbItem>
+            <MDBBreadcrumbItem active>Vendor</MDBBreadcrumbItem>
+          </MDBBreadcrumb>
+          <div className="row mb-4 justify-content-between">
+            <div className="col-sm-3 align-content-center mt-2">
+              <button
+                type="button"
+                className="btn btn-sm btn-warning"
+                onClick={handleShow}
+              >
+                <BiPlus size="26" /> Add Vendor
+              </button>
+            </div>
+            <div className="col-sm-2">
+              <div className="form-floating">
+                <input
+                  type="text"
+                  onChange={(e) => setFormKeyword(e.target.value)}
+                  value={formKeyword}
+                  className="form-control text-dark form-control-sm"
+                  id="searchDept"
+                  placeholder="name@example.com"
+                  required
+                />
+                <label htmlFor="searchDept">Search Vendor</label>
+              </div>
+            </div>
+          </div>
         </MDBRow>
-
         <MDBBreadcrumb className="bg-light rounded-3 p-3 mb-4">
           <div className="w-100">
             {" "}
             <>
               {" "}
-              <table className="table">
+              <table className="table table-striped table-hover align-middle">
                 <thead>
                   <tr>
-                    <th className="col-md-1">VENDOR</th>
+                    <th className="col-md-1">No</th>
+                    <th className="col-md-1">Vendor</th>
                     <th className="col-md-1">Status</th>
                     <th className="col-md-1">Priority</th>
                     <th className="col-md-1">Register At</th>
                     <th className="col-md-1">Web URL</th>
-                    <th className="col-md-1">
-                      {" "}
-                      <button
-                        className="btn btn-sm btn-dark"
-                        onClick={handleShow}
-                      >
-                        Add
-                      </button>
-                    </th>
+                    <th className="col-md-1"></th>
                   </tr>
                 </thead>
                 <tbody>
                   {getVendorResult ? (
                     getVendorResult.map((vendor, index) => (
                       <tr key={index}>
+                        <td>{index + 1}</td>
                         <td>{vendor.vendor_name}</td>
                         <td>
                           {vendor.vendor_active == 1

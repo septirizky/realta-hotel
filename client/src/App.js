@@ -82,22 +82,13 @@ function App() {
                 <Route path="/" index element={<Resto/>}/>
                 <Route path='/resto' element={<RestoNav/>}>
                     <Route path="/resto" index element={<Resto/>}/>
-                    {/* <Route path="/resto/menu" index element={<MenuDetail/>} /> */}
-                    {/* <Route path='/resto/menu' element={<Menu/>}/> */}
                 </Route>
                 <Route path='/resto/menu' element={<RestoNav/>}>
                     <Route path="/resto/menu" index element={<MenuDetail/>}/>
-                    {/* <Route path="/resto/menu" index element={<MenuDetail/>} /> */}
-                    {/* <Route path='/resto/menu' element={<Menu/>}/> */}
                 </Route>
-                {/*<Route path="/Home" element={<MainLayout/>}/>*/}
                 <Route path="/" element={<NavbarComponent/>}>
                     <Route path="/user/Profile/" index element={<ProfilePage/>}/>
                 </Route>
-                {/*<Route path="/signupguest" element={<SignupGuest/>}></Route>*/}
-                {/*<Route path="/signemployee" element={<SigninEmployee/>}></Route>*/}
-                {/*<Route path="/signin" element={<LoginGuest/>}></Route>*/}
-                {/*<Route path="/signupemployee" element={<SignupEmployee/>}></Route>*/}
                 <Route path="/logreguser" element={<LogRegUser/>}></Route>
                 <Route path="/logregguest" element={<LogRegGuest/>}></Route>
                 <Route path="/" element={<TempNav/>}>
@@ -120,19 +111,28 @@ function App() {
                     <Route path="create/:id" element={<BookingCreate/>}/>
                     <Route path="invoice/:id" element={<BookingInvoice/>}/>
                 </Route>
-                <Route path="/" element={<PurchaseLayout/>}>
-                    <Route path="/purchase" index element={<Products/>}/>
-                    <Route path="/vendor" index element={<Vendor/>}/>
+                <Route path="/Purchase" element={<PurchaseLayout />}>
+                    <Route index element={<Products />} />
+                    <Route path="/Purchase/vendor" index element={<Vendor />} />
                     <Route
-                        path="/vendor/:id/addproduct"
+                        path="/Purchase/vendor/:id/addproduct"
                         index
-                        element={<AddVendorProduct/>}
+                        element={<AddVendorProduct />}
                     />
-                    <Route path="/cart" index element={<Cart/>}/>
-                    <Route path="/stock" index element={<Stock/>}/>
-                    <Route path="/stock/:id" index element={<StockDetail/>}/>
-                    <Route path="/purchaseorder" index element={<PurchaseOrder/>}/>
-                    <Route path="/detailorder/:id" index element={<DetailOrder/>}/>
+                    <Route path="/Purchase/cart" index element={<Cart />} />
+                    <Route path="/Purchase/stock" index element={<Stock />} />
+                    <Route path="/Purchase/stock/:id" index element={<StockDetail />} />
+                    <Route
+                        path="/Purchase/purchaseorder"
+                        index
+                        element={<PurchaseOrder />}
+                    />
+                    <Route
+                        path="/Purchase/detailorder/:id"
+                        index
+                        element={<DetailOrder />}
+                    />
+                    <Route path="/Purchase/gallery" index element={<Products />} />
                 </Route>
             </Routes>
         </BrowserRouter>

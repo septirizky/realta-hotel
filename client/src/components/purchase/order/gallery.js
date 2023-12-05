@@ -15,7 +15,7 @@ const Products = () => {
   const getItems = () => {
     axios({
       method: "GET",
-      url: `http://localhost:4001/listgalleryphoto`,
+      url: `http://localhost:4000/listgalleryphoto`,
     })
       .then((result) => {
         setItems(result.data.data);
@@ -77,7 +77,7 @@ const Products = () => {
               <div className="card text-center h-60" key={listuser.stock_id}>
                 <img
                   className="card-img-top p-3"
-                  src={`http://localhost:4001/pictstockphoto/${listuser.spho_photo_filename}`}
+                  src={`http://localhost:4000/pictstockphoto/${listuser.spho_photo_filename}`}
                   alt="Card"
                   height={300}
                 />
