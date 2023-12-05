@@ -4,6 +4,7 @@ import user_accounts from "../../model/user_accounts.js"
 import bank from "../../model/bank.js"
 import payment_gateway from "../../model/payment_gateway.js"
 import entity from "../../model/entity.js"
+import users from "../../model/users.js"
 // import bank from "../../model/bank.js"
 
 
@@ -384,7 +385,13 @@ export const getTransactionSearch = async(req,res)=>{
                     patr_trx_number: {[Op.like]:`${trx_num}%`},
                     patr_type:type
                 }
-            },order: [
+            },
+                include:[
+                    {
+                        model:users, as:'patr_user', attributes:['user_full_name'],required: true,
+                    }
+                ],
+            order: [
                 ['patr_id', 'ASC'],
             ]}
         )
@@ -392,7 +399,12 @@ export const getTransactionSearch = async(req,res)=>{
         result = await models.payment_transaction.findAll({
             where: {      
                  patr_type:type
-            },order: [
+            },
+            include:[
+                {
+                    model:users, as:'patr_user', attributes:['user_full_name'],required: true,
+                }
+            ],order: [
                 ['patr_id', 'ASC'],
             ]}
         )
@@ -401,13 +413,25 @@ export const getTransactionSearch = async(req,res)=>{
         result = await models.payment_transaction.findAll({
             where: {      
                 patr_trx_number: {[Op.like]:`%${trx_num}%`}
-            },order: [
+            },
+            include:[
+                {
+                    model:users, as:'patr_user', attributes:['user_full_name'],required: true,
+                }
+            ],
+            order: [
                 ['patr_id', 'ASC'],
             ]}
         )
     }
     else {
-        result = await models.payment_transaction.findAll()
+        result = await models.payment_transaction.findAll({
+            include:[
+                {
+                    model:users, as:'patr_user', attributes:['user_full_name'],required: true,
+                }
+            ]
+        })
     }
     
     if(result[0]){

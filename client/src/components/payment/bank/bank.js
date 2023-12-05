@@ -101,7 +101,7 @@ const Bank = () => {
                         <th scope="col">Bank Code</th>
                         <th scope="col">Bank Name</th>
                         <th scope="col">
-                            <button type='button' className='btn' onClick={showAddBank}>
+                            <button type='button' className='btn btn-warning text-dark' onClick={showAddBank}>
                                 <FaPlus className='me-2'/>ADD
                             </button>
                         </th>
@@ -117,7 +117,7 @@ const Bank = () => {
                                         <th scope="row">{index+1}</th>
                                             <td>{bank.bank_code}</td>
                                             <td>{bank.bank_name}</td>
-                                            <td><button className='btn ms-3' onClick={()=>{
+                                            <td><button className='btn ms-3 btn-warning text-dark' onClick={()=>{
                                                 showEditBank(
                                                     bank.bank_entity_id,
                                                     bank.bank_code,

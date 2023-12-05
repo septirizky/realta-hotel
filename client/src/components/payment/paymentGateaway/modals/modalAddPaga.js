@@ -74,10 +74,10 @@ const ModalAddPaga = (props) => {
               
             </Modal.Body>
             <Modal.Footer>
-              <Button variant="secondary" onClick={handleCloseAddPaga}>
+              <Button className='btn btn-danger' variant="secondary" onClick={handleCloseAddPaga}>
                 Close
               </Button>
-              <Button variant="primary" type='submit'>
+              <Button variant="primary" className='btn btn-warning' type='submit'>
                 Save Changes
               </Button>
             </Modal.Footer>

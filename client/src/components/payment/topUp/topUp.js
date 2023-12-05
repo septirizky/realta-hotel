@@ -197,7 +197,7 @@ const TopUp = () => {
                    
                         <div className='row'>    
                             <div className='col-6 text-center'>
-                            <button type="submit" className="btn btn-primary w-75">Transfer</button>
+                            <button type="submit" className="btn btn-warning text-dark w-75">Transfer</button>
                             </div>
                             <div className='col-5'>
                                 <input type="text" required value={saldo} id="saldo"className="form-control border-black" onChange={(e)=>setsaldo(e.target.value)} />
