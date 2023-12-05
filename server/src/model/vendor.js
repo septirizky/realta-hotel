@@ -10,6 +10,10 @@ export default class vendor extends Model {
           type: DataTypes.INTEGER,
           allowNull: false,
           primaryKey: true,
+          references: {
+            model: "entity",
+            key: "entity_id",
+          },
         },
         vendor_name: {
           type: DataTypes.STRING(55),
@@ -32,9 +36,8 @@ export default class vendor extends Model {
           allowNull: true,
         },
         vendro_modified_date: {
-          type: DataTypes.DATE,
+          type: DataTypes.DATEONLY,
           allowNull: true,
-          defaultValue: Sequelize.Sequelize.literal("CURRENT_TIMESTAMP"),
         },
       },
       {
@@ -42,6 +45,17 @@ export default class vendor extends Model {
         tableName: "vendor",
         schema: "purchase",
         timestamps: false,
+        indexes: [
+          {
+            name: "fki_vendor_entity_id_fkey",
+            fields: [{ name: "vendor_entity_id" }],
+          },
+          {
+            name: "vendor_pkey",
+            unique: true,
+            fields: [{ name: "vendor_entity_id" }],
+          },
+        ],
       }
     );
   }

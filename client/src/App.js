@@ -15,19 +15,28 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<PurchaseLayout />}>
+        <Route path="/Purchase" element={<PurchaseLayout />}>
           <Route index element={<Products />} />
-          <Route path="/vendor" index element={<Vendor />} />
+          <Route path="/Purchase/vendor" index element={<Vendor />} />
           <Route
-            path="/vendor/:id/addproduct"
+            path="/Purchase/vendor/:id/addproduct"
             index
             element={<AddVendorProduct />}
           />
-          <Route path="/cart" index element={<Cart />} />
-          <Route path="/stock" index element={<Stock />} />
-          <Route path="/stock/:id" index element={<StockDetail />} />
-          <Route path="/purchaseorder" index element={<PurchaseOrder />} />
-          <Route path="/detailorder/:id" index element={<DetailOrder />} />
+          <Route path="/Purchase/cart" index element={<Cart />} />
+          <Route path="/Purchase/stock" index element={<Stock />} />
+          <Route path="/Purchase/stock/:id" index element={<StockDetail />} />
+          <Route
+            path="/Purchase/purchaseorder"
+            index
+            element={<PurchaseOrder />}
+          />
+          <Route
+            path="/Purchase/detailorder/:id"
+            index
+            element={<DetailOrder />}
+          />
+          <Route path="/Purchase/gallery" index element={<Products />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -19,6 +19,21 @@
       rel="stylesheet"
       href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css"
     />
+    <script
+      type="text/javascript"
+      charset="utf8"
+      src="https://code.jquery.com/jquery-3.5.1.js"
+    ></script>
+    <script
+      type="text/javascript"
+      charset="utf8"
+      src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      charset="utf8"
+      src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"
+    ></script>
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
@@ -37,10 +52,11 @@
     <script src="bower_components/react/react.js"></script>
     <script src="bower_components/react/react-dom.min.js"></script>
     <script src="scripts/js/searchForm.js"></script>
-    <script
-      src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"
-      type="text/javascript"
-    ></script>
+    <script>
+      $(document).ready(function () {
+        $("#example").DataTable();
+      });
+    </script>
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
