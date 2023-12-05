@@ -23,11 +23,10 @@ const MenuDetail = () => {
     <div classNama="container">
       <h1>Resto Menu</h1>
       <ol className="breadcrumb mb-4">
-        <li className="breadcrumb-item active">Menu</li>
+        <Link to="/resto" className="breadcrumb-item active">Menu</Link>
       </ol>
       <div className="content-utama-resto">
         <div className="content-resto">
-          <Link to="/resto">Menu</Link>
           <GetMenuDetail
             getMenuDetailResult={getMenuDetailResult}
             getMenuDetailLoading={getMenuDetailLoading}
