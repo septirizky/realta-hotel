@@ -100,7 +100,7 @@ const Cart = () => {
               Swal.fire({
                 icon: "success",
               });
-              navigate("/");
+              navigate("/Gallery");
             } else {
               Swal.fire({
                 icon: "warning",
@@ -113,10 +113,11 @@ const Cart = () => {
     };
     return (
       <>
+	<div className="container">
         <section className="h-100 gradient-custom">
           <h5 className="mb-0">Cart</h5>
           <div className="container py-5">
-            <div className="row d-flex justify-content-center my-4">
+            <div className="row d-flex justify-content-center ">
               <div className="col-md-8">
                 <div className="card mb-4">
                   <div className="card-header py-3">
@@ -220,6 +221,7 @@ const Cart = () => {
             </div>
           </div>
         </section>
+	</div>
       </>
     );
   };
