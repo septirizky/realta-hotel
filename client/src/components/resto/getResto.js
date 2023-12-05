@@ -79,7 +79,7 @@ const GetResto = (props) => {
   return (
     <div>
       <Search search={search} setSearch={setSearch} />
-      <table className="table table-bordered text-center">
+      <table className="table table-striped table-hover align-middle text-center">
         <thead>
           <tr>
             <th>Id</th>
@@ -101,7 +101,7 @@ const GetResto = (props) => {
         <tbody>
           {getMenuResult ? (
             getMenuResult.map((menu) => {
-              const { reme_id, reme_name, reme_price, reme_type, reme_status } =
+              const { reme_id, reme_name, reme_price, reme_type, reme_status, reme_description } =
                 menu;
               return (
                 <tr key={reme_id}>
@@ -129,7 +129,8 @@ const GetResto = (props) => {
                                   reme_name,
                                   reme_price,
                                   reme_type,
-                                  reme_status
+                                  reme_status,
+                                  reme_description
                                 )
                               }
                             >
