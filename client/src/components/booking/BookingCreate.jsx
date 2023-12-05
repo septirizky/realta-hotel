@@ -341,12 +341,25 @@ const BookingCreate = () => {
 
           <div className="col-md-5">
             <div className="card rounded-0">
+              {/* {boorLength > 0 ? (
+                    <div className="card-body">
+                      <div className="d-flex align-items-center justify-content-center">
+                        <h5 className="card-title">Login to see lower price</h5>
+                        <button className="button-hotel-room-book m-0 ms-3">
+                          Login
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="card-body">
+                      <div className="d-flex align-items-center justify-content-center">
+                        <h5 className="card-title">Your booking list</h5>
+                      </div>
+                    </div>
+                  )} */}
               <div className="card-body">
                 <div className="d-flex align-items-center justify-content-center">
-                  <h5 className="card-title">Login to see lower price</h5>
-                  <button className="button-hotel-room-book m-0 ms-3">
-                    Login
-                  </button>
+                  <h5 className="card-title">Your Booking List</h5>
                 </div>
               </div>
               <ul className="list-group list-group-flush">
@@ -791,7 +804,7 @@ const BookingCreate = () => {
                           <td className="p-1">
                             :{" "}
                             <NumericFormat
-                              value={pritDetail ? pritDetail.prit_price : 0}
+                              value={pritDetail ? +pritDetail.prit_price : 0}
                               displayType="text"
                               thousandSeparator="."
                               decimalSeparator=","

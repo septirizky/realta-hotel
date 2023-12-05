@@ -954,6 +954,14 @@ export const getBookingInvoice = async (req, res) => {
       where: {
         patr_order_number: bookingOrderNumber,
       },
+      include: {
+        model: model.users,
+        as: "patr_user",
+        include: {
+          model: model.user_members,
+          as: "user_member",
+        },
+      },
     });
 
     const boor = await model.booking_orders.findOne({
