@@ -111,7 +111,7 @@ const Transaction = () => {
                                             'ii LLL YYY'
                                         )}</td>
                                         <td className='text-center p-3'>{formatRupiah(trx.patr_debet)}</td>
-                                        <td className='text-center'>{formatRupiah(trx.patr_credit)}</td>
+                                        <td className='text-center'>{(trx.patr_credit !== 0 ? trx.patr_credit: formatRupiah(trx.patr_credit))}</td>
                                         <td className='text-center'>{trx.patr_note}</td>
                                         <td className='text-center'>{trx.patr_order_number}</td>
                                         <td className='text-center'>{trx.patr_source_id}</td>

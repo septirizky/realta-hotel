@@ -456,7 +456,7 @@ export const getUserAccountExclude = async(req,res)=>{
         const usac_user_id = req.params.usac_user_id;
 
         const data1 = await models.user_accounts.findAll({
-            usac_user_id:{[Op.not]: usac_user_id},
+          
             attributes: ['usac_id','usac_user_id','usac_entity_id', 'usac_account_number','usac_saldo','usac_type','usac_expmonth','usac_expyear'],
             include : [{
                 model:entity, as:'usac_entity',attributes: ['entity_id'],required:true,
@@ -464,11 +464,13 @@ export const getUserAccountExclude = async(req,res)=>{
                     model:bank, as:'bank', attributes:['bank_name'],required: true,
                 }],
             }],
+            where: 
+            {usac_user_id:{[Op.not]: usac_user_id}
+    },
             
         })
 
         const data2 = await models.user_accounts.findAll({
-            usac_user_id:{[Op.not]: usac_user_id},
             attributes: ['usac_id','usac_user_id','usac_entity_id', 'usac_account_number','usac_saldo','usac_type','usac_expmonth','usac_expyear'],
             include : [{
                 model:entity, as:'usac_entity',attributes: ['entity_id'],required:true,
@@ -476,6 +478,9 @@ export const getUserAccountExclude = async(req,res)=>{
                     model:payment_gateway, as:'payment_gateway', attributes:['paga_name'],required: true,
                 }],
             }],
+            where: 
+            {usac_user_id:{[Op.not]: usac_user_id}
+    },
         })
 
         const result = data1.concat(data2);

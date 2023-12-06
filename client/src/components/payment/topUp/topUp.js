@@ -162,7 +162,7 @@ const TopUp = () => {
                         </div>
                         <div className="col-7">                                               
                         <select className="form-select rounded-pill" value={saldoTarget} onChange={(e)=>setsaldoTarget(e.target.value)} required>
-                        <option value=''>Pilih Akun anda</option>
+                        <option value=''>Pilih Akun Yang Ingin Anda Transfer</option>
                         {
                                 getUserAccountExcludeResult ?(
                                     getUserAccountExcludeResult.map((target)=>{
