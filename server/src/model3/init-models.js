@@ -54,6 +54,7 @@ import _vendor from "./vendor.js";
 import _vendor_product from "./vendor_product.js";
 import _work_order_detail from "./work_order_detail.js";
 import _work_orders from "./work_orders.js";
+
 const sequelize = new Sequelize(
   process.env.DB_NAME,
   process.env.DB_USER,
@@ -666,6 +667,7 @@ function initModels(sequelize) {
     work_orders,
   };
 }
-const model = initModels(sequelize);
-export default model;
+const models = initModels(sequelize);
+export default models;
+
 export { sequelize };

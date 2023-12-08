@@ -125,9 +125,7 @@ const EditHotel = (props) => {
                   >
                     {getCityResult.map((value) => {
                       return (
-                        <option value={value.city_id}>
-                          {value.city_name}, {value.prov_name}
-                        </option>
+                        <option value={value.city_id}>{value.city_name}</option>
                       );
                     })}
                   </Form.Select>

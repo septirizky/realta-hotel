@@ -40,7 +40,6 @@ const FacilityHistory = () => {
           <table className="table table-striped table-hover align-middle text-center">
             <thead>
               <tr>
-                <th>Id</th>
                 <th>Faci Id</th>
                 <th>Start Date</th>
                 <th>End Date</th>
@@ -67,7 +66,6 @@ const FacilityHistory = () => {
                   } = facilityHistory;
                   return (
                     <tr key={faph_id}>
-                      <td>{faph_id}</td>
                       <td>{faph_faci_id}</td>
                       <td>{format(new Date(faph_startdate), "ii LLL YYY")}</td>
                       <td>{format(new Date(faph_enddate), "ii LLL YYY")}</td>
