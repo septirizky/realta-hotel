@@ -10,6 +10,15 @@ const Transaction = () => {
     const ref = useRef();
     const [isSearch, setisSearch] = useState(false);
 
+    const formatRupiah = (number) => {
+        return new Intl.NumberFormat("id-ID", {
+          style: "currency",
+          currency: "IDR",
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 0,
+        }).format(number);
+      };
+
     const {
         getTransactionResult, 
         getTransactionLoading, 
@@ -101,15 +110,15 @@ const Transaction = () => {
                                             new Date(trx.patr_modified_date),
                                             'ii LLL YYY'
                                         )}</td>
-                                        <td className='text-center p-3'>{trx.patr_debet}</td>
-                                        <td className='text-center'>{trx.patr_credit}</td>
+                                        <td className='text-center p-3'>{formatRupiah(trx.patr_debet)}</td>
+                                        <td className='text-center'>{(trx.patr_credit !== 0 ? trx.patr_credit: formatRupiah(trx.patr_credit))}</td>
                                         <td className='text-center'>{trx.patr_note}</td>
                                         <td className='text-center'>{trx.patr_order_number}</td>
                                         <td className='text-center'>{trx.patr_source_id}</td>
                                         <td className='text-center'>{trx.patr_target_id}</td>
                                         <td className='text-center'>{trx.patr_trx_number_ref}</td>
                                         <td className='text-center'>{trx.patr_type}</td>
-                                        <td className='text-center'>{trx.patr_user_id}</td>
+                                        <td className='text-center'>{trx.patr_user.user_full_name}</td>
                                 </tr>
                                 )
                             }

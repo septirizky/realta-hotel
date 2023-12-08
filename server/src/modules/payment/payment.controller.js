@@ -4,6 +4,8 @@ import user_accounts from "../../model/user_accounts.js"
 import bank from "../../model/bank.js"
 import payment_gateway from "../../model/payment_gateway.js"
 import entity from "../../model/entity.js"
+import users from "../../model/users.js"
+// import bank from "../../model/bank.js"
 
 
 // ================ BackEnd Bank ================
@@ -383,7 +385,13 @@ export const getTransactionSearch = async(req,res)=>{
                     patr_trx_number: {[Op.like]:`${trx_num}%`},
                     patr_type:type
                 }
-            },order: [
+            },
+                include:[
+                    {
+                        model:users, as:'patr_user', attributes:['user_full_name'],required: true,
+                    }
+                ],
+            order: [
                 ['patr_id', 'ASC'],
             ]}
         )
@@ -391,7 +399,12 @@ export const getTransactionSearch = async(req,res)=>{
         result = await models.payment_transaction.findAll({
             where: {      
                  patr_type:type
-            },order: [
+            },
+            include:[
+                {
+                    model:users, as:'patr_user', attributes:['user_full_name'],required: true,
+                }
+            ],order: [
                 ['patr_id', 'ASC'],
             ]}
         )
@@ -400,13 +413,25 @@ export const getTransactionSearch = async(req,res)=>{
         result = await models.payment_transaction.findAll({
             where: {      
                 patr_trx_number: {[Op.like]:`%${trx_num}%`}
-            },order: [
+            },
+            include:[
+                {
+                    model:users, as:'patr_user', attributes:['user_full_name'],required: true,
+                }
+            ],
+            order: [
                 ['patr_id', 'ASC'],
             ]}
         )
     }
     else {
-        result = await models.payment_transaction.findAll()
+        result = await models.payment_transaction.findAll({
+            include:[
+                {
+                    model:users, as:'patr_user', attributes:['user_full_name'],required: true,
+                }
+            ]
+        })
     }
     
     if(result[0]){
@@ -430,12 +455,36 @@ export const getUserAccountExclude = async(req,res)=>{
     try {
         const usac_user_id = req.params.usac_user_id;
 
-        const result = await models.user_accounts.findAll({
-            where:{
-                usac_user_id:{[Op.not]: usac_user_id}
-            }
+        const data1 = await models.user_accounts.findAll({
+          
+            attributes: ['usac_id','usac_user_id','usac_entity_id', 'usac_account_number','usac_saldo','usac_type','usac_expmonth','usac_expyear'],
+            include : [{
+                model:entity, as:'usac_entity',attributes: ['entity_id'],required:true,
+                include: [{
+                    model:bank, as:'bank', attributes:['bank_name'],required: true,
+                }],
+            }],
+            where: 
+            {usac_user_id:{[Op.not]: usac_user_id}
+    },
+            
         })
-        // console.log(result)
+
+        const data2 = await models.user_accounts.findAll({
+            attributes: ['usac_id','usac_user_id','usac_entity_id', 'usac_account_number','usac_saldo','usac_type','usac_expmonth','usac_expyear'],
+            include : [{
+                model:entity, as:'usac_entity',attributes: ['entity_id'],required:true,
+                include: [{
+                    model:payment_gateway, as:'payment_gateway', attributes:['paga_name'],required: true,
+                }],
+            }],
+            where: 
+            {usac_user_id:{[Op.not]: usac_user_id}
+    },
+        })
+
+        const result = data1.concat(data2);
+        
         return res.status(200).json(result)
     } catch (error) {
         return res.status(404).json(error.message)
@@ -471,7 +520,7 @@ export const topUp = async(req,res)=>{
             const tgl = new Date().toISOString().split('T')[0].split("-");
             const random = Math.floor(Math.random()* 9000 + 1000)
     
-            const trx = `TP#${random}-${tgl[0]+tgl[1]+tgl[2]}`
+            const trx = `TRX#${random}-${tgl[0]+tgl[1]+tgl[2]}`
 
             const transaction = await models.payment_transaction.create({
                 patr_trx_number : trx,

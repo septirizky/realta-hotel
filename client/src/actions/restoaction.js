@@ -149,7 +149,7 @@ export const delete_Menu = (reme_id) => {
     //getAPI
      axios({
       method: "DELETE",
-      url: "http://localhost:4000/resto/" + reme_id,
+      url: "http://localhost:4000/resto/menu/" + reme_id,
       // timeout: 120000,
     })
       .then((response) => {
@@ -267,3 +267,18 @@ export const getMenuDetail = (data) => {
       });
   };
 };
+
+// export const ADDITEM = "ADDITEM";
+// export const addCart = (getitem) => {
+//   return {
+//     type: "ADDITEM",
+//     payload: getitem
+//   };
+// };
+
+// export const deleteCart = (getitem) => {
+//   return {
+//     type: "DELITEM",
+//     payload: getitem,
+//   };
+// };

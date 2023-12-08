@@ -1,7 +1,7 @@
 import {Link, Outlet, useLocation} from "react-router-dom";
 import './css/styles.css'
-import {BsListCheck, BsPeople, BsPerson, BsPersonCircle} from "react-icons/bs";
-import {MdApartment} from "react-icons/md";
+import {BsPersonCircle} from "react-icons/bs";
+import {MdApartment, MdOutlineFastfood, MdRestaurantMenu} from "react-icons/md";
 import {RxHamburgerMenu} from "react-icons/rx";
 import {useEffect, useState} from "react";
 
@@ -45,22 +45,15 @@ export const RestoNav = () => {
                     <div className="sb-sidenav-menu">
                         <div className="nav">
                             <div className="sb-sidenav-menu-heading text-warning">Menu</div>
-                            <Link to='/resto/menu' id='nav_dept'
-                                  className={`nav-link ${pathname.pathname === '/resto/menu' ? "active" : ""}`}>
-                                <div className="sb-nav-link-icon"><BsPeople size='26'/></div>
+                            <Link to='/resto' id='nav_dept'
+                                  className={`nav-link ${pathname.pathname === '/resto' ? "active" : ""}`}>
+                                <div className="sb-nav-link-icon"><MdOutlineFastfood size='26'/></div>
                                 Resto Menu
                             </Link>
-                            <Link to='/hr/employee'
-                                  className={`nav-link ${pathname.pathname === '/hr/employee' ? "active" : ""}`}
-                                  href="">
-                                <div className="sb-nav-link-icon"><BsPerson size='26'/></div>
-                                Employee
-                            </Link>
-                            <Link to='/hr/work-order'
-                                  className={`nav-link ${pathname.pathname === '/hr/work-order' ? "active" : ""}`}
-                                  href="">
-                                <div className="sb-nav-link-icon"><BsListCheck size='26'/></div>
-                                Work Order
+                            <Link to='/resto/menu' id='nav_dept'
+                                  className={`nav-link ${pathname.pathname === '/resto/menu' ? "active" : ""}`}>
+                                <div className="sb-nav-link-icon"><MdRestaurantMenu size='26'/></div>
+                                Resto Menu
                             </Link>
                         </div>
                     </div>

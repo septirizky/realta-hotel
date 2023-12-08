@@ -14,8 +14,8 @@ const Cart = () => {
         <div className="row">
           <div className="col-md-12 py-5 bg-light text-center">
             <h4 className="p-3 display-5">Your Cart is Empty</h4>
-            <Link to="/" className="btn  btn-outline-dark mx-4">
-              <i className="fa fa-arrow-left"></i> Continue Shopping
+            <Link to="/Purchase/gallery" className="btn  btn-outline-dark mx-4">
+              <i className="fa fa-arrow-left"></i> Continue To Order
             </Link>
           </div>
         </div>
@@ -92,7 +92,7 @@ const Cart = () => {
         if (result.isConfirmed) {
           axios({
             method: "POST",
-            url: `http://localhost:4001/insertorder`,
+            url: `http://localhost:4000/insertorder`,
             timeout: 12000,
             data: { orderdetail, orderheader },
           }).then((response) => {
@@ -100,7 +100,7 @@ const Cart = () => {
               Swal.fire({
                 icon: "success",
               });
-              navigate("/");
+              navigate("/Gallery");
             } else {
               Swal.fire({
                 icon: "warning",
@@ -113,9 +113,11 @@ const Cart = () => {
     };
     return (
       <>
+	<div className="container">
         <section className="h-100 gradient-custom">
+          <h5 className="mb-0">Cart</h5>
           <div className="container py-5">
-            <div className="row d-flex justify-content-center my-4">
+            <div className="row d-flex justify-content-center ">
               <div className="col-md-8">
                 <div className="card mb-4">
                   <div className="card-header py-3">
@@ -132,7 +134,7 @@ const Cart = () => {
                                 data-mdb-ripple-color="light"
                               >
                                 <img
-                                  src={`http://localhost:4001/pictstockphoto/${product.spho_photo_filename}`}
+                                  src={`http://localhost:4000/pictstockphoto/${product.spho_photo_filename}`}
                                   // className="w-100"
                                   alt={product.title}
                                   width={100}
@@ -219,6 +221,7 @@ const Cart = () => {
             </div>
           </div>
         </section>
+	</div>
       </>
     );
   };

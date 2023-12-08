@@ -270,7 +270,46 @@ const addMenuPhoto = async(req,res) => {
 //   }
 // };
 
+const insertmenuorder = async (req, res) => {
+  try {
+    const insertmenuheader = await models.order_menu_detail.bulkCreate(
+      req.body.orderheader,
+      { returning: true }
+    );
+    const { orderdetail } = req.body;
+    const data = await Promise.all(
+      orderdetail.map(async (e) => {
+        let detail = insertmenuheader.find(
+          (element) => element.length === e.length
+        );
+        if (detail.pohe_id) {
+          e.pohe_id = detail.pohe_id;
+        }
+        return e;
+      })
+    );
+    let insertpurchasedetail = "";
+    console.log(data);
+    data.map(async (map) => {
+      insertpurchasedetail = await models.purchase_order_detail.create({
+        pode_order_qty: map.pode_order_qty,
+        pode_price: map.pode_price,
+        pode_line_total: map.pode_line_total,
+        pode_received_qty: map.pode_received_qty,
+        pode_rejected_qty: map.pode_rejected_qty,
+        pode_stocked_qty: map.pode_stocked_qty,
+        pode_modified_date: map.pode_modified_date,
+        pode_stock_id: map.pode_stock_id,
+        pode_pohe_id: map.pohe_id,
+      });
+    });
 
+    const result = { insertpurchaseheader, insertpurchasedetail };
+    res.status(201).json({ data: result, message: "Success" });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
 
 
 export default {

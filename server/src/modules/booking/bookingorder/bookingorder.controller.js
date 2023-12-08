@@ -871,7 +871,7 @@ export const getAllPriceItems = async (req, res) => {
 
 export const createBookingPayment = async (req, res) => {
   try {
-    const { patr_order_number, patr_user_id } = req.body;
+    const { patr_order_number, patr_user_id, source_id, price } = req.body;
 
     const boor = await model.booking_orders.findOne({
       where: {
@@ -890,14 +890,14 @@ export const createBookingPayment = async (req, res) => {
       {
         patr_order_number,
         patr_user_id,
-        patr_trx_number: "null",
-        patr_debet: 0,
-        patr_credit: 0,
+        patr_trx_number: "",
+        patr_debet: price,
+        patr_credit: null,
         patr_type: "TRB",
-        patr_note: "null",
-        patr_source_id: 0,
+        patr_note: "Payment Hotel",
+        patr_source_id: source_id,
         patr_target_id: 0,
-        patr_trx_number_ref: "null",
+        patr_trx_number_ref:null,
       },
       {
         returning: true,
@@ -953,6 +953,14 @@ export const getBookingInvoice = async (req, res) => {
     const payment = await model.payment_transaction.findOne({
       where: {
         patr_order_number: bookingOrderNumber,
+      },
+      include: {
+        model: model.users,
+        as: "patr_user",
+        include: {
+          model: model.user_members,
+          as: "user_member",
+        },
       },
     });
 

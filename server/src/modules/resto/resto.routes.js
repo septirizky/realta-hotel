@@ -57,4 +57,6 @@ restoRouters.delete('/resto/photo/:remp_id/:image',menuConstroller.deleteMenuPho
 restoRouters.patch('/resto/photo/:remp_id',upload.any('files'),menuConstroller.addMenuPhoto )
 
 restoRouters.post('/resto/menu',medetailController.getMenuDetail)
+restoRouters.delete('/resto/menu/:reme_id',medetailController.deleteMenuDetail)
+
 export default restoRouters;

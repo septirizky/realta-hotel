@@ -77,10 +77,10 @@ const ModalEditBank = (props) => {
           
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseEditBank}>
+          <Button className='btn btn-danger' variant="secondary" onClick={handleCloseEditBank}>
             Close
           </Button>
-          <Button variant="primary" type='submit'>
+          <Button variant="primary" className='btn btn-warning' type='submit'>
             Save Changes
           </Button>
         </Modal.Footer>

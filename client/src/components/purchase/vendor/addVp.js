@@ -14,12 +14,14 @@ import Modal from "react-bootstrap/Modal";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
+import { BiPlus } from "react-icons/bi";
 
 const AddVendorProduct = () => {
   const [qty, setQty] = useState("");
   const [remaining, setRemaining] = useState("");
   const [price, setPrice] = useState("");
   const [stockid, setStockid] = useState("");
+  const [formKeyword, setFormKeyword] = useState("");
 
   const {
     getVendorPResult,
@@ -34,10 +36,10 @@ const AddVendorProduct = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(GetVendorsStock(id));
-    dispatch(GetStock());
+    dispatch(GetStock({ stock_name: formKeyword }));
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch]);
+  }, [dispatch, formKeyword]);
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -53,7 +55,7 @@ const AddVendorProduct = () => {
       title: "Are you sure?",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
+      confirmButtonColor: "#EBAB2D",
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes",
     }).then(async (result) => {
@@ -92,42 +94,61 @@ const AddVendorProduct = () => {
   };
 
   return (
-    <section style={{ backgroundColor: "#eee" }}>
-      <MDBContainer className="py-5">
-        <MDBRow>
-          <MDBCol>
-            <MDBBreadcrumb className="rounded-3 p-3 mb-4">
-              <MDBBreadcrumbItem className="mb-3">
-                <Link to="/vendor">Home</Link>
-              </MDBBreadcrumbItem>
-              <MDBBreadcrumbItem className="mb-3">
-                <Link to="/vendor">Vendor</Link>
-              </MDBBreadcrumbItem>
-              <MDBBreadcrumbItem className="mb-3" active>
-                Add Vendor
-              </MDBBreadcrumbItem>
-            </MDBBreadcrumb>
-          </MDBCol>
-        </MDBRow>
+    <section>
+      <MDBContainer fluid className="p-4">
+        <h3>Vendor Product</h3>
+        <MDBBreadcrumb className="rounded-3 p-3 mb-4 bg-white">
+          <MDBBreadcrumbItem>
+            <Link to="/Purchase/gallery">Home</Link>
+          </MDBBreadcrumbItem>
+          <MDBBreadcrumbItem>
+            <Link to="/Purchase/vendor">Vendor</Link>
+          </MDBBreadcrumbItem>
+          <MDBBreadcrumbItem active>
+            Add Vendor
+          </MDBBreadcrumbItem>
+        </MDBBreadcrumb>
+        <div className="row mb-4 justify-content-between">
+          <div className="col-sm-3 align-content-center mt-2">
+            <button
+              type="button"
+              className="btn btn-sm btn-warning text-white"
+              onClick={handleShow}
+            >
+              <BiPlus size="26" /> Add Vendor product
+            </button>
+          </div>
+          <div className="col-sm-2">
+            <div className="form-floating">
+              <input
+                type="text"
+                onChange={(e) => setFormKeyword(e.target.value)}
+                value={formKeyword}
+                className="form-control text-dark form-control-sm"
+                id="searchDept"
+                placeholder="name@example.com"
+                required
+              />
+              <label htmlFor="searchDept">Search Vendor</label>
+            </div>
+          </div>
+        </div>
 
-        <table className="table">
+        <table className="table table-striped table-hover align-middle">
           <thead>
             <tr>
+              <th>No</th>
               <th>Stock</th>
               <th>Qty Stocked</th>
               <th>Qty Remaining</th>
               <th>Price</th>
-              <th>
-                <button className="btn btn-sm btn-dark" onClick={handleShow}>
-                  Add
-                </button>
-              </th>
             </tr>
           </thead>
           <tbody>
             {getVendorPResult ? (
               getVendorPResult.map((vendor, index) => (
                 <tr key={index}>
+                  <td>{index + 1}</td>
                   <td>{vendor.stock_name}</td>
                   <td>{vendor.vepro_qty_stocked}</td>
                   <td>{vendor.vepro_qty_remaining}</td>
@@ -201,7 +222,7 @@ const AddVendorProduct = () => {
                 </Form.Control>
               </Form.Group>
               <Form.Group
-                className="mb-4"
+                className="mb-3"
                 controlId="exampleForm.ControlTextarea1"
               >
                 <Form.Label>Qty Stocked</Form.Label>
@@ -242,7 +263,7 @@ const AddVendorProduct = () => {
             <Button variant="secondary" onClick={handleClose}>
               Cancel
             </Button>
-            <Button variant="primary" onClick={insertVendorstock}>
+            <Button variant="warning" className="text-white" onClick={insertVendorstock}>
               Save
             </Button>
           </Modal.Footer>

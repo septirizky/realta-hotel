@@ -122,11 +122,31 @@ const BookingInvoice = () => {
                   </thead>
                   <tbody>
                     <tr>
-                      <td>Ajip</td>
-                      <td>0823 123 678</td>
-                      <td>VIP</td>
-                      <td>23 May 2022</td>
-                      <td>+150</td>
+                      <td>
+                        {invoice && invoice.payment.patr_user.user_full_name}
+                      </td>
+                      <td>
+                        {invoice && invoice.payment.patr_user.user_phone_number}
+                      </td>
+                      <td>
+                        {invoice &&
+                          invoice.payment.patr_user.user_member &&
+                          invoice.payment.patr_user.user_member.usme_memb_name}
+                      </td>
+                      <td>
+                        {invoice &&
+                          format(
+                            new Date(
+                              invoice.payment.patr_user.user_modified_date
+                            ),
+                            "i LLL YYY"
+                          )}
+                      </td>
+                      <td>
+                        {invoice &&
+                          invoice.payment.patr_user.user_member &&
+                          invoice.payment.patr_user.user_member.usme_points}
+                      </td>
                     </tr>
                   </tbody>
                 </table>
