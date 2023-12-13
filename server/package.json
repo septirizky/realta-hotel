@@ -7,11 +7,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon ./src/server.js",
-<<<<<<< HEAD
-    "genModelDB": "sequelize-auto -h localhost -d hotel-codex -u postgres -x septirizky -p 5433  --dialect postgres -o ./src/model -l esm -v true"
-=======
     "genModelDB": "sequelize-auto -h localhost -d db_hotel -u postgres -x admin123 -p 5432  --dialect postgres -o ./src/model -l esm -v true"
->>>>>>> 07319331860b42769da37c2a13a769530326c3d7
   },
   "keywords": [],
   "author": "",

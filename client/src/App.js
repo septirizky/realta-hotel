@@ -48,11 +48,7 @@ import { LogRegUser } from "./components/users/LogRegUser.js";
 import { LogRegGuest } from "./components/users/LogRegGuest.js";
 import ProfilePage from "./components/users/myProfile.js";
 import { Footer } from "./components/dashboard/tempFoot";
-<<<<<<< HEAD
 import Photo from "./components/hotel/photo.js";
-=======
-import { PurchaseHeader } from "./components/purchase/layout/header.js";
->>>>>>> 07319331860b42769da37c2a13a769530326c3d7
 
 function MainLayout() {
   return (
@@ -91,7 +87,6 @@ function App() {
         <Route path="/" index element={<Resto />} />
         <Route path="/resto" element={<RestoNav />}>
           <Route path="/resto" index element={<Resto />} />
-<<<<<<< HEAD
           {/* <Route path="/resto/menu" index element={<MenuDetail/>} /> */}
           {/* <Route path='/resto/menu' element={<Menu/>}/> */}
         </Route>
@@ -108,15 +103,6 @@ function App() {
         {/*<Route path="/signemployee" element={<SigninEmployee/>}></Route>*/}
         {/*<Route path="/signin" element={<LoginGuest/>}></Route>*/}
         {/*<Route path="/signupemployee" element={<SignupEmployee/>}></Route>*/}
-=======
-        </Route>
-        <Route path="/resto/menu" element={<RestoNav />}>
-          <Route path="/resto/menu" index element={<MenuDetail />} />
-        </Route>
-        <Route path="/" element={<NavbarComponent />}>
-          <Route path="/user/Profile/" index element={<ProfilePage />} />
-        </Route>
->>>>>>> 07319331860b42769da37c2a13a769530326c3d7
         <Route path="/logreguser" element={<LogRegUser />}></Route>
         <Route path="/logregguest" element={<LogRegGuest />}></Route>
         <Route path="/" element={<TempNav />}>
@@ -130,15 +116,11 @@ function App() {
         </Route>
         <Route path="/hotel" element={<HotelSidebar />}>
           <Route index element={<Hotel />} />
-<<<<<<< HEAD
           <Route
             path="/hotel/facilities/:hotel_id/:hotel_name/:hotel_phonenumber"
             element={<Facilities />}
           />
           <Route path="/hotel/facilities/photo/:faci_id" element={<Photo />} />
-=======
-          <Route path="/hotel/facilities/:hotel_id" element={<Facilities />} />
->>>>>>> 07319331860b42769da37c2a13a769530326c3d7
           <Route path="/hotel/facility_history" element={<FacilityHistory />} />
         </Route>
         <Route path="/booking/hotel" element={<BookingLayout />}>
@@ -147,7 +129,6 @@ function App() {
           <Route path="create/:id" element={<BookingCreate />} />
           <Route path="invoice/:id" element={<BookingInvoice />} />
         </Route>
-<<<<<<< HEAD
         <Route path="/" element={<PurchaseLayout />}>
           <Route path="/purchase" index element={<Products />} />
           <Route path="/vendor" index element={<Vendor />} />
@@ -161,34 +142,6 @@ function App() {
           <Route path="/stock/:id" index element={<StockDetail />} />
           <Route path="/purchaseorder" index element={<PurchaseOrder />} />
           <Route path="/detailorder/:id" index element={<DetailOrder />} />
-=======
-        <Route path="/Purchase" element={<PurchaseLayout />}>
-          <Route index element={<Products />} />
-          <Route path="/Purchase/vendor" index element={<Vendor />} />
-          <Route
-            path="/Purchase/vendor/:id/addproduct"
-            index
-            element={<AddVendorProduct />}
-          />
-          <Route path="/Purchase/cart" index element={<Cart />} />
-          <Route path="/Purchase/stock" index element={<Stock />} />
-          <Route path="/Purchase/stock/:id" index element={<StockDetail />} />
-          <Route
-            path="/Purchase/purchaseorder"
-            index
-            element={<PurchaseOrder />}
-          />
-          <Route
-            path="/Purchase/detailorder/:id"
-            index
-            element={<DetailOrder />}
-          />
-          <Route path="/Purchase/gallery" index element={<Products />} />
-        </Route>
-        <Route path="/Gallery" element={<PurchaseHeader />}>
-          <Route index element={<Products />} />
-	  <Route path="/Gallery/cart" element={<Cart />} />
->>>>>>> 07319331860b42769da37c2a13a769530326c3d7
         </Route>
       </Routes>
     </BrowserRouter>
