@@ -188,12 +188,6 @@ const hotel = (state = initialState, action) => {
         getFaciHisLoading: action.payload.loading,
         getFaciHisError: action.payload.errorMessage,
       };
-      return {
-        ...state,
-        addFaciHisResult: action.payload.data,
-        addFaciHisLoading: action.payload.loading,
-        addFaciHisError: action.payload.errorMessage,
-      };
 
     default:
       return state;

@@ -133,7 +133,7 @@ export const addFacilities = (data) => {
           payload: {
             loading: false,
             data: false,
-            errorMessage: error.message,
+            errorMessage: error.response.data.message,
           },
         });
       });

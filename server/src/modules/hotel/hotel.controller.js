@@ -67,6 +67,39 @@ export const hotelAdd = async (req, res) => {
       ratingstar,
     } = req.body;
 
+    if (name === "" || name === undefined || name === null) {
+      return res.status(400).json({ message: "Please fill out Hotel Name" });
+    }
+
+    const hotel = await models.hotels.findOne({
+      attributes: ["hotel_name"],
+      where: { hotel_name: name },
+    });
+
+    if (hotel) {
+      return res.status(400).json({ message: name + " already exists" });
+    }
+
+    if (
+      phonenumber === "" ||
+      phonenumber === undefined ||
+      phonenumber === null
+    ) {
+      return res.status(400).json({ message: "Please fill out Phone Number" });
+    }
+
+    if (address === "" || address === undefined || address === null) {
+      return res.status(400).json({ message: "Please fill out Address" });
+    }
+
+    if (
+      description === "" ||
+      description === undefined ||
+      description === null
+    ) {
+      return res.status(400).json({ message: "Please fill out Description" });
+    }
+
     const addr = await models.address.create(
       {
         addr_line_1: address,
@@ -174,24 +207,23 @@ export const facilities = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
 export const facilitiesAll = async (req, res) => {
   try {
     const { hotel_id } = req.params;
-    const result = await models.facilities.findAll(
-      {
+    const result = await models.facilities.findAll({
+      include: {
+        model: models.hotels,
+        as: "faci_hotel",
+        required: true,
+        attributes: ["hotel_name", "hotel_phonenumber", "hotel_rating_star"],
         include: {
-          model: models.hotels,
-          as: "faci_hotel",
-          required: true,
-          attributes: ["hotel_name", "hotel_phonenumber", "hotel_rating_star"],
-          include: {
-            model: models.address,
-            as: "hotel_addr",
-            attributes: ["addr_line_1"],
-          },
+          model: models.address,
+          as: "hotel_addr",
+          attributes: ["addr_line_1"],
         },
-      }
-    );
+      },
+    });
     return res
       .status(200)
       .json({ data: result, message: "berhasil tampil facilities" });
@@ -199,13 +231,12 @@ export const facilitiesAll = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
 export const getAllFacilities = async (req, res) => {
   try {
-    const result = await models.facilities.findAll(
-        {
-          attributes: ["faci_id", "faci_name"]
-        }
-    );
+    const result = await models.facilities.findAll({
+      attributes: ["faci_id", "faci_name"],
+    });
     return res
       .status(200)
       .json({ data: result, message: "berhasil tampil facilities" });
@@ -231,6 +262,56 @@ export const facilitiesAdd = async (req, res) => {
       cagro_id,
       hotel_id,
     } = req.body;
+
+    if (name === "" || name === undefined || name === null) {
+      return res
+        .status(400)
+        .json({ message: "Please fill out Facilities Name" });
+    }
+
+    if (
+      room_number === "" ||
+      room_number === undefined ||
+      room_number === null
+    ) {
+      return res.status(400).json({ message: "Please fill out Room Number" });
+    }
+
+    if (max_vacant === "" || max_vacant === undefined || max_vacant === null) {
+      return res.status(400).json({ message: "Please fill out Max Vacant" });
+    }
+
+    if (low_price === "" || low_price === undefined || low_price === null) {
+      return res.status(400).json({ message: "Please fill out Low Price" });
+    }
+
+    if (high_price === "" || high_price === undefined || high_price === null) {
+      return res.status(400).json({ message: "Please fill out High Price" });
+    }
+
+    if (discount === "" || discount === undefined || discount === null) {
+      return res.status(400).json({ message: "Please fill out Discount" });
+    }
+
+    if (tax === "" || tax === undefined || tax === null) {
+      return res.status(400).json({ message: "Please fill out Tax" });
+    }
+
+    if (startdate === "" || startdate === undefined || startdate === null) {
+      return res.status(400).json({ message: "Please fill out Start Date" });
+    }
+
+    if (enddate === "" || enddate === undefined || enddate === null) {
+      return res.status(400).json({ message: "Please fill out End Date" });
+    }
+
+    if (
+      description === "" ||
+      description === undefined ||
+      description === null
+    ) {
+      return res.status(400).json({ message: "Please fill out Description" });
+    }
 
     const result = await models.facilities.create({
       faci_name: name,
