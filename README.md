@@ -1,7 +1,5 @@
 # Aplikasi Hotel Reservation System
 
-## By: Kelompok 1
-
 1. Rahmat Rafli
 2. Mangara Butarbutar
 3. Elvira Hafis - Purchase
